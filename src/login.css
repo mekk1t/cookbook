@@ -2,7 +2,7 @@ body {
   background-color: #91BAF1
 }
 
-.login-box button {
+.login-box button, a {
   padding: 10px;
   border-radius: 10px;
   margin: 10px;
@@ -27,6 +27,10 @@ body {
   background-color: #03191E;
   color: #FBFAF5;
   border-radius: 10px;
+}
+
+a {
+  text-decoration: none;
 }
 
 #second {
