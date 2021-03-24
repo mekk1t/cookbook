@@ -1,0 +1,26 @@
+body {
+  background-color: #91BAF1;
+}
+
+.navigation-header ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.navigation-header li {
+  margin-left: 15px;
+}
+
+.logo {
+  margin-right: auto;
+}
+
+.navigation-header div {
+  display: inline-block;
+}
+
+#central {
+  margin-left: auto;
+  margin-right: auto;
+}
