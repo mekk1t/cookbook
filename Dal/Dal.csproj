@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>KitProjects.MasterChef.Kernel</AssemblyName>
-    <RootNamespace>KitProjects.MasterChef.Kernel</RootNamespace>
+    <AssemblyName>KitProjects.MasterChef.Dal</AssemblyName>
+    <RootNamespace>KitProjects.MasterChef.Dal</RootNamespace>
   </PropertyGroup>
 
 </Project>
