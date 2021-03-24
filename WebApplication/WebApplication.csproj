@@ -4,8 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>44fbb569-cbb7-475a-be82-b123da19454c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <AssemblyName>KitProjects.WebCook.WebApplication</AssemblyName>
-    <RootNamespace>KitProjects.WebCook.WebApplication</RootNamespace>
+    <AssemblyName>KitProjects.MasterChef.WebApplication</AssemblyName>
+    <RootNamespace>KitProjects.MasterChef.WebApplication</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

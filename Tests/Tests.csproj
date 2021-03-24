@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>KitProjects.WebCook.Tests</AssemblyName>
+    <AssemblyName>KitProjects.MasterChef.Tests</AssemblyName>
 
-    <RootNamespace>KitProjects.WebCook.Tests</RootNamespace>
+    <RootNamespace>KitProjects.MasterChef.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
