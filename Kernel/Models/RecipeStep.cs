@@ -2,12 +2,11 @@
 
 namespace KitProjects.MasterChef.Kernel.Models
 {
-    public class Recipe
+    public class RecipeStep
     {
-        public string Title { get; set; }
+        public int Index { get; set; }
         public string Description { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public string Image { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
-        public ICollection<RecipeStep> Steps { get; set; }
     }
 }
