@@ -26,5 +26,9 @@ namespace KitProjects.MasterChef.Kernel.Services
                     .Any(ingredient =>
                         ingredient.Categories
                             .Any(category => category.Name.ContainsIgnoreCase(filter.IngredientCategory))));
+
+        public void DeleteRecipe(Recipe recipe) => _recipeRepository.Delete(recipe);
+        public void EditRecipe(Recipe recipe) => _recipeRepository.Update(recipe);
+        public void CreateNewRecipe(Recipe recipe) => _recipeRepository.Create(recipe);
     }
 }
