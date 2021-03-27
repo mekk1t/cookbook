@@ -4,8 +4,6 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Kernel
 {
@@ -15,9 +13,13 @@ namespace KitProjects.MasterChef.Kernel
         private readonly IQuery<IEnumerable<Ingredient>> _getIngredientsQuery;
         private readonly CategoryService _categoryService;
 
-        public IngredientService()
+        public IngredientService(
+            ICommand<CreateIngredientCommand> createIngredientCommand,
+            IQuery<IEnumerable<Ingredient>> getIngredientsQuery, CategoryService categoryService)
         {
-
+            _createIngredientCommand = createIngredientCommand;
+            _getIngredientsQuery = getIngredientsQuery;
+            _categoryService = categoryService;
         }
 
         public void CreateIngredient(CreateIngredientCommand command)
