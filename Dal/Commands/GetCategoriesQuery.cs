@@ -1,18 +1,22 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Dal.Commands
 {
     public class GetCategoriesQuery : IQuery<IEnumerable<Category>>
     {
+        private readonly AppDbContext _dbContext;
+
+        public GetCategoriesQuery(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public IEnumerable<Category> Execute()
         {
-            throw new NotImplementedException();
+            return _dbContext.Categories.AsNoTracking();
         }
     }
 }

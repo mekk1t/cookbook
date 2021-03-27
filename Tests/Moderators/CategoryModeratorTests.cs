@@ -1,7 +1,9 @@
 ﻿using DatabaseTestsConnector;
+using FluentAssertions;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using System;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Moderators
@@ -19,12 +21,12 @@ namespace KitProjects.MasterChef.Tests.Moderators
         [Fact]
         public void Category_moderator_creates_a_new_category()
         {
-            var sut = new CategoryModerator(new CreateCategoryCommandHandler(), new GetCategoriesQuery());
+            using var dbContext = _fixture.DbContext;
+            var sut = new CategoryModerator(new CreateCategoryCommandHandler(dbContext), new GetCategoriesQuery(dbContext));
 
-            sut.CreateCategory(new CreateCategoryCommand("Тест"));
+            Action act = () => sut.CreateCategory(new CreateCategoryCommand("Тест"));
 
-
+            act.Should().NotThrow();
         }
-
     }
 }
