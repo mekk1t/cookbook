@@ -1,32 +1,21 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Extensions;
 using KitProjects.MasterChef.Kernel.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel.Services
 {
     public class RecipeService
     {
-        private readonly IRepository<Recipe> _recipeRepository;
+        private readonly IRepository<Recipe, Guid> _recipeRepository;
 
-        public RecipeService(IRepository<Recipe> recipeRepository)
+        public RecipeService(IRepository<Recipe, Guid> recipeRepository)
         {
             _recipeRepository = recipeRepository;
         }
 
-        public IEnumerable<Recipe> SearchRecipes(RecipeFilter filter) =>
-            _recipeRepository.Read(c =>
-                c.Title.ContainsIgnoreCase(filter.SearchTerm) ||
-                c.Description.ContainsIgnoreCase(filter.SearchTerm) ||
-                c.Categories.Any(category => category.Name.ContainsIgnoreCase(filter.SearchTerm)) ||
-                c.Categories.Any(category => category.Name.EqualsIgnoreCase(filter.CategoryName)) ||
-                c.Steps.Count >= filter.StepsCount ||
-                c.Ingredients
-                    .Any(ingredient =>
-                        ingredient.Categories
-                            .Any(category => category.Name.ContainsIgnoreCase(filter.IngredientCategory))));
-
+        public IEnumerable<Recipe> SearchRecipes(ListQueryFilter filter) => _recipeRepository.Read(filter);
+        public Recipe FindRecipe(Guid recipeId) => _recipeRepository.Find(recipeId);
         public void DeleteRecipe(Recipe recipe) => _recipeRepository.Delete(recipe);
         public void EditRecipe(Recipe recipe) => _recipeRepository.Update(recipe);
         public void CreateNewRecipe(Recipe recipe) => _recipeRepository.Create(recipe);
