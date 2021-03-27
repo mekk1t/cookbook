@@ -1,11 +1,15 @@
-﻿namespace KitProjects.MasterChef.WebApplication.Categories
+﻿using System;
+
+namespace KitProjects.MasterChef.WebApplication.Categories
 {
     public class GetCategoryResponse
     {
         public string Name { get; }
+        public Guid Id { get; }
 
-        public GetCategoryResponse(string name)
+        public GetCategoryResponse(Guid id, string name)
         {
+            Id = id;
             Name = name;
         }
     }

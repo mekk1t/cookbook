@@ -1,12 +1,13 @@
 ﻿using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
     [Route("categories")]
-    public class CategoryController : ApiControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly CategoryModerator _moderator;
 
@@ -26,7 +27,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public GetCategoryResponse GetCategory([FromRoute] string categoryName)
         {
             var category = _moderator.GetCategories().FirstOrDefault(c => c.Name == categoryName);
-            return new GetCategoryResponse(category.Name);
+            return new GetCategoryResponse(category.Id, category.Name);
         }
 
         [HttpPost("")]
@@ -40,7 +41,21 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 return Conflict("Не удалось создать категорию.");
             }
 
-            return CreatedAtAction(nameof(GetCategory), createdCategory.Name);
+            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }), null);
+        }
+
+        [HttpDelete("{categoryName}")]
+        public IActionResult DeleteCategory([FromRoute] string categoryName)
+        {
+            _moderator.DeleteCategory(new DeleteCategoryCommand(categoryName));
+            return Ok();
+        }
+
+        [HttpPut("{categoryId}")]
+        public IActionResult EditCategory([FromRoute] Guid categoryId, [FromBody] EditCategoryRequest request)
+        {
+            _moderator.EditCategory(new EditCategoryCommand(categoryId, request.NewName));
+            return Ok();
         }
     }
 }

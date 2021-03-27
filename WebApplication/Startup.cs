@@ -1,8 +1,17 @@
+using KitProjects.MasterChef.Dal;
+using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WebApplication
 {
@@ -10,6 +19,17 @@ namespace WebApplication
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(o => o.UseSqlServer("Server=localhost;Database=MasterChef;Trusted_Connection=True;"));
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API конвертации кулинарных мер объема", Version = "v1" });
+            });
+            services.AddScoped<CategoryModerator>();
+            services.AddScoped<ICommand<CreateCategoryCommand>, CreateCategoryCommandHandler>();
+            services.AddScoped<ICommand<EditCategoryCommand>, EditCategoryCommandHandler>();
+            services.AddScoped<ICommand<DeleteCategoryCommand>, DeleteCategoryCommandHandler>();
+            services.AddScoped<IQuery<IEnumerable<Category>>, GetCategoriesQuery>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -17,16 +37,19 @@ namespace WebApplication
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
