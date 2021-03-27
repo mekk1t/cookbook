@@ -72,8 +72,16 @@ namespace KitProjects.Fixtures
                 .AsNoTracking()
                 .Include(i => i.Categories)
                 .FirstOrDefault(i => i.Name == name);
-            return new Ingredient(dbIngredient.Id, dbIngredient.Name,
-                dbIngredient.Categories.Select(c => new Category(c.Id, c.Name)).ToList());
+
+            if (dbIngredient == null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Ingredient(dbIngredient.Id, dbIngredient.Name,
+                    dbIngredient.Categories.Select(c => new Category(c.Id, c.Name)).ToList());
+            }
         }
 
         public void Dispose() => Connection.Dispose();

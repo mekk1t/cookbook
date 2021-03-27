@@ -32,7 +32,9 @@ namespace KitProjects.MasterChef.Tests.Services
                     new CreateCategoryCommandHandler(dbContext),
                     new GetCategoriesQuery(dbContext),
                     new DeleteCategoryCommandHandler(dbContext),
-                    new EditCategoryCommandHandler(dbContext)));
+                    new EditCategoryCommandHandler(dbContext)),
+                new EditIngredientCommandHandler(dbContext),
+                new DeleteIngredientCommandHandler(dbContext));
         }
 
         [Fact]
@@ -96,6 +98,33 @@ namespace KitProjects.MasterChef.Tests.Services
             act.Should().NotThrow();
             using var dbContext = _fixture.DbContext;
             dbContext.Ingredients.Where(i => i.Name == ingredientName).Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Edit_ingredient_name_jesus_im_bored()
+        {
+            var ingredientId = Guid.NewGuid();
+            _fixture.SeedIngredient(new Ingredient(ingredientId, "влтывдлмтыд", new List<Category>()));
+
+            Action act = () => _sut.EditIngredient(new EditIngredientCommand(ingredientId, "НовоеИмя"));
+
+            act.Should().NotThrow();
+            var result = _fixture.FindIngredient("НовоеИмя");
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Delete_ingredient_by_id()
+        {
+            var ingredientId = Guid.NewGuid();
+            var ingredientName = "414019гк30";
+            _fixture.SeedIngredient(new Ingredient(ingredientId, ingredientName, new List<Category>()));
+
+            Action act = () => _sut.DeleteIngredient(new DeleteIngredientCommand(ingredientId));
+
+            act.Should().NotThrow();
+            var result = _fixture.FindIngredient(ingredientName);
+            result.Should().BeNull();
         }
     }
 }
