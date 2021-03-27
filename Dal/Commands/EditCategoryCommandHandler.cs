@@ -1,10 +1,7 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Dal.Commands
 {
@@ -23,6 +20,8 @@ namespace KitProjects.MasterChef.Dal.Commands
             if (oldCategory == null)
                 throw new ArgumentException($"Категории с ID {command.Id} не существует.");
 
+            oldCategory.Name = command.NewName;
+            _dbContext.SaveChanges();
         }
     }
 }

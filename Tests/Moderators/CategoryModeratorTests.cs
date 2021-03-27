@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Moderators
@@ -79,6 +80,24 @@ namespace KitProjects.MasterChef.Tests.Moderators
 
             act.Should().NotThrow();
             _sut.GetCategories().Where(r => r.Name == randomName).Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Can_edit_category()
+        {
+            var categoryId = Guid.NewGuid();
+            var oldName = "12345";
+            var newName = "НовоеИмя";
+            _fixture.SeedCategory(new Category(categoryId, oldName));
+
+            Action act = () => _sut.EditCategory(new EditCategoryCommand(categoryId, newName));
+
+            act.Should().NotThrow();
+            var category = _fixture.FindCategory(newName);
+            category.Should().NotBeNull();
+            category.Name.Should().Be(newName);
+            using var dbContext = _fixture.DbContext;
+            dbContext.Categories.Where(c => c.Name == oldName).Should().BeEmpty();
         }
 
         public void Dispose()
