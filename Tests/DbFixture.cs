@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Dal;
+using KitProjects.MasterChef.Kernel.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +38,13 @@ namespace DatabaseTestsConnector
                     _databaseInitialized = true;
                 }
             }
+        }
+
+        public void SeedCategory(Category category)
+        {
+            using var dbContext = this.DbContext;
+            dbContext.Categories.Add(category);
+            dbContext.SaveChanges();
         }
 
         public void Dispose() => Connection.Dispose();
