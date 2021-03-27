@@ -14,13 +14,13 @@ using Xunit;
 namespace KitProjects.MasterChef.Tests.Moderators
 {
     [Collection("Db")]
-    public sealed class CategoryModeratorTests : IDisposable
+    public sealed class CategoryServiceTests : IDisposable
     {
         private readonly DbFixture _fixture;
         private readonly CategoryService _sut;
         private List<DbContext> _dbContexts;
 
-        public CategoryModeratorTests(DbFixture fixture)
+        public CategoryServiceTests(DbFixture fixture)
         {
             _fixture = fixture;
             var dbContext = _fixture.DbContext;
