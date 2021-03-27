@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands
@@ -19,7 +20,6 @@ namespace KitProjects.MasterChef.Dal.Commands
         public void Execute(CreateIngredientCommand command)
         {
             var dbCategories = _dbContext.Categories
-                .AsNoTracking()
                 .Where(c => command.Categories.Contains(c.Name))
                 .ToList();
             _dbContext.Ingredients.Add(new DbIngredient(Guid.NewGuid(), command.Name, dbCategories));

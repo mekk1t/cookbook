@@ -12,5 +12,12 @@ namespace KitProjects.MasterChef.Dal
         {
 
         }
+
+        public override int SaveChanges()
+        {
+            var result = base.SaveChanges();
+            this.ChangeTracker.Clear();
+            return result;
+        }
     }
 }
