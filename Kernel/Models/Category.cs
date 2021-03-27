@@ -17,6 +17,6 @@ namespace KitProjects.MasterChef.Kernel.Models
             Name = name;
         }
 
-        public string Name { get; }
+        public string Name { get; private set; }
     }
 }

@@ -3,7 +3,9 @@ using FluentAssertions;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using LinqKit;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Moderators
@@ -27,6 +29,9 @@ namespace KitProjects.MasterChef.Tests.Moderators
             Action act = () => sut.CreateCategory(new CreateCategoryCommand("Тест"));
 
             act.Should().NotThrow();
+            using var _dbContext = _fixture.DbContext;
+            var result = _dbContext.Categories.First(r => r.Name == "Тест");
+            result.Should().NotBeNull();
         }
     }
 }
