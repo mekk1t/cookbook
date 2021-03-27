@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "WebApplication\WebApplication.csproj", "{B63B4101-32F7-4140-A7A3-778050191016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kernel", "Kernel\Kernel.csproj", "{22426084-5EB2-4358-B252-9085F95E7660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kernel", "Kernel\Kernel.csproj", "{22426084-5EB2-4358-B252-9085F95E7660}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dal", "Dal\Dal.csproj", "{4DC5B9F3-257A-4FB1-93AA-33573EC1739A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseTestsConnector", "DatabaseTestsConnector\DatabaseTestsConnector.csproj", "{A0E03AAC-AC0A-4D84-B60B-FD48017F231C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4DC5B9F3-257A-4FB1-93AA-33573EC1739A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DC5B9F3-257A-4FB1-93AA-33573EC1739A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DC5B9F3-257A-4FB1-93AA-33573EC1739A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E03AAC-AC0A-4D84-B60B-FD48017F231C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E03AAC-AC0A-4D84-B60B-FD48017F231C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E03AAC-AC0A-4D84-B60B-FD48017F231C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E03AAC-AC0A-4D84-B60B-FD48017F231C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
