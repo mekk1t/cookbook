@@ -1,5 +1,5 @@
-﻿using DatabaseTestsConnector;
-using FluentAssertions;
+﻿using FluentAssertions;
+using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Moderators

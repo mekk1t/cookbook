@@ -7,7 +7,7 @@ using System;
 using System.Data.Common;
 using System.Linq;
 
-namespace DatabaseTestsConnector
+namespace KitProjects.Fixtures
 {
     public sealed class DbFixture : IDisposable
     {
@@ -52,7 +52,7 @@ namespace DatabaseTestsConnector
         public Category FindCategory(string name)
         {
             using var dbContext = this.DbContext;
-            var dbCategory =  dbContext.Categories.AsNoTracking().FirstOrDefault(r => r.Name == name);
+            var dbCategory = dbContext.Categories.AsNoTracking().FirstOrDefault(r => r.Name == name);
             return new Category(dbCategory.Id, dbCategory.Name);
         }
 

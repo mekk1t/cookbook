@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dal\Dal.csproj" />
     <ProjectReference Include="..\Kernel\Kernel.csproj" />
+    <ProjectReference Include="..\KitProjects.Fixtures\KitProjects.Fixtures.csproj" />
     <ProjectReference Include="..\WebApplication\WebApplication.csproj" />
   </ItemGroup>
 

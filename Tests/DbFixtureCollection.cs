@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using KitProjects.Fixtures;
+using Xunit;
 
 namespace DatabaseTestsConnector
 {
