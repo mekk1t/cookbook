@@ -9,9 +9,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
     [Route("categories")]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryModerator _moderator;
+        private readonly CategoryService _moderator;
 
-        public CategoryController(CategoryModerator moderator)
+        public CategoryController(CategoryService moderator)
         {
             _moderator = moderator;
         }

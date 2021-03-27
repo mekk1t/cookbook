@@ -7,14 +7,14 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class CategoryModerator
+    public class CategoryService
     {
         private readonly ICommand<EditCategoryCommand> _editCategoryCommand;
         private readonly ICommand<DeleteCategoryCommand> _deleteCategoryCommand;
         private readonly ICommand<CreateCategoryCommand> _createCategoryCommand;
         private readonly IQuery<IEnumerable<Category>> _getCategoriesQuery;
 
-        public CategoryModerator(
+        public CategoryService(
             ICommand<CreateCategoryCommand> createCategoryCommand,
             IQuery<IEnumerable<Category>> getCategoriesQuery,
             ICommand<DeleteCategoryCommand> deleteCategoryCommand,

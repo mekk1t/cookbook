@@ -25,7 +25,7 @@ namespace WebApplication
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API конвертации кулинарных мер объема", Version = "v1" });
             });
-            services.AddScoped<CategoryModerator>();
+            services.AddScoped<CategoryService>();
             services.AddScoped<ICommand<CreateCategoryCommand>, CreateCategoryCommandHandler>();
             services.AddScoped<ICommand<EditCategoryCommand>, EditCategoryCommandHandler>();
             services.AddScoped<ICommand<DeleteCategoryCommand>, DeleteCategoryCommandHandler>();
