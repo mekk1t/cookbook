@@ -9,15 +9,21 @@ namespace KitProjects.MasterChef.Kernel
 {
     public class CategoryModerator
     {
+        private readonly ICommand<EditCategoryCommand> _editCategoryCommand;
+        private readonly ICommand<DeleteCategoryCommand> _deleteCategoryCommand;
         private readonly ICommand<CreateCategoryCommand> _createCategoryCommand;
         private readonly IQuery<IEnumerable<Category>> _getCategoriesQuery;
 
         public CategoryModerator(
             ICommand<CreateCategoryCommand> createCategoryCommand,
-            IQuery<IEnumerable<Category>> getCategoriesQuery)
+            IQuery<IEnumerable<Category>> getCategoriesQuery,
+            ICommand<DeleteCategoryCommand> deleteCategoryCommand,
+            ICommand<EditCategoryCommand> editCategoryCommand)
         {
             _createCategoryCommand = createCategoryCommand;
             _getCategoriesQuery = getCategoriesQuery;
+            _deleteCategoryCommand = deleteCategoryCommand;
+            _editCategoryCommand = editCategoryCommand;
         }
 
         public void CreateCategory(CreateCategoryCommand command)
@@ -28,6 +34,10 @@ namespace KitProjects.MasterChef.Kernel
                 _createCategoryCommand.Execute(command);
             }
         }
+
+        public void EditCategory(EditCategoryCommand command) => _editCategoryCommand.Execute(command);
+
+        public void DeleteCategory(DeleteCategoryCommand command) => _deleteCategoryCommand.Execute(command);
 
         public IEnumerable<Category> GetCategories() => _getCategoriesQuery.Execute();
     }

@@ -2,6 +2,7 @@
 using KitProjects.MasterChef.Kernel.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands
 {
@@ -16,7 +17,7 @@ namespace KitProjects.MasterChef.Dal.Commands
 
         public IEnumerable<Category> Execute()
         {
-            return _dbContext.Categories.AsNoTracking();
+            return _dbContext.Categories.AsNoTracking().Select(c => new Category(c.Id, c.Name));
         }
     }
 }

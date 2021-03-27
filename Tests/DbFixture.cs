@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.Common;
+using System.Linq;
 
 namespace DatabaseTestsConnector
 {
@@ -45,6 +46,12 @@ namespace DatabaseTestsConnector
             using var dbContext = this.DbContext;
             dbContext.Categories.Add(category);
             dbContext.SaveChanges();
+        }
+
+        public Category FindCategory(string name)
+        {
+            using var dbContext = this.DbContext;
+            return dbContext.Categories.AsNoTracking().FirstOrDefault(r => r.Name == name);
         }
 
         public void Dispose() => Connection.Dispose();
