@@ -6,11 +6,13 @@ namespace KitProjects.MasterChef.WebApplication.Categories
 {
     public class GetCategoriesResponse
     {
-        public IEnumerable<string> CategoryNames { get; }
+        public IEnumerable<CategoryViewModel> Categories { get; }
 
         public GetCategoriesResponse(IEnumerable<Category> categories)
         {
-            this.CategoryNames = categories.Select(c => c.Name);
+            this.Categories = categories.Select(c =>
+                new CategoryViewModel(c.Id, c.Name, c.Ingredients.Select(i =>
+                    new CategoryIngredientViewModel(i.Id, i.Name))));
         }
     }
 }
