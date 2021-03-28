@@ -27,10 +27,10 @@ namespace KitProjects.MasterChef.Tests.Services
             _dbContexts.Add(dbContext);
             _sut = new IngredientService(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQuery(dbContext),
+                new GetIngredientsQueryHandler(dbContext),
                 new CategoryService(
                     new CreateCategoryCommandHandler(dbContext),
-                    new GetCategoriesQuery(dbContext),
+                    new GetCategoriesQueryHandler(dbContext),
                     new DeleteCategoryCommandHandler(dbContext),
                     new EditCategoryCommandHandler(dbContext)),
                 new EditIngredientCommandHandler(dbContext),

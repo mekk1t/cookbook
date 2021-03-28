@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands
 {
-    public class GetIngredientsQuery : IQuery<IEnumerable<Ingredient>>
+    public class GetIngredientsQueryHandler : IQuery<IEnumerable<Ingredient>>
     {
         private readonly AppDbContext _dbContext;
 
-        public GetIngredientsQuery(AppDbContext dbContext)
+        public GetIngredientsQueryHandler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

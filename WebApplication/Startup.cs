@@ -29,7 +29,7 @@ namespace WebApplication
             services.AddScoped<ICommand<CreateCategoryCommand>, CreateCategoryCommandHandler>();
             services.AddScoped<ICommand<EditCategoryCommand>, EditCategoryCommandHandler>();
             services.AddScoped<ICommand<DeleteCategoryCommand>, DeleteCategoryCommandHandler>();
-            services.AddScoped<IQuery<IEnumerable<Category>>, GetCategoriesQuery>();
+            services.AddScoped<IQuery<IEnumerable<Category>>, GetCategoriesQueryHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

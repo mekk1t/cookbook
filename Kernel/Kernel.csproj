@@ -6,8 +6,4 @@
     <RootNamespace>KitProjects.MasterChef.Kernel</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Queries\" />
-  </ItemGroup>
-
 </Project>

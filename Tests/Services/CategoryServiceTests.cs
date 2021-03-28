@@ -29,7 +29,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             };
             _sut = new CategoryService(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQuery(dbContext),
+                new GetCategoriesQueryHandler(dbContext),
                 new DeleteCategoryCommandHandler(dbContext),
                 new EditCategoryCommandHandler(dbContext));
         }

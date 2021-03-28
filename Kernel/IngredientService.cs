@@ -1,6 +1,7 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace KitProjects.MasterChef.Kernel
         private readonly ICommand<DeleteIngredientCommand> _deleteIngredientCommand;
         private readonly ICommand<EditIngredientCommand> _editIngredientCommand;
         private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
-        private readonly IQuery<IEnumerable<Ingredient>> _getIngredientsQuery;
+        private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
         private readonly CategoryService _categoryService;
 
         public IngredientService(
             ICommand<CreateIngredientCommand> createIngredientCommand,
-            IQuery<IEnumerable<Ingredient>> getIngredientsQuery, CategoryService categoryService,
+            IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery, CategoryService categoryService,
             ICommand<EditIngredientCommand> editIngredientCommand,
             ICommand<DeleteIngredientCommand> deleteIngredientCommand)
         {
@@ -30,7 +31,7 @@ namespace KitProjects.MasterChef.Kernel
 
         public void CreateIngredient(CreateIngredientCommand command)
         {
-            var ingredientNames = _getIngredientsQuery.Execute().Select(i => i.Name);
+            var ingredientNames = _getIngredientsQuery.Execute(new GetIngredientsQuery()).Select(i => i.Name);
             if (!ingredientNames.Contains(command.Name))
             {
                 var oldCategories = _categoryService.GetCategories().Select(c => c.Name);
@@ -45,7 +46,7 @@ namespace KitProjects.MasterChef.Kernel
             }
         }
 
-        public IEnumerable<Ingredient> GetIngredients() => _getIngredientsQuery.Execute();
+        public IEnumerable<Ingredient> GetIngredients(GetIngredientsQuery query) => _getIngredientsQuery.Execute(query);
         public void EditIngredient(EditIngredientCommand command) => _editIngredientCommand.Execute(command);
         public void DeleteIngredient(DeleteIngredientCommand command) => _deleteIngredientCommand.Execute(command);
     }
