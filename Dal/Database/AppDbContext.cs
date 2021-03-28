@@ -18,12 +18,5 @@ namespace KitProjects.MasterChef.Dal
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
-        public override int SaveChanges()
-        {
-            var result = base.SaveChanges();
-            this.ChangeTracker.Clear();
-            return result;
-        }
     }
 }
