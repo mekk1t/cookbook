@@ -21,9 +21,10 @@ namespace KitProjects.MasterChef.Dal.Commands
             if (query.WithRelationships)
                 return _dbContext.Categories.AsNoTracking()
                     .Include(c => c.Ingredients)
+                    .OrderBy(c => c.Name)
                     .Skip(query.Offset)
                     .Take(query.Limit)
-                    .Select(c => new Category(c.Id, c.Name))
+                    .Select(c => new Category(c.Id, c.Name, c.Ingredients.Select(i => new Ingredient(i.Id, i.Name))))
                     .ToList();
 
             return _dbContext.Categories.AsNoTracking()

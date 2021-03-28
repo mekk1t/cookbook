@@ -3,12 +3,7 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
@@ -26,9 +21,9 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
 
         [HttpGet("")]
         public GetIngredientsResponse GetIngredients(
-            [FromRoute] int limit = 25,
-            [FromRoute] int offset = 0,
-            [FromRoute] bool withRelationships = false)
+            [FromQuery] int limit = 25,
+            [FromQuery] int offset = 0,
+            [FromQuery] bool withRelationships = false)
         {
             var ingredients = _ingredientService.GetIngredients(new GetIngredientsQuery(withRelationships, limit, offset));
             return new GetIngredientsResponse(ingredients);

@@ -19,9 +19,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
 
         [HttpGet("")]
         public GetCategoriesResponse GetCategories(
-            [FromRoute] bool withRelationships = false,
-            [FromRoute] int offset = 0,
-            [FromRoute] int limit = 25)
+            [FromQuery] bool withRelationships = false,
+            [FromQuery] int offset = 0,
+            [FromQuery] int limit = 25)
         {
             var categories = _categoryService.GetCategories(new GetCategoriesQuery(withRelationships, limit, offset));
             return new GetCategoriesResponse(categories);

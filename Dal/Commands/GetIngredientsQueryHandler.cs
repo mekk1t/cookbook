@@ -23,11 +23,11 @@ namespace KitProjects.MasterChef.Dal.Commands
                 return _dbContext.Ingredients
                     .AsNoTracking()
                     .Include(i => i.Categories)
+                    .OrderBy(i => i.Name)
                     .Skip(query.Offset)
                     .Take(query.Limit)
                     .Select(i => new Ingredient(i.Id, i.Name, i.Categories
-                        .Select(c => new Category(c.Id, c.Name))
-                        .ToList()))
+                        .Select(c => new Category(c.Id, c.Name))))
                     .AsEnumerable();
 
             return _dbContext.Ingredients
