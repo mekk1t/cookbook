@@ -10,10 +10,12 @@ namespace KitProjects.MasterChef.Kernel.Models.Commands
         public string Description { get; }
         public IEnumerable<string> Categories { get; }
         public IEnumerable<RecipeIngredientDetails> IngredientsDetails { get; }
+        public IEnumerable<RecipeStep> Steps { get; }
 
         public CreateRecipeCommand(Guid id, string title,
             IEnumerable<string> categories,
             IEnumerable<RecipeIngredientDetails> ingredientsDetails,
+            IEnumerable<RecipeStep> steps,
             string description = "")
         {
             Id = id;
