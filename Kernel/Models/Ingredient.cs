@@ -14,6 +14,12 @@ namespace KitProjects.MasterChef.Kernel.Models
             Categories = categories;
         }
 
+        public Ingredient(Guid id, string name) : base(id)
+        {
+            Name = name;
+            Categories = new List<Category>();
+        }
+
         public Ingredient()
         {
         }

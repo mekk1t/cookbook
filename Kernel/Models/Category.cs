@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace KitProjects.MasterChef.Kernel.Models
 {
@@ -17,6 +18,13 @@ namespace KitProjects.MasterChef.Kernel.Models
             Name = name;
         }
 
-        public string Name { get; private set; }
+        public Category(Guid id, string name, IEnumerable<Ingredient> ingredients) : base(id)
+        {
+            Name = name;
+            Ingredients = ingredients;
+        }
+
+        public string Name { get; }
+        public IEnumerable<Ingredient> Ingredients { get; }
     }
 }
