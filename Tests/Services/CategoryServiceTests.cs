@@ -18,6 +18,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
     {
         private readonly DbFixture _fixture;
         private readonly CategoryService _sut;
+        private readonly IngredientService _ingredientService;
         private List<DbContext> _dbContexts;
 
         public CategoryServiceTests(DbFixture fixture)
@@ -33,6 +34,12 @@ namespace KitProjects.MasterChef.Tests.Moderators
                 new GetCategoriesQueryHandler(dbContext),
                 new DeleteCategoryCommandHandler(dbContext),
                 new EditCategoryCommandHandler(dbContext));
+            _ingredientService = new IngredientService(
+                new CreateIngredientCommandHandler(dbContext),
+                new GetIngredientsQueryHandler(dbContext),
+                _sut,
+                new EditIngredientCommandHandler(dbContext),
+                new DeleteIngredientCommandHandler(dbContext));
         }
 
         [Fact]
@@ -98,6 +105,31 @@ namespace KitProjects.MasterChef.Tests.Moderators
             category.Name.Should().Be(newName);
             using var dbContext = _fixture.DbContext;
             dbContext.Categories.Where(c => c.Name == oldName).Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Category_query_with_relationships_gets_all_ingredients_related()
+        {
+            var ingredientName = "вжыьлдмывмлд";
+            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            var query = new GetCategoriesQuery(withRelationships: true);
+
+            var result = _sut.GetCategories(query);
+
+            var categoriesWithIngredients = result.Where(r => r.Name == "Категория1" || r.Name == "Категория2");
+            categoriesWithIngredients.Select(c => c.Name).Should().Contain(new[] { "Категория1", "Категория2" });
+        }
+
+        [Fact]
+        public void Category_query_without_relationships_doesnt_have_related_ingredients()
+        {
+            var ingredientName = "as;lvmasd;lvmsd;lvm";
+            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            var query = new GetCategoriesQuery(withRelationships: false);
+
+            var result = _sut.GetCategories(query);
+
+            result.ToList().ForEach(category => category.Ingredients.Should().BeNullOrEmpty());
         }
 
         public void Dispose()
