@@ -1,4 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,21 +25,30 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         }
 
         [HttpGet("")]
-        public GetIngredientsResponse GetIngredients() => new(_ingredientService.GetIngredients());
+        public GetIngredientsResponse GetIngredients(
+            [FromRoute] int limit = 25,
+            [FromRoute] int offset = 0,
+            [FromRoute] bool withRelationships = false)
+        {
+            var ingredients = _ingredientService.GetIngredients(new GetIngredientsQuery(withRelationships, limit, offset));
+            return new GetIngredientsResponse(ingredients);
+        }
 
         [HttpGet("{ingredientName}")]
         public IActionResult GetIngredient([FromRoute] string ingredientName)
         {
-            var ingredient = _ingredientService.GetIngredients().FirstOrDefault(i => i.Name == ingredientName);
+            var ingredient = _ingredientService.GetIngredients(new GetIngredientsQuery(withRelationships: true)).FirstOrDefault(i => i.Name == ingredientName);
             if (ingredient == null)
                 return NotFound();
 
-            if (ingredient.Categories?.Count == 0)
-            {
-                var ingredientCategories =
-            }
+            return new JsonResult(new GetSingleIngredientResponse(ingredient.Id, ingredient.Name, ingredient.Categories));
+        }
 
-            return Content(JsonSerializer.Serialize(new GetSingleIngredientResponse(ingredient.Id, ingredient.Name)));
+        [HttpDelete("{ingredientId}")]
+        public IActionResult DeleteIngredient([FromRoute] Guid ingredientId)
+        {
+            _ingredientService.DeleteIngredient(new DeleteIngredientCommand(ingredientId));
+            return Ok();
         }
     }
 }

@@ -4,13 +4,13 @@ using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace WebApplication
@@ -23,13 +23,19 @@ namespace WebApplication
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API конвертации кулинарных мер объема", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API агрегатора кулинарных рецептов \"Мастер Шеф\".", Version = "v1" });
             });
             services.AddScoped<CategoryService>();
             services.AddScoped<ICommand<CreateCategoryCommand>, CreateCategoryCommandHandler>();
             services.AddScoped<ICommand<EditCategoryCommand>, EditCategoryCommandHandler>();
             services.AddScoped<ICommand<DeleteCategoryCommand>, DeleteCategoryCommandHandler>();
-            services.AddScoped<IQuery<IEnumerable<Category>>, GetCategoriesQueryHandler>();
+            services.AddScoped<IQuery<IEnumerable<Category>, GetCategoriesQuery>, GetCategoriesQueryHandler>();
+
+            services.AddScoped<IngredientService>();
+            services.AddScoped<ICommand<CreateIngredientCommand>, CreateIngredientCommandHandler>();
+            services.AddScoped<ICommand<EditIngredientCommand>, EditIngredientCommandHandler>();
+            services.AddScoped<ICommand<DeleteIngredientCommand>, DeleteIngredientCommandHandler>();
+            services.AddScoped<IQuery<IEnumerable<Ingredient>, GetIngredientsQuery>, GetIngredientsQueryHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

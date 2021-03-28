@@ -34,7 +34,7 @@ namespace KitProjects.MasterChef.Kernel
             var ingredientNames = _getIngredientsQuery.Execute(new GetIngredientsQuery()).Select(i => i.Name);
             if (!ingredientNames.Contains(command.Name))
             {
-                var oldCategories = _categoryService.GetCategories().Select(c => c.Name);
+                var oldCategories = _categoryService.GetCategories(new GetCategoriesQuery()).Select(c => c.Name);
                 foreach (var newCategory in command.Categories)
                 {
                     if (!oldCategories.Contains(newCategory))

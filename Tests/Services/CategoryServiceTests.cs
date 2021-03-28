@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             Action act = () => _sut.CreateCategory(new CreateCategoryCommand(categoryName));
 
             act.Should().NotThrow();
-            _sut.GetCategories().Where(r => r.Name == categoryName).Should().HaveCount(1);
+            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == categoryName).Should().HaveCount(1);
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             Action act = () => _sut.DeleteCategory(new DeleteCategoryCommand(categoryName));
 
             act.Should().NotThrow();
-            _sut.GetCategories().Where(r => r.Name == categoryName).Should().BeEmpty();
+            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == categoryName).Should().BeEmpty();
         }
 
         [Fact]
@@ -78,7 +79,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             Action act = () => _sut.DeleteCategory(new DeleteCategoryCommand(randomName));
 
             act.Should().NotThrow();
-            _sut.GetCategories().Where(r => r.Name == randomName).Should().BeEmpty();
+            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == randomName).Should().BeEmpty();
         }
 
         [Fact]

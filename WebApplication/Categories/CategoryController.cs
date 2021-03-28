@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -9,32 +10,35 @@ namespace KitProjects.MasterChef.WebApplication.Categories
     [Route("categories")]
     public class CategoryController : ControllerBase
     {
-        private readonly CategoryService _moderator;
+        private readonly CategoryService _categoryService;
 
         public CategoryController(CategoryService moderator)
         {
-            _moderator = moderator;
+            _categoryService = moderator;
         }
 
         [HttpGet("")]
-        public GetCategoriesResponse GetCategories()
+        public GetCategoriesResponse GetCategories(
+            [FromRoute] bool withRelationships = false,
+            [FromRoute] int offset = 0,
+            [FromRoute] int limit = 25)
         {
-            var categories = _moderator.GetCategories();
+            var categories = _categoryService.GetCategories(new GetCategoriesQuery(withRelationships, limit, offset));
             return new GetCategoriesResponse(categories);
         }
 
         [HttpGet("{categoryName}")]
         public GetCategoryResponse GetCategory([FromRoute] string categoryName)
         {
-            var category = _moderator.GetCategories().FirstOrDefault(c => c.Name == categoryName);
+            var category = _categoryService.GetCategories(new GetCategoriesQuery()).FirstOrDefault(c => c.Name == categoryName);
             return new GetCategoryResponse(category.Id, category.Name);
         }
 
         [HttpPost("")]
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest request)
         {
-            _moderator.CreateCategory(new CreateCategoryCommand(request.Name));
-            var createdCategory = _moderator.GetCategories().FirstOrDefault(c => c.Name == request.Name);
+            _categoryService.CreateCategory(new CreateCategoryCommand(request.Name));
+            var createdCategory = _categoryService.GetCategories(new GetCategoriesQuery()).FirstOrDefault(c => c.Name == request.Name);
 
             if (createdCategory == null)
             {
@@ -47,14 +51,14 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         [HttpDelete("{categoryName}")]
         public IActionResult DeleteCategory([FromRoute] string categoryName)
         {
-            _moderator.DeleteCategory(new DeleteCategoryCommand(categoryName));
+            _categoryService.DeleteCategory(new DeleteCategoryCommand(categoryName));
             return Ok();
         }
 
         [HttpPut("{categoryId}")]
         public IActionResult EditCategory([FromRoute] Guid categoryId, [FromBody] EditCategoryRequest request)
         {
-            _moderator.EditCategory(new EditCategoryCommand(categoryId, request.NewName));
+            _categoryService.EditCategory(new EditCategoryCommand(categoryId, request.NewName));
             return Ok();
         }
     }
