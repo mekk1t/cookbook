@@ -9,7 +9,7 @@ namespace KitProjects.MasterChef.Dal.Database.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public ICollection<DbRecipeCategory> RecipeCategoriesLink { get; set; }
-        public IEnumerable<DbRecipeIngredient> RecipeIngredientLink { get; set; }
+        public ICollection<DbRecipeIngredient> RecipeIngredientLink { get; set; }
         public ICollection<DbRecipeStep> Steps { get; set; }
     }
 }

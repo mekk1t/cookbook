@@ -23,6 +23,7 @@ namespace KitProjects.MasterChef.Kernel.Models.Commands
             Description = description;
             Categories = categories;
             IngredientsDetails = ingredientsDetails;
+            Steps = steps;
         }
     }
 }

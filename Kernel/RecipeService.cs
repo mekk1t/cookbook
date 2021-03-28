@@ -12,9 +12,13 @@ namespace KitProjects.MasterChef.Kernel
         private readonly CategoryService _categoryService;
         private readonly IngredientService _ingredientService;
 
-        public RecipeService(ICommand<CreateRecipeCommand> createRecipeCommand)
+        public RecipeService(ICommand<CreateRecipeCommand> createRecipeCommand,
+            CategoryService categoryService,
+            IngredientService ingredientService)
         {
             _createRecipeCommand = createRecipeCommand;
+            _categoryService = categoryService;
+            _ingredientService = ingredientService;
         }
 
         public void CreateRecipe(CreateRecipeCommand command)

@@ -46,10 +46,10 @@ namespace KitProjects.MasterChef.Dal.Commands
                     StepIngredientsLink = step.IngredientsDetails.Select(i => new DbRecipeStepIngredient
                     {
                         DbRecipeStepId = step.Id,
-                        DbIngredientId = i.Ingredient.Id,
+                        DbIngredientId = ingredients.First(ingredient => ingredient.Name == i.IngredientName).Id,
                         Amount = i.Amount,
                         Measure = i.Measure
-                    })
+                    }).ToList()
                 }).ToList()
             };
 
