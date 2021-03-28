@@ -7,7 +7,8 @@ namespace KitProjects.MasterChef.Dal.Database.Models
     {
         public Guid Id { get; private set; }
         public string Name { get; internal set; }
-        public ICollection<DbIngredient> Ingredients { get; private set; }
+        public ICollection<DbIngredient> Ingredients { get; set; }
+        public ICollection<DbRecipe> Recipes { get; set; }
 
         public DbCategory(Guid id, string name)
         {
