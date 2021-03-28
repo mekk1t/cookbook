@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using System.Collections.Generic;
@@ -11,14 +12,17 @@ namespace KitProjects.MasterChef.Kernel
         private readonly ICommand<CreateRecipeCommand> _createRecipeCommand;
         private readonly CategoryService _categoryService;
         private readonly IngredientService _ingredientService;
+        private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipesQuery;
 
         public RecipeService(ICommand<CreateRecipeCommand> createRecipeCommand,
             CategoryService categoryService,
-            IngredientService ingredientService)
+            IngredientService ingredientService,
+            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipesQuery)
         {
             _createRecipeCommand = createRecipeCommand;
             _categoryService = categoryService;
             _ingredientService = ingredientService;
+            _getRecipesQuery = getRecipesQuery;
         }
 
         public void CreateRecipe(CreateRecipeCommand command)
@@ -51,5 +55,7 @@ namespace KitProjects.MasterChef.Kernel
 
             _createRecipeCommand.Execute(command);
         }
+
+        public IEnumerable<Recipe> GetRecipes(GetRecipesQuery query) => _getRecipesQuery.Execute(query);
     }
 }
