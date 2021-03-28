@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Dal.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace KitProjects.MasterChef.Dal
 {
@@ -11,6 +12,11 @@ namespace KitProjects.MasterChef.Dal
         public AppDbContext(DbContextOptions options) : base(options)
         {
 
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         public override int SaveChanges()
