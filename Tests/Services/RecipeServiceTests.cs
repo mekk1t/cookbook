@@ -42,7 +42,7 @@ namespace KitProjects.MasterChef.Tests.Services
                 categoryService,
                 new EditIngredientCommandHandler(dbContext),
                 new DeleteIngredientCommandHandler(dbContext));
-            _sut = new RecipeService(new CreateRecipeCommandHandler(dbContext), categoryService, ingredientService);
+            _sut = new RecipeService(new CreateRecipeCommandHandler(dbContext), categoryService, ingredientService, new GetRecipesQueryHandler(dbContext));
         }
 
         [Fact]

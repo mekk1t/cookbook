@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,6 +19,13 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         public RecipeController(RecipeService recipeService)
         {
             _recipeService = recipeService;
+        }
+
+        [HttpPost("")]
+        public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
+        {
+            _recipeService.CreateRecipe(new CreateRecipeCommand(Guid.NewGuid(), request.Title, request.Categories, request.IngredientDetails, request.Steps));
+            return Ok();
         }
 
         [HttpGet("")]
