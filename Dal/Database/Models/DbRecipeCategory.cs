@@ -1,4 +1,5 @@
-﻿using System;
+﻿ using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace KitProjects.MasterChef.Dal.Database.Models
 {
@@ -6,7 +7,7 @@ namespace KitProjects.MasterChef.Dal.Database.Models
     {
         public Guid DbRecipeId { get; set; }
         public Guid DbCategoryId { get; set; }
-        public DbRecipe Recipe { get; set; }
-        public DbCategory Category { get; set; }
+        public DbRecipe DbRecipe { get; set; }
+        public DbCategory DbCategory { get; set; }
     }
 }
