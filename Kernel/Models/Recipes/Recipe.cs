@@ -3,9 +3,16 @@ using System.Collections.Generic;
 
 namespace KitProjects.MasterChef.Kernel.Models
 {
-    public class Recipe
+    public class Recipe : Entity
     {
-        public Guid Id { get; set; }
+        public Recipe()
+        {
+        }
+
+        public Recipe(Guid id) : base(id)
+        {
+        }
+
         public string Title { get; set; }
         public string Description { get; set; }
         public ICollection<Category> Categories { get; set; }
