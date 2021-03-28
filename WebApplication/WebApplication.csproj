@@ -4,12 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>44fbb569-cbb7-475a-be82-b123da19454c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <AssemblyName>KitProjects.WebCook.WebApplication</AssemblyName>
-    <RootNamespace>KitProjects.WebCook.WebApplication</RootNamespace>
+    <AssemblyName>KitProjects.MasterChef.WebApplication</AssemblyName>
+    <RootNamespace>KitProjects.MasterChef.WebApplication</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dal\Dal.csproj" />
+    <ProjectReference Include="..\Kernel\Kernel.csproj" />
   </ItemGroup>
 
 </Project>

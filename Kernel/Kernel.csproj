@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>KitProjects.MasterChef.Kernel</AssemblyName>
+    <RootNamespace>KitProjects.MasterChef.Kernel</RootNamespace>
+  </PropertyGroup>
+
+</Project>
