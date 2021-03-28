@@ -2,11 +2,7 @@
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Dal.Commands
 {
@@ -28,15 +24,37 @@ namespace KitProjects.MasterChef.Dal.Commands
                 Id = command.Id,
                 Title = command.Title,
                 Description = command.Description,
-                //Categories = categories.ToList(),
+                RecipeCategoriesLink = categories.Select(c => new DbRecipeCategory
+                {
+                    DbRecipeId = command.Id,
+                    DbCategoryId = c.Id
+                }).ToList(),
+                RecipeIngredientLink = ingredients.Select(c => new DbRecipeIngredient
+                {
+                    DbRecipeId = command.Id,
+                    DbIngredientId = c.Id,
+                    IngredientMeasure = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Measure,
+                    IngredientxAmount = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Amount,
+                    Notes = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Notes
+                }).ToList(),
                 Steps = command.Steps.Select(step => new DbRecipeStep
                 {
                     Id = step.Id,
                     Description = step.Description,
                     Image = step.Image,
                     Index = step.Index,
+                    StepIngredientsLink = step.IngredientsDetails.Select(i => new DbRecipeStepIngredient
+                    {
+                        DbRecipeStepId = step.Id,
+                        DbIngredientId = i.Ingredient.Id,
+                        Amount = i.Amount,
+                        Measure = i.Measure
+                    })
                 }).ToList()
             };
+
+            _dbContext.Recipes.Add(newRecipe);
+            _dbContext.SaveChanges();
         }
     }
 }

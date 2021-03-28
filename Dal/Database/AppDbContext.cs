@@ -8,6 +8,7 @@ namespace KitProjects.MasterChef.Dal
     {
         public DbSet<DbCategory> Categories { get; set; }
         public DbSet<DbIngredient> Ingredients { get; set; }
+        public DbSet<DbRecipe> Recipes { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
