@@ -50,5 +50,30 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             _ingredientService.DeleteIngredient(new DeleteIngredientCommand(ingredientId));
             return Ok();
         }
+
+        [HttpPut("{ingredientId}")]
+        public IActionResult EditIngredient([FromRoute] Guid ingredientId, [FromBody] EditIngredientRequest request)
+        {
+            _ingredientService.EditIngredient(new EditIngredientCommand(ingredientId, request.NewName));
+            return Ok();
+        }
+
+        [HttpPost("")]
+        public IActionResult CreateIngredient([FromBody] CreateIngredientRequest request)
+        {
+            _ingredientService.CreateIngredient(new CreateIngredientCommand(request.Name, request.Categories));
+
+            var createdIngredient = _ingredientService.GetIngredients(new GetIngredientsQuery()).FirstOrDefault(i => i.Name == request.Name);
+            if (createdIngredient == null)
+                return Conflict("Не удалось создать ингредиент");
+
+            return Created(Url.Action(nameof(GetIngredient), new { ingredientName = createdIngredient.Name }),
+                new
+                {
+                    Url = Url.ActionLink(nameof(GetIngredient), "Ingredient", new { ingredientName = createdIngredient.Name }),
+                    Id = createdIngredient.Id
+                });
+
+        }
     }
 }
