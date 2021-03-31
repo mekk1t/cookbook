@@ -29,6 +29,16 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
 
+        [HttpPut("{recipeId}")]
+        public IActionResult EditRecipe(
+            [FromRoute] Guid recipeId,
+            [FromBody] EditRecipeRequest request,
+            [FromServices] ICommand<EditRecipeCommand> command)
+        {
+            command.Execute(new EditRecipeCommand(recipeId, request.NewTitle, request.NewDescription));
+            return Ok();
+        }
+
         [HttpDelete("{recipeId}")]
         public IActionResult DeleteRecipe([FromRoute] Guid recipeId, [FromServices] ICommand<DeleteRecipeCommand> command)
         {
