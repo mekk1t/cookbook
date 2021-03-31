@@ -2,6 +2,7 @@
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
@@ -10,10 +11,7 @@ using KitProjects.MasterChef.Kernel.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Services
@@ -141,6 +139,71 @@ namespace KitProjects.MasterChef.Tests.Services
             result.RecipeIngredientLink.Select(link => link.DbIngredient).Select(i => i.Name).Should().Contain(ingredientName);
         }
 
+        [Fact]
+        public void Deleting_recipe_deletes_its_stages_but_not_anything_else()
+        {
+            using var dbContext = _fixture.DbContext;
+            var recipeId = Guid.NewGuid();
+            var categoryId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var ingredientId = Guid.NewGuid();
+            var categoryName1 = Guid.NewGuid().ToString();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedCategory(new Category(categoryId, categoryName1));
+            _fixture.SeedIngredient(new Ingredient(ingredientId, ingredientName));
+            var seedRecipe = new DbRecipe
+            {
+                Id = recipeId,
+                Description = "Description",
+                Title = "Title",
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        Description = "",
+                        Index = 1,
+                        Image = "",
+                        StepIngredientsLink = new List<DbRecipeStepIngredient>
+                        {
+                            new DbRecipeStepIngredient
+                            {
+                                DbRecipeStepId = stepId,
+                                DbIngredientId = ingredientId
+                            }
+                        }
+                    }
+                },
+                RecipeCategoriesLink = new List<DbRecipeCategory>
+                {
+                    new DbRecipeCategory
+                    {
+                        DbRecipeId = recipeId,
+                        DbCategoryId = categoryId
+                    }
+                },
+                RecipeIngredientLink = new List<DbRecipeIngredient>
+                {
+                    new DbRecipeIngredient
+                    {
+                        DbRecipeId = recipeId,
+                        DbIngredientId = ingredientId,
+                        IngredientMeasure = Measures.None,
+                        IngredientxAmount = 1
+                    }
+                }
+            };
+            _fixture.SeedRecipe(seedRecipe);
+            var sut = new DeleteRecipeCommandHandler(dbContext);
+
+            Action act = () => sut.Execute(new DeleteRecipeCommand(recipeId));
+
+            act.Should().NotThrow();
+            var deletedRecipe = dbContext.Recipes.FirstOrDefault(r => r.Id == recipeId).Should().BeNull();
+            var deletedStep = dbContext.Find(typeof(DbRecipeStep), stepId).Should().BeNull();
+            var oldIngredient = dbContext.Ingredients.First(r => r.Id == ingredientId).Should().NotBeNull();
+            var oldCategory = dbContext.Categories.First(c => c.Id == categoryId).Should().NotBeNull();
+        }
 
         public void Dispose()
         {

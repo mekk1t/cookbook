@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -27,5 +28,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
 
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
+
+        [HttpDelete("{recipeId}")]
+        public IActionResult DeleteRecipe([FromRoute] Guid recipeId, [FromServices] ICommand<DeleteRecipeCommand> command)
+        {
+            command.Execute(new DeleteRecipeCommand(recipeId));
+            return Ok();
+        }
     }
 }
