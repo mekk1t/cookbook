@@ -11,7 +11,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public GetCategoriesResponse(IEnumerable<Category> categories)
         {
             this.Categories = categories.Select(c =>
-                new CategoryViewModel(c.Id, c.Name, c.Ingredients.Select(i =>
+                new CategoryViewModel(c.Id, c.Name, c.Ingredients?.Select(i =>
                     new CategoryIngredientViewModel(i.Id, i.Name))));
         }
     }

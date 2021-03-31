@@ -36,6 +36,12 @@ namespace WebApplication
             services.AddScoped<ICommand<EditIngredientCommand>, EditIngredientCommandHandler>();
             services.AddScoped<ICommand<DeleteIngredientCommand>, DeleteIngredientCommandHandler>();
             services.AddScoped<IQuery<IEnumerable<Ingredient>, GetIngredientsQuery>, GetIngredientsQueryHandler>();
+
+            services.AddScoped<RecipeService>();
+            services.AddScoped<ICommand<CreateRecipeCommand>, CreateRecipeCommandHandler>();
+            services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
+            services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
+            services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

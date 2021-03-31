@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Dal.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace KitProjects.MasterChef.Dal
 {
@@ -7,17 +8,16 @@ namespace KitProjects.MasterChef.Dal
     {
         public DbSet<DbCategory> Categories { get; set; }
         public DbSet<DbIngredient> Ingredients { get; set; }
+        public DbSet<DbRecipe> Recipes { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        public override int SaveChanges()
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var result = base.SaveChanges();
-            this.ChangeTracker.Clear();
-            return result;
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

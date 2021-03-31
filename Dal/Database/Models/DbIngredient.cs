@@ -8,6 +8,8 @@ namespace KitProjects.MasterChef.Dal.Database.Models
         public Guid Id { get; private set; }
         public string Name { get; internal set; }
         public ICollection<DbCategory> Categories { get; internal set; }
+        public ICollection<DbRecipeIngredient> RecipeIngredientsLink { get; set; }
+        public ICollection<DbRecipeStepIngredient> StepIngredientsLink { get; private set; }
 
         public DbIngredient(Guid id, string name, ICollection<DbCategory> categories) : this(id, name)
         {

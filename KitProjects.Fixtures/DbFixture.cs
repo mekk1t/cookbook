@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Kernel.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 
@@ -82,6 +83,13 @@ namespace KitProjects.Fixtures
                 return new Ingredient(dbIngredient.Id, dbIngredient.Name,
                     dbIngredient.Categories.Select(c => new Category(c.Id, c.Name)).ToList());
             }
+        }
+
+        public void SeedRecipe(DbRecipe recipe)
+        {
+            using var dbContext = this.DbContext;
+            dbContext.Recipes.Add(recipe);
+            dbContext.SaveChanges();
         }
 
         public void Dispose() => Connection.Dispose();
