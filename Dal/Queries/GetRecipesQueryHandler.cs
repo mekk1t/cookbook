@@ -21,33 +21,43 @@ namespace KitProjects.MasterChef.Dal.Commands
         {
             if (query.WithRelationships)
             {
-                return _dbContext.Recipes.AsNoTracking()
+                var recipes = _dbContext.Recipes.AsNoTracking()
                     .Include(r => r.RecipeCategoriesLink).ThenInclude(c => c.DbCategory)
                     .Include(r => r.Steps).ThenInclude(s => s.StepIngredientsLink).ThenInclude(si => si.DbIngredient)
                     .Include(r => r.RecipeIngredientLink).ThenInclude(ri => ri.DbIngredient)
-                    .Select(r => new Recipe(r.Id)
-                    {
-                        Title = r.Title,
-                        Description = r.Description,
-                        Categories = r.RecipeCategoriesLink.Select(rc => new Category(rc.DbCategoryId, rc.DbCategory.Name)).ToList(),
-                        Ingredients = r.RecipeIngredientLink.Select(ri => new Ingredient(ri.DbIngredientId, ri.DbIngredient.Name)).ToList(),
-                        Steps = r.Steps.Select(s => new RecipeStep(s.Id)
-                        {
-                            Index = s.Index,
-                            Description = s.Description,
-                            Image = s.Image,
-                            IngredientsDetails = s.StepIngredientsLink.Select(si => new StepIngredientDetails
-                            {
-                                Amount = si.Amount,
-                                IngredientName = si.DbIngredient.Name,
-                                Measure = si.Measure
-                            })
-                        }).ToList()
-                    })
                     .OrderBy(r => r.Title)
                     .Skip(query.Offset)
                     .Take(query.Limit)
                     .AsEnumerable();
+                var result = recipes.Select(r =>
+                {
+                    var recipe = new Recipe(r.Id)
+                    {
+                        Title = r.Title,
+                        Description = r.Description
+                    };
+
+                    recipe.Categories.AddRange(r.RecipeCategoriesLink.Select(rc => new Category(rc.DbCategoryId, rc.DbCategory.Name)));
+                    recipe.Ingredients.AddRange(r.RecipeIngredientLink.Select(ri => new Ingredient(ri.DbIngredientId, ri.DbIngredient.Name)));
+                    recipe.Steps.AddRange(r.Steps.Select(s =>
+                    {
+                        var step = new RecipeStep(s.Id)
+                        {
+                            Index = s.Index,
+                            Description = s.Description,
+                            Image = s.Image
+                        };
+                        step.IngredientsDetails.AddRange(s.StepIngredientsLink.Select(si => new StepIngredientDetails
+                        {
+                            Amount = si.Amount,
+                            IngredientName = si.DbIngredient.Name,
+                            Measure = si.Measure
+                        }));
+                        return step;
+                    }));
+                    return recipe;
+                });
+                return result;
             }
 
             return _dbContext.Recipes.AsNoTracking()

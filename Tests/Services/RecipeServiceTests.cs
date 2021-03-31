@@ -63,7 +63,7 @@ namespace KitProjects.MasterChef.Tests.Services
                     {
                         Index = 1,
                         Description = "Делай давай",
-                        IngredientsDetails = new List<StepIngredientDetails>
+                        IngredientsDetails =
                         {
                             new StepIngredientDetails
                             {
@@ -114,7 +114,7 @@ namespace KitProjects.MasterChef.Tests.Services
                     {
                         Index = 1,
                         Description = "Делай давай",
-                        IngredientsDetails = new List<StepIngredientDetails>
+                        IngredientsDetails =
                         {
                             new StepIngredientDetails
                             {

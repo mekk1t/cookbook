@@ -80,8 +80,9 @@ namespace KitProjects.Fixtures
             }
             else
             {
-                return new Ingredient(dbIngredient.Id, dbIngredient.Name,
-                    dbIngredient.Categories.Select(c => new Category(c.Id, c.Name)).ToList());
+                var ingredient = new Ingredient(dbIngredient.Id, dbIngredient.Name);
+                ingredient.Categories.AddRange(dbIngredient.Categories.Select(c => new Category(c.Id, c.Name)));
+                return ingredient;
             }
         }
 

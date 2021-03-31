@@ -4,8 +4,8 @@ namespace KitProjects.MasterChef.Kernel.Models.Recipes
 {
     public class StepIngredientDetails
     {
-        public string IngredientName { get; set; }
-        public decimal Amount { get; set; }
-        public Measures Measure { get; set; }
+        public string IngredientName { get; init; }
+        public decimal Amount { get; init; }
+        public Measures Measure { get; init; }
     }
 }

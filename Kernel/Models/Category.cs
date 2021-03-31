@@ -5,26 +5,15 @@ namespace KitProjects.MasterChef.Kernel.Models
 {
     public class Category : Entity
     {
-        public Category()
-        {
-        }
-
-        public Category(Guid id) : base(id)
-        {
-        }
+        public string Name { get; }
+        public List<Ingredient> Ingredients { get; }
+        public List<Recipe> Recipes { get; }
 
         public Category(Guid id, string name) : base(id)
         {
             Name = name;
+            Ingredients = new List<Ingredient>();
+            Recipes = new List<Recipe>();
         }
-
-        public Category(Guid id, string name, IEnumerable<Ingredient> ingredients) : base(id)
-        {
-            Name = name;
-            Ingredients = ingredients;
-        }
-
-        public string Name { get; }
-        public IEnumerable<Ingredient> Ingredients { get; }
     }
 }
