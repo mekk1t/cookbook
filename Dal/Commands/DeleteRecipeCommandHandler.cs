@@ -19,9 +19,10 @@ namespace KitProjects.MasterChef.Dal.Commands
             var oldRecipe = _dbContext.Recipes
                 .Include(r => r.Steps)
                 .FirstOrDefault(r => r.Id == command.RecipeId);
-            var steps = oldRecipe.Steps;
             if (oldRecipe == null)
                 return;
+
+            var steps = oldRecipe.Steps;
             _dbContext.Recipes.Remove(oldRecipe);
             _dbContext.SaveChanges();
             _dbContext.RemoveRange(steps);
