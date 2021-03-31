@@ -40,6 +40,8 @@ namespace WebApplication
             services.AddScoped<RecipeService>();
             services.AddScoped<ICommand<CreateRecipeCommand>, CreateRecipeCommandHandler>();
             services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
+            services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
+            services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
