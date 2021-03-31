@@ -13,7 +13,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         {
             this.Categories = categories.Select(c => new CategoryViewModel(
                 c.Id, c.Name,
-                c.Ingredients.Select(i => new CategoryIngredientViewModel(i.Id, i.Name))
+                c.Ingredients.Select(i => new CategoryIngredientViewModel(i.Id, i.Name)),
                 c.Recipes.Select(r => new RecipeViewModel(r.Id, r.Title, r.Description))));
         }
     }

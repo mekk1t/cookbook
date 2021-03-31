@@ -13,7 +13,7 @@ namespace KitProjects.MasterChef.Kernel.Models
 
         public int Index { get; init; }
         public string Description { get; init; }
-        public string Image { get; set; }
-        public IEnumerable<StepIngredientDetails> IngredientsDetails { get; set; }
+        public string Image { get; init; }
+        public List<StepIngredientDetails> IngredientsDetails { get; }
     }
 }

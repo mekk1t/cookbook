@@ -7,12 +7,15 @@ namespace KitProjects.MasterChef.Kernel.Models
     {
         public Recipe(Guid id) : base(id)
         {
+            Categories = new List<Category>();
+            Ingredients = new List<Ingredient>();
+            Steps = new List<RecipeStep>();
         }
 
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public ICollection<Category> Categories { get; set; }
-        public ICollection<Ingredient> Ingredients { get; set; }
-        public ICollection<RecipeStep> Steps { get; set; }
+        public string Title { get; init; }
+        public string Description { get; init; }
+        public List<Category> Categories { get; }
+        public List<Ingredient> Ingredients { get; }
+        public List<RecipeStep> Steps { get; }
     }
 }
