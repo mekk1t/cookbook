@@ -31,6 +31,12 @@ namespace KitProjects.MasterChef.Dal.Commands
                 {
                     var category = new Category(c.Id, c.Name);
                     category.Ingredients.AddRange(c.Ingredients.Select(i => new Ingredient(i.Id, i.Name)));
+                    category.Recipes.AddRange(c.RecipesCategoriesLink.Select(link => link.DbRecipe)
+                        .Select(c => new Recipe(c.Id)
+                        {
+                            Title = c.Title,
+                            Description = c.Description
+                        }));
                     return category;
                 });
 
