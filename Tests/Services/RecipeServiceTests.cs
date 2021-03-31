@@ -90,6 +90,56 @@ namespace KitProjects.MasterChef.Tests.Services
             result.RecipeIngredientLink.Should().HaveCount(2);
         }
 
+        [Fact]
+        public void New_recipe_is_created_with_existing_ingredients_and_categories()
+        {
+            var recipeId = Guid.NewGuid();
+            var categoryName = Guid.NewGuid().ToString();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
+            _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName + "1"));
+            _fixture.SeedIngredient(new Ingredient(Guid.NewGuid(), ingredientName));
+            _fixture.SeedIngredient(new Ingredient(Guid.NewGuid(), ingredientName + "1"));
+
+            Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
+                recipeId,
+                "Тестовый",
+                new[] { categoryName, categoryName + "1" },
+                new List<RecipeIngredientDetails>
+                {
+                    new RecipeIngredientDetails(ingredientName, Measures.Milliliters, 14, "Сыпь не жалей!"),
+                    new RecipeIngredientDetails(ingredientName + "1", Measures.Gramms, 15, "Горький. > 65% какао.")
+                },
+                new List<RecipeStep>
+                {
+                    new RecipeStep(Guid.NewGuid())
+                    {
+                        Index = 1,
+                        Description = "Делай давай",
+                        IngredientsDetails = new List<StepIngredientDetails>
+                        {
+                            new StepIngredientDetails
+                            {
+                                IngredientName = ingredientName,
+                                Amount = 20,
+                                Measure = Measures.Gramms
+                            }
+                        }
+                    }
+                }));
+
+            act.Should().NotThrow();
+            var result = _dbContexts.First().Recipes
+                .AsNoTracking()
+                .Include(r => r.RecipeCategoriesLink).ThenInclude(rc => rc.DbCategory)
+                .Include(r => r.RecipeIngredientLink).ThenInclude(ri => ri.DbIngredient)
+                .Include(r => r.Steps).ThenInclude(s => s.StepIngredientsLink)
+                .First(r => r.Id == recipeId);
+            result.RecipeCategoriesLink.Should().HaveCount(2);
+            result.RecipeIngredientLink.Should().HaveCount(2);
+            result.RecipeCategoriesLink.Select(link => link.DbCategory).Select(c => c.Name).Should().Contain(categoryName);
+            result.RecipeIngredientLink.Select(link => link.DbIngredient).Select(i => i.Name).Should().Contain(ingredientName);
+        }
 
 
         public void Dispose()

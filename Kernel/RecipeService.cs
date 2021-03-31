@@ -14,7 +14,8 @@ namespace KitProjects.MasterChef.Kernel
         private readonly IngredientService _ingredientService;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipesQuery;
 
-        public RecipeService(ICommand<CreateRecipeCommand> createRecipeCommand,
+        public RecipeService(
+            ICommand<CreateRecipeCommand> createRecipeCommand,
             CategoryService categoryService,
             IngredientService ingredientService,
             IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipesQuery)
