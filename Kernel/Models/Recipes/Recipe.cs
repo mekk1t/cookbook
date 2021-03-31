@@ -5,10 +5,6 @@ namespace KitProjects.MasterChef.Kernel.Models
 {
     public class Recipe : Entity
     {
-        public Recipe()
-        {
-        }
-
         public Recipe(Guid id) : base(id)
         {
         }

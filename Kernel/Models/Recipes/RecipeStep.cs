@@ -6,16 +6,13 @@ namespace KitProjects.MasterChef.Kernel.Models
 {
     public class RecipeStep : Entity
     {
-        public RecipeStep()
-        {
-        }
-
         public RecipeStep(Guid id) : base(id)
         {
+            IngredientsDetails = new List<StepIngredientDetails>();
         }
 
-        public int Index { get; set; }
-        public string Description { get; set; }
+        public int Index { get; init; }
+        public string Description { get; init; }
         public string Image { get; set; }
         public IEnumerable<StepIngredientDetails> IngredientsDetails { get; set; }
     }
