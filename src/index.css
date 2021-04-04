@@ -74,11 +74,14 @@ nav a {
 }
 
 .recipe-preview {
+  display: flex;
+  flex-direction: column;
   background: url(https://via.placeholder.com/380x90.png?text=recipe_preview);
 }
 
 .recipe-preview img {
   margin-left: auto;
+  padding: 3px;
 }
 
 .types {
