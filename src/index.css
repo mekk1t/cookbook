@@ -92,7 +92,9 @@ nav a {
 
 .recipe-generator {
   padding: 15px;
-  border: 1px solid black;
+  color: white;
+  border-radius: 10px;
+  background-color: #941C2F;
   margin-bottom: 15px;
   margin-right: 15px;
 }
