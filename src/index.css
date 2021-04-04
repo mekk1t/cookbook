@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+ul {
+  list-style: none;
+}
+
 nav {
   display: grid;
   grid-template-columns: 45px 1fr;
@@ -13,7 +17,6 @@ nav {
 
 nav ul {
   display: flex;
-  list-style: none;
   justify-content: space-between;
   margin: 0;
   padding: 0;
