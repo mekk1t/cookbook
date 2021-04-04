@@ -8,6 +8,7 @@ nav {
   grid-template-columns: 45px 1fr;
   column-gap: 75px;
   align-items: center;
+  background-color: teal;
 }
 
 ul {
@@ -17,8 +18,7 @@ ul {
   margin: 0;
   padding: 0;
   margin-top: 15px;
-  margin-right: 30px;
-  background-color: teal;
+  margin-right: 30px;  
 }
 
 img {
@@ -34,7 +34,7 @@ a {
 }
 
 .not-ready {
-  color: gray;
+  color: #A99985;
   border-style: dashed;
   border-width: 3px;
 }
