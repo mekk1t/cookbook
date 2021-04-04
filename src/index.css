@@ -41,6 +41,7 @@ nav a {
 
 .popular h2 {
   background-color: #DAD2BC;
+  text-align: center;
 }
 
 .content-box {
@@ -56,10 +57,12 @@ nav a {
 
 .footer-links {
   display: flex;
+  justify-content: space-between;
 }
 
 .random-recipe {
   display: flex;
+  align-items: center;
   flex-direction: column;
   background-color: #A99985;
 }
