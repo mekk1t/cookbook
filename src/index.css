@@ -39,6 +39,10 @@ nav a {
   border-width: 3px;
 }
 
+.popular h2 {
+  background-color: #DAD2BC;
+}
+
 .content-box {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -47,6 +51,7 @@ nav a {
 .previews {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: #941C2F;
 }
 
 .footer-links {
@@ -56,4 +61,5 @@ nav a {
 .random-recipe {
   display: flex;
   flex-direction: column;
+  background-color: #A99985;
 }
