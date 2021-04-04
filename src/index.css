@@ -4,6 +4,8 @@ body {
 }
 
 ul {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -13,19 +15,20 @@ nav {
   column-gap: 75px;
   align-items: center;
   background-color: teal;
+  border: 2px solid black;
 }
 
 nav ul {
   display: flex;
   justify-content: space-between;
-  margin: 0;
-  padding: 0;
   margin-top: 15px;
   margin-right: 30px;  
 }
 
-nav img {
+.logo {
+  padding: 5px;
   margin-left: 30px;
+  border: 1px solid black;
 }
 
 nav a {
@@ -63,9 +66,17 @@ nav a {
   justify-content: space-between;
 }
 
+.footer-links li {
+  color: #03191E;
+}
+
 .random-recipe {
   display: flex;
   align-items: center;
   flex-direction: column;
   background-color: #A99985;
+}
+
+.footer-links li:last-child {
+  margin-right: 40px;
 }
