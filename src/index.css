@@ -76,6 +76,10 @@ nav a {
   margin-right: 20px;
 }
 
+.random-recipe-actions {
+  display: flex;
+}
+
 .random-recipe-preview {
   margin-bottom: 15px;
 }
@@ -90,6 +94,10 @@ nav a {
   padding: 15px;
   border: 1px solid black;
   margin-bottom: 15px;
+}
+
+.recipe-generator:hover {
+  cursor: pointer;
 }
 
 /* 
