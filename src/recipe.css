@@ -49,5 +49,21 @@
     text-align: center;
 }
 
-.recipe-description p {
+.similar h2 {
+    text-align: center;
+}
+
+.similar-recipes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.similar-recipes h3 {
+    text-align: center;
+}
+
+.similar-recipes img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
