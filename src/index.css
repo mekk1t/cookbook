@@ -45,9 +45,15 @@ nav a {
   border-width: 3px;
 }
 
+.popular {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 .popular h2 {
   background-color: #DAD2BC;
   text-align: center;
+  padding: 10px;
 }
 
 .content-box {
@@ -61,6 +67,23 @@ nav a {
   background-color: #941C2F;
 }
 
+.random-recipe {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #A99985;
+  margin-top: 25px;
+  margin-right: 20px;
+}
+
+/* 
+  Стилизация подвала
+*/
+
+.page-footer{
+  margin-top: 50px;
+}
+
 .footer-links {
   display: flex;
   justify-content: space-between;
@@ -68,17 +91,6 @@ nav a {
 
 .footer-links li {
   color: #03191E;
-}
-
-footer {
-  margin-top: 40px;
-}
-
-.random-recipe {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: #A99985;
 }
 
 .footer-links li:last-child{
