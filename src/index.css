@@ -67,6 +67,34 @@ nav a {
   background-color: #941C2F;
 }
 
+.previews > li {
+  background-color: gray;
+  border: 1px solid black;
+  margin: 10px;
+}
+
+.recipe-preview {
+  background: url(https://via.placeholder.com/380x90.png?text=recipe_preview);
+}
+
+.recipe-preview img {
+  margin-left: auto;
+}
+
+.types {
+  display: flex;
+  justify-content: space-around;
+}
+
+.types > li {
+  border: 1px solid white;  
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  color: yellow;  
+}
+
+
 .random-recipe {
   display: flex;
   align-items: center;
