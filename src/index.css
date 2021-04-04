@@ -70,6 +70,10 @@ nav a {
   color: #03191E;
 }
 
+footer {
+  margin-top: 40px;
+}
+
 .random-recipe {
   display: flex;
   align-items: center;
@@ -77,6 +81,15 @@ nav a {
   background-color: #A99985;
 }
 
-.footer-links li:last-child {
+.footer-links li:last-child{
   margin-right: 40px;
+}
+
+.footer-links li:first-child {
+  margin-left: 40px;
+}
+
+.footer-links a {
+  padding: 10px;
+  border: 1px solid black;
 }
