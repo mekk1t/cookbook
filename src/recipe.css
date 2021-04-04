@@ -36,3 +36,18 @@
     background-color: #eb94a1;
     cursor: pointer;
 }
+
+.recipe-description {
+    margin: 20px;
+    background-color: gray;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.recipe-stats {
+    text-align: center;
+}
+
+.recipe-description p {
+}
