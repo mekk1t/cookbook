@@ -1,0 +1,21 @@
+.content {
+    display: grid;
+    column-gap: 50px;
+    grid-template-columns: 2fr 1fr;
+    margin: 20px;
+}
+
+.recipe-ingredients {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-ingredients h2 {
+    align-self: center;
+}
+
+.ingredients > li {
+    margin-left: 10px;
+    padding: 10px;
+}
