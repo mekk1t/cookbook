@@ -76,6 +76,22 @@ nav a {
   margin-right: 20px;
 }
 
+.random-recipe-preview {
+  margin-bottom: 15px;
+}
+
+.random-recipe a {
+  padding: 15px;
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
+.recipe-generator {
+  padding: 15px;
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
 /* 
   Стилизация подвала
 */
