@@ -10,6 +10,7 @@
 
 .avatar {
     grid-area: avatar;
+    border-radius: 200px;
 }
 
 .stats {
