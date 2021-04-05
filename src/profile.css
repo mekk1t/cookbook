@@ -17,6 +17,31 @@
     grid-area: stats;
 }
 
+.stats h3 {
+    text-align: center;
+}
+
+dd {
+    margin-inline-start: 0px;
+}
+
+dd::before {
+    content: " ";
+}
+
+.stats-data dt, .stats-data dd {
+    display: inline;
+}
+
+.stats-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.data-pair {
+    margin: 25px;
+}
+
 .favorites {
     margin-top: 100px;
     width: 100%;
