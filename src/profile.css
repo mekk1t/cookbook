@@ -18,5 +18,26 @@
 }
 
 .favorites {
+    margin-top: 100px;
+    width: 100%;
     grid-area: favorites;
+}
+
+.favorites-previews {  
+    margin-left: 40px;  
+    margin-right: 40px;  
+    display: flex;
+    justify-content: space-around;    
+}
+
+.favorites-previews li {
+    border: 1px solid black;
+    margin: 20px;
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+}
+
+.favorites h3 {
+    text-align: center;
 }
