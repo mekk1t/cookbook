@@ -1,0 +1,69 @@
+.content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "avatar stats stats stats"
+    "favorites favorites favorites favorites";
+    justify-items: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.avatar {
+    grid-area: avatar;
+    border-radius: 200px;
+}
+
+.stats {
+    grid-area: stats;
+}
+
+.stats h3 {
+    text-align: center;
+}
+
+dd {
+    margin-inline-start: 0px;
+}
+
+dd::before {
+    content: " ";
+}
+
+.stats-data dt, .stats-data dd {
+    display: inline;
+}
+
+.stats-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.data-pair {
+    margin: 25px;
+}
+
+.favorites {
+    margin-top: 100px;
+    width: 100%;
+    grid-area: favorites;
+}
+
+.favorites-previews {  
+    margin-left: 40px;  
+    margin-right: 40px;  
+    display: flex;
+    justify-content: space-around;    
+}
+
+.favorites-previews li {
+    border: 1px solid black;
+    margin: 20px;
+    padding: 20px;
+    width: 250px;
+    height: 100px;
+}
+
+.favorites h3 {
+    text-align: center;
+}
