@@ -1,0 +1,21 @@
+.content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "avatar stats stats stats"
+    "favorites favorites favorites favorites";
+    justify-items: center;
+    align-items: center;
+}
+
+.avatar {
+    grid-area: avatar;
+}
+
+.stats {
+    grid-area: stats;
+}
+
+.favorites {
+    grid-area: favorites;
+}
