@@ -20,14 +20,12 @@ td > img {
 }
 
 .recipe:hover .actions {
-    margin-top: 10px;
-    display: block;
+    display: inline;
 }
 
 .actions > img {
-    height: 25px;
+    height: 15px;
     margin-right: 5px;
-    padding: 10px;
 }
 
 .actions > img:first-child {
@@ -39,7 +37,7 @@ td > img {
 }
 
 .actions img:hover {
-    border: 1px dashed gray;
+    cursor: pointer;
 }
 
 .add {
