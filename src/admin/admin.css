@@ -42,3 +42,7 @@ td > img {
     border: 1px dashed gray;
 }
 
+.add {
+    border-radius: 0px;
+}
+
