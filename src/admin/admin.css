@@ -11,6 +11,34 @@ th, td {
     padding: 10px;
 }
 
-img {
+td > img {
     border-radius: 20px;
 }
+
+.actions {
+    display: none;
+}
+
+.recipe:hover .actions {
+    margin-top: 10px;
+    display: block;
+}
+
+.actions > img {
+    height: 25px;
+    margin-right: 5px;
+    padding: 10px;
+}
+
+.actions > img:first-child {
+    margin-left: 10px;
+}
+
+.actions > img:last-child {
+    margin-right: 0px;
+}
+
+.actions img:hover {
+    border: 1px dashed gray;
+}
+
