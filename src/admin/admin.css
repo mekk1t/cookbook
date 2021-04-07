@@ -1,0 +1,16 @@
+caption {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+table {
+    margin: 15px;
+}
+
+th, td {
+    padding: 10px;
+}
+
+img {
+    border-radius: 20px;
+}
