@@ -19,6 +19,10 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             _recipeService = recipeService;
         }
 
+        /// <summary>
+        /// Создает рецепт.
+        /// </summary>
+        /// <param name="request">Запрос на создание рецепта.</param>
         [HttpPost("")]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
         {
@@ -26,9 +30,17 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             return Ok();
         }
 
+        /// <summary>
+        /// Получает список рецептов.
+        /// </summary>
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
 
+        /// <summary>
+        /// Редактирует рецепт по ID.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="request">Запрос на редактирование рецепта.</param>
         [HttpPut("{recipeId}")]
         public IActionResult EditRecipe(
             [FromRoute] Guid recipeId,
@@ -39,6 +51,10 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             return Ok();
         }
 
+        /// <summary>
+        /// Удаляет рецепт по ID.
+        /// </summary>
+        /// <param name="recipeId">ID в формате GUID.</param>
         [HttpDelete("{recipeId}")]
         public IActionResult DeleteRecipe([FromRoute] Guid recipeId, [FromServices] ICommand<DeleteRecipeCommand> command)
         {

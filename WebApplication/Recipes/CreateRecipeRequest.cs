@@ -1,17 +1,25 @@
 ﻿using KitProjects.MasterChef.Kernel.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
 {
     public class CreateRecipeRequest
     {
+        /// <summary>
+        /// Название рецепта.
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// Список категорий рецепта.
+        /// </summary>
         public IEnumerable<string> Categories { get; set; }
+        /// <summary>
+        /// Информация об ингредиентах рецепта.
+        /// </summary>
         public IEnumerable<RecipeIngredientDetails> IngredientDetails { get; set; }
+        /// <summary>
+        /// Шаги рецепта.
+        /// </summary>
         public IEnumerable<RecipeStep> Steps { get; set; }
     }
 }
