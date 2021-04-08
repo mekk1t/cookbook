@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KitProjects.MasterChef.WebApplication</name>
+    </assembly>
+    <members>
+        <member name="M:KitProjects.MasterChef.WebApplication.Categories.CategoryController.GetCategories(System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Получает список категорий.
+            </summary>
+            <param name="withRelationships">Включать ли связанные сущности, например, ингредиенты.</param>
+            <param name="offset">Отступ данных.</param>
+            <param name="limit">Ограничение выборки элементов.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Categories.CategoryController.GetCategory(System.String)">
+            <summary>
+            Подробная информация о категории. Без связей.
+            </summary>
+            <param name="categoryName">Название категории.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Categories.CategoryController.CreateCategory(KitProjects.MasterChef.WebApplication.Categories.CreateCategoryRequest)">
+            <summary>
+            Создает новую категорию в приложении.
+            </summary>
+            <param name="request">Запрос на создание.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Categories.CategoryController.DeleteCategory(System.String)">
+            <summary>
+            Удаляет категорию по названию.
+            </summary>
+            <param name="categoryName">Название категории.</param>
+            <returns></returns>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Categories.CategoryController.EditCategory(System.Guid,KitProjects.MasterChef.WebApplication.Categories.EditCategoryRequest)">
+            <summary>
+            Редактирует категорию по ID.
+            </summary>
+            <param name="categoryId">ID категории в формате GUID.</param>
+            <param name="request">Запрос на редактирование.</param>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CreateCategoryRequest.Name">
+            <summary>
+            Название категории.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.EditCategoryRequest.NewName">
+            <summary>
+            Новое имя для категории.
+            </summary>
+        </member>
+    </members>
+</doc>
