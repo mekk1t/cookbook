@@ -5,6 +5,9 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
     public class GetIngredientsResponse
     {
+        /// <summary>
+        /// Список ингредиентов.
+        /// </summary>
         public IEnumerable<Ingredient> Ingredients { get; }
 
         public GetIngredientsResponse(IEnumerable<Ingredient> ingredients)
