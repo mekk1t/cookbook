@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\Repositories\master-chef\WebApplication\KitProjects.MasterChef.WebApplication.xml</DocumentationFile>
+    <DocumentationFile>KitProjects.MasterChef.WebApplication.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;1573</NoWarn>
   </PropertyGroup>
 

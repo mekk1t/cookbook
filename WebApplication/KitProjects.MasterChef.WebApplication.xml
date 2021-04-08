@@ -93,5 +93,142 @@
             ID категории в формате GUID.
             </summary>
         </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.CreateIngredientRequest.Name">
+            <summary>
+            Название ингредиента.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.CreateIngredientRequest.Categories">
+            <summary>
+            Список категорий ингредиента. Если не существуют, будут созданы.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.EditIngredientRequest.NewName">
+            <summary>
+            Новое название ингредиента.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.GetIngredientsResponse.Ingredients">
+            <summary>
+            Список ингредиентов.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.GetSingleIngredientResponse.Id">
+            <summary>
+            ID ингредиента в формате GUID.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.GetSingleIngredientResponse.Name">
+            <summary>
+            Название ингредиента.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Ingredients.GetSingleIngredientResponse.Categories">
+            <summary>
+            Список категорий ингредиента.
+            </summary>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Ingredients.IngredientController.GetIngredients(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Получает список ингредиентов.
+            </summary>
+            <param name="limit">Ограничение выборки элементов.</param>
+            <param name="offset">Отступ данных.</param>
+            <param name="withRelationships">Включать ли связи.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Ingredients.IngredientController.GetIngredient(System.String)">
+            <summary>
+            Получает подробную информацию об ингредиенте.
+            </summary>
+            <param name="ingredientName">Название ингредиента.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Ingredients.IngredientController.DeleteIngredient(System.Guid)">
+            <summary>
+            Удаляет ингредиент по ID.
+            </summary>
+            <param name="ingredientId">Идентификатор ингредиента в формате GUID.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Ingredients.IngredientController.EditIngredient(System.Guid,KitProjects.MasterChef.WebApplication.Ingredients.EditIngredientRequest)">
+            <summary>
+            Редактирует ингредиент по ID.
+            </summary>
+            <param name="ingredientId">ID ингредиента в формате GUID.</param>
+            <param name="request">Запрос на редактирование.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Ingredients.IngredientController.CreateIngredient(KitProjects.MasterChef.WebApplication.Ingredients.CreateIngredientRequest)">
+            <summary>
+            Создает ингредиент.
+            </summary>
+            <param name="request">Запрос на создание ингредиента.</param>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.CreateRecipeRequest.Title">
+            <summary>
+            Название рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.CreateRecipeRequest.Categories">
+            <summary>
+            Список категорий рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.CreateRecipeRequest.IngredientDetails">
+            <summary>
+            Информация об ингредиентах рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.CreateRecipeRequest.Steps">
+            <summary>
+            Шаги рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.EditRecipeRequest.NewDescription">
+            <summary>
+            Новое описание рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.EditRecipeRequest.NewTitle">
+            <summary>
+            Новое название рецепта.
+            </summary>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Recipes.RecipeController.CreateRecipe(KitProjects.MasterChef.WebApplication.Recipes.CreateRecipeRequest)">
+            <summary>
+            Создает рецепт.
+            </summary>
+            <param name="request">Запрос на создание рецепта.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Recipes.RecipeController.GetRecipes">
+            <summary>
+            Получает список рецептов.
+            </summary>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Recipes.RecipeController.EditRecipe(System.Guid,KitProjects.MasterChef.WebApplication.Recipes.EditRecipeRequest,KitProjects.MasterChef.Kernel.Abstractions.ICommand{KitProjects.MasterChef.Kernel.Models.Commands.EditRecipeCommand})">
+            <summary>
+            Редактирует рецепт по ID.
+            </summary>
+            <param name="recipeId">ID рецепта в формате GUID.</param>
+            <param name="request">Запрос на редактирование рецепта.</param>
+        </member>
+        <member name="M:KitProjects.MasterChef.WebApplication.Recipes.RecipeController.DeleteRecipe(System.Guid,KitProjects.MasterChef.Kernel.Abstractions.ICommand{KitProjects.MasterChef.Kernel.Models.Commands.DeleteRecipeCommand})">
+            <summary>
+            Удаляет рецепт по ID.
+            </summary>
+            <param name="recipeId">ID в формате GUID.</param>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.RecipeViewModel.RecipeId">
+            <summary>
+            Идентификатор рецепта в формате GUID.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.RecipeViewModel.Title">
+            <summary>
+            Название рецепта.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Recipes.RecipeViewModel.Description">
+            <summary>
+            Описание рецепта.
+            </summary>
+        </member>
     </members>
 </doc>
