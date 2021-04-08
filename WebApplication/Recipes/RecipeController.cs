@@ -31,7 +31,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         }
 
         /// <summary>
-        /// Получает список рецептов.
+        /// Получает список рецептов. Включает все связи.
         /// </summary>
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
