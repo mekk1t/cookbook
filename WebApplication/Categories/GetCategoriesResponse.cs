@@ -7,6 +7,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
 {
     public class GetCategoriesResponse
     {
+        /// <summary>
+        /// Список категорий.
+        /// </summary>
         public IEnumerable<CategoryViewModel> Categories { get; }
 
         public GetCategoriesResponse(IEnumerable<Category> categories)

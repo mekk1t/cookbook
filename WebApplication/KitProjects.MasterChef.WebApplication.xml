@@ -38,6 +38,36 @@
             <param name="categoryId">ID категории в формате GUID.</param>
             <param name="request">Запрос на редактирование.</param>
         </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryIngredientViewModel.Id">
+            <summary>
+            Идентификатор ингредиента в формате GUID.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryIngredientViewModel.Name">
+            <summary>
+            Название ингредиента.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryViewModel.Id">
+            <summary>
+            ID категории в формате GUID.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryViewModel.Name">
+            <summary>
+            Название категории.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryViewModel.Ingredients">
+            <summary>
+            Список ингредиентов этой категории.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.CategoryViewModel.Recipes">
+            <summary>
+            Список рецептов этой категории.
+            </summary>
+        </member>
         <member name="P:KitProjects.MasterChef.WebApplication.Categories.CreateCategoryRequest.Name">
             <summary>
             Название категории.
@@ -46,6 +76,21 @@
         <member name="P:KitProjects.MasterChef.WebApplication.Categories.EditCategoryRequest.NewName">
             <summary>
             Новое имя для категории.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.GetCategoriesResponse.Categories">
+            <summary>
+            Список категорий.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.GetCategoryResponse.Name">
+            <summary>
+            Название категории.
+            </summary>
+        </member>
+        <member name="P:KitProjects.MasterChef.WebApplication.Categories.GetCategoryResponse.Id">
+            <summary>
+            ID категории в формате GUID.
             </summary>
         </member>
     </members>
