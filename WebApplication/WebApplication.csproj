@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>KitProjects.MasterChef.WebApplication.xml</DocumentationFile>
+    <DocumentationFile>bin/net5.0/KitProjects.MasterChef.WebApplication.xml</DocumentationFile>
     <NoWarn>1701;1702;1591;1573</NoWarn>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
