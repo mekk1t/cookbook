@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Queries.Categories
 {
-    public class SearchCategoryQueryHandler : IQuery<Category, SearchCategoryCommand>
+    public class SearchCategoryQueryHandler : IQuery<Category, SearchCategoryQuery>
     {
         private readonly AppDbContext _dbContext;
 
@@ -17,7 +17,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Categories
             _dbContext = dbContext;
         }
 
-        public Category Execute(SearchCategoryCommand query)
+        public Category Execute(SearchCategoryQuery query)
         {
             if (query.SearchTerm.IsNotNullOrEmpty())
             {

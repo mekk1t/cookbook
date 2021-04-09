@@ -1,10 +1,15 @@
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
+using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +52,12 @@ namespace WebApplication
             services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
             services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
             services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
+
+            services.AddScoped<RecipeEditor>();
+            services.AddScoped<ICommand<RemoveRecipeCategoryCommand>, RemoveRecipeCategoryCommandHandler>();
+            services.AddScoped<ICommand<AppendCategoryToRecipeCommand>, AppendCategoryCommandHandler>();
+            services.AddScoped<IQuery<Category, SearchCategoryQuery>, SearchCategoryQueryHandler>();
+            services.AddScoped<IQuery<Recipe, SearchRecipeQuery>, SearchRecipeQueryHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

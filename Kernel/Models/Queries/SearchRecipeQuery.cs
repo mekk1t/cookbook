@@ -2,17 +2,17 @@
 
 namespace KitProjects.MasterChef.Kernel.Models.Commands
 {
-    public class SearchRecipeCommand
+    public class SearchRecipeQuery
     {
         public string SearchTerm { get; }
         public Guid RecipeId { get; }
 
-        public SearchRecipeCommand(string searchTerm)
+        public SearchRecipeQuery(string searchTerm)
         {
             SearchTerm = searchTerm;
         }
 
-        public SearchRecipeCommand(Guid recipeId)
+        public SearchRecipeQuery(Guid recipeId)
         {
             RecipeId = recipeId;
         }

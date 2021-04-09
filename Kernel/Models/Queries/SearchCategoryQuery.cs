@@ -1,10 +1,10 @@
 ﻿namespace KitProjects.MasterChef.Kernel.Models.Commands
 {
-    public class SearchCategoryCommand
+    public class SearchCategoryQuery
     {
         public string SearchTerm { get; }
 
-        public SearchCategoryCommand(string searchTerm)
+        public SearchCategoryQuery(string searchTerm)
         {
             SearchTerm = searchTerm;
         }

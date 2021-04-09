@@ -10,14 +10,14 @@ namespace KitProjects.MasterChef.Kernel.Recipes
     {
         private readonly ICommand<RemoveRecipeCategoryCommand> _removeCategory;
         private readonly ICommand<AppendCategoryToRecipeCommand> _appendCategory;
-        private readonly IQuery<Category, SearchCategoryCommand> _searchCategory;
-        private readonly IQuery<Recipe, SearchRecipeCommand> _searchRecipe;
+        private readonly IQuery<Category, SearchCategoryQuery> _searchCategory;
+        private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
 
         public RecipeEditor(
             ICommand<AppendCategoryToRecipeCommand> appendCategory,
             ICommand<RemoveRecipeCategoryCommand> removeCategory,
-            IQuery<Category, SearchCategoryCommand> searchCategory,
-            IQuery<Recipe, SearchRecipeCommand> searchRecipe)
+            IQuery<Category, SearchCategoryQuery> searchCategory,
+            IQuery<Recipe, SearchRecipeQuery> searchRecipe)
         {
             _appendCategory = appendCategory;
             _removeCategory = removeCategory;
@@ -27,10 +27,10 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
         public void AppendCategory(string categoryName, Guid recipeId)
         {
-            var existingCategory = _searchCategory.Execute(new SearchCategoryCommand(categoryName));
+            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
             if (existingCategory == null)
                 throw new InvalidOperationException("Нельзя добавить несуществующую категорию.");
-            var existingRecipe = _searchRecipe.Execute(new SearchRecipeCommand(recipeId));
+            var existingRecipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (existingRecipe == null)
                 throw new ArgumentException($"Рецепта с ID {recipeId} не существует.");
 
@@ -39,11 +39,11 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
         public void RemoveCategory(string categoryName, Guid recipeId)
         {
-            var existingCategory = _searchCategory.Execute(new SearchCategoryCommand(categoryName));
+            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
             if (existingCategory == null)
                 return;
 
-            var existingRecipe = _searchRecipe.Execute(new SearchRecipeCommand(recipeId));
+            var existingRecipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (existingRecipe == null)
                 throw new ArgumentException($"Рецепта с ID {recipeId} не существует.");
 

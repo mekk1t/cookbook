@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Queries.Recipes
 {
-    public class SearchRecipeQueryHandler : IQuery<Recipe, SearchRecipeCommand>
+    public class SearchRecipeQueryHandler : IQuery<Recipe, SearchRecipeQuery>
     {
         private readonly AppDbContext _dbContext;
 
@@ -17,7 +17,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
             _dbContext = dbContext;
         }
 
-        public Recipe Execute(SearchRecipeCommand query)
+        public Recipe Execute(SearchRecipeQuery query)
         {
             if (query.RecipeId != Guid.Empty)
             {
