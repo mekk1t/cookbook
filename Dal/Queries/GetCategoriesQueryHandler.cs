@@ -44,6 +44,7 @@ namespace KitProjects.MasterChef.Dal.Commands
             }
 
             return _dbContext.Categories.AsNoTracking()
+                    .OrderBy(c => c.Name)
                     .Skip(query.Offset)
                     .Take(query.Limit)
                     .Select(c => new Category(c.Id, c.Name))

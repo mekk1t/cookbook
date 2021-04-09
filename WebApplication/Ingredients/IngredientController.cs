@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
+    [Produces("application/json")]
     [Route("ingredients")]
     public class IngredientController : ControllerBase
     {
@@ -19,6 +20,12 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             _categoryService = categoryService;
         }
 
+        /// <summary>
+        /// Получает список ингредиентов.
+        /// </summary>
+        /// <param name="limit">Ограничение выборки элементов.</param>
+        /// <param name="offset">Отступ данных.</param>
+        /// <param name="withRelationships">Включать ли связи.</param>
         [HttpGet("")]
         public GetIngredientsResponse GetIngredients(
             [FromQuery] int limit = 25,
@@ -29,6 +36,10 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             return new GetIngredientsResponse(ingredients);
         }
 
+        /// <summary>
+        /// Получает подробную информацию об ингредиенте.
+        /// </summary>
+        /// <param name="ingredientName">Название ингредиента.</param>
         [HttpGet("{ingredientName}")]
         public IActionResult GetIngredient([FromRoute] string ingredientName)
         {
@@ -39,6 +50,10 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             return new JsonResult(new GetSingleIngredientResponse(ingredient.Id, ingredient.Name, ingredient.Categories));
         }
 
+        /// <summary>
+        /// Удаляет ингредиент по ID.
+        /// </summary>
+        /// <param name="ingredientId">Идентификатор ингредиента в формате GUID.</param>
         [HttpDelete("{ingredientId}")]
         public IActionResult DeleteIngredient([FromRoute] Guid ingredientId)
         {
@@ -46,6 +61,11 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             return Ok();
         }
 
+        /// <summary>
+        /// Редактирует ингредиент по ID.
+        /// </summary>
+        /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
+        /// <param name="request">Запрос на редактирование.</param>
         [HttpPut("{ingredientId}")]
         public IActionResult EditIngredient([FromRoute] Guid ingredientId, [FromBody] EditIngredientRequest request)
         {
@@ -53,6 +73,10 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             return Ok();
         }
 
+        /// <summary>
+        /// Создает ингредиент.
+        /// </summary>
+        /// <param name="request">Запрос на создание ингредиента.</param>
         [HttpPost("")]
         public IActionResult CreateIngredient([FromBody] CreateIngredientRequest request)
         {
