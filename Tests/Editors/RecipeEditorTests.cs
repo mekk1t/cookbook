@@ -172,6 +172,32 @@ namespace KitProjects.MasterChef.Tests.Editors
             act.Should().Throw<Exception>();
         }
 
+        [Fact]
+        public void Editor_proceeds_with_removing_category_which_recipe_does_not_have()
+        {
+            var categoryId = Guid.NewGuid();
+            var otherCategoryId = Guid.NewGuid();
+            _fixture.SeedCategory(new Category(categoryId, categoryId.ToString()));
+            _fixture.SeedCategory(new Category(otherCategoryId, otherCategoryId.ToString()));
+            var recipeId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                RecipeCategoriesLink = new[]
+                {
+                    new DbRecipeCategory
+                    {
+                        DbRecipeId = recipeId,
+                        DbCategoryId = categoryId
+                    }
+                }
+            });
+
+            Action act = () => _sut.RemoveCategory(otherCategoryId.ToString(), recipeId);
+
+            act.Should().NotThrow();
+        }
+
         public void Dispose()
         {
             foreach (var dbContext in _dbContexts)

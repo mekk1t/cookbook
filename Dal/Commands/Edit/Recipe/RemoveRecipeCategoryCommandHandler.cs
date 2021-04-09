@@ -19,6 +19,9 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
             var recipe = _dbContext.Recipes
                 .Include(r => r.RecipeCategoriesLink)
                 .First(r => r.Id == command.RecipeId);
+            if (!recipe.RecipeCategoriesLink.Select(link => link.DbCategoryId).Contains(command.CategoryId))
+                return;
+
             recipe.RecipeCategoriesLink.Remove(recipe.RecipeCategoriesLink.First(rc => rc.DbCategoryId == command.CategoryId));
             _dbContext.SaveChanges();
         }
