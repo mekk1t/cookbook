@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
@@ -15,7 +16,9 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
 
         public void Execute(RemoveRecipeCategoryCommand command)
         {
-            var recipe = _dbContext.Recipes.First(r => r.Id == command.RecipeId);
+            var recipe = _dbContext.Recipes
+                .Include(r => r.RecipeCategoriesLink)
+                .First(r => r.Id == command.RecipeId);
             recipe.RecipeCategoriesLink.Remove(recipe.RecipeCategoriesLink.First(rc => rc.DbCategoryId == command.CategoryId));
             _dbContext.SaveChanges();
         }
