@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     public class RecipeController : ControllerBase
     {
         private readonly RecipeService _recipeService;
+        private readonly RecipeEditor _editor;
 
-        public RecipeController(RecipeService recipeService)
+        public RecipeController(RecipeService recipeService, RecipeEditor editor)
         {
             _recipeService = recipeService;
+            _editor = editor;
         }
 
         /// <summary>
@@ -49,6 +52,31 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             [FromServices] ICommand<EditRecipeCommand> command)
         {
             command.Execute(new EditRecipeCommand(recipeId, request.NewTitle, request.NewDescription));
+            return Ok();
+        }
+
+        /// <summary>
+        /// Удаляет из рецепта категорию по имени.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта, из которого будет удаляться категория.</param>
+        /// <param name="categoryName">Название категории для удаления.</param>
+        [HttpDelete("{recipeId}/{categoryName}")]
+        public IActionResult RemoveCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
+        {
+            _editor.RemoveCategory(categoryName, recipeId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Добавляет категорию в рецепт.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта, куда будет добавлена категория.</param>
+        /// <param name="categoryName">Название существующей категории.</param>
+        /// <returns></returns>
+        [HttpPut("{recipeId}/{categoryName}")]
+        public IActionResult AppendCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
+        {
+            _editor.AppendCategory(categoryName, recipeId);
             return Ok();
         }
 
