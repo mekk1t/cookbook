@@ -14,9 +14,15 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly IQuery<Recipe, SearchRecipeCommand> _searchRecipe;
 
         public RecipeEditor(
-            ICommand<AppendCategoryToRecipeCommand> appendCategory)
+            ICommand<AppendCategoryToRecipeCommand> appendCategory,
+            ICommand<RemoveRecipeCategoryCommand> removeCategory,
+            IQuery<Category, SearchCategoryCommand> searchCategory,
+            IQuery<Recipe, SearchRecipeCommand> searchRecipe)
         {
             _appendCategory = appendCategory;
+            _removeCategory = removeCategory;
+            _searchCategory = searchCategory;
+            _searchRecipe = searchRecipe;
         }
 
         public void AppendCategory(string categoryName, Guid recipeId)

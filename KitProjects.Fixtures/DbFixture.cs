@@ -93,6 +93,16 @@ namespace KitProjects.Fixtures
             dbContext.SaveChanges();
         }
 
+        public DbRecipe FindRecipe(Guid recipeId)
+        {
+            using var dbContext = this.DbContext;
+            return dbContext.Recipes.AsNoTracking()
+                .Include(r => r.RecipeCategoriesLink).ThenInclude(link => link.DbCategory)
+                .Include(r => r.RecipeIngredientLink).ThenInclude(link => link.DbIngredient)
+                .Include(r => r.Steps)
+                .First(r => r.Id == recipeId);
+        }
+
         public void Dispose() => Connection.Dispose();
     }
 }
