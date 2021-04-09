@@ -4,10 +4,6 @@ using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Kernel.Ingredients
 {
@@ -30,5 +26,28 @@ namespace KitProjects.MasterChef.Kernel.Ingredients
             _removeCategory = removeCategory;
         }
 
+        public void AppendCategory(string categoryName, Guid ingredientId)
+        {
+            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            if (existingCategory == null)
+                throw new InvalidOperationException();
+            var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredientId));
+            if (existingIngredient == null)
+                throw new ArgumentException(null, nameof(ingredientId));
+
+            _appendCategory.Execute(new AppendIngredientCategoryCommand(categoryName, ingredientId));
+        }
+
+        public void RemoveCategory(string categoryName, Guid ingredientId)
+        {
+            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            if (existingCategory == null)
+                return;
+            var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredientId));
+            if (existingIngredient == null)
+                throw new ArgumentException(null, nameof(ingredientId));
+
+            _removeCategory.Execute(new RemoveIngredientCategoryCommand(categoryName, ingredientId));
+        }
     }
 }
