@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
 {
+    [Produces("application/json")]
     [Route("recipes")]
     public class RecipeController : ControllerBase
     {

@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
+    [Produces("application/json")]
     [Route("ingredients")]
     public class IngredientController : ControllerBase
     {
