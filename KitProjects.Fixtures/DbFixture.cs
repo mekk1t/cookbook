@@ -99,7 +99,7 @@ namespace KitProjects.Fixtures
             return dbContext.Recipes.AsNoTracking()
                 .Include(r => r.RecipeCategoriesLink).ThenInclude(link => link.DbCategory)
                 .Include(r => r.RecipeIngredientLink).ThenInclude(link => link.DbIngredient)
-                .Include(r => r.Steps)
+                .Include(r => r.Steps).ThenInclude(s => s.StepIngredientsLink).ThenInclude(link => link.DbIngredient)
                 .First(r => r.Id == recipeId);
         }
 

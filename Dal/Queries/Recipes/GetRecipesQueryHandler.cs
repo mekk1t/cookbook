@@ -39,7 +39,9 @@ namespace KitProjects.MasterChef.Dal.Commands
 
                     recipe.Categories.AddRange(r.RecipeCategoriesLink.Select(rc => new Category(rc.DbCategoryId, rc.DbCategory.Name)));
                     recipe.Ingredients.AddRange(r.RecipeIngredientLink.Select(ri => new Ingredient(ri.DbIngredientId, ri.DbIngredient.Name)));
-                    recipe.Steps.AddRange(r.Steps.Select(s =>
+                    recipe.Steps.AddRange(r.Steps
+                        .OrderBy(step => step.Index)
+                        .Select(s =>
                     {
                         var step = new RecipeStep(s.Id)
                         {

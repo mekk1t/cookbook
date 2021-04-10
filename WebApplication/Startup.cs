@@ -2,9 +2,11 @@ using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
+using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
+using KitProjects.MasterChef.Dal.Queries.Steps;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Ingredients;
@@ -67,6 +69,15 @@ namespace WebApplication
             services.AddScoped<ICommand<RemoveIngredientCategoryCommand>, RemoveIngredientCategoryCommandHandler>();
             services.AddScoped<ICommand<AppendIngredientCategoryCommand>, AppendIngredientCategoryCommandHandler>();
             services.AddScoped<IQuery<Ingredient, SearchIngredientQuery>, SearchIngredientQueryHandler>();
+
+            services.AddScoped<RecipeStepEditor>();
+            services.AddScoped<ICommand<EditStepPictureCommand>, EditStepPictureCommandHandler>();
+            services.AddScoped<ICommand<EditStepDescriptionCommand>, EditStepDescriptionCommandHandler>();
+            services.AddScoped<IQuery<RecipeStep, SearchStepQuery>, SearchStepQueryHandler>();
+            services.AddScoped<ICommand<SwapStepsCommand>, SwapStepsCommandHandler>();
+            services.AddScoped<ICommand<AppendRecipeStepCommand>, AppendRecipeStepCommandHandler>();
+            services.AddScoped<ICommand<RemoveRecipeStepCommand>, RemoveRecipeStepCommandHandler>();
+            services.AddScoped<ICommand<NormalizeStepsOrderCommand>, NormalizeStepsOrderCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
