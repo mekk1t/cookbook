@@ -17,6 +17,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
         private readonly ICommand<AppendRecipeStepCommand> _appendStep;
         private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
+        private readonly ICommand<NormalizeStepsOrderCommand> _normalizeStepsOrder;
 
         public RecipeStepEditor(
             ICommand<EditStepPictureCommand> editPicture,
@@ -25,7 +26,8 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             ICommand<SwapStepsCommand> swapSteps,
             IQuery<Recipe, SearchRecipeQuery> searchRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
-            ICommand<RemoveRecipeStepCommand> removeStep)
+            ICommand<RemoveRecipeStepCommand> removeStep,
+            ICommand<NormalizeStepsOrderCommand> normalizeStepsOrder)
         {
             _editDescription = editDescription;
             _editPicture = editPicture;
@@ -34,6 +36,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _searchRecipe = searchRecipe;
             _appendStep = appendStep;
             _removeStep = removeStep;
+            _normalizeStepsOrder = normalizeStepsOrder;
         }
 
         public void ChangePicture(Guid stepId, string newImage)
@@ -73,21 +76,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
 
-            // TODO: когда будет реализована работа с ингредиентами рецепта.
-            //if (step.IngredientsDetails.Count > 0)
-            //{
-            //    var ingredientNames = step.IngredientsDetails.Select(details => details.IngredientName);
-            //    var recipeIngredientNames = recipe.Ingredients.Select(i => i.Name);
-            //    foreach (var ingredientName in ingredientNames)
-            //    {
-            //        if (recipeIngredientNames.Contains(ingredientName))
-            //            continue;
-
-
-            //    }
-
-            //}
-
             _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
         }
 
@@ -96,6 +84,15 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
+
+            var recipeStepsIds = recipe.Steps.Select(step => step.Id).ToList();
+            var removingStepIndex = recipeStepsIds.IndexOf(stepId);
+            if (removingStepIndex != recipe.Steps.Count - 1)
+            {
+                _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
+                _normalizeStepsOrder.Execute(new NormalizeStepsOrderCommand(recipeId, removingStepIndex));
+                return;
+            }
 
             _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
         }
