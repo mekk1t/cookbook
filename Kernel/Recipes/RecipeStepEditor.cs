@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries.Search;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using System;
@@ -12,17 +13,26 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<EditStepDescriptionCommand> _editDescription;
         private readonly IQuery<RecipeStep, SearchStepQuery> _searchStep;
         private readonly ICommand<SwapStepsCommand> _swapSteps;
+        private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
+        private readonly ICommand<AppendRecipeStepCommand> _appendStep;
+        private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
 
         public RecipeStepEditor(
             ICommand<EditStepPictureCommand> editPicture,
             ICommand<EditStepDescriptionCommand> editDescription,
             IQuery<RecipeStep, SearchStepQuery> searchStep,
-            ICommand<SwapStepsCommand> swapSteps)
+            ICommand<SwapStepsCommand> swapSteps,
+            IQuery<Recipe, SearchRecipeQuery> searchRecipe,
+            ICommand<AppendRecipeStepCommand> appendStep,
+            ICommand<RemoveRecipeStepCommand> removeStep)
         {
             _editDescription = editDescription;
             _editPicture = editPicture;
             _searchStep = searchStep;
             _swapSteps = swapSteps;
+            _searchRecipe = searchRecipe;
+            _appendStep = appendStep;
+            _removeStep = removeStep;
         }
 
         public void ChangePicture(Guid stepId, string newImage)
@@ -58,12 +68,20 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
         public void AppendStep(Guid recipeId, RecipeStep step)
         {
+            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
+            if (recipe == null)
+                throw new ArgumentException(null, nameof(recipeId));
 
+            _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
         }
 
         public void RemoveStep(Guid recipeId, Guid stepId)
         {
+            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
+            if (recipe == null)
+                throw new ArgumentException(null, nameof(recipeId));
 
+            _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
         }
     }
 }
