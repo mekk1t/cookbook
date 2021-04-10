@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
+using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Dal.Queries.Steps;
@@ -24,12 +25,14 @@ namespace KitProjects.MasterChef.Tests.Editors
             _fixture = fixture;
             var queryDbContext = _fixture.DbContext;
             var editDbContext = _fixture.DbContext;
+            var swapDbContext = _fixture.DbContext;
             _sut = new RecipeStepEditor(
                 new EditStepPictureCommandHandler(editDbContext),
                 new EditStepDescriptionCommandHandler(editDbContext),
-                new SearchStepQueryHandler(queryDbContext));
+                new SearchStepQueryHandler(queryDbContext),
+                new SwapStepsCommandHandler(swapDbContext));
 
-            _dbContexts.AddRange(new[] { queryDbContext, editDbContext });
+            _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
 
         [Fact]
@@ -114,6 +117,38 @@ namespace KitProjects.MasterChef.Tests.Editors
             Action act = () => _sut.ChangePicture(stepId, newImage);
 
             act.Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void Editor_swaps_two_steps()
+        {
+            var recipeId = Guid.NewGuid();
+            var firstStepId = Guid.NewGuid();
+            var secondStepId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = firstStepId,
+                        Index = 1
+                    },
+                    new DbRecipeStep
+                    {
+                        Id = secondStepId,
+                        Index = 2
+                    }
+                }
+            });
+
+            Action act = () => _sut.SwapSteps(firstStepId, secondStepId, recipeId);
+
+            act.Should().NotThrow();
+            var steps = _fixture.FindRecipe(recipeId).Steps;
+            steps.First(step => step.Id == firstStepId).Index.Should().Be(2);
+            steps.First(step => step.Id == secondStepId).Index.Should().Be(1);
         }
 
         public void Dispose()
