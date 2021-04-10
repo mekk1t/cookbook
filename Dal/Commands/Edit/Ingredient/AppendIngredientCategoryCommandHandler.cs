@@ -24,7 +24,9 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Ingredient
             if (ingredient == null)
                 throw new ArgumentException(null, nameof(command));
 
-            var category = _dbContext.Categories.First(c => c.Name == command.CategoryName);
+            var category = _dbContext.Categories
+                .AsNoTracking()
+                .First(c => c.Name == command.CategoryName);
 
             ingredient.Categories.Add(new DbCategory(category.Id, category.Name));
             _dbContext.SaveChanges();

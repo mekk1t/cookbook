@@ -28,12 +28,14 @@ namespace KitProjects.MasterChef.Kernel.Ingredients
 
         public void AppendCategory(string categoryName, Guid ingredientId)
         {
-            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
-            if (existingCategory == null)
+            var appendCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            if (appendCategory == null)
                 throw new InvalidOperationException();
             var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredientId));
             if (existingIngredient == null)
                 throw new ArgumentException(null, nameof(ingredientId));
+            if (existingIngredient.Categories.Contains(appendCategory))
+                throw new ArgumentException("Нельзя добавить одну и ту же категорию дважды.");
 
             _appendCategory.Execute(new AppendIngredientCategoryCommand(categoryName, ingredientId));
         }

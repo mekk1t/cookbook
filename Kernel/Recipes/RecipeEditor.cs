@@ -27,14 +27,16 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
         public void AppendCategory(string categoryName, Guid recipeId)
         {
-            var existingCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
-            if (existingCategory == null)
+            var appendCategory = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            if (appendCategory == null)
                 throw new InvalidOperationException("Нельзя добавить несуществующую категорию.");
             var existingRecipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (existingRecipe == null)
                 throw new ArgumentException($"Рецепта с ID {recipeId} не существует.");
+            if (existingRecipe.Categories.Contains(appendCategory))
+                throw new ArgumentException("Нельзя добавить одну категорию дважды.");
 
-            _appendCategory.Execute(new AppendCategoryToRecipeCommand(existingCategory.Id, existingRecipe.Id));
+            _appendCategory.Execute(new AppendCategoryToRecipeCommand(appendCategory.Id, existingRecipe.Id));
         }
 
         public void RemoveCategory(string categoryName, Guid recipeId)

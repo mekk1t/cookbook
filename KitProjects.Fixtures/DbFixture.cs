@@ -57,7 +57,7 @@ namespace KitProjects.Fixtures
             return new Category(dbCategory.Id, dbCategory.Name);
         }
 
-        public void SeedIngredient(Ingredient ingredient)
+        public void SeedIngredientWithNewCategories(Ingredient ingredient)
         {
             using var dbContext = this.DbContext;
             dbContext.Ingredients.Add(new DbIngredient(

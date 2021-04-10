@@ -21,23 +21,37 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
         {
             if (query.RecipeId != Guid.Empty)
             {
-                var recipe = _dbContext.Recipes.AsNoTracking().FirstOrDefault(r => r.Id == query.RecipeId);
+                var recipe = _dbContext.Recipes
+                    .AsNoTracking()
+                    .Include(r => r.RecipeCategoriesLink).ThenInclude(r => r.DbCategory)
+                    .FirstOrDefault(r => r.Id == query.RecipeId);
                 if (recipe == null)
                     return null;
 
-                return new Recipe(recipe.Id);
+                var result = new Recipe(recipe.Id);
+                result.Categories.AddRange(
+                    recipe.RecipeCategoriesLink.Select(link => new Category(link.DbCategory.Id, link.DbCategory.Name)));
+
+                return result;
             }
 
             if (query.SearchTerm.IsNotNullOrEmpty())
             {
-                var recipe = _dbContext.Recipes.AsNoTracking().FirstOrDefault(r =>
+                var recipe = _dbContext.Recipes
+                    .AsNoTracking()
+                    .Include(r => r.RecipeCategoriesLink).ThenInclude(r => r.DbCategory)
+                    .FirstOrDefault(r =>
                     r.Title == query.SearchTerm ||
                     r.Title.Contains(query.SearchTerm) ||
                     query.SearchTerm.Contains(r.Title));
                 if (recipe == null)
                     return null;
 
-                return new Recipe(recipe.Id);
+                var result = new Recipe(recipe.Id);
+                result.Categories.AddRange(
+                    recipe.RecipeCategoriesLink.Select(link => new Category(link.DbCategory.Id, link.DbCategory.Name)));
+
+                return result;
             }
 
             throw new ArgumentException(null, nameof(query));
