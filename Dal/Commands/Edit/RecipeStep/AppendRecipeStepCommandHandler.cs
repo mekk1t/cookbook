@@ -30,7 +30,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep
             {
                 Id = newStep.Id,
                 Description = newStep.Description,
-                Index = recipe.Steps.Count + 1,
+                Index = recipe.Steps.OrderBy(step => step.Index).Last().Index + 1,
                 Image = newStep.Image,
                 StepIngredientsLink = new List<DbRecipeStepIngredient>()
             };
