@@ -1,4 +1,4 @@
-using KitProjects.MasterChef.Dal;
+п»їusing KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
@@ -37,7 +37,7 @@ namespace WebApplication
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API агрегатора кулинарных рецептов \"Мастер Шеф\".", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Р°РіСЂРµРіР°С‚РѕСЂР° РєСѓР»РёРЅР°СЂРЅС‹С… СЂРµС†РµРїС‚РѕРІ \"РњР°СЃС‚РµСЂ РЁРµС„\"", Version = "v1" });
                 var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 c.IncludeXmlComments(xmlDocPath);
             });
