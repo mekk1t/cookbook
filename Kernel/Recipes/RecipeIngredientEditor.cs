@@ -16,6 +16,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
         private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredient;
+        private readonly ICommand<RemoveRecipeIngredientCommand> _removeIngredient;
         private readonly IngredientService _ingredientService;
 
         public void AppendIngredient(Guid recipeId, Ingredient ingredient)
@@ -33,7 +34,15 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
         public void RemoveIngredient(Guid recipeId, Guid ingredientId)
         {
+            var ingredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredientId));
+            if (ingredient == null)
+                return;
 
+            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
+            if (recipe == null)
+                throw new ArgumentException(null, nameof(recipeId));
+
+            _removeIngredient.Execute(new RemoveRecipeIngredientCommand(recipeId, ingredientId));
         }
 
         public void ReplaceIngredient(Ingredient oldIngredient, Ingredient newIngredient, Guid recipeId)
