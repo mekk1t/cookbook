@@ -77,6 +77,7 @@ namespace WebApplication
             services.AddScoped<ICommand<SwapStepsCommand>, SwapStepsCommandHandler>();
             services.AddScoped<ICommand<AppendRecipeStepCommand>, AppendRecipeStepCommandHandler>();
             services.AddScoped<ICommand<RemoveRecipeStepCommand>, RemoveRecipeStepCommandHandler>();
+            services.AddScoped<ICommand<NormalizeStepsOrderCommand>, NormalizeStepsOrderCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
