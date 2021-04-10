@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries.Search;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using System;
+using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel.Recipes
 {
@@ -71,6 +72,21 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
+
+            // TODO: когда будет реализована работа с ингредиентами рецепта.
+            //if (step.IngredientsDetails.Count > 0)
+            //{
+            //    var ingredientNames = step.IngredientsDetails.Select(details => details.IngredientName);
+            //    var recipeIngredientNames = recipe.Ingredients.Select(i => i.Name);
+            //    foreach (var ingredientName in ingredientNames)
+            //    {
+            //        if (recipeIngredientNames.Contains(ingredientName))
+            //            continue;
+
+
+            //    }
+
+            //}
 
             _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
         }
