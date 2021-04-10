@@ -92,7 +92,7 @@ namespace KitProjects.MasterChef.Tests.Services
         public void Cant_create_a_duplicate_name_ingredient()
         {
             string ingredientName = Guid.NewGuid().ToString();
-            _fixture.SeedIngredient(new Ingredient(Guid.NewGuid(), ingredientName));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
 
             Action act = () => _sut.CreateIngredient(new CreateIngredientCommand(ingredientName, new List<string>()));
 
@@ -105,7 +105,7 @@ namespace KitProjects.MasterChef.Tests.Services
         public void Edit_ingredient_name_jesus_im_bored()
         {
             var ingredientId = Guid.NewGuid();
-            _fixture.SeedIngredient(new Ingredient(ingredientId, "влтывдлмтыд"));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, "влтывдлмтыд"));
 
             Action act = () => _sut.EditIngredient(new EditIngredientCommand(ingredientId, "НовоеИмя"));
 
@@ -119,7 +119,7 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             var ingredientId = Guid.NewGuid();
             var ingredientName = "414019гк30";
-            _fixture.SeedIngredient(new Ingredient(ingredientId, ingredientName));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientName));
 
             Action act = () => _sut.DeleteIngredient(new DeleteIngredientCommand(ingredientId));
 

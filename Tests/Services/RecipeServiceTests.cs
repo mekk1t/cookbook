@@ -96,8 +96,8 @@ namespace KitProjects.MasterChef.Tests.Services
             var ingredientName = Guid.NewGuid().ToString();
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName + "1"));
-            _fixture.SeedIngredient(new Ingredient(Guid.NewGuid(), ingredientName));
-            _fixture.SeedIngredient(new Ingredient(Guid.NewGuid(), ingredientName + "1"));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName + "1"));
 
             Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
                 recipeId,
@@ -150,7 +150,7 @@ namespace KitProjects.MasterChef.Tests.Services
             var categoryName1 = Guid.NewGuid().ToString();
             var ingredientName = Guid.NewGuid().ToString();
             _fixture.SeedCategory(new Category(categoryId, categoryName1));
-            _fixture.SeedIngredient(new Ingredient(ingredientId, ingredientName));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientName));
             var seedRecipe = new DbRecipe
             {
                 Id = recipeId,

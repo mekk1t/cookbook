@@ -1,10 +1,14 @@
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Ingredients;
+using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -58,6 +62,11 @@ namespace WebApplication
             services.AddScoped<ICommand<AppendCategoryToRecipeCommand>, AppendCategoryCommandHandler>();
             services.AddScoped<IQuery<Category, SearchCategoryQuery>, SearchCategoryQueryHandler>();
             services.AddScoped<IQuery<Recipe, SearchRecipeQuery>, SearchRecipeQueryHandler>();
+
+            services.AddScoped<IngredientEditor>();
+            services.AddScoped<ICommand<RemoveIngredientCategoryCommand>, RemoveIngredientCategoryCommandHandler>();
+            services.AddScoped<ICommand<AppendIngredientCategoryCommand>, AppendIngredientCategoryCommandHandler>();
+            services.AddScoped<IQuery<Ingredient, SearchIngredientQuery>, SearchIngredientQueryHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -67,6 +67,30 @@ namespace KitProjects.MasterChef.Tests.Editors
         }
 
         [Fact]
+        public void Editor_cant_append_same_category_twice()
+        {
+            var appendCategoryId = Guid.NewGuid();
+            _fixture.SeedCategory(new Category(appendCategoryId, appendCategoryId.ToString()));
+            var recipeId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                RecipeCategoriesLink = new[]
+                {
+                    new DbRecipeCategory
+                    {
+                        DbRecipeId = recipeId,
+                        DbCategoryId = appendCategoryId
+                    }
+                }
+            });
+
+            Action act = () => _sut.AppendCategory(appendCategoryId.ToString(), recipeId);
+
+            act.Should().ThrowExactly<ArgumentException>();
+        }
+
+        [Fact]
         public void Editor_removes_a_category_from_recipe()
         {
             var categoryId = Guid.NewGuid();

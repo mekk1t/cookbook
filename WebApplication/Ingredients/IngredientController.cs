@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Ingredients;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     {
         private readonly IngredientService _ingredientService;
         private readonly CategoryService _categoryService;
+        private readonly IngredientEditor _editor;
 
-        public IngredientController(IngredientService ingredientService, CategoryService categoryService)
+        public IngredientController(IngredientService ingredientService, CategoryService categoryService, IngredientEditor editor)
         {
             _ingredientService = ingredientService;
             _categoryService = categoryService;
+            _editor = editor;
         }
 
         /// <summary>
@@ -93,6 +96,30 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
                     Id = createdIngredient.Id
                 });
 
+        }
+
+        /// <summary>
+        /// Добавляет категорию ингредиенту.
+        /// </summary>
+        /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
+        /// <param name="categoryName">Название категории.</param>
+        [HttpPut("{ingredientId}/{categoryName}")]
+        public IActionResult AppendCategory([FromRoute] Guid ingredientId, [FromRoute] string categoryName)
+        {
+            _editor.AppendCategory(categoryName, ingredientId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Удаляет категорию у ингредиента.
+        /// </summary>
+        /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
+        /// <param name="categoryName">Название категории.</param>
+        [HttpDelete("{ingredientId}/{categoryName}")]
+        public IActionResult RemoveCategory([FromRoute] Guid ingredientId, [FromRoute] string categoryName)
+        {
+            _editor.RemoveCategory(categoryName, ingredientId);
+            return Ok();
         }
     }
 }
