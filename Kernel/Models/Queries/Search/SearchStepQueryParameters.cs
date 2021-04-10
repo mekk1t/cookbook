@@ -12,5 +12,10 @@ namespace KitProjects.MasterChef.Kernel.Models.Queries.Search
             RecipeId = recipeId;
             Index = index;
         }
+
+        public SearchStepQueryParameters(Guid recipeId)
+        {
+            RecipeId = recipeId;
+        }
     }
 }

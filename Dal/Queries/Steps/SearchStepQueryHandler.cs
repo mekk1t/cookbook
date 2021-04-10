@@ -1,4 +1,5 @@
-﻿using KitProjects.MasterChef.Kernel.Abstractions;
+﻿using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Steps
 
         public RecipeStep Execute(SearchStepQuery query)
         {
+            IQueryable<DbRecipe> dbRecipes = _dbContext.Recipes.AsNoTracking();
             if (query.Parameters != null)
             {
                 if (query.Parameters.RecipeId != Guid.Empty && query.Parameters.Index > 0)
@@ -26,16 +28,21 @@ namespace KitProjects.MasterChef.Dal.Queries.Steps
                         .AsNoTracking()
                         .FirstOrDefault(r => r.Id == query.Parameters.RecipeId)
                         ?.Steps
-                        .FirstOrDefault(step => step.Index == query.Parameters.Index);
+                        ?.FirstOrDefault(step => step.Index == query.Parameters.Index);
                     if (dbStep == null)
                         return null;
 
                     return new RecipeStep(dbStep.Id);
                 }
+
+                if (query.Parameters.RecipeId != Guid.Empty)
+                {
+                    dbRecipes = dbRecipes
+                        .Where(r => r.Id == query.Parameters.RecipeId);
+                }
             }
 
-            var step = _dbContext.Recipes
-                .AsNoTracking()
+            var step = dbRecipes
                 .Where(r => r.Steps.Select(s => s.Id).Contains(query.StepId))
                 .Select(r => r.Steps.FirstOrDefault(step => step.Id == query.StepId))
                 ?.FirstOrDefault();
