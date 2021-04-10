@@ -46,6 +46,14 @@ namespace KitProjects.MasterChef.Dal.Database
             }
         }
 
+        public class RecipeStepConfiguration : IEntityTypeConfiguration<DbRecipeStep>
+        {
+            public void Configure(EntityTypeBuilder<DbRecipeStep> builder)
+            {
+                builder.Property(p => p.Id).ValueGeneratedNever();
+            }
+        }
+
         public class RecipeIngredientConfiguration : IEntityTypeConfiguration<DbRecipeIngredient>
         {
             public void Configure(EntityTypeBuilder<DbRecipeIngredient> builder)

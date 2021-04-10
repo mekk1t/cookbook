@@ -28,6 +28,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep
             var newStep = command.Step;
             var appendStep = new DbRecipeStep
             {
+                Id = newStep.Id,
                 Description = newStep.Description,
                 Index = recipe.Steps.Count + 1,
                 Image = newStep.Image,
@@ -47,7 +48,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep
 
                     appendStep.StepIngredientsLink.Add(new DbRecipeStepIngredient
                     {
-                        DbRecipeStepId = newStep.Id,
+                        DbRecipeStepId = appendStep.Id,
                         DbIngredientId = ingredientId.Value,
                         Amount = details.Amount,
                         Measure = details.Measure
