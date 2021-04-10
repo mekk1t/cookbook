@@ -23,6 +23,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
             {
                 var recipe = _dbContext.Recipes
                     .AsNoTracking()
+                    .Include(r => r.Steps)
                     .Include(r => r.RecipeCategoriesLink).ThenInclude(r => r.DbCategory)
                     .FirstOrDefault(r => r.Id == query.RecipeId);
                 if (recipe == null)
@@ -31,6 +32,10 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
                 var result = new Recipe(recipe.Id);
                 result.Categories.AddRange(
                     recipe.RecipeCategoriesLink.Select(link => new Category(link.DbCategory.Id, link.DbCategory.Name)));
+                result.Steps.AddRange(recipe.Steps.Select(step => new RecipeStep(step.Id)
+                {
+                    Index = step.Index
+                }));
 
                 return result;
             }
@@ -39,6 +44,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
             {
                 var recipe = _dbContext.Recipes
                     .AsNoTracking()
+                    .Include(r => r.Steps)
                     .Include(r => r.RecipeCategoriesLink).ThenInclude(r => r.DbCategory)
                     .FirstOrDefault(r =>
                     r.Title == query.SearchTerm ||
@@ -50,6 +56,10 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
                 var result = new Recipe(recipe.Id);
                 result.Categories.AddRange(
                     recipe.RecipeCategoriesLink.Select(link => new Category(link.DbCategory.Id, link.DbCategory.Name)));
+                result.Steps.AddRange(recipe.Steps.Select(step => new RecipeStep(step.Id)
+                {
+                    Index = step.Index
+                }));
 
                 return result;
             }

@@ -85,7 +85,9 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
 
-            var recipeStepsIds = recipe.Steps.Select(step => step.Id).ToList();
+            var recipeStepsIds = recipe.Steps
+                .OrderBy(step => step.Index)
+                .Select(step => step.Id).ToList();
             var removingStepIndex = recipeStepsIds.IndexOf(stepId);
             if (removingStepIndex != recipe.Steps.Count - 1)
             {

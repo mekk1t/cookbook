@@ -36,7 +36,8 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new SwapStepsCommandHandler(swapDbContext),
                 new SearchRecipeQueryHandler(queryDbContext),
                 new AppendRecipeStepCommandHandler(editDbContext),
-                new RemoveRecipeStepCommandHandler(editDbContext));
+                new RemoveRecipeStepCommandHandler(editDbContext),
+                new NormalizeStepsOrderCommandHandler(editDbContext));
 
             _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
@@ -206,22 +207,79 @@ namespace KitProjects.MasterChef.Tests.Editors
         }
 
         [Fact]
-        public void Editor_removes_a_step_from_recipe()
+        public void Editor_proceeds_with_removing_nonexistent_step_from_recipe()
         {
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            var newStep = new RecipeStep(stepId)
-            {
-                Description = "Текст",
-                Image = "Изображение"
-            };
 
             Action act = () => _sut.RemoveStep(recipeId, stepId);
 
             act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Editor_removes_a_step_from_recipe()
+        {
+            var recipeId = Guid.NewGuid();
+            var firstStepId = Guid.NewGuid();
+            var secondStepId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId, Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = firstStepId
+                    },
+                    new DbRecipeStep
+                    {
+                        Id = secondStepId
+                    }
+                }
+            });
+
+            Action act = () => _sut.RemoveStep(recipeId, secondStepId);
+
+            act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
-            result.Steps.Should().BeEmpty();
+            result.Steps.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Recipe_steps_are_in_order_after_removing_not_the_last_step()
+        {
+            var recipeId = Guid.NewGuid();
+            var firstStepId = Guid.NewGuid();
+            var secondStepId = Guid.NewGuid();
+            var thirdStepId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = firstStepId,
+                        Index = 1
+                    },
+                    new DbRecipeStep
+                    {
+                        Id = thirdStepId,
+                        Index = 3
+                    },
+                    new DbRecipeStep
+                    {
+                        Id = secondStepId,
+                        Index = 2
+                    }
+                }
+            });
+
+            Action act = () => _sut.RemoveStep(recipeId, firstStepId);
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.First(step => step.Id == secondStepId).Index.Should().Be(1);
+            result.Steps.First(step => step.Id == thirdStepId).Index.Should().Be(2);
         }
 
         public void Dispose()
