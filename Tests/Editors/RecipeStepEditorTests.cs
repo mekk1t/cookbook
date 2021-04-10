@@ -1,9 +1,12 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Dal.Queries.Steps;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,7 +33,10 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new EditStepPictureCommandHandler(editDbContext),
                 new EditStepDescriptionCommandHandler(editDbContext),
                 new SearchStepQueryHandler(queryDbContext),
-                new SwapStepsCommandHandler(swapDbContext));
+                new SwapStepsCommandHandler(swapDbContext),
+                new SearchRecipeQueryHandler(queryDbContext),
+                new AppendRecipeStepCommandHandler(editDbContext),
+                new RemoveRecipeCategoryCommandHandler(editDbContext));
 
             _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
@@ -149,6 +155,29 @@ namespace KitProjects.MasterChef.Tests.Editors
             var steps = _fixture.FindRecipe(recipeId).Steps;
             steps.First(step => step.Id == firstStepId).Index.Should().Be(2);
             steps.First(step => step.Id == secondStepId).Index.Should().Be(1);
+        }
+
+        [Fact]
+        public void Editor_appends_a_step_without_ingredients()
+        {
+            var recipeId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            var newStep = new RecipeStep(Guid.NewGuid())
+            {
+                Description = "Текст",
+                Image = "Изображение"
+            };
+
+            Action act = () => _sut.AppendStep(recipeId, newStep);
+
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Editor_appends_a_step_with_ingredients()
+        {
+
         }
 
         public void Dispose()
