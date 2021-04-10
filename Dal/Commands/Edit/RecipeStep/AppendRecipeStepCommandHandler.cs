@@ -28,7 +28,6 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep
             var newStep = command.Step;
             var appendStep = new DbRecipeStep
             {
-                Id = newStep.Id,
                 Description = newStep.Description,
                 Index = recipe.Steps.Count + 1,
                 Image = newStep.Image,

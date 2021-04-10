@@ -36,7 +36,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new SwapStepsCommandHandler(swapDbContext),
                 new SearchRecipeQueryHandler(queryDbContext),
                 new AppendRecipeStepCommandHandler(editDbContext),
-                new RemoveRecipeCategoryCommandHandler(editDbContext));
+                new RemoveRecipeStepCommandHandler(editDbContext));
 
             _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
@@ -170,6 +170,7 @@ namespace KitProjects.MasterChef.Tests.Editors
 
             Action act = () => _sut.AppendStep(recipeId, newStep);
 
+            act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
             result.Steps.Should().HaveCount(1);
         }
@@ -177,7 +178,50 @@ namespace KitProjects.MasterChef.Tests.Editors
         [Fact]
         public void Editor_appends_a_step_with_ingredients()
         {
+            var recipeId = Guid.NewGuid();
+            var ingredientName = "Существует";
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            var newStep = new RecipeStep(Guid.NewGuid())
+            {
+                Description = "Текст",
+                Image = "Изображение",
+                IngredientsDetails =
+                {
+                    new Kernel.Models.Recipes.StepIngredientDetails
+                    {
+                        Amount = 1,
+                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        IngredientName = ingredientName
+                    }
+                }
+            };
 
+            Action act = () => _sut.AppendStep(recipeId, newStep);
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.Should().HaveCount(1);
+            result.Steps.First().StepIngredientsLink.First().DbIngredient.Name.Should().Be(ingredientName);
+        }
+
+        [Fact]
+        public void Editor_removes_a_step_from_recipe()
+        {
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            var newStep = new RecipeStep(stepId)
+            {
+                Description = "Текст",
+                Image = "Изображение"
+            };
+
+            Action act = () => _sut.RemoveStep(recipeId, stepId);
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.Should().BeEmpty();
         }
 
         public void Dispose()
