@@ -176,11 +176,40 @@ namespace KitProjects.MasterChef.Tests.Editors
         }
 
         [Fact]
-        public void Editor_appends_a_step_with_ingredients()
+        public void Editor_appends_a_step_with_existing_ingredients()
         {
             var recipeId = Guid.NewGuid();
             var ingredientName = "Существует";
             _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            var newStep = new RecipeStep(Guid.NewGuid())
+            {
+                Description = "Текст",
+                Image = "Изображение",
+                IngredientsDetails =
+                {
+                    new Kernel.Models.Recipes.StepIngredientDetails
+                    {
+                        Amount = 1,
+                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        IngredientName = ingredientName
+                    }
+                }
+            };
+
+            Action act = () => _sut.AppendStep(recipeId, newStep);
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.Should().HaveCount(1);
+            result.Steps.First().StepIngredientsLink.First().DbIngredient.Name.Should().Be(ingredientName);
+        }
+
+        [Fact]
+        public void Editor_appends_a_step_with_nonexistent_ingredients()
+        {
+            var recipeId = Guid.NewGuid();
+            var ingredientName = "Несуществующий";
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
             var newStep = new RecipeStep(Guid.NewGuid())
             {
