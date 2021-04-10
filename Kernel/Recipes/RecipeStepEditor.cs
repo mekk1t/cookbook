@@ -11,6 +11,16 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<EditStepDescriptionCommand> _editDescription;
         private readonly IQuery<RecipeStep, SearchStepQuery> _searchStep;
 
+        public RecipeStepEditor(
+            ICommand<EditStepPictureCommand> editPicture,
+            ICommand<EditStepDescriptionCommand> editDescription,
+            IQuery<RecipeStep, SearchStepQuery> searchStep)
+        {
+            _editDescription = editDescription;
+            _editPicture = editPicture;
+            _searchStep = searchStep;
+        }
+
         public void ChangePicture(Guid stepId, string newImage)
         {
             var step = _searchStep.Execute(new SearchStepQuery(stepId));
