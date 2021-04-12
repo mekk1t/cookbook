@@ -4,10 +4,6 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Kernel.Recipes
 {
@@ -17,7 +13,27 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
         private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredient;
         private readonly ICommand<RemoveRecipeIngredientCommand> _removeIngredient;
+        private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
+        private readonly ICommand<ReplaceIngredientsListCommand> _replaceIngredientsList;
         private readonly IngredientService _ingredientService;
+
+        public RecipeIngredientEditor(
+            IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
+            IQuery<Recipe, SearchRecipeQuery> searchRecipe,
+            ICommand<AppendRecipeIngredientCommand> appendIngredient,
+            ICommand<RemoveRecipeIngredientCommand> removeIngredient,
+            ICommand<ReplaceIngredientsListCommand> replaceIngredientsList,
+            ICommand<ReplaceRecipeIngredientCommand> replaceIngredient,
+            IngredientService ingredientService)
+        {
+            _searchIngredient = searchIngredient;
+            _searchRecipe = searchRecipe;
+            _appendIngredient = appendIngredient;
+            _removeIngredient = removeIngredient;
+            _replaceIngredient = replaceIngredient;
+            _replaceIngredientsList = replaceIngredientsList;
+            _ingredientService = ingredientService;
+        }
 
         public void AppendIngredient(Guid recipeId, Ingredient ingredient)
         {
@@ -54,12 +70,16 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
 
-
+            _replaceIngredient.Execute(new ReplaceRecipeIngredientCommand(oldIngredient, newIngredient, recipeId));
         }
 
-        public void ReplaceIngredientsList(Ingredient[] oldIngredients, Ingredient[] newIngredients)
+        public void ReplaceIngredientsList(Ingredient[] oldIngredients, Ingredient[] newIngredients, Guid recipeId)
         {
+            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
+            if (recipe == null)
+                throw new ArgumentException(null, nameof(recipeId));
 
+            _replaceIngredientsList.Execute(new ReplaceIngredientsListCommand(oldIngredients, newIngredients, recipeId));
         }
     }
 }
