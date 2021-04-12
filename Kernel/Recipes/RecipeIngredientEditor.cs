@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
+using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel.Recipes
 {
@@ -73,13 +74,24 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _replaceIngredient.Execute(new ReplaceRecipeIngredientCommand(oldIngredient, newIngredient, recipeId));
         }
 
-        public void ReplaceIngredientsList(Ingredient[] oldIngredients, Ingredient[] newIngredients, Guid recipeId)
+        public void ReplaceIngredientsList(Ingredient[] newIngredients, Guid recipeId)
         {
             var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
 
-            _replaceIngredientsList.Execute(new ReplaceIngredientsListCommand(oldIngredients, newIngredients, recipeId));
+            foreach (var ingredient in newIngredients)
+            {
+                var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.Name));
+                if (existingIngredient == null)
+                {
+                    _ingredientService.CreateIngredient(new CreateIngredientCommand(
+                        ingredient.Name,
+                        ingredient.Categories.Select(c => c.Name)));
+                }
+            }
+
+            _replaceIngredientsList.Execute(new ReplaceIngredientsListCommand(newIngredients, recipeId));
         }
     }
 }
