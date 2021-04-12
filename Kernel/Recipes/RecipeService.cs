@@ -2,6 +2,9 @@
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Models.Queries.Get;
+using KitProjects.MasterChef.Kernel.Recipes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,17 +16,20 @@ namespace KitProjects.MasterChef.Kernel
         private readonly CategoryService _categoryService;
         private readonly IngredientService _ingredientService;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipesQuery;
+        private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipeQuery;
 
         public RecipeService(
             ICommand<CreateRecipeCommand> createRecipeCommand,
             CategoryService categoryService,
             IngredientService ingredientService,
-            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipesQuery)
+            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipesQuery,
+            IQuery<RecipeDetails, GetRecipeQuery> getRecipeQuery)
         {
             _createRecipeCommand = createRecipeCommand;
             _categoryService = categoryService;
             _ingredientService = ingredientService;
             _getRecipesQuery = getRecipesQuery;
+            _getRecipeQuery = getRecipeQuery;
         }
 
         public void CreateRecipe(CreateRecipeCommand command)
@@ -58,5 +64,7 @@ namespace KitProjects.MasterChef.Kernel
         }
 
         public IEnumerable<Recipe> GetRecipes(GetRecipesQuery query) => _getRecipesQuery.Execute(query);
+
+        public RecipeDetails GetRecipe(Guid recipeId) => _getRecipeQuery.Execute(new GetRecipeQuery(recipeId));
     }
 }

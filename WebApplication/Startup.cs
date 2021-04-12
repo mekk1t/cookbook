@@ -1,4 +1,4 @@
-using KitProjects.MasterChef.Dal;
+п»їusing KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
@@ -14,8 +14,10 @@ using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +39,7 @@ namespace WebApplication
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API агрегатора кулинарных рецептов \"Мастер Шеф\".", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Р°РіСЂРµРіР°С‚РѕСЂР° РєСѓР»РёРЅР°СЂРЅС‹С… СЂРµС†РµРїС‚РѕРІ \"РњР°СЃС‚РµСЂ РЁРµС„\"", Version = "v1" });
                 var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 c.IncludeXmlComments(xmlDocPath);
             });
@@ -58,6 +60,7 @@ namespace WebApplication
             services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
             services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
             services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
+            services.AddScoped<IQuery<RecipeDetails, GetRecipeQuery>, GetRecipeQueryHandler>();
 
             services.AddScoped<RecipeEditor>();
             services.AddScoped<ICommand<RemoveRecipeCategoryCommand>, RemoveRecipeCategoryCommandHandler>();
@@ -78,6 +81,13 @@ namespace WebApplication
             services.AddScoped<ICommand<AppendRecipeStepCommand>, AppendRecipeStepCommandHandler>();
             services.AddScoped<ICommand<RemoveRecipeStepCommand>, RemoveRecipeStepCommandHandler>();
             services.AddScoped<ICommand<NormalizeStepsOrderCommand>, NormalizeStepsOrderCommandHandler>();
+
+            services.AddScoped<RecipeIngredientEditor>();
+            services.AddScoped<ICommand<AppendRecipeIngredientCommand>, AppendIngredientCommandHandler>();
+            services.AddScoped<ICommand<RemoveRecipeIngredientCommand>, RemoveRecipeIngredientCommandHandler>();
+            services.AddScoped<ICommand<ReplaceRecipeIngredientCommand>, ReplaceRecipeIngredientCommandHandler>();
+            services.AddScoped<ICommand<ReplaceIngredientsListCommand>, ReplaceRecipeIngredientsListCommandHandler>();
+            services.AddScoped<ICommand<EditRecipeIngredientDescriptionCommand>, EditRecipeIngredientDescriptionCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
