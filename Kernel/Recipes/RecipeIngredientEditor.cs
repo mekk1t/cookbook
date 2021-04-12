@@ -17,6 +17,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
         private readonly ICommand<ReplaceIngredientsListCommand> _replaceIngredientsList;
         private readonly IngredientService _ingredientService;
+        private readonly ICommand<EditRecipeIngredientDescriptionCommand> _editIngredientDescription;
 
         public RecipeIngredientEditor(
             IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
@@ -25,7 +26,8 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             ICommand<RemoveRecipeIngredientCommand> removeIngredient,
             ICommand<ReplaceIngredientsListCommand> replaceIngredientsList,
             ICommand<ReplaceRecipeIngredientCommand> replaceIngredient,
-            IngredientService ingredientService)
+            IngredientService ingredientService,
+            ICommand<EditRecipeIngredientDescriptionCommand> editIngredientDescription)
         {
             _searchIngredient = searchIngredient;
             _searchRecipe = searchRecipe;
@@ -34,6 +36,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _replaceIngredient = replaceIngredient;
             _replaceIngredientsList = replaceIngredientsList;
             _ingredientService = ingredientService;
+            _editIngredientDescription = editIngredientDescription;
         }
 
         public void AppendIngredient(AppendRecipeIngredientCommand command)
@@ -92,6 +95,14 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             }
 
             _replaceIngredientsList.Execute(new ReplaceIngredientsListCommand(newIngredients, recipeId));
+        }
+
+        public void EditIngredientsDescription(EditRecipeIngredientDescriptionCommand command)
+        {
+            if (!command.HasValues)
+                return;
+
+            _editIngredientDescription.Execute(command);
         }
     }
 }

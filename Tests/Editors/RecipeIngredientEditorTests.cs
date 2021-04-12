@@ -14,6 +14,7 @@ using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -46,7 +47,8 @@ namespace KitProjects.MasterChef.Tests.Editors
                         new DeleteCategoryCommandHandler(_dbContext),
                         new EditCategoryCommandHandler(_dbContext)),
                     new EditIngredientCommandHandler(_dbContext),
-                    new DeleteIngredientCommandHandler(_dbContext)));
+                    new DeleteIngredientCommandHandler(_dbContext)),
+                new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
 
         public void Dispose() => _dbContext.Dispose();
@@ -145,6 +147,25 @@ namespace KitProjects.MasterChef.Tests.Editors
             result.RecipeIngredientLink.Select(link => link.DbIngredient.Name)
                 .Should()
                 .OnlyContain(name => name == newIngredientId.ToString() || name == newIngredientId2.ToString());
+        }
+
+        [Fact]
+        public void Editor_edits_ingredients_description()
+        {
+            var recipeId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+                recipeId,
+                new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
+                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+            var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First().DbIngredientId;
+
+            _sut.EditIngredientsDescription(
+                new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.Pieces));
+
+            var result = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First();
+            result.IngredientxAmount.Should().Be(228M);
+            result.IngredientMeasure.Should().Be(Measures.Pieces);
         }
     }
 }
