@@ -45,6 +45,9 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
 
+        [HttpGet("{recipeId}")]
+        public RecipeDetails GetRecipe([FromRoute] Guid recipeId) => _recipeService.GetRecipe(recipeId);
+
         /// <summary>
         /// Редактирует рецепт по ID.
         /// </summary>

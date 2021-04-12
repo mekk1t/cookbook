@@ -14,6 +14,7 @@ using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
@@ -59,6 +60,7 @@ namespace WebApplication
             services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
             services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
             services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
+            services.AddScoped<IQuery<RecipeDetails, GetRecipeQuery>, GetRecipeQueryHandler>();
 
             services.AddScoped<RecipeEditor>();
             services.AddScoped<ICommand<RemoveRecipeCategoryCommand>, RemoveRecipeCategoryCommandHandler>();

@@ -23,7 +23,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
             if (recipe == null)
                 throw new EntityNotFoundException();
 
-            var newIngredient = _dbContext.Ingredients.FirstOrDefault(i => i.Id == command.NewIngredient.Id);
+            var newIngredient = _dbContext.Ingredients.FirstOrDefault(i => i.Name == command.NewIngredient.Name);
             if (newIngredient == null)
                 throw new EntityNotFoundException();
 

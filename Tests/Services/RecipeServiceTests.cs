@@ -3,6 +3,7 @@ using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
@@ -40,7 +41,12 @@ namespace KitProjects.MasterChef.Tests.Services
                 categoryService,
                 new EditIngredientCommandHandler(dbContext),
                 new DeleteIngredientCommandHandler(dbContext));
-            _sut = new RecipeService(new CreateRecipeCommandHandler(dbContext), categoryService, ingredientService, new GetRecipesQueryHandler(dbContext));
+            _sut = new RecipeService(
+                new CreateRecipeCommandHandler(dbContext),
+                categoryService,
+                ingredientService,
+                new GetRecipesQueryHandler(dbContext),
+                new GetRecipeQueryHandler(dbContext));
         }
 
         [Fact]

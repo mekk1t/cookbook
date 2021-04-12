@@ -25,7 +25,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
                 throw new EntityNotFoundException();
 
             var newIngredients = _dbContext.Ingredients
-                .Where(i => command.NewIngredients.Select(c => c.Id).Contains(i.Id))
+                .Where(i => command.NewIngredients.Select(c => c.Name).Contains(i.Name))
                 .ToList();
 
             recipe.RecipeIngredientLink.Clear();
