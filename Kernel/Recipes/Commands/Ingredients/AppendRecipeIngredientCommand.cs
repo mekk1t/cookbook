@@ -1,4 +1,5 @@
-﻿using KitProjects.MasterChef.Kernel.Models.Ingredients;
+﻿using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Ingredients;
 using System;
 
 namespace KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients
@@ -6,13 +7,13 @@ namespace KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients
     public class AppendRecipeIngredientCommand
     {
         public Guid RecipeId { get; }
-        public Guid IngredientId { get; }
+        public Ingredient Ingredient { get; }
         public AppendIngredientParameters Parameters { get; }
 
-        public AppendRecipeIngredientCommand(Guid recipeId, Guid ingredientId, AppendIngredientParameters parameters)
+        public AppendRecipeIngredientCommand(Guid recipeId, Ingredient ingredient, AppendIngredientParameters parameters)
         {
             RecipeId = recipeId;
-            IngredientId = ingredientId;
+            Ingredient = ingredient;
         }
     }
 

@@ -36,17 +36,17 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _ingredientService = ingredientService;
         }
 
-        public void AppendIngredient(Guid recipeId, Ingredient ingredient)
+        public void AppendIngredient(AppendRecipeIngredientCommand command)
         {
-            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
+            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(command.RecipeId));
             if (recipe == null)
-                throw new ArgumentException(null, nameof(recipeId));
+                throw new ArgumentException(null, nameof(command));
 
-            var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.Id));
+            var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(command.Ingredient.Id));
             if (existingIngredient == null)
-                _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredient.Name, Array.Empty<string>()));
+                _ingredientService.CreateIngredient(new CreateIngredientCommand(command.Ingredient.Name, Array.Empty<string>()));
 
-            _appendIngredient.Execute(new AppendRecipeIngredientCommand(recipeId, ingredient.Id));
+            _appendIngredient.Execute(command);
         }
 
         public void RemoveIngredient(Guid recipeId, Guid ingredientId)
