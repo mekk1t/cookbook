@@ -14,6 +14,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients
         {
             RecipeId = recipeId;
             Ingredient = ingredient;
+            Parameters = parameters;
         }
     }
 

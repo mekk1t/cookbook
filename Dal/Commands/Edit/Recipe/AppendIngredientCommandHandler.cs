@@ -23,9 +23,9 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
             if (recipe == null)
                 throw new EntityNotFoundException(command.RecipeId.ToString());
 
-            var ingredient = _dbContext.Ingredients.FirstOrDefault(i => i.Id == command.IngredientId);
+            var ingredient = _dbContext.Ingredients.FirstOrDefault(i => i.Name == command.Ingredient.Name);
             if (ingredient == null)
-                throw new EntityNotFoundException(command.IngredientId.ToString());
+                throw new EntityNotFoundException(command.Ingredient.Name);
 
             recipe.RecipeIngredientLink.Add(new DbRecipeIngredient
             {
