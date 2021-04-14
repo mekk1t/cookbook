@@ -1,5 +1,8 @@
-﻿using KitProjects.MasterChef.Kernel.Models;
+﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -24,6 +27,32 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         public IActionResult SwapSteps([FromBody] SwapStepsRequest request)
         {
             _editor.SwapSteps(request.FirstStepId, request.SecondStepId, request.RecipeId);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Заменяет старый шаг на новый.
+        /// </summary>
+        /// <param name="stepId">ID шага.</param>
+        /// <returns></returns>
+        [HttpPut("{recipeId}/{stepId}")]
+        public IActionResult ReplaceStep(
+            [FromBody] ReplaceStepRequest request,
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromServices] ICommand<ReplaceStepCommand> replaceStep)
+        {
+            replaceStep.Execute(new ReplaceStepCommand(
+                recipeId,
+                stepId,
+                request.Description,
+                request.Image,
+                request.Ingredients.Select(i => new StepIngredientDetails
+                {
+                    IngredientName = i.IngredientName,
+                    Measure = i.Measure,
+                    Amount = i.Amount
+                }).ToList()));
             return Ok();
         }
 

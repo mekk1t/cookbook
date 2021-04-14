@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries.Search;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
 using System.Linq;
 
@@ -18,6 +19,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<AppendRecipeStepCommand> _appendStep;
         private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
         private readonly ICommand<NormalizeStepsOrderCommand> _normalizeStepsOrder;
+        private readonly RecipeIngredientEditor _recipeIngredientEditor;
 
         public RecipeStepEditor(
             ICommand<EditStepPictureCommand> editPicture,
@@ -27,7 +29,8 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             IQuery<Recipe, SearchRecipeQuery> searchRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
             ICommand<RemoveRecipeStepCommand> removeStep,
-            ICommand<NormalizeStepsOrderCommand> normalizeStepsOrder)
+            ICommand<NormalizeStepsOrderCommand> normalizeStepsOrder,
+            RecipeIngredientEditor recipeIngredientEditor)
         {
             _editDescription = editDescription;
             _editPicture = editPicture;
@@ -37,6 +40,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _appendStep = appendStep;
             _removeStep = removeStep;
             _normalizeStepsOrder = normalizeStepsOrder;
+            _recipeIngredientEditor = recipeIngredientEditor;
         }
 
         public void ChangePicture(Guid stepId, string newImage)
@@ -75,6 +79,21 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
             if (recipe == null)
                 throw new ArgumentException(null, nameof(recipeId));
+
+            var recipeIngredientNames = recipe.Ingredients.Select(i => i.Name).ToList();
+            foreach (var ingredient in step.IngredientsDetails)
+            {
+                if (!recipeIngredientNames.Contains(ingredient.IngredientName))
+                {
+                    _recipeIngredientEditor.AppendIngredient(
+                        new AppendRecipeIngredientCommand(
+                            recipeId,
+                            new Ingredient(
+                                Guid.NewGuid(),
+                                ingredient.IngredientName),
+                            new AppendIngredientParameters(ingredient.Amount, ingredient.Measure)));
+                }
+            }
 
             _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
         }
