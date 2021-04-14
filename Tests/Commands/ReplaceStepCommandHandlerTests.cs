@@ -29,12 +29,6 @@ namespace KitProjects.MasterChef.Tests.Commands
         }
 
         [Fact]
-        public void Replacing_step_does_not_create_new_ingredients()
-        {
-
-        }
-
-        [Fact]
         public void New_step_has_the_same_index_as_old_step()
         {
             using var dbContext = _fixture.DbContext;

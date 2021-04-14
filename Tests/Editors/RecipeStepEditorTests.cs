@@ -4,8 +4,10 @@ using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Dal.Queries.Steps;
+using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +39,22 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new SearchRecipeQueryHandler(queryDbContext),
                 new AppendRecipeStepCommandHandler(editDbContext),
                 new RemoveRecipeStepCommandHandler(editDbContext),
-                new NormalizeStepsOrderCommandHandler(editDbContext));
+                new NormalizeStepsOrderCommandHandler(editDbContext),
+                new RecipeIngredientEditor(
+                    new SearchIngredientQueryHandler(queryDbContext),
+                    new SearchRecipeQueryHandler(queryDbContext),
+                    new AppendIngredientCommandHandler(editDbContext),
+                    new RemoveRecipeIngredientCommandHandler(editDbContext),
+                    new ReplaceRecipeIngredientsListCommandHandler(editDbContext),
+                    new ReplaceRecipeIngredientCommandHandler(editDbContext),
+                    new IngredientService(
+                        new CreateIngredientCommandHandler(editDbContext),
+                        new GetIngredientsQueryHandler(queryDbContext),
+                        new CategoryService(
+                            new CreateCategoryCommandHandler(editDbContext),
+                            new GetCategoriesQueryHandler(queryDbContext)),
+                        new GetCategoriesQueryHandler(queryDbContext)),
+                    new EditRecipeIngredientDescriptionCommandHandler(editDbContext)));
 
             _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
@@ -174,6 +191,36 @@ namespace KitProjects.MasterChef.Tests.Editors
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
             result.Steps.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Editor_appends_a_step_with_new_ingredients_and_adds_them_to_recipe()
+        {
+            var recipeId = Guid.NewGuid();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
+            var newStep = new RecipeStep(Guid.NewGuid())
+            {
+                Description = "Текст",
+                Image = "Изображение",
+                IngredientsDetails =
+                {
+                    new Kernel.Models.Recipes.StepIngredientDetails
+                    {
+                        Amount = 1,
+                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        IngredientName = ingredientName
+                    }
+                }
+            };
+
+            Action act = () => _sut.AppendStep(recipeId, newStep);
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps.Should().HaveCount(1);
+            result.Steps.First().StepIngredientsLink.First().DbIngredient.Name.Should().Be(ingredientName);
+            result.RecipeIngredientLink.Should().HaveCount(1);
         }
 
         [Fact]
