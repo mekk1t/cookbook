@@ -2,9 +2,6 @@
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
-using KitProjects.MasterChef.Kernel.Models.Queries.Get;
-using KitProjects.MasterChef.Kernel.Recipes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,21 +12,18 @@ namespace KitProjects.MasterChef.Kernel
         private readonly ICommand<CreateRecipeCommand> _createRecipeCommand;
         private readonly CategoryService _categoryService;
         private readonly IngredientService _ingredientService;
-        private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipesQuery;
-        private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipeQuery;
+        private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
 
         public RecipeService(
             ICommand<CreateRecipeCommand> createRecipeCommand,
             CategoryService categoryService,
             IngredientService ingredientService,
-            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipesQuery,
-            IQuery<RecipeDetails, GetRecipeQuery> getRecipeQuery)
+            IQuery<Ingredient, SearchIngredientQuery> searchIngredient)
         {
             _createRecipeCommand = createRecipeCommand;
             _categoryService = categoryService;
             _ingredientService = ingredientService;
-            _getRecipesQuery = getRecipesQuery;
-            _getRecipeQuery = getRecipeQuery;
+            _searchIngredient = searchIngredient;
         }
 
         public void CreateRecipe(CreateRecipeCommand command)
@@ -38,8 +32,7 @@ namespace KitProjects.MasterChef.Kernel
             {
                 foreach (var ingredient in command.IngredientsDetails)
                 {
-                    var oldIngredient = _ingredientService.GetIngredients(new GetIngredientsQuery(limit: 1000))
-                        .FirstOrDefault(i => i.Name == ingredient.IngredientName);
+                    var oldIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.IngredientName));
                     if (oldIngredient == null)
                     {
                         _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredient.IngredientName, new List<string>()));
@@ -62,9 +55,5 @@ namespace KitProjects.MasterChef.Kernel
 
             _createRecipeCommand.Execute(command);
         }
-
-        public IEnumerable<Recipe> GetRecipes(GetRecipesQuery query) => _getRecipesQuery.Execute(query);
-
-        public RecipeDetails GetRecipe(Guid recipeId) => _getRecipeQuery.Execute(new GetRecipeQuery(recipeId));
     }
 }

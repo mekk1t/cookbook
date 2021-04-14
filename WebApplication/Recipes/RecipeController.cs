@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using KitProjects.MasterChef.WebApplication.Recipes.Requests;
@@ -43,14 +44,19 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// Получает список рецептов. Включает все связи.
         /// </summary>
         [HttpGet("")]
-        public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
+        public IEnumerable<Recipe> GetRecipes(
+            [FromServices] IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes) =>
+            getRecipes.Execute(new GetRecipesQuery(true));
 
         /// <summary>
         /// Получает подробную информацию о рецепте.
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
-        public RecipeDetails GetRecipe([FromRoute] Guid recipeId) => _recipeService.GetRecipe(recipeId);
+        public RecipeDetails GetRecipe(
+            [FromRoute] Guid recipeId,
+            [FromServices] IQuery<RecipeDetails, GetRecipeQuery> searchRecipe) =>
+            searchRecipe.Execute(new GetRecipeQuery(recipeId));
 
         /// <summary>
         /// Редактирует название и описание рецепта по ID.

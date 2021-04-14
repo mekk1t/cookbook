@@ -10,23 +10,18 @@ namespace KitProjects.MasterChef.Kernel
 {
     public class IngredientService
     {
-        private readonly ICommand<DeleteIngredientCommand> _deleteIngredientCommand;
-        private readonly ICommand<EditIngredientCommand> _editIngredientCommand;
         private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
         private readonly CategoryService _categoryService;
 
         public IngredientService(
             ICommand<CreateIngredientCommand> createIngredientCommand,
-            IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery, CategoryService categoryService,
-            ICommand<EditIngredientCommand> editIngredientCommand,
-            ICommand<DeleteIngredientCommand> deleteIngredientCommand)
+            IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery,
+            CategoryService categoryService)
         {
             _createIngredientCommand = createIngredientCommand;
             _getIngredientsQuery = getIngredientsQuery;
             _categoryService = categoryService;
-            _editIngredientCommand = editIngredientCommand;
-            _deleteIngredientCommand = deleteIngredientCommand;
         }
 
         public void CreateIngredient(CreateIngredientCommand command)
@@ -45,9 +40,5 @@ namespace KitProjects.MasterChef.Kernel
                 _createIngredientCommand.Execute(command);
             }
         }
-
-        public IEnumerable<Ingredient> GetIngredients(GetIngredientsQuery query) => _getIngredientsQuery.Execute(query);
-        public void EditIngredient(EditIngredientCommand command) => _editIngredientCommand.Execute(command);
-        public void DeleteIngredient(DeleteIngredientCommand command) => _deleteIngredientCommand.Execute(command);
     }
 }

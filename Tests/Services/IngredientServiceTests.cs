@@ -33,9 +33,7 @@ namespace KitProjects.MasterChef.Tests.Services
                     new CreateCategoryCommandHandler(dbContext),
                     new GetCategoriesQueryHandler(dbContext),
                     new DeleteCategoryCommandHandler(dbContext),
-                    new EditCategoryCommandHandler(dbContext)),
-                new EditIngredientCommandHandler(dbContext),
-                new DeleteIngredientCommandHandler(dbContext));
+                    new EditCategoryCommandHandler(dbContext)));
         }
 
         [Fact]
@@ -106,8 +104,10 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             var ingredientId = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, "влтывдлмтыд"));
+            using var dbContext = _fixture.DbContext;
+            var sut = new EditIngredientCommandHandler(dbContext);
 
-            Action act = () => _sut.EditIngredient(new EditIngredientCommand(ingredientId, "НовоеИмя"));
+            Action act = () => sut.Execute(new EditIngredientCommand(ingredientId, "НовоеИмя"));
 
             act.Should().NotThrow();
             var result = _fixture.FindIngredient("НовоеИмя");
@@ -120,8 +120,10 @@ namespace KitProjects.MasterChef.Tests.Services
             var ingredientId = Guid.NewGuid();
             var ingredientName = "414019гк30";
             _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientName));
+            using var dbContext = _fixture.DbContext;
+            var sut = new DeleteIngredientCommandHandler(dbContext);
 
-            Action act = () => _sut.DeleteIngredient(new DeleteIngredientCommand(ingredientId));
+            Action act = () => sut.Execute(new DeleteIngredientCommand(ingredientId));
 
             act.Should().NotThrow();
             var result = _fixture.FindIngredient(ingredientName);
@@ -133,8 +135,10 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             _sut.CreateIngredient(new CreateIngredientCommand("Тестовый", new[] { "Абвгд", "Еёжз" }));
             var query = new GetIngredientsQuery(withRelationships: true);
+            using var dbContext = _fixture.DbContext;
+            var sut = new GetIngredientsQueryHandler(dbContext);
 
-            var result = _sut.GetIngredients(query);
+            var result = sut.Execute(query);
 
             result.First(r => r.Name == "Тестовый")
                 .Categories.Select(c => c.Name).Should().Contain(new[] { "Абвгд", "Еёжз" });
@@ -145,8 +149,10 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             _sut.CreateIngredient(new CreateIngredientCommand("Тестовый", new[] { "Абвгд", "Еёжз" }));
             var query = new GetIngredientsQuery(withRelationships: false);
+            using var dbContext = _fixture.DbContext;
+            var sut = new GetIngredientsQueryHandler(dbContext);
 
-            var result = _sut.GetIngredients(query);
+            var result = sut.Execute(query);
 
             result.First(r => r.Name == "Тестовый")
                 .Categories.Select(c => c.Name).Should().NotContain(new[] { "Абвгд", "Еёжз" });

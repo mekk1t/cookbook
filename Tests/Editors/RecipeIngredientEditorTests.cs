@@ -42,9 +42,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                         new CreateCategoryCommandHandler(_dbContext),
                         new GetCategoriesQueryHandler(_dbContext),
                         new DeleteCategoryCommandHandler(_dbContext),
-                        new EditCategoryCommandHandler(_dbContext)),
-                    new EditIngredientCommandHandler(_dbContext),
-                    new DeleteIngredientCommandHandler(_dbContext)),
+                        new EditCategoryCommandHandler(_dbContext))),
                 new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
 

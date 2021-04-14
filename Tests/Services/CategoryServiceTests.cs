@@ -37,9 +37,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             _ingredientService = new IngredientService(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
-                _sut,
-                new EditIngredientCommandHandler(dbContext),
-                new DeleteIngredientCommandHandler(dbContext));
+                _sut);
         }
 
         [Fact]
