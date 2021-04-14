@@ -39,10 +39,13 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// </summary>
         /// <param name="categoryName">Название категории.</param>
         [HttpGet("{categoryName}")]
-        public GetCategoryResponse GetCategory([FromRoute] string categoryName)
+        public IActionResult GetCategory([FromRoute] string categoryName)
         {
             var category = _categoryService.GetCategories(new GetCategoriesQuery()).FirstOrDefault(c => c.Name == categoryName);
-            return new GetCategoryResponse(category.Id, category.Name);
+            if (category == null)
+                return NotFound();
+
+            return Ok(new GetCategoryResponse(category.Id, category.Name));
         }
 
         /// <summary>
