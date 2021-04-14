@@ -32,18 +32,18 @@ namespace KitProjects.MasterChef.Tests.Services
             _dbContexts.Add(dbContext);
             var categoryService = new CategoryService(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext),
-                new DeleteCategoryCommandHandler(dbContext),
-                new EditCategoryCommandHandler(dbContext));
+                new GetCategoriesQueryHandler(dbContext));
             var ingredientService = new IngredientService(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
-                categoryService);
+                categoryService,
+                new GetCategoriesQueryHandler(dbContext));
             _sut = new RecipeService(
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,
                 ingredientService,
-                new SearchIngredientQueryHandler(dbContext));
+                new SearchIngredientQueryHandler(dbContext),
+                new GetCategoriesQueryHandler(dbContext));
         }
 
         [Fact]

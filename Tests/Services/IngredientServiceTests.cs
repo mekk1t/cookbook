@@ -31,9 +31,8 @@ namespace KitProjects.MasterChef.Tests.Services
                 new GetIngredientsQueryHandler(dbContext),
                 new CategoryService(
                     new CreateCategoryCommandHandler(dbContext),
-                    new GetCategoriesQueryHandler(dbContext),
-                    new DeleteCategoryCommandHandler(dbContext),
-                    new EditCategoryCommandHandler(dbContext)));
+                    new GetCategoriesQueryHandler(dbContext)),
+                new GetCategoriesQueryHandler(dbContext));
         }
 
         [Fact]
