@@ -65,7 +65,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         }
 
         /// <summary>
-        /// Редактирует ингредиент по ID.
+        /// Редактирует название ингредиента по ID.
         /// </summary>
         /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
         /// <param name="request">Запрос на редактирование.</param>

@@ -45,11 +45,15 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpGet("")]
         public IEnumerable<Recipe> GetRecipes() => _recipeService.GetRecipes(new GetRecipesQuery(true));
 
+        /// <summary>
+        /// Получает подробную информацию о рецепте.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
         public RecipeDetails GetRecipe([FromRoute] Guid recipeId) => _recipeService.GetRecipe(recipeId);
 
         /// <summary>
-        /// Редактирует рецепт по ID.
+        /// Редактирует название и описание рецепта по ID.
         /// </summary>
         /// <param name="recipeId">ID рецепта в формате GUID.</param>
         /// <param name="request">Запрос на редактирование рецепта.</param>
