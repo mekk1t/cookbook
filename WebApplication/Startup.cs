@@ -18,6 +18,7 @@ using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +82,7 @@ namespace WebApplication
             services.AddScoped<ICommand<AppendRecipeStepCommand>, AppendRecipeStepCommandHandler>();
             services.AddScoped<ICommand<RemoveRecipeStepCommand>, RemoveRecipeStepCommandHandler>();
             services.AddScoped<ICommand<NormalizeStepsOrderCommand>, NormalizeStepsOrderCommandHandler>();
+            services.AddScoped<ICommand<ReplaceStepCommand>, ReplaceStepCommandHandler>();
 
             services.AddScoped<RecipeIngredientEditor>();
             services.AddScoped<ICommand<AppendRecipeIngredientCommand>, AppendIngredientCommandHandler>();
