@@ -114,7 +114,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_with_relationships_gets_all_ingredients_related()
         {
             var ingredientName = "вжыьлдмывмлд";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: true);
             using var dbContext = _fixture.DbContext;
             var sut = new GetCategoriesQueryHandler(dbContext);
@@ -129,7 +129,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_without_relationships_doesnt_have_related_ingredients()
         {
             var ingredientName = "as;lvmasd;lvmsd;lvm";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: false);
             using var dbContext = _fixture.DbContext;
             var sut = new GetCategoriesQueryHandler(dbContext);

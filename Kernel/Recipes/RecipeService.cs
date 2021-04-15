@@ -38,7 +38,7 @@ namespace KitProjects.MasterChef.Kernel
                     var oldIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.IngredientName));
                     if (oldIngredient == null)
                     {
-                        _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredient.IngredientName, new List<string>()));
+                        _ingredientService.Execute(new CreateIngredientCommand(ingredient.IngredientName, new List<string>()));
                     }
                 }
             }

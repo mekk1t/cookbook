@@ -47,7 +47,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
 
             var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(command.Ingredient.Id));
             if (existingIngredient == null)
-                _ingredientService.CreateIngredient(new CreateIngredientCommand(command.Ingredient.Name, Array.Empty<string>()));
+                _ingredientService.Execute(new CreateIngredientCommand(command.Ingredient.Name, Array.Empty<string>()));
 
             _appendIngredient.Execute(command);
         }
@@ -88,7 +88,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
                 var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.Name));
                 if (existingIngredient == null)
                 {
-                    _ingredientService.CreateIngredient(new CreateIngredientCommand(
+                    _ingredientService.Execute(new CreateIngredientCommand(
                         ingredient.Name,
                         ingredient.Categories.Select(c => c.Name)));
                 }

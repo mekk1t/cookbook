@@ -105,7 +105,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         public IActionResult CreateIngredient(
             [FromBody] CreateIngredientRequest request)
         {
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(request.Name, request.Categories));
+            _ingredientService.Execute(new CreateIngredientCommand(request.Name, request.Categories));
 
             var createdIngredient = _searchIngredient.Execute(new SearchIngredientQuery(request.Name));
             if (createdIngredient == null)

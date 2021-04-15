@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class CreateIngredientDecorator
+    public class CreateIngredientDecorator : ICommand<CreateIngredientCommand>
     {
         private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
@@ -27,7 +27,7 @@ namespace KitProjects.MasterChef.Kernel
             _getCategories = getCategories;
         }
 
-        public void CreateIngredient(CreateIngredientCommand command)
+        public void Execute(CreateIngredientCommand command)
         {
             var ingredientNames = _getIngredientsQuery.Execute(new GetIngredientsQuery()).Select(i => i.Name);
             if (!ingredientNames.Contains(command.Name))
