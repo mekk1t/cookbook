@@ -21,12 +21,27 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         private readonly RecipeService _recipeService;
         private readonly RecipeEditor _editor;
         private readonly RecipeIngredientEditor _recipeIngredientEditor;
+        private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
+        private readonly IQuery<RecipeDetails, GetRecipeQuery> _searchRecipe;
+        private readonly ICommand<EditRecipeCommand> _editRecipe;
+        private readonly ICommand<DeleteRecipeCommand> _deleteRecipe;
 
-        public RecipeController(RecipeService recipeService, RecipeEditor editor, RecipeIngredientEditor recipeIngredientEditor)
+        public RecipeController(
+            RecipeService recipeService,
+            RecipeEditor editor,
+            RecipeIngredientEditor recipeIngredientEditor,
+            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
+            IQuery<RecipeDetails, GetRecipeQuery> searchRecipe,
+            ICommand<EditRecipeCommand> editRecipe,
+            ICommand<DeleteRecipeCommand> deleteRecipe)
         {
             _recipeService = recipeService;
             _editor = editor;
             _recipeIngredientEditor = recipeIngredientEditor;
+            _getRecipes = getRecipes;
+            _searchRecipe = searchRecipe;
+            _editRecipe = editRecipe;
+            _deleteRecipe = deleteRecipe;
         }
 
         /// <summary>
@@ -44,9 +59,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// Получает список рецептов. Включает все связи.
         /// </summary>
         [HttpGet("")]
-        public IEnumerable<Recipe> GetRecipes(
-            [FromServices] IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes) =>
-            getRecipes.Execute(new GetRecipesQuery(true));
+        public IEnumerable<Recipe> GetRecipes() => _getRecipes.Execute(new GetRecipesQuery(true));
 
         /// <summary>
         /// Получает подробную информацию о рецепте.
@@ -54,9 +67,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
         public RecipeDetails GetRecipe(
-            [FromRoute] Guid recipeId,
-            [FromServices] IQuery<RecipeDetails, GetRecipeQuery> searchRecipe) =>
-            searchRecipe.Execute(new GetRecipeQuery(recipeId));
+            [FromRoute] Guid recipeId) =>
+            _searchRecipe.Execute(new GetRecipeQuery(recipeId));
 
         /// <summary>
         /// Редактирует название и описание рецепта по ID.
@@ -66,10 +78,9 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpPut("{recipeId}")]
         public IActionResult EditRecipe(
             [FromRoute] Guid recipeId,
-            [FromBody] EditRecipeRequest request,
-            [FromServices] ICommand<EditRecipeCommand> command)
+            [FromBody] EditRecipeRequest request)
         {
-            command.Execute(new EditRecipeCommand(recipeId, request.NewTitle, request.NewDescription));
+            _editRecipe.Execute(new EditRecipeCommand(recipeId, request.NewTitle, request.NewDescription));
             return Ok();
         }
 
@@ -103,9 +114,9 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// </summary>
         /// <param name="recipeId">ID в формате GUID.</param>
         [HttpDelete("{recipeId}")]
-        public IActionResult DeleteRecipe([FromRoute] Guid recipeId, [FromServices] ICommand<DeleteRecipeCommand> command)
+        public IActionResult DeleteRecipe([FromRoute] Guid recipeId)
         {
-            command.Execute(new DeleteRecipeCommand(recipeId));
+            _deleteRecipe.Execute(new DeleteRecipeCommand(recipeId));
             return Ok();
         }
 
