@@ -20,7 +20,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.Register(typeof(IQuery<,>), assemblies);
             container.Register(typeof(IQuery<>), assemblies);
 
-            container.Register<RecipeService>();
+            container.Register<CreateRecipeDecorator>();
             container.Register<RecipeEditor>();
             container.Register<IngredientEditor>();
             container.Register<RecipeStepEditor>();

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class RecipeService
+    public class CreateRecipeDecorator
     {
         private readonly ICommand<CreateRecipeCommand> _createRecipeCommand;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
@@ -15,7 +15,7 @@ namespace KitProjects.MasterChef.Kernel
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
-        public RecipeService(
+        public CreateRecipeDecorator(
             ICommand<CreateRecipeCommand> createRecipeCommand,
             ICommand<CreateCategoryCommand> createCategory,
             ICommand<CreateIngredientCommand> createIngredient,
@@ -29,7 +29,7 @@ namespace KitProjects.MasterChef.Kernel
             _getCategories = getCategories;
         }
 
-        public void CreateRecipe(CreateRecipeCommand command)
+        public void Execute(CreateRecipeCommand command)
         {
             if (command.IngredientsDetails?.Count() > 0)
             {

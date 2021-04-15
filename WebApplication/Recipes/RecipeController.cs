@@ -18,7 +18,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     [Route("recipes")]
     public class RecipeController : ControllerBase
     {
-        private readonly RecipeService _recipeService;
+        private readonly CreateRecipeDecorator _recipeService;
         private readonly RecipeEditor _editor;
         private readonly RecipeIngredientEditor _recipeIngredientEditor;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
@@ -27,7 +27,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         private readonly ICommand<DeleteRecipeCommand> _deleteRecipe;
 
         public RecipeController(
-            RecipeService recipeService,
+            CreateRecipeDecorator recipeService,
             RecipeEditor editor,
             RecipeIngredientEditor recipeIngredientEditor,
             IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
@@ -51,7 +51,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpPost("")]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
         {
-            _recipeService.CreateRecipe(new CreateRecipeCommand(Guid.NewGuid(), request.Title, request.Categories, request.IngredientDetails, request.Steps));
+            _recipeService.Execute(new CreateRecipeCommand(Guid.NewGuid(), request.Title, request.Categories, request.IngredientDetails, request.Steps));
             return Ok();
         }
 

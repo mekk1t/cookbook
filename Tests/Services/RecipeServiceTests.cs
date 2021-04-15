@@ -22,7 +22,7 @@ namespace KitProjects.MasterChef.Tests.Services
     [Collection("Db")]
     public sealed class RecipeServiceTests : IDisposable
     {
-        private readonly RecipeService _sut;
+        private readonly CreateRecipeDecorator _sut;
         private readonly DbFixture _fixture;
         private readonly List<AppDbContext> _dbContexts;
 
@@ -41,7 +41,7 @@ namespace KitProjects.MasterChef.Tests.Services
                 new GetIngredientsQueryHandler(dbContext),
                 categoryService,
                 new GetCategoriesQueryHandler(dbContext));
-            _sut = new RecipeService(
+            _sut = new CreateRecipeDecorator(
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,
                 ingredientService,
@@ -54,7 +54,7 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             var recipeId = Guid.NewGuid();
 
-            Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
+            Action act = () => _sut.Execute(new CreateRecipeCommand(
                 recipeId,
                 "Тестовый",
                 new[] { "Ахалай махалай", "Букабяка" },
@@ -105,7 +105,7 @@ namespace KitProjects.MasterChef.Tests.Services
             _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
             _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName + "1"));
 
-            Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
+            Action act = () => _sut.Execute(new CreateRecipeCommand(
                 recipeId,
                 "Тестовый",
                 new[] { categoryName, categoryName + "1" },
