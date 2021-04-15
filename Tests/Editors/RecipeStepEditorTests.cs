@@ -50,7 +50,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new IngredientService(
                         new CreateIngredientCommandHandler(editDbContext),
                         new GetIngredientsQueryHandler(queryDbContext),
-                        new CategoryService(
+                        new CreateCategoryDecorator(
                             new CreateCategoryCommandHandler(editDbContext),
                             new GetCategoriesQueryHandler(queryDbContext)),
                         new GetCategoriesQueryHandler(queryDbContext)),

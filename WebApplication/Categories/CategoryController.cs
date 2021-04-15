@@ -16,14 +16,14 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
         private readonly IQuery<Category, SearchCategoryQuery> _searchCategory;
-        private readonly CategoryService _categoryService;
+        private readonly CreateCategoryDecorator _categoryService;
         private readonly ICommand<EditCategoryCommand> _editCategory;
 
         public CategoryController(
             ICommand<DeleteCategoryCommand> deleteCategory,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
             IQuery<Category, SearchCategoryQuery> searchCategory,
-            CategoryService categoryService,
+            CreateCategoryDecorator categoryService,
             ICommand<EditCategoryCommand> editCategory)
         {
             _deleteCategory = deleteCategory;

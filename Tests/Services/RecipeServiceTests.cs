@@ -30,7 +30,7 @@ namespace KitProjects.MasterChef.Tests.Services
             _dbContexts = new List<AppDbContext>();
             var dbContext = _fixture.DbContext;
             _dbContexts.Add(dbContext);
-            var categoryService = new CategoryService(
+            var categoryService = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
                 new GetCategoriesQueryHandler(dbContext));
             var ingredientService = new IngredientService(

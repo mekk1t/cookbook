@@ -15,7 +15,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.Register(typeof(ICommand<>), assemblies, Lifestyle.Scoped);
             container.Register(typeof(IQuery<,>), assemblies, Lifestyle.Scoped);
             container.Register(typeof(IQuery<>), assemblies, Lifestyle.Scoped);
-            container.Register<CategoryService>(Lifestyle.Scoped);
+            container.Register<CreateCategoryDecorator>(Lifestyle.Scoped);
             container.Register<IngredientService>(Lifestyle.Scoped);
             container.Register<RecipeService>(Lifestyle.Scoped);
             container.Register<RecipeEditor>(Lifestyle.Scoped);

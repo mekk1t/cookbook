@@ -38,7 +38,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new IngredientService(
                     new CreateIngredientCommandHandler(_dbContext),
                     new GetIngredientsQueryHandler(_dbContext),
-                    new CategoryService(
+                    new CreateCategoryDecorator(
                         new CreateCategoryCommandHandler(_dbContext),
                         new GetCategoriesQueryHandler(_dbContext)),
                     new GetCategoriesQueryHandler(_dbContext)),

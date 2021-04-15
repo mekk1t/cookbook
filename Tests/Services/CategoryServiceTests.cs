@@ -17,7 +17,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
     public sealed class CategoryServiceTests : IDisposable
     {
         private readonly DbFixture _fixture;
-        private readonly CategoryService _sut;
+        private readonly CreateCategoryDecorator _sut;
         private readonly IngredientService _ingredientService;
         private List<DbContext> _dbContexts;
 
@@ -29,7 +29,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             {
                 dbContext
             };
-            _sut = new CategoryService(
+            _sut = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
                 new GetCategoriesQueryHandler(dbContext));
             _ingredientService = new IngredientService(

@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class CategoryService
+    public class CreateCategoryDecorator
     {
         private readonly ICommand<CreateCategoryCommand> _createCategoryCommand;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategoriesQuery;
 
-        public CategoryService(
+        public CreateCategoryDecorator(
             ICommand<CreateCategoryCommand> createCategoryCommand,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategoriesQuery)
         {

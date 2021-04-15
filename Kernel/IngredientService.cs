@@ -12,13 +12,13 @@ namespace KitProjects.MasterChef.Kernel
     {
         private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
-        private readonly CategoryService _categoryService;
+        private readonly CreateCategoryDecorator _categoryService;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
         public IngredientService(
             ICommand<CreateIngredientCommand> createIngredientCommand,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery,
-            CategoryService categoryService,
+            CreateCategoryDecorator categoryService,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories)
         {
             _createIngredientCommand = createIngredientCommand;
