@@ -2,6 +2,7 @@
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
@@ -30,11 +31,12 @@ namespace KitProjects.MasterChef.Tests.Services
             _dbContexts.Add(dbContext);
             _sut = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQueryHandler(dbContext),
+                new IngredientChecker(
+                    new GetIngredientQueryHandler(dbContext)),
                 new CreateCategoryDecorator(
                     new CreateCategoryCommandHandler(dbContext),
                     new CategoryChecker(
-                        new SearchCategoryQueryHandler(dbContext))));
+                        new GetCategoryQueryHandler(dbContext))));
         }
 
         [Fact]
@@ -58,7 +60,7 @@ namespace KitProjects.MasterChef.Tests.Services
             var ingredientName = Guid.NewGuid().ToString();
             var newCategories = new List<string>()
             {
-                "Что-то новенькое", "Это баг", "Залупа!"
+                Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()
             };
 
             Action act = () => _sut.Execute(new CreateIngredientCommand(ingredientName, newCategories));

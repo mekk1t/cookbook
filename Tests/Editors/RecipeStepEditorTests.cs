@@ -51,11 +51,12 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new ReplaceRecipeIngredientCommandHandler(editDbContext),
                     new CreateIngredientDecorator(
                         new CreateIngredientCommandHandler(editDbContext),
-                        new GetIngredientsQueryHandler(queryDbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(queryDbContext)),
                         new CreateCategoryDecorator(
                             new CreateCategoryCommandHandler(editDbContext),
                             new CategoryChecker(
-                                new SearchCategoryQueryHandler(queryDbContext)))),
+                                new GetCategoryQueryHandler(queryDbContext)))),
                     new EditRecipeIngredientDescriptionCommandHandler(editDbContext)));
 
             _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });

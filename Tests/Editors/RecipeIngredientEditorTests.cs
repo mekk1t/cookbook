@@ -39,11 +39,12 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new ReplaceRecipeIngredientCommandHandler(_dbContext),
                 new CreateIngredientDecorator(
                     new CreateIngredientCommandHandler(_dbContext),
-                    new GetIngredientsQueryHandler(_dbContext),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(_dbContext)),
                     new CreateCategoryDecorator(
                         new CreateCategoryCommandHandler(_dbContext),
                         new CategoryChecker(
-                            new SearchCategoryQueryHandler(_dbContext)))),
+                            new GetCategoryQueryHandler(_dbContext)))),
                 new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
 
