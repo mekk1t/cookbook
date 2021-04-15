@@ -10,20 +10,20 @@ namespace KitProjects.MasterChef.Kernel
     public class RecipeService
     {
         private readonly ICommand<CreateRecipeCommand> _createRecipeCommand;
-        private readonly CreateCategoryDecorator _categoryService;
+        private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IngredientService _ingredientService;
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
         public RecipeService(
             ICommand<CreateRecipeCommand> createRecipeCommand,
-            CreateCategoryDecorator categoryService,
+            ICommand<CreateCategoryCommand> createCategory,
             IngredientService ingredientService,
             IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories)
         {
             _createRecipeCommand = createRecipeCommand;
-            _categoryService = categoryService;
+            _createCategory = createCategory;
             _ingredientService = ingredientService;
             _searchIngredient = searchIngredient;
             _getCategories = getCategories;
@@ -50,7 +50,7 @@ namespace KitProjects.MasterChef.Kernel
                     var oldCategory = _getCategories.Execute(new GetCategoriesQuery(limit: 1000)).FirstOrDefault(c => c.Name == category);
                     if (oldCategory == null)
                     {
-                        _categoryService.Execute(new CreateCategoryCommand(category));
+                        _createCategory.Execute(new CreateCategoryCommand(category));
                     }
                 }
             }

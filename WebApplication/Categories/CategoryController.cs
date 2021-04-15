@@ -1,5 +1,4 @@
-﻿using KitProjects.MasterChef.Kernel;
-using KitProjects.MasterChef.Kernel.Abstractions;
+﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -16,20 +15,20 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
         private readonly IQuery<Category, SearchCategoryQuery> _searchCategory;
-        private readonly CreateCategoryDecorator _categoryService;
+        private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly ICommand<EditCategoryCommand> _editCategory;
 
         public CategoryController(
             ICommand<DeleteCategoryCommand> deleteCategory,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
             IQuery<Category, SearchCategoryQuery> searchCategory,
-            CreateCategoryDecorator categoryService,
+            ICommand<CreateCategoryCommand> createCategory,
             ICommand<EditCategoryCommand> editCategory)
         {
             _deleteCategory = deleteCategory;
             _getCategories = getCategories;
             _searchCategory = searchCategory;
-            _categoryService = categoryService;
+            _createCategory = createCategory;
             _editCategory = editCategory;
         }
 
@@ -72,7 +71,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public IActionResult CreateCategory(
             [FromBody] CreateCategoryRequest request)
         {
-            _categoryService.Execute(new CreateCategoryCommand(request.Name));
+            _createCategory.Execute(new CreateCategoryCommand(request.Name));
             var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
 
             if (createdCategory == null)

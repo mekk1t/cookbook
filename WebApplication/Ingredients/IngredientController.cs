@@ -15,7 +15,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     public class IngredientController : ControllerBase
     {
         private readonly IngredientService _ingredientService;
-        private readonly CreateCategoryDecorator _categoryService;
+        private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IngredientEditor _editor;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredients;
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
@@ -24,7 +24,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
 
         public IngredientController(
             IngredientService ingredientService,
-            CreateCategoryDecorator categoryService,
+            ICommand<CreateCategoryCommand> createCategory,
             IngredientEditor editor,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,
             IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
@@ -32,7 +32,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             ICommand<EditIngredientCommand> editIngredient)
         {
             _ingredientService = ingredientService;
-            _categoryService = categoryService;
+            _createCategory = createCategory;
             _editor = editor;
             _getIngredients = getIngredients;
             _searchIngredient = searchIngredient;
