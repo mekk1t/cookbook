@@ -18,7 +18,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
     {
         private readonly DbFixture _fixture;
         private readonly CreateCategoryDecorator _sut;
-        private readonly IngredientService _ingredientService;
+        private readonly CreateIngredientDecorator _ingredientService;
         private List<DbContext> _dbContexts;
 
         public CategoryServiceTests(DbFixture fixture)
@@ -32,7 +32,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             _sut = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
                 new GetCategoriesQueryHandler(dbContext));
-            _ingredientService = new IngredientService(
+            _ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
                 _sut,

@@ -18,7 +18,7 @@ namespace KitProjects.MasterChef.Tests.Services
     {
         private readonly DbFixture _fixture;
         private readonly List<DbContext> _dbContexts;
-        private readonly IngredientService _sut;
+        private readonly CreateIngredientDecorator _sut;
 
         public IngredientServiceTests(DbFixture fixture)
         {
@@ -26,7 +26,7 @@ namespace KitProjects.MasterChef.Tests.Services
             _fixture = fixture;
             var dbContext = _fixture.DbContext;
             _dbContexts.Add(dbContext);
-            _sut = new IngredientService(
+            _sut = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
                 new CreateCategoryDecorator(

@@ -33,7 +33,7 @@ namespace KitProjects.MasterChef.Tests.Services
             var categoryService = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
                 new GetCategoriesQueryHandler(dbContext));
-            var ingredientService = new IngredientService(
+            var ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
                 categoryService,

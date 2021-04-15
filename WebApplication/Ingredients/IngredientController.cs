@@ -14,7 +14,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     [Route("ingredients")]
     public class IngredientController : ControllerBase
     {
-        private readonly IngredientService _ingredientService;
+        private readonly CreateIngredientDecorator _ingredientService;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IngredientEditor _editor;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredients;
@@ -23,7 +23,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         private readonly ICommand<EditIngredientCommand> _editIngredient;
 
         public IngredientController(
-            IngredientService ingredientService,
+            CreateIngredientDecorator ingredientService,
             ICommand<CreateCategoryCommand> createCategory,
             IngredientEditor editor,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,

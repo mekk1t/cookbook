@@ -8,14 +8,14 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class IngredientService
+    public class CreateIngredientDecorator
     {
         private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
-        public IngredientService(
+        public CreateIngredientDecorator(
             ICommand<CreateIngredientCommand> createIngredientCommand,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery,
             ICommand<CreateCategoryCommand> createCategory,

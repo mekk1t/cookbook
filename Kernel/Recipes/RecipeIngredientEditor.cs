@@ -16,7 +16,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<RemoveRecipeIngredientCommand> _removeIngredient;
         private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
         private readonly ICommand<ReplaceIngredientsListCommand> _replaceIngredientsList;
-        private readonly IngredientService _ingredientService;
+        private readonly CreateIngredientDecorator _ingredientService;
         private readonly ICommand<EditRecipeIngredientDescriptionCommand> _editIngredientDescription;
 
         public RecipeIngredientEditor(
@@ -26,7 +26,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             ICommand<RemoveRecipeIngredientCommand> removeIngredient,
             ICommand<ReplaceIngredientsListCommand> replaceIngredientsList,
             ICommand<ReplaceRecipeIngredientCommand> replaceIngredient,
-            IngredientService ingredientService,
+            CreateIngredientDecorator ingredientService,
             ICommand<EditRecipeIngredientDescriptionCommand> editIngredientDescription)
         {
             _searchIngredient = searchIngredient;
