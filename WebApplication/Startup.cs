@@ -34,6 +34,8 @@ namespace WebApplication
                 var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 c.IncludeXmlComments(xmlDocPath);
             });
+
+            _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             _container.AddApplicationServices();
         }
 

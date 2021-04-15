@@ -10,18 +10,19 @@ namespace KitProjects.MasterChef.Kernel
 {
     public class CreateIngredientDecorator : ICommand<CreateIngredientCommand>
     {
-        private readonly ICommand<CreateIngredientCommand> _createIngredientCommand;
+        private readonly ICommand<CreateIngredientCommand> _decoratee;
+
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
         public CreateIngredientDecorator(
-            ICommand<CreateIngredientCommand> createIngredientCommand,
+            ICommand<CreateIngredientCommand> decoratee,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery,
             ICommand<CreateCategoryCommand> createCategory,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories)
         {
-            _createIngredientCommand = createIngredientCommand;
+            _decoratee = decoratee;
             _getIngredientsQuery = getIngredientsQuery;
             _createCategory = createCategory;
             _getCategories = getCategories;
@@ -40,7 +41,7 @@ namespace KitProjects.MasterChef.Kernel
                         _createCategory.Execute(new CreateCategoryCommand(newCategory));
                     }
                 }
-                _createIngredientCommand.Execute(command);
+                _decoratee.Execute(command);
             }
         }
     }

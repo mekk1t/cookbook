@@ -13,18 +13,18 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
         public static void AddApplicationServices(this Container container)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            container.Register(typeof(ICommand<>), assemblies, Lifestyle.Scoped);
-            container.RegisterDecorator(typeof(ICommand<CreateCategoryCommand>), typeof(CreateCategoryDecorator));
+            container.Register(typeof(ICommand<>), assemblies);
+            container.RegisterDecorator<ICommand<CreateCategoryCommand>, CreateCategoryDecorator>();
+            container.RegisterDecorator<ICommand<CreateIngredientCommand>, CreateIngredientDecorator>();
 
-            container.Register(typeof(IQuery<,>), assemblies, Lifestyle.Scoped);
-            container.Register(typeof(IQuery<>), assemblies, Lifestyle.Scoped);
+            container.Register(typeof(IQuery<,>), assemblies);
+            container.Register(typeof(IQuery<>), assemblies);
 
-            container.Register<CreateIngredientDecorator>(Lifestyle.Scoped);
-            container.Register<RecipeService>(Lifestyle.Scoped);
-            container.Register<RecipeEditor>(Lifestyle.Scoped);
-            container.Register<IngredientEditor>(Lifestyle.Scoped);
-            container.Register<RecipeStepEditor>(Lifestyle.Scoped);
-            container.Register<RecipeIngredientEditor>(Lifestyle.Scoped);
+            container.Register<RecipeService>();
+            container.Register<RecipeEditor>();
+            container.Register<IngredientEditor>();
+            container.Register<RecipeStepEditor>();
+            container.Register<RecipeIngredientEditor>();
         }
     }
 }

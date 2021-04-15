@@ -1,5 +1,4 @@
-﻿using KitProjects.MasterChef.Kernel;
-using KitProjects.MasterChef.Kernel.Abstractions;
+﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Ingredients;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
@@ -14,7 +13,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     [Route("ingredients")]
     public class IngredientController : ControllerBase
     {
-        private readonly CreateIngredientDecorator _ingredientService;
+        private readonly ICommand<CreateIngredientCommand> _createIngredient;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly IngredientEditor _editor;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredients;
@@ -23,7 +22,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         private readonly ICommand<EditIngredientCommand> _editIngredient;
 
         public IngredientController(
-            CreateIngredientDecorator ingredientService,
+            ICommand<CreateIngredientCommand> createIngredient,
             ICommand<CreateCategoryCommand> createCategory,
             IngredientEditor editor,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,
@@ -31,7 +30,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
             ICommand<DeleteIngredientCommand> deleteIngredient,
             ICommand<EditIngredientCommand> editIngredient)
         {
-            _ingredientService = ingredientService;
+            _createIngredient = createIngredient;
             _createCategory = createCategory;
             _editor = editor;
             _getIngredients = getIngredients;
@@ -105,7 +104,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         public IActionResult CreateIngredient(
             [FromBody] CreateIngredientRequest request)
         {
-            _ingredientService.Execute(new CreateIngredientCommand(request.Name, request.Categories));
+            _createIngredient.Execute(new CreateIngredientCommand(request.Name, request.Categories));
 
             var createdIngredient = _searchIngredient.Execute(new SearchIngredientQuery(request.Name));
             if (createdIngredient == null)
