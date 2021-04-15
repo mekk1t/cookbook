@@ -1,32 +1,13 @@
 ﻿using KitProjects.MasterChef.Dal;
-using KitProjects.MasterChef.Dal.Commands;
-using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
-using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
-using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
-using KitProjects.MasterChef.Dal.Queries.Categories;
-using KitProjects.MasterChef.Dal.Queries.Ingredients;
-using KitProjects.MasterChef.Dal.Queries.Recipes;
-using KitProjects.MasterChef.Dal.Queries.Steps;
-using KitProjects.MasterChef.Kernel;
-using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Ingredients;
-using KitProjects.MasterChef.Kernel.Ingredients.Commands;
-using KitProjects.MasterChef.Kernel.Models;
-using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries;
-using KitProjects.MasterChef.Kernel.Models.Queries.Get;
-using KitProjects.MasterChef.Kernel.Recipes;
-using KitProjects.MasterChef.Kernel.Recipes.Commands;
-using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
-using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
+using KitProjects.MasterChef.WebApplication.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SimpleInjector;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -34,8 +15,17 @@ namespace WebApplication
 {
     public class Startup
     {
+        private readonly Container _container = new();
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore();
+            services.AddSimpleInjector(_container, options =>
+            {
+                options
+                    .AddAspNetCore()
+                    .AddControllerActivation();
+            });
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer("Server=localhost;Database=MasterChef;Trusted_Connection=True;"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -44,56 +34,13 @@ namespace WebApplication
                 var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 c.IncludeXmlComments(xmlDocPath);
             });
-            services.AddScoped<CategoryService>();
-            services.AddScoped<ICommand<CreateCategoryCommand>, CreateCategoryCommandHandler>();
-            services.AddScoped<ICommand<EditCategoryCommand>, EditCategoryCommandHandler>();
-            services.AddScoped<ICommand<DeleteCategoryCommand>, DeleteCategoryCommandHandler>();
-            services.AddScoped<IQuery<IEnumerable<Category>, GetCategoriesQuery>, GetCategoriesQueryHandler>();
-
-            services.AddScoped<IngredientService>();
-            services.AddScoped<ICommand<CreateIngredientCommand>, CreateIngredientCommandHandler>();
-            services.AddScoped<ICommand<EditIngredientCommand>, EditIngredientCommandHandler>();
-            services.AddScoped<ICommand<DeleteIngredientCommand>, DeleteIngredientCommandHandler>();
-            services.AddScoped<IQuery<IEnumerable<Ingredient>, GetIngredientsQuery>, GetIngredientsQueryHandler>();
-
-            services.AddScoped<RecipeService>();
-            services.AddScoped<ICommand<CreateRecipeCommand>, CreateRecipeCommandHandler>();
-            services.AddScoped<IQuery<IEnumerable<Recipe>, GetRecipesQuery>, GetRecipesQueryHandler>();
-            services.AddScoped<ICommand<EditRecipeCommand>, EditRecipeCommandHandler>();
-            services.AddScoped<ICommand<DeleteRecipeCommand>, DeleteRecipeCommandHandler>();
-            services.AddScoped<IQuery<RecipeDetails, GetRecipeQuery>, GetRecipeQueryHandler>();
-
-            services.AddScoped<RecipeEditor>();
-            services.AddScoped<ICommand<RemoveRecipeCategoryCommand>, RemoveRecipeCategoryCommandHandler>();
-            services.AddScoped<ICommand<AppendCategoryToRecipeCommand>, AppendCategoryCommandHandler>();
-            services.AddScoped<IQuery<Category, SearchCategoryQuery>, SearchCategoryQueryHandler>();
-            services.AddScoped<IQuery<Recipe, SearchRecipeQuery>, SearchRecipeQueryHandler>();
-
-            services.AddScoped<IngredientEditor>();
-            services.AddScoped<ICommand<RemoveIngredientCategoryCommand>, RemoveIngredientCategoryCommandHandler>();
-            services.AddScoped<ICommand<AppendIngredientCategoryCommand>, AppendIngredientCategoryCommandHandler>();
-            services.AddScoped<IQuery<Ingredient, SearchIngredientQuery>, SearchIngredientQueryHandler>();
-
-            services.AddScoped<RecipeStepEditor>();
-            services.AddScoped<ICommand<EditStepPictureCommand>, EditStepPictureCommandHandler>();
-            services.AddScoped<ICommand<EditStepDescriptionCommand>, EditStepDescriptionCommandHandler>();
-            services.AddScoped<IQuery<RecipeStep, SearchStepQuery>, SearchStepQueryHandler>();
-            services.AddScoped<ICommand<SwapStepsCommand>, SwapStepsCommandHandler>();
-            services.AddScoped<ICommand<AppendRecipeStepCommand>, AppendRecipeStepCommandHandler>();
-            services.AddScoped<ICommand<RemoveRecipeStepCommand>, RemoveRecipeStepCommandHandler>();
-            services.AddScoped<ICommand<NormalizeStepsOrderCommand>, NormalizeStepsOrderCommandHandler>();
-            services.AddScoped<ICommand<ReplaceStepCommand>, ReplaceStepCommandHandler>();
-
-            services.AddScoped<RecipeIngredientEditor>();
-            services.AddScoped<ICommand<AppendRecipeIngredientCommand>, AppendIngredientCommandHandler>();
-            services.AddScoped<ICommand<RemoveRecipeIngredientCommand>, RemoveRecipeIngredientCommandHandler>();
-            services.AddScoped<ICommand<ReplaceRecipeIngredientCommand>, ReplaceRecipeIngredientCommandHandler>();
-            services.AddScoped<ICommand<ReplaceIngredientsListCommand>, ReplaceRecipeIngredientsListCommandHandler>();
-            services.AddScoped<ICommand<EditRecipeIngredientDescriptionCommand>, EditRecipeIngredientDescriptionCommandHandler>();
+            _container.AddApplicationServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSimpleInjector(_container);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -115,6 +62,8 @@ namespace WebApplication
             {
                 endpoints.MapControllers();
             });
+
+            _container.Verify();
         }
     }
 }

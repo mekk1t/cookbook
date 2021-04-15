@@ -17,12 +17,27 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         private readonly IngredientService _ingredientService;
         private readonly CategoryService _categoryService;
         private readonly IngredientEditor _editor;
+        private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredients;
+        private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
+        private readonly ICommand<DeleteIngredientCommand> _deleteIngredient;
+        private readonly ICommand<EditIngredientCommand> _editIngredient;
 
-        public IngredientController(IngredientService ingredientService, CategoryService categoryService, IngredientEditor editor)
+        public IngredientController(
+            IngredientService ingredientService,
+            CategoryService categoryService,
+            IngredientEditor editor,
+            IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,
+            IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
+            ICommand<DeleteIngredientCommand> deleteIngredient,
+            ICommand<EditIngredientCommand> editIngredient)
         {
             _ingredientService = ingredientService;
             _categoryService = categoryService;
             _editor = editor;
+            _getIngredients = getIngredients;
+            _searchIngredient = searchIngredient;
+            _deleteIngredient = deleteIngredient;
+            _editIngredient = editIngredient;
         }
 
         /// <summary>
@@ -33,12 +48,11 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <param name="withRelationships">Включать ли связи.</param>
         [HttpGet("")]
         public GetIngredientsResponse GetIngredients(
-            [FromServices] IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,
             [FromQuery] int limit = 25,
             [FromQuery] int offset = 0,
             [FromQuery] bool withRelationships = false)
         {
-            var ingredients = getIngredients.Execute(new GetIngredientsQuery(withRelationships, limit, offset));
+            var ingredients = _getIngredients.Execute(new GetIngredientsQuery(withRelationships, limit, offset));
             return new GetIngredientsResponse(ingredients);
         }
 
@@ -48,10 +62,9 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <param name="ingredientName">Название ингредиента.</param>
         [HttpGet("{ingredientName}")]
         public IActionResult GetIngredient(
-            [FromRoute] string ingredientName,
-            [FromServices] IQuery<Ingredient, SearchIngredientQuery> searchIngredient)
+            [FromRoute] string ingredientName)
         {
-            var ingredient = searchIngredient.Execute(new SearchIngredientQuery(ingredientName));
+            var ingredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredientName));
             if (ingredient == null)
                 return NotFound();
 
@@ -64,10 +77,9 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <param name="ingredientId">Идентификатор ингредиента в формате GUID.</param>
         [HttpDelete("{ingredientId}")]
         public IActionResult DeleteIngredient(
-            [FromRoute] Guid ingredientId,
-            [FromServices] ICommand<DeleteIngredientCommand> deleteIngredient)
+            [FromRoute] Guid ingredientId)
         {
-            deleteIngredient.Execute(new DeleteIngredientCommand(ingredientId));
+            _deleteIngredient.Execute(new DeleteIngredientCommand(ingredientId));
             return Ok();
         }
 
@@ -79,10 +91,9 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         [HttpPut("{ingredientId}")]
         public IActionResult EditIngredient(
             [FromRoute] Guid ingredientId,
-            [FromBody] EditIngredientRequest request,
-            [FromServices] ICommand<EditIngredientCommand> editIngredientCommand)
+            [FromBody] EditIngredientRequest request)
         {
-            editIngredientCommand.Execute(new EditIngredientCommand(ingredientId, request.NewName));
+            _editIngredient.Execute(new EditIngredientCommand(ingredientId, request.NewName));
             return Ok();
         }
 
@@ -92,12 +103,11 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <param name="request">Запрос на создание ингредиента.</param>
         [HttpPost("")]
         public IActionResult CreateIngredient(
-            [FromBody] CreateIngredientRequest request,
-            [FromServices] IQuery<Ingredient, SearchIngredientQuery> searchIngredient)
+            [FromBody] CreateIngredientRequest request)
         {
             _ingredientService.CreateIngredient(new CreateIngredientCommand(request.Name, request.Categories));
 
-            var createdIngredient = searchIngredient.Execute(new SearchIngredientQuery(request.Name));
+            var createdIngredient = _searchIngredient.Execute(new SearchIngredientQuery(request.Name));
             if (createdIngredient == null)
                 return Conflict("Не удалось создать ингредиент");
 

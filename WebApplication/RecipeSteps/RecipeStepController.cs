@@ -13,10 +13,14 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
     public class RecipeStepController : ControllerBase
     {
         private readonly RecipeStepEditor _editor;
+        private readonly ICommand<ReplaceStepCommand> _replaceStep;
 
-        public RecipeStepController(RecipeStepEditor editor)
+        public RecipeStepController(
+            RecipeStepEditor editor,
+            ICommand<ReplaceStepCommand> replaceStep)
         {
             _editor = editor;
+            _replaceStep = replaceStep;
         }
 
         /// <summary>
@@ -39,10 +43,9 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         public IActionResult ReplaceStep(
             [FromBody] ReplaceStepRequest request,
             [FromRoute] Guid recipeId,
-            [FromRoute] Guid stepId,
-            [FromServices] ICommand<ReplaceStepCommand> replaceStep)
+            [FromRoute] Guid stepId)
         {
-            replaceStep.Execute(new ReplaceStepCommand(
+            _replaceStep.Execute(new ReplaceStepCommand(
                 recipeId,
                 stepId,
                 request.Description,
@@ -92,7 +95,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
                 Image = request.ImageBase64
             };
             step.IngredientsDetails.AddRange(request.Ingredients
-                .Select(c => new Kernel.Models.Recipes.StepIngredientDetails
+                .Select(c => new StepIngredientDetails
                 {
                     IngredientName = c.IngredientName,
                     Measure = c.Measure,

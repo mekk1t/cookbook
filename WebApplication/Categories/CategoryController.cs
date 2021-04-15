@@ -13,6 +13,26 @@ namespace KitProjects.MasterChef.WebApplication.Categories
     [Route("categories")]
     public class CategoryController : ControllerBase
     {
+        private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
+        private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
+        private readonly IQuery<Category, SearchCategoryQuery> _searchCategory;
+        private readonly CategoryService _categoryService;
+        private readonly ICommand<EditCategoryCommand> _editCategory;
+
+        public CategoryController(
+            ICommand<DeleteCategoryCommand> deleteCategory,
+            IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
+            IQuery<Category, SearchCategoryQuery> searchCategory,
+            CategoryService categoryService,
+            ICommand<EditCategoryCommand> editCategory)
+        {
+            _deleteCategory = deleteCategory;
+            _getCategories = getCategories;
+            _searchCategory = searchCategory;
+            _categoryService = categoryService;
+            _editCategory = editCategory;
+        }
+
         /// <summary>
         /// Получает список категорий.
         /// </summary>
@@ -21,12 +41,11 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="limit">Ограничение выборки элементов.</param>
         [HttpGet("")]
         public GetCategoriesResponse GetCategories(
-            [FromServices] IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
             [FromQuery] bool withRelationships = false,
             [FromQuery] int offset = 0,
             [FromQuery] int limit = 25)
         {
-            var categories = getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
+            var categories = _getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
             return new GetCategoriesResponse(categories);
         }
 
@@ -36,10 +55,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="categoryName">Название категории.</param>
         [HttpGet("{categoryName}")]
         public IActionResult GetCategory(
-            [FromRoute] string categoryName,
-            [FromServices] IQuery<Category, SearchCategoryQuery> searchCategory)
+            [FromRoute] string categoryName)
         {
-            var category = searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            var category = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
             if (category == null)
                 return NotFound();
 
@@ -52,12 +70,10 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="request">Запрос на создание.</param>
         [HttpPost("")]
         public IActionResult CreateCategory(
-            [FromBody] CreateCategoryRequest request,
-            [FromServices] IQuery<Category, SearchCategoryQuery> searchCategory,
-            [FromServices] CategoryService categoryService)
+            [FromBody] CreateCategoryRequest request)
         {
-            categoryService.CreateCategory(new CreateCategoryCommand(request.Name));
-            var createdCategory = searchCategory.Execute(new SearchCategoryQuery(request.Name));
+            _categoryService.CreateCategory(new CreateCategoryCommand(request.Name));
+            var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
 
             if (createdCategory == null)
             {
@@ -74,10 +90,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <returns></returns>
         [HttpDelete("{categoryName}")]
         public IActionResult DeleteCategory(
-            [FromRoute] string categoryName,
-            [FromServices] ICommand<DeleteCategoryCommand> deleteCategory)
+            [FromRoute] string categoryName)
         {
-            deleteCategory.Execute(new DeleteCategoryCommand(categoryName));
+            _deleteCategory.Execute(new DeleteCategoryCommand(categoryName));
             return Ok();
         }
 
@@ -89,10 +104,9 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         [HttpPut("{categoryId}")]
         public IActionResult EditCategory(
             [FromRoute] Guid categoryId,
-            [FromBody] EditCategoryRequest request,
-            [FromServices] ICommand<EditCategoryCommand> editCategory)
+            [FromBody] EditCategoryRequest request)
         {
-            editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
+            _editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
             return Ok();
         }
     }
