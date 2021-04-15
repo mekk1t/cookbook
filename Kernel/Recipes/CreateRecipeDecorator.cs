@@ -7,25 +7,23 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class CreateRecipeDecorator
+    public class CreateRecipeDecorator : ICommand<CreateRecipeCommand>
     {
-        private readonly ICommand<CreateRecipeCommand> _createRecipeCommand;
+        private readonly ICommand<CreateRecipeCommand> _decoratee;
+
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly ICommand<CreateIngredientCommand> _createIngredient;
-        private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
         public CreateRecipeDecorator(
-            ICommand<CreateRecipeCommand> createRecipeCommand,
+            ICommand<CreateRecipeCommand> decoratee,
             ICommand<CreateCategoryCommand> createCategory,
             ICommand<CreateIngredientCommand> createIngredient,
-            IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories)
         {
-            _createRecipeCommand = createRecipeCommand;
+            _decoratee = decoratee;
             _createCategory = createCategory;
             _createIngredient = createIngredient;
-            _searchIngredient = searchIngredient;
             _getCategories = getCategories;
         }
 
@@ -35,11 +33,7 @@ namespace KitProjects.MasterChef.Kernel
             {
                 foreach (var ingredient in command.IngredientsDetails)
                 {
-                    var oldIngredient = _searchIngredient.Execute(new SearchIngredientQuery(ingredient.IngredientName));
-                    if (oldIngredient == null)
-                    {
-                        _createIngredient.Execute(new CreateIngredientCommand(ingredient.IngredientName, new List<string>()));
-                    }
+                    _createIngredient.Execute(new CreateIngredientCommand(ingredient.IngredientName, new List<string>()));
                 }
             }
 
@@ -55,7 +49,7 @@ namespace KitProjects.MasterChef.Kernel
                 }
             }
 
-            _createRecipeCommand.Execute(command);
+            _decoratee.Execute(command);
         }
     }
 }

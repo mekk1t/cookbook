@@ -45,7 +45,6 @@ namespace KitProjects.MasterChef.Tests.Services
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,
                 ingredientService,
-                new SearchIngredientQueryHandler(dbContext),
                 new GetCategoriesQueryHandler(dbContext));
         }
 
