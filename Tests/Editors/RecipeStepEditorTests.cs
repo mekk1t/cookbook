@@ -4,10 +4,12 @@ using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Dal.Queries.Steps;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +54,8 @@ namespace KitProjects.MasterChef.Tests.Editors
                         new GetIngredientsQueryHandler(queryDbContext),
                         new CreateCategoryDecorator(
                             new CreateCategoryCommandHandler(editDbContext),
-                            new GetCategoriesQueryHandler(queryDbContext)),
+                            new CategoryChecker(
+                                new SearchCategoryQueryHandler(queryDbContext))),
                         new GetCategoriesQueryHandler(queryDbContext)),
                     new EditRecipeIngredientDescriptionCommandHandler(editDbContext)));
 

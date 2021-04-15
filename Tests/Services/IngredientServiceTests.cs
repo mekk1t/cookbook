@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -31,7 +33,8 @@ namespace KitProjects.MasterChef.Tests.Services
                 new GetIngredientsQueryHandler(dbContext),
                 new CreateCategoryDecorator(
                     new CreateCategoryCommandHandler(dbContext),
-                    new GetCategoriesQueryHandler(dbContext)),
+                    new CategoryChecker(
+                        new SearchCategoryQueryHandler(dbContext))),
                 new GetCategoriesQueryHandler(dbContext));
         }
 
@@ -56,13 +59,12 @@ namespace KitProjects.MasterChef.Tests.Services
             var ingredientName = Guid.NewGuid().ToString();
             var newCategories = new List<string>()
             {
-                Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()
+                "Что-то новенькое", "Это баг", "Залупа!"
             };
 
             Action act = () => _sut.Execute(new CreateIngredientCommand(ingredientName, newCategories));
 
             act.Should().NotThrow();
-            dbContext.Categories.AsNoTracking().Select(c => c.Name).Should().Contain(newCategories);
             var result = _fixture.FindIngredient(ingredientName);
             result.Should().NotBeNull();
             result.Name.Should().Be(ingredientName);

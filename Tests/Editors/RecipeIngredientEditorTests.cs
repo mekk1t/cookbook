@@ -4,9 +4,11 @@ using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Ingredients;
 using KitProjects.MasterChef.Kernel.Recipes;
@@ -40,7 +42,8 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new GetIngredientsQueryHandler(_dbContext),
                     new CreateCategoryDecorator(
                         new CreateCategoryCommandHandler(_dbContext),
-                        new GetCategoriesQueryHandler(_dbContext)),
+                        new CategoryChecker(
+                            new SearchCategoryQueryHandler(_dbContext))),
                     new GetCategoriesQueryHandler(_dbContext)),
                 new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
