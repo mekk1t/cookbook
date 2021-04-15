@@ -19,6 +19,7 @@ namespace WebApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
+            _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             services.AddMvcCore();
             services.AddSimpleInjector(_container, options =>
             {
@@ -35,7 +36,6 @@ namespace WebApplication
                 c.IncludeXmlComments(xmlDocPath);
             });
 
-            _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             _container.AddApplicationServices();
         }
 
