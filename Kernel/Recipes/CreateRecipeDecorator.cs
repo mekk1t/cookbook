@@ -1,7 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,18 +11,15 @@ namespace KitProjects.MasterChef.Kernel
 
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly ICommand<CreateIngredientCommand> _createIngredient;
-        private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
 
         public CreateRecipeDecorator(
             ICommand<CreateRecipeCommand> decoratee,
             ICommand<CreateCategoryCommand> createCategory,
-            ICommand<CreateIngredientCommand> createIngredient,
-            IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories)
+            ICommand<CreateIngredientCommand> createIngredient)
         {
             _decoratee = decoratee;
             _createCategory = createCategory;
             _createIngredient = createIngredient;
-            _getCategories = getCategories;
         }
 
         public void Execute(CreateRecipeCommand command)
@@ -41,11 +36,7 @@ namespace KitProjects.MasterChef.Kernel
             {
                 foreach (var category in command.Categories)
                 {
-                    var oldCategory = _getCategories.Execute(new GetCategoriesQuery(limit: 1000)).FirstOrDefault(c => c.Name == category);
-                    if (oldCategory == null)
-                    {
-                        _createCategory.Execute(new CreateCategoryCommand(category));
-                    }
+                    _createCategory.Execute(new CreateCategoryCommand(category));
                 }
             }
 

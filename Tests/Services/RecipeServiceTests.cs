@@ -44,8 +44,7 @@ namespace KitProjects.MasterChef.Tests.Services
             _sut = new CreateRecipeDecorator(
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,
-                ingredientService,
-                new GetCategoriesQueryHandler(dbContext));
+                ingredientService);
         }
 
         [Fact]
