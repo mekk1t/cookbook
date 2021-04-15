@@ -1,10 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
@@ -12,23 +8,23 @@ namespace KitProjects.MasterChef.Kernel
     {
         private readonly ICommand<CreateIngredientCommand> _decoratee;
 
-        private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredientsQuery;
+        private readonly IEntityChecker<Ingredient, string> _ingredientChecker;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
 
         public CreateIngredientDecorator(
             ICommand<CreateIngredientCommand> decoratee,
-            IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredientsQuery,
+            IEntityChecker<Ingredient, string> ingredientChecker,
             ICommand<CreateCategoryCommand> createCategory)
         {
             _decoratee = decoratee;
-            _getIngredientsQuery = getIngredientsQuery;
+            _ingredientChecker = ingredientChecker;
             _createCategory = createCategory;
         }
 
         public void Execute(CreateIngredientCommand command)
         {
-            var ingredientNames = _getIngredientsQuery.Execute(new GetIngredientsQuery()).Select(i => i.Name);
-            if (!ingredientNames.Contains(command.Name))
+            var ingredientExists = _ingredientChecker.CheckExistence(command.Name);
+            if (!ingredientExists)
             {
                 foreach (var newCategory in command.Categories)
                 {
