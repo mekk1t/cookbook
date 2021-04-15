@@ -37,7 +37,7 @@ namespace KitProjects.MasterChef.Kernel
                 {
                     if (!oldCategories.Contains(newCategory))
                     {
-                        _categoryService.CreateCategory(new CreateCategoryCommand(newCategory));
+                        _categoryService.Execute(new CreateCategoryCommand(newCategory));
                     }
                 }
                 _createIngredientCommand.Execute(command);

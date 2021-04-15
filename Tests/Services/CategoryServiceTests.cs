@@ -42,7 +42,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         [Fact]
         public void Category_moderator_creates_a_new_category()
         {
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand("Тест"));
+            Action act = () => _sut.Execute(new CreateCategoryCommand("Тест"));
 
             act.Should().NotThrow();
             using var _dbContext = _fixture.DbContext;
@@ -58,7 +58,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
             using var dbContext = _fixture.DbContext;
 
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand(categoryName));
+            Action act = () => _sut.Execute(new CreateCategoryCommand(categoryName));
 
             act.Should().NotThrow();
             dbContext.Categories.Where(r => r.Name == categoryName).Should().HaveCount(1);

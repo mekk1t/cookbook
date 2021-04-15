@@ -72,7 +72,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public IActionResult CreateCategory(
             [FromBody] CreateCategoryRequest request)
         {
-            _categoryService.CreateCategory(new CreateCategoryCommand(request.Name));
+            _categoryService.Execute(new CreateCategoryCommand(request.Name));
             var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
 
             if (createdCategory == null)

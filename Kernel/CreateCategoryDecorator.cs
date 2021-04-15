@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel
 {
-    public class CreateCategoryDecorator
+    public class CreateCategoryDecorator : ICommand<CreateCategoryCommand>
     {
         private readonly ICommand<CreateCategoryCommand> _createCategoryCommand;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategoriesQuery;
@@ -21,7 +21,7 @@ namespace KitProjects.MasterChef.Kernel
             _getCategoriesQuery = getCategoriesQuery;
         }
 
-        public void CreateCategory(CreateCategoryCommand command)
+        public void Execute(CreateCategoryCommand command)
         {
             var categoriesNames = _getCategoriesQuery.Execute(new GetCategoriesQuery()).Select(c => c.Name);
             if (!categoriesNames.Contains(command.Name))

@@ -50,7 +50,7 @@ namespace KitProjects.MasterChef.Kernel
                     var oldCategory = _getCategories.Execute(new GetCategoriesQuery(limit: 1000)).FirstOrDefault(c => c.Name == category);
                     if (oldCategory == null)
                     {
-                        _categoryService.CreateCategory(new CreateCategoryCommand(category));
+                        _categoryService.Execute(new CreateCategoryCommand(category));
                     }
                 }
             }
