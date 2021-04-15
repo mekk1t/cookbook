@@ -1,6 +1,7 @@
 ﻿using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Ingredients;
+using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Recipes;
 using SimpleInjector;
 using System;
@@ -13,8 +14,11 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             container.Register(typeof(ICommand<>), assemblies, Lifestyle.Scoped);
+            container.RegisterDecorator(typeof(ICommand<CreateCategoryCommand>), typeof(CreateCategoryDecorator));
+
             container.Register(typeof(IQuery<,>), assemblies, Lifestyle.Scoped);
             container.Register(typeof(IQuery<>), assemblies, Lifestyle.Scoped);
+
             container.Register<CreateCategoryDecorator>(Lifestyle.Scoped);
             container.Register<IngredientService>(Lifestyle.Scoped);
             container.Register<RecipeService>(Lifestyle.Scoped);
