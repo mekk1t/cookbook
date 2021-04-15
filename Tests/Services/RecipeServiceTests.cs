@@ -39,8 +39,7 @@ namespace KitProjects.MasterChef.Tests.Services
             var ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
                 new GetIngredientsQueryHandler(dbContext),
-                categoryService,
-                new GetCategoriesQueryHandler(dbContext));
+                categoryService);
             _sut = new CreateRecipeDecorator(
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,

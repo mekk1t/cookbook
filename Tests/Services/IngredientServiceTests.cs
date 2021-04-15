@@ -34,8 +34,7 @@ namespace KitProjects.MasterChef.Tests.Services
                 new CreateCategoryDecorator(
                     new CreateCategoryCommandHandler(dbContext),
                     new CategoryChecker(
-                        new SearchCategoryQueryHandler(dbContext))),
-                new GetCategoriesQueryHandler(dbContext));
+                        new SearchCategoryQueryHandler(dbContext))));
         }
 
         [Fact]

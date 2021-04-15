@@ -43,8 +43,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new CreateCategoryDecorator(
                         new CreateCategoryCommandHandler(_dbContext),
                         new CategoryChecker(
-                            new SearchCategoryQueryHandler(_dbContext))),
-                    new GetCategoriesQueryHandler(_dbContext)),
+                            new SearchCategoryQueryHandler(_dbContext)))),
                 new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
 
