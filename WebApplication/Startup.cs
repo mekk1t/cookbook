@@ -19,6 +19,7 @@ namespace WebApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore();
             services.AddSimpleInjector(_container, options =>
             {
                 options
