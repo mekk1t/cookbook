@@ -24,7 +24,7 @@ namespace KitProjects.MasterChef.Tests.Editors
     public class RecipeStepEditorTests : IDisposable
     {
         private readonly List<DbContext> _dbContexts = new();
-        private readonly RecipeStepEditor _sut;
+        private readonly AppendStepDecorator _sut;
         private readonly DbFixture _fixture;
 
         public RecipeStepEditorTests(DbFixture fixture)
@@ -189,7 +189,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 Image = "Изображение"
             };
 
-            Action act = () => _sut.AppendStep(recipeId, newStep);
+            Action act = () => _sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -217,7 +217,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             };
 
-            Action act = () => _sut.AppendStep(recipeId, newStep);
+            Action act = () => _sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -248,7 +248,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             };
 
-            Action act = () => _sut.AppendStep(recipeId, newStep);
+            Action act = () => _sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
