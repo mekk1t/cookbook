@@ -12,7 +12,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
     {
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
-        private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredient;
         private readonly ICommand<RemoveRecipeIngredientCommand> _removeIngredient;
         private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
         private readonly ICommand<ReplaceIngredientsListCommand> _replaceIngredientsList;
@@ -22,7 +21,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         public RecipeIngredientEditor(
             IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
             IQuery<Recipe, SearchRecipeQuery> searchRecipe,
-            ICommand<AppendRecipeIngredientCommand> appendIngredient,
             ICommand<RemoveRecipeIngredientCommand> removeIngredient,
             ICommand<ReplaceIngredientsListCommand> replaceIngredientsList,
             ICommand<ReplaceRecipeIngredientCommand> replaceIngredient,
@@ -31,25 +29,11 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         {
             _searchIngredient = searchIngredient;
             _searchRecipe = searchRecipe;
-            _appendIngredient = appendIngredient;
             _removeIngredient = removeIngredient;
             _replaceIngredient = replaceIngredient;
             _replaceIngredientsList = replaceIngredientsList;
             _createIngredient = createIngredient;
             _editIngredientDescription = editIngredientDescription;
-        }
-
-        public void AppendIngredient(AppendRecipeIngredientCommand command)
-        {
-            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(command.RecipeId));
-            if (recipe == null)
-                throw new ArgumentException(null, nameof(command));
-
-            var existingIngredient = _searchIngredient.Execute(new SearchIngredientQuery(command.Ingredient.Id));
-            if (existingIngredient == null)
-                _createIngredient.Execute(new CreateIngredientCommand(command.Ingredient.Name, Array.Empty<string>()));
-
-            _appendIngredient.Execute(command);
         }
 
         public void RemoveIngredient(Guid recipeId, Guid ingredientId)
