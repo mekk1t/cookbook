@@ -10,15 +10,12 @@ using KitProjects.MasterChef.Dal.Queries.Steps;
 using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
-using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Xunit.Sdk;
 
 namespace KitProjects.MasterChef.Tests.Editors
 {
