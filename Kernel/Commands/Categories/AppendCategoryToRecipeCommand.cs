@@ -4,12 +4,12 @@ namespace KitProjects.MasterChef.Kernel.Recipes.Commands
 {
     public class AppendCategoryToRecipeCommand
     {
-        public Guid CategoryId { get; }
+        public string CategoryName { get; }
         public Guid RecipeId { get; }
 
-        public AppendCategoryToRecipeCommand(Guid categoryId, Guid recipeId)
+        public AppendCategoryToRecipeCommand(string categoryName, Guid recipeId)
         {
-            CategoryId = categoryId;
+            CategoryName = categoryName;
             RecipeId = recipeId;
         }
     }

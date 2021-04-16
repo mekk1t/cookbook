@@ -5,12 +5,12 @@ namespace KitProjects.MasterChef.Kernel.Recipes.Commands
     public class RemoveRecipeCategoryCommand
     {
         public Guid RecipeId { get; }
-        public Guid CategoryId { get; }
+        public string CategoryName { get; }
 
-        public RemoveRecipeCategoryCommand(Guid recipeId, Guid categoryId)
+        public RemoveRecipeCategoryCommand(Guid recipeId, string categoryName)
         {
             RecipeId = recipeId;
-            CategoryId = categoryId;
+            CategoryName = categoryName;
         }
     }
 }

@@ -5,6 +5,7 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using KitProjects.MasterChef.WebApplication.Recipes.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     public class RecipeController : ControllerBase
     {
         private readonly CreateRecipeDecorator _recipeService;
-        private readonly RecipeEditor _editor;
+        private readonly ICommand<AppendCategoryToRecipeCommand> _appendCategory;
+        private readonly ICommand<RemoveRecipeCategoryCommand> _removeCategory;
         private readonly RecipeIngredientEditor _recipeIngredientEditor;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
         private readonly IQuery<RecipeDetails, GetRecipeQuery> _searchRecipe;
@@ -28,7 +30,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
 
         public RecipeController(
             CreateRecipeDecorator recipeService,
-            RecipeEditor editor,
+            ICommand<AppendCategoryToRecipeCommand> appendCategory,
+            ICommand<RemoveRecipeCategoryCommand> removeCategory,
             RecipeIngredientEditor recipeIngredientEditor,
             IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
             IQuery<RecipeDetails, GetRecipeQuery> searchRecipe,
@@ -36,7 +39,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             ICommand<DeleteRecipeCommand> deleteRecipe)
         {
             _recipeService = recipeService;
-            _editor = editor;
+            _appendCategory = appendCategory;
+            _removeCategory = removeCategory;
             _recipeIngredientEditor = recipeIngredientEditor;
             _getRecipes = getRecipes;
             _searchRecipe = searchRecipe;
@@ -92,7 +96,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpDelete("{recipeId}/{categoryName}")]
         public IActionResult RemoveCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
         {
-            _editor.RemoveCategory(categoryName, recipeId);
+            _removeCategory.Execute(new RemoveRecipeCategoryCommand(recipeId, categoryName));
             return Ok();
         }
 
@@ -105,7 +109,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpPut("{recipeId}/{categoryName}")]
         public IActionResult AppendCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
         {
-            _editor.AppendCategory(categoryName, recipeId);
+            _appendCategory.Execute(new AppendCategoryToRecipeCommand(categoryName, recipeId));
             return Ok();
         }
 
