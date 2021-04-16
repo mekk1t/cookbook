@@ -43,7 +43,9 @@ namespace KitProjects.MasterChef.Dal.Queries.Ingredients
             if (ingredient == null)
                 return null;
 
-            return new Ingredient(ingredient.Id, ingredient.Name);
+            var result = new Ingredient(ingredient.Id, ingredient.Name);
+            result.Categories.AddRange(ingredient.Categories.Select(category => new Category(category.Id, category.Name)));
+            return result;
         }
     }
 }
