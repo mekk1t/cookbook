@@ -1,7 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries.Search;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
@@ -14,7 +13,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<EditStepPictureCommand> _editPicture;
         private readonly ICommand<EditStepDescriptionCommand> _editDescription;
         private readonly IQuery<RecipeStep, SearchStepQuery> _searchStep;
-        private readonly ICommand<SwapStepsCommand> _swapSteps;
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
         private readonly ICommand<AppendRecipeStepCommand> _appendStep;
         private readonly RecipeIngredientEditor _recipeIngredientEditor;
@@ -23,7 +21,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             ICommand<EditStepPictureCommand> editPicture,
             ICommand<EditStepDescriptionCommand> editDescription,
             IQuery<RecipeStep, SearchStepQuery> searchStep,
-            ICommand<SwapStepsCommand> swapSteps,
             IQuery<Recipe, SearchRecipeQuery> searchRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
             RecipeIngredientEditor recipeIngredientEditor)
@@ -31,7 +28,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _editDescription = editDescription;
             _editPicture = editPicture;
             _searchStep = searchStep;
-            _swapSteps = swapSteps;
             _searchRecipe = searchRecipe;
             _appendStep = appendStep;
             _recipeIngredientEditor = recipeIngredientEditor;
@@ -54,18 +50,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
                 throw new ArgumentException(null, nameof(stepId));
 
             _editDescription.Execute(new EditStepDescriptionCommand(newDescription, stepId));
-        }
-
-        public void SwapSteps(Guid firstStepId, Guid secondStepId, Guid recipeId)
-        {
-            var firstStep = _searchStep.Execute(new SearchStepQuery(firstStepId, new SearchStepQueryParameters(recipeId)));
-            if (firstStep == null)
-                throw new ArgumentException(null, nameof(firstStepId));
-            var secondStep = _searchStep.Execute(new SearchStepQuery(secondStepId, new SearchStepQueryParameters(recipeId)));
-            if (secondStep == null)
-                throw new ArgumentException(null, nameof(secondStepId));
-
-            _swapSteps.Execute(new SwapStepsCommand(firstStepId, secondStepId));
         }
 
         public void AppendStep(Guid recipeId, RecipeStep step)
