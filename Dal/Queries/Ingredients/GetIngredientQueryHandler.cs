@@ -23,11 +23,17 @@ namespace KitProjects.MasterChef.Dal.Queries.Ingredients
             DbIngredient ingredient;
             if (query.IngredientId != Guid.Empty)
             {
-                ingredient = _dbContext.Ingredients.AsNoTracking().FirstOrDefault(i => i.Id == query.IngredientId);
+                ingredient = _dbContext.Ingredients
+                    .AsNoTracking()
+                    .Include(i => i.Categories)
+                    .FirstOrDefault(i => i.Id == query.IngredientId);
             }
             else if (query.IngredientName.IsNotNullOrEmpty())
             {
-                ingredient = _dbContext.Ingredients.AsNoTracking().FirstOrDefault(i => i.Name == query.IngredientName);
+                ingredient = _dbContext.Ingredients
+                    .AsNoTracking()
+                    .Include(i => i.Categories)
+                    .FirstOrDefault(i => i.Name == query.IngredientName);
             }
             else
             {
