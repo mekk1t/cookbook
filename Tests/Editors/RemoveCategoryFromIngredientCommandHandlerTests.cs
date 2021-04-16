@@ -5,6 +5,7 @@ using KitProjects.MasterChef.Dal.Commands.Edit.Ingredient;
 using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Ingredients;
 using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
@@ -24,10 +25,13 @@ namespace KitProjects.MasterChef.Tests.Editors
         {
             _fixture = fixture;
             _dbContext = _fixture.DbContext;
-            _sut = new RemoveCategoryFromIngredientDecorator(
-                new SearchCategoryQueryHandler(_dbContext),
-                new SearchIngredientQueryHandler(_dbContext),
-                new RemoveIngredientCategoryCommandHandler(_dbContext));
+            _sut =
+                new RemoveCategoryFromIngredientDecorator(
+                    new CategoryChecker(
+                        new GetCategoryQueryHandler(_dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(_dbContext)),
+                    new RemoveIngredientCategoryCommandHandler(_dbContext));
         }
 
         [Fact]
