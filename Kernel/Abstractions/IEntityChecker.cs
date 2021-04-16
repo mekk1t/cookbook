@@ -3,6 +3,6 @@
     public interface IEntityChecker<in TEntity, TParameters>
         where TEntity : Entity
     {
-        bool CheckExistence(TParameters parameters = default);
+        bool CheckExistence(TParameters parameters);
     }
 }
