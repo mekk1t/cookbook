@@ -22,7 +22,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
 
             container.Register<CreateRecipeDecorator>();
             container.Register<RecipeEditor>();
-            container.Register<IngredientEditor>();
+            container.Register<RemoveCategoryFromIngredientDecorator>();
             container.Register<RecipeStepEditor>();
             container.Register<RecipeIngredientEditor>();
         }

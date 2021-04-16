@@ -1,5 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Ingredients;
+using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -15,7 +15,8 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     {
         private readonly ICommand<CreateIngredientCommand> _createIngredient;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
-        private readonly IngredientEditor _editor;
+        private readonly ICommand<AppendIngredientCategoryCommand> _appendIngredientCategory;
+        private readonly ICommand<RemoveIngredientCategoryCommand> _removeIngredientCategory;
         private readonly IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> _getIngredients;
         private readonly IQuery<Ingredient, SearchIngredientQuery> _searchIngredient;
         private readonly ICommand<DeleteIngredientCommand> _deleteIngredient;
@@ -24,15 +25,17 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         public IngredientController(
             ICommand<CreateIngredientCommand> createIngredient,
             ICommand<CreateCategoryCommand> createCategory,
-            IngredientEditor editor,
             IQuery<IEnumerable<Ingredient>, GetIngredientsQuery> getIngredients,
             IQuery<Ingredient, SearchIngredientQuery> searchIngredient,
             ICommand<DeleteIngredientCommand> deleteIngredient,
-            ICommand<EditIngredientCommand> editIngredient)
+            ICommand<EditIngredientCommand> editIngredient,
+            ICommand<RemoveIngredientCategoryCommand> removeIngredientCategory,
+            ICommand<AppendIngredientCategoryCommand> appendIngredientCategory)
         {
             _createIngredient = createIngredient;
             _createCategory = createCategory;
-            _editor = editor;
+            _removeIngredientCategory = removeIngredientCategory;
+            _appendIngredientCategory = appendIngredientCategory;
             _getIngredients = getIngredients;
             _searchIngredient = searchIngredient;
             _deleteIngredient = deleteIngredient;
@@ -127,7 +130,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         [HttpPut("{ingredientId}/{categoryName}")]
         public IActionResult AppendCategory([FromRoute] Guid ingredientId, [FromRoute] string categoryName)
         {
-            _editor.AppendCategory(categoryName, ingredientId);
+            _appendIngredientCategory.Execute(new AppendIngredientCategoryCommand(categoryName, ingredientId));
             return Ok();
         }
 
@@ -139,7 +142,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         [HttpDelete("{ingredientId}/{categoryName}")]
         public IActionResult RemoveCategory([FromRoute] Guid ingredientId, [FromRoute] string categoryName)
         {
-            _editor.RemoveCategory(categoryName, ingredientId);
+            _removeIngredientCategory.Execute(new RemoveIngredientCategoryCommand(categoryName, ingredientId));
             return Ok();
         }
     }
