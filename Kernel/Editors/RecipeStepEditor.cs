@@ -17,8 +17,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
         private readonly ICommand<SwapStepsCommand> _swapSteps;
         private readonly IQuery<Recipe, SearchRecipeQuery> _searchRecipe;
         private readonly ICommand<AppendRecipeStepCommand> _appendStep;
-        private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
-        private readonly ICommand<NormalizeStepsOrderCommand> _normalizeStepsOrder;
         private readonly RecipeIngredientEditor _recipeIngredientEditor;
 
         public RecipeStepEditor(
@@ -28,8 +26,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             ICommand<SwapStepsCommand> swapSteps,
             IQuery<Recipe, SearchRecipeQuery> searchRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
-            ICommand<RemoveRecipeStepCommand> removeStep,
-            ICommand<NormalizeStepsOrderCommand> normalizeStepsOrder,
             RecipeIngredientEditor recipeIngredientEditor)
         {
             _editDescription = editDescription;
@@ -38,8 +34,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             _swapSteps = swapSteps;
             _searchRecipe = searchRecipe;
             _appendStep = appendStep;
-            _removeStep = removeStep;
-            _normalizeStepsOrder = normalizeStepsOrder;
             _recipeIngredientEditor = recipeIngredientEditor;
         }
 
@@ -96,26 +90,6 @@ namespace KitProjects.MasterChef.Kernel.Recipes
             }
 
             _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
-        }
-
-        public void RemoveStep(Guid recipeId, Guid stepId)
-        {
-            var recipe = _searchRecipe.Execute(new SearchRecipeQuery(recipeId));
-            if (recipe == null)
-                throw new ArgumentException(null, nameof(recipeId));
-
-            var recipeStepsIds = recipe.Steps
-                .OrderBy(step => step.Index)
-                .Select(step => step.Id).ToList();
-            var removingStepIndex = recipeStepsIds.IndexOf(stepId);
-            if (removingStepIndex != recipe.Steps.Count - 1)
-            {
-                _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
-                _normalizeStepsOrder.Execute(new NormalizeStepsOrderCommand(recipeId, removingStepIndex));
-                return;
-            }
-
-            _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
         }
     }
 }

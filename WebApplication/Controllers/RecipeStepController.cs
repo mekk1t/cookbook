@@ -2,6 +2,7 @@
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,14 +13,14 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
     [Route("recipeSteps")]
     public class RecipeStepController : ControllerBase
     {
-        private readonly RecipeStepEditor _editor;
+        private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
         private readonly ICommand<ReplaceStepCommand> _replaceStep;
 
         public RecipeStepController(
-            RecipeStepEditor editor,
+            ICommand<RemoveRecipeStepCommand> removeStep,
             ICommand<ReplaceStepCommand> replaceStep)
         {
-            _editor = editor;
+            _removeStep = removeStep;
             _replaceStep = replaceStep;
         }
 
@@ -114,7 +115,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         [HttpDelete("{recipeId}/{stepId}")]
         public IActionResult DeleteStep([FromRoute] Guid recipeId, [FromRoute] Guid stepId)
         {
-            _editor.RemoveStep(recipeId, stepId);
+            _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
             return Ok();
         }
     }
