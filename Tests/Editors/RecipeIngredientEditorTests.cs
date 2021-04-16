@@ -24,7 +24,7 @@ namespace KitProjects.MasterChef.Tests.Editors
     {
         private readonly AppDbContext _dbContext;
         private readonly DbFixture _fixture;
-        private readonly RecipeIngredientEditor _sut;
+        private readonly EditRecipeIngredientDescriptionDecorator _sut;
 
         public RecipeIngredientEditorTests(DbFixture fixture)
         {

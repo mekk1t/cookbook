@@ -1,17 +1,12 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
-using KitProjects.MasterChef.Dal.Commands;
-using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
-using KitProjects.MasterChef.Dal.Queries.Categories;
-using KitProjects.MasterChef.Dal.Queries.Ingredients;
-using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Dal.Queries.Steps;
-using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
-using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,50 +16,24 @@ using Xunit;
 namespace KitProjects.MasterChef.Tests.Editors
 {
     [Collection("Db")]
-    public class RecipeStepEditorTests : IDisposable
+    public class RecipeStepEditorTests
     {
-        private readonly List<DbContext> _dbContexts = new();
-        private readonly AppendStepDecorator _sut;
         private readonly DbFixture _fixture;
 
         public RecipeStepEditorTests(DbFixture fixture)
         {
             _fixture = fixture;
-            var queryDbContext = _fixture.DbContext;
-            var editDbContext = _fixture.DbContext;
-            var swapDbContext = _fixture.DbContext;
-            _sut = new RecipeStepEditor(
-                new EditStepPictureCommandHandler(editDbContext),
-                new EditStepDescriptionCommandHandler(editDbContext),
-                new SearchStepQueryHandler(queryDbContext),
-                new SwapStepsCommandHandler(swapDbContext),
-                new SearchRecipeQueryHandler(queryDbContext),
-                new AppendRecipeStepCommandHandler(editDbContext),
-                new RemoveRecipeStepCommandHandler(editDbContext),
-                new NormalizeStepsOrderCommandHandler(editDbContext),
-                new RecipeIngredientEditor(
-                    new SearchIngredientQueryHandler(queryDbContext),
-                    new SearchRecipeQueryHandler(queryDbContext),
-                    new AppendIngredientCommandHandler(editDbContext),
-                    new RemoveRecipeIngredientCommandHandler(editDbContext),
-                    new ReplaceRecipeIngredientsListCommandHandler(editDbContext),
-                    new ReplaceRecipeIngredientCommandHandler(editDbContext),
-                    new CreateIngredientDecorator(
-                        new CreateIngredientCommandHandler(editDbContext),
-                        new IngredientChecker(
-                            new GetIngredientQueryHandler(queryDbContext)),
-                        new CreateCategoryDecorator(
-                            new CreateCategoryCommandHandler(editDbContext),
-                            new CategoryChecker(
-                                new GetCategoryQueryHandler(queryDbContext)))),
-                    new EditRecipeIngredientDescriptionCommandHandler(editDbContext)));
-
-            _dbContexts.AddRange(new[] { queryDbContext, editDbContext, swapDbContext });
         }
 
         [Fact]
         public void Editor_edits_step_description()
         {
+            using var dbContext = _fixture.DbContext;
+            var sut =
+                new EditRecipeStepDescriptionDecorator(
+                    new EditStepDescriptionCommandHandler(dbContext),
+                    new RecipeStepChecker(
+                        new SearchStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe
@@ -81,7 +50,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             });
             var newDescription = "Что за черт?";
 
-            Action act = () => _sut.ChangeDescription(stepId, newDescription);
+            Action act = () => sut.Execute (new EditStepDescriptionCommand(newDescription, stepId, recipeId));
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -99,7 +68,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             });
             var newDescription = "Что за черт?";
 
-            Action act = () => _sut.ChangeDescription(stepId, newDescription);
+            Action act = () => sut.ChangeDescription(stepId, newDescription);
 
             act.Should().Throw<Exception>();
         }
@@ -123,7 +92,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             });
             var newImage = "Новое изображение";
 
-            Action act = () => _sut.ChangePicture(stepId, newImage);
+            Action act = () => sut.ChangePicture(stepId, newImage);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -141,7 +110,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             });
             var newImage = "Новое изображение";
 
-            Action act = () => _sut.ChangePicture(stepId, newImage);
+            Action act = () => sut.ChangePicture(stepId, newImage);
 
             act.Should().Throw<Exception>();
         }
@@ -170,7 +139,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             });
 
-            Action act = () => _sut.SwapSteps(firstStepId, secondStepId, recipeId);
+            Action act = () => sut.SwapSteps(firstStepId, secondStepId, recipeId);
 
             act.Should().NotThrow();
             var steps = _fixture.FindRecipe(recipeId).Steps;
@@ -189,7 +158,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 Image = "Изображение"
             };
 
-            Action act = () => _sut.Execute(recipeId, newStep);
+            Action act = () => sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -217,7 +186,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             };
 
-            Action act = () => _sut.Execute(recipeId, newStep);
+            Action act = () => sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -248,7 +217,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             };
 
-            Action act = () => _sut.Execute(recipeId, newStep);
+            Action act = () => sut.Execute(recipeId, newStep);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -263,7 +232,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
 
-            Action act = () => _sut.RemoveStep(recipeId, stepId);
+            Action act = () => sut.RemoveStep(recipeId, stepId);
 
             act.Should().NotThrow();
         }
@@ -287,7 +256,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             });
 
-            Action act = () => _sut.RemoveStep(recipeId, secondStepId);
+            Action act = () => sut.RemoveStep(recipeId, secondStepId);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -324,7 +293,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 }
             });
 
-            Action act = () => _sut.RemoveStep(recipeId, firstStepId);
+            Action act = () => sut.RemoveStep(recipeId, firstStepId);
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);

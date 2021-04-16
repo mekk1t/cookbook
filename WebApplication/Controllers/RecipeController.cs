@@ -22,7 +22,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         private readonly CreateRecipeDecorator _recipeService;
         private readonly ICommand<AppendCategoryToRecipeCommand> _appendCategory;
         private readonly ICommand<RemoveRecipeCategoryCommand> _removeCategory;
-        private readonly RecipeIngredientEditor _recipeIngredientEditor;
+        private readonly EditRecipeIngredientDescriptionDecorator _recipeIngredientEditor;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
         private readonly IQuery<RecipeDetails, GetRecipeQuery> _searchRecipe;
         private readonly ICommand<EditRecipeCommand> _editRecipe;
@@ -32,7 +32,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             CreateRecipeDecorator recipeService,
             ICommand<AppendCategoryToRecipeCommand> appendCategory,
             ICommand<RemoveRecipeCategoryCommand> removeCategory,
-            RecipeIngredientEditor recipeIngredientEditor,
+            EditRecipeIngredientDescriptionDecorator recipeIngredientEditor,
             IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
             IQuery<RecipeDetails, GetRecipeQuery> searchRecipe,
             ICommand<EditRecipeCommand> editRecipe,

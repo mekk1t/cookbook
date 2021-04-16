@@ -31,7 +31,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.Register<CreateRecipeDecorator>();
             container.Register<RemoveCategoryFromIngredientDecorator>();
             container.Register<AppendStepDecorator>();
-            container.Register<RecipeIngredientEditor>();
+            container.Register<EditRecipeIngredientDescriptionDecorator>();
         }
     }
 }
