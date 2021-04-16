@@ -6,6 +6,7 @@ using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Decorators;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using System;
@@ -26,8 +27,9 @@ namespace KitProjects.MasterChef.Tests.Commands
             _fixture = fixture;
             _dbContext = _fixture.DbContext;
             _sut = new AppendCategoryToIngredientDecorator(
-                new SearchCategoryQueryHandler(_dbContext),
-                new SearchIngredientQueryHandler(_dbContext),
+                new CategoryChecker(
+                    new GetCategoryQueryHandler(_dbContext)),
+                new GetIngredientQueryHandler(_dbContext),
                 new AppendIngredientCategoryCommandHandler(_dbContext));
         }
 
