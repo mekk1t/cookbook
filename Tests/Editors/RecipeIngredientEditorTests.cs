@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
-using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
 using KitProjects.MasterChef.Dal.Database.Models;
@@ -8,6 +7,7 @@ using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Ingredients;
@@ -20,43 +20,38 @@ using Xunit;
 namespace KitProjects.MasterChef.Tests.Editors
 {
     [Collection("Db")]
-    public sealed class RecipeIngredientEditorTests : IDisposable
+    public sealed class RecipeIngredientEditorTests
     {
-        private readonly AppDbContext _dbContext;
         private readonly DbFixture _fixture;
-        private readonly EditRecipeIngredientDescriptionDecorator _sut;
 
         public RecipeIngredientEditorTests(DbFixture fixture)
         {
             _fixture = fixture;
-            _dbContext = _fixture.DbContext;
-            _sut = new RecipeIngredientEditor(
-                new SearchIngredientQueryHandler(_dbContext),
-                new SearchRecipeQueryHandler(_dbContext),
-                new AppendIngredientCommandHandler(_dbContext),
-                new RemoveRecipeIngredientCommandHandler(_dbContext),
-                new ReplaceRecipeIngredientsListCommandHandler(_dbContext),
-                new ReplaceRecipeIngredientCommandHandler(_dbContext),
-                new CreateIngredientDecorator(
-                    new CreateIngredientCommandHandler(_dbContext),
-                    new IngredientChecker(
-                        new GetIngredientQueryHandler(_dbContext)),
-                    new CreateCategoryDecorator(
-                        new CreateCategoryCommandHandler(_dbContext),
-                        new CategoryChecker(
-                            new GetCategoryQueryHandler(_dbContext)))),
-                new EditRecipeIngredientDescriptionCommandHandler(_dbContext));
         }
-
-        public void Dispose() => _dbContext.Dispose();
 
         [Fact]
         public void Editor_appends_a_new_ingredient()
         {
+            using var dbContext = _fixture.DbContext;
+            var sut =
+                new AppendIngredientToRecipeDecorator(
+                    new AppendIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
 
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            sut.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
@@ -68,23 +63,46 @@ namespace KitProjects.MasterChef.Tests.Editors
         [Fact]
         public void Editor_removes_an_ingredient()
         {
+            using var dbContext = _fixture.DbContext;
+            var appendIngredient =
+                new AppendIngredientToRecipeDecorator(
+                    new AppendIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Чтозачерт"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.Select(link => link.DbIngredientId).First();
+            var sut =
+                new RemoveIngredientFromRecipeDecorator(
+                    new RemoveRecipeIngredientCommandHandler(dbContext),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)));
 
-            _sut.RemoveIngredient(recipeId, ingredientId);
+            sut.Execute(new RemoveRecipeIngredientCommand(recipeId, ingredientId));
 
             var result = _fixture.FindRecipe(recipeId);
             result.RecipeIngredientLink.Should().HaveCount(2);
@@ -93,20 +111,46 @@ namespace KitProjects.MasterChef.Tests.Editors
         [Fact]
         public void Editor_replaces_an_ingredient()
         {
+            using var dbContext = _fixture.DbContext;
+            var appendIngredient =
+                new AppendIngredientToRecipeDecorator(
+                    new AppendIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             var newIngredientId = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId, newIngredientId.ToString()));
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.Select(link => link.DbIngredientId).First();
+            var sut =
+                new ReplaceIngredientInRecipeDecorator(
+                    new ReplaceRecipeIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)));
 
-            _sut.ReplaceIngredient(
-                new Ingredient(ingredientId, "Хэйлялясан"),
-                new Ingredient(newIngredientId, newIngredientId.ToString()),
-                recipeId);
+            sut.Execute(
+                new ReplaceRecipeIngredientCommand(
+                    new Ingredient(
+                        ingredientId,
+                        "Хэйлялясан"),
+                    new Ingredient(
+                        newIngredientId,
+                        newIngredientId.ToString()),
+                    recipeId));
 
             var result = _fixture.FindRecipe(recipeId);
             result.RecipeIngredientLink.Should().HaveCount(1);
@@ -116,28 +160,60 @@ namespace KitProjects.MasterChef.Tests.Editors
         [Fact]
         public void Editor_replaces_a_bunch_of_ingredients()
         {
+            using var dbContext = _fixture.DbContext;
+            var appendIngredient =
+                new AppendIngredientToRecipeDecorator(
+                    new AppendIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             var newIngredientId = Guid.NewGuid();
             var newIngredientId2 = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId, newIngredientId.ToString()));
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId2, newIngredientId2.ToString()));
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+            var sut =
+                new ReplaceIngredientsListInRecipeDecorator(
+                    new ReplaceRecipeIngredientsListCommandHandler(dbContext),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
 
-            _sut.ReplaceIngredientsList(
+
+           sut.Execute(new ReplaceIngredientsListCommand(
                 new[]
                 {
                     new Ingredient(newIngredientId, newIngredientId.ToString()),
                     new Ingredient(newIngredientId2, newIngredientId2.ToString())
                 },
-                recipeId);
+                recipeId));
 
             var result = _fixture.FindRecipe(recipeId);
             result.RecipeIngredientLink.Should().HaveCount(2);
@@ -149,16 +225,34 @@ namespace KitProjects.MasterChef.Tests.Editors
         [Fact]
         public void Editor_edits_ingredients_description()
         {
+            using var dbContext = _fixture.DbContext;
+            var appendIngredient =
+                new AppendIngredientToRecipeDecorator(
+                    new AppendIngredientCommandHandler(dbContext),
+                    new RecipeChecker(
+                        new GetRecipeQueryHandler(dbContext)),
+                    new IngredientChecker(
+                        new GetIngredientQueryHandler(dbContext)),
+                    new CreateIngredientDecorator(
+                        new CreateIngredientCommandHandler(dbContext),
+                        new IngredientChecker(
+                            new GetIngredientQueryHandler(dbContext)),
+                        new CreateCategoryDecorator(
+                            new CreateCategoryCommandHandler(dbContext),
+                            new CategoryChecker(
+                                new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            _sut.AppendIngredient(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.Milliliters)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First().DbIngredientId;
+            var sut =
+                new EditRecipeIngredientDescriptionDecorator(
+                    new EditRecipeIngredientDescriptionCommandHandler(dbContext));
 
-            _sut.EditIngredientsDescription(
-                new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.Pieces));
+            sut.Execute(new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.Pieces));
 
             var result = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First();
             result.IngredientxAmount.Should().Be(228M);
