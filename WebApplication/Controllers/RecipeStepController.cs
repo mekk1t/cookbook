@@ -1,17 +1,15 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Recipes;
-using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.RecipeSteps
 {
-    [Route("recipeSteps")]
+    [Route("recipes/{recipeId}/steps")]
     public class RecipeStepController : ControllerBase
     {
         private readonly ICommand<EditStepPictureCommand> _editPicture;
@@ -23,10 +21,43 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
 
         public RecipeStepController(
             ICommand<RemoveRecipeStepCommand> removeStep,
-            ICommand<ReplaceStepCommand> replaceStep)
+            ICommand<ReplaceStepCommand> replaceStep,
+            ICommand<EditStepPictureCommand> editPicture,
+            ICommand<SwapStepsCommand> swapSteps,
+            ICommand<EditStepDescriptionCommand> editDescription,
+            ICommand<AppendRecipeStepCommand> appendStep)
         {
+            _editDescription = editDescription;
+            _editPicture = editPicture;
             _removeStep = removeStep;
             _replaceStep = replaceStep;
+            _swapSteps = swapSteps;
+            _appendStep = appendStep;
+        }
+
+        /// <summary>
+        /// Добавляет шаг в рецепт.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта, куда добавится шаг.</param>
+        /// <param name="request">Информация о шаге для добавления.</param>
+        [HttpPost]
+        public IActionResult AppendStep([FromRoute] Guid recipeId, [FromBody] AppendStepRequest request)
+        {
+            var step = new RecipeStep(Guid.NewGuid())
+            {
+                Description = request.Description,
+                Image = request.ImageBase64
+            };
+            step.IngredientsDetails.AddRange(request.Ingredients
+                .Select(c => new StepIngredientDetails
+                {
+                    IngredientName = c.IngredientName,
+                    Measure = c.Measure,
+                    Amount = c.Amount
+                }));
+
+            _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
+            return Ok();
         }
 
         /// <summary>
@@ -34,9 +65,11 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// </summary>
         /// <param name="request">Запрос на смену мест шагов.</param>
         [HttpPost("swap")]
-        public IActionResult SwapSteps([FromBody] SwapStepsRequest request)
+        public IActionResult SwapSteps(
+            [FromRoute] Guid recipeId,
+            [FromBody] SwapStepsRequest request)
         {
-            _swapSteps.Execute(new SwapStepsCommand(request.FirstStepId, request.SecondStepId, request.RecipeId));
+            _swapSteps.Execute(new SwapStepsCommand(request.FirstStepId, request.SecondStepId, recipeId));
             return Ok();
         }
 
@@ -45,7 +78,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// </summary>
         /// <param name="stepId">ID шага.</param>
         /// <returns></returns>
-        [HttpPut("{recipeId}/{stepId}")]
+        [HttpPut("{stepId}")]
         public IActionResult ReplaceStep(
             [FromBody] ReplaceStepRequest request,
             [FromRoute] Guid recipeId,
@@ -69,7 +102,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// Меняет содержимое картинки в шаге рецепта.
         /// </summary>
         /// <param name="pictureBase64">Изображение в кодировке base64.</param>
-        [HttpPut("{recipeId}/{stepId}/picture")]
+        [HttpPut("{stepId}/picture")]
         public IActionResult ChangeStepPicture(
             [FromBody] string pictureBase64,
             [FromRoute] Guid stepId,
@@ -83,7 +116,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// Редактирует описание шага в рецепте.
         /// </summary>
         /// <param name="description">Новое описание шага по приготовлению.</param>
-        [HttpPut("{recipeId}/{stepId}/description")]
+        [HttpPut("{stepId}/description")]
         public IActionResult ChangeStepDescription(
             [FromBody] string description,
             [FromRoute] Guid stepId,
@@ -94,36 +127,11 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         }
 
         /// <summary>
-        /// Добавляет шаг в рецепт.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, куда добавится шаг.</param>
-        /// <param name="request">Информация о шаге для добавления.</param>
-        [HttpPost("{recipeId}")]
-        public IActionResult AppendStep([FromRoute] Guid recipeId, [FromBody] AppendStepRequest request)
-        {
-            var step = new RecipeStep(Guid.NewGuid())
-            {
-                Description = request.Description,
-                Image = request.ImageBase64
-            };
-            step.IngredientsDetails.AddRange(request.Ingredients
-                .Select(c => new StepIngredientDetails
-                {
-                    IngredientName = c.IngredientName,
-                    Measure = c.Measure,
-                    Amount = c.Amount
-                }));
-
-            _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
-            return Ok();
-        }
-
-        /// <summary>
         /// Удаляет шаг из рецепта по ID.
         /// </summary>
         /// <param name="recipeId">ID рецепта, из которого будет удаляться шаг.</param>
         /// <param name="stepId">ID шага для удаления.</param>
-        [HttpDelete("{recipeId}/{stepId}")]
+        [HttpDelete("{stepId}")]
         public IActionResult DeleteStep([FromRoute] Guid recipeId, [FromRoute] Guid stepId)
         {
             _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));

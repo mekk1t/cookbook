@@ -37,7 +37,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         /// Добавляет ингредиент в рецепт.
         /// </summary>
         /// <returns></returns>
-        [HttpPost("")]
+        [HttpPost]
         public IActionResult AppendIngredient([FromRoute] Guid recipeId, [FromBody] AppendIngredientRequest request)
         {
             _appendIngredient.Execute(
@@ -45,6 +45,48 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
                     recipeId,
                     new Ingredient(Guid.NewGuid(), request.IngredientName),
                     new AppendIngredientParameters(request.Amount, request.Measure, request.Notes)));
+            return Ok();
+        }
+
+        /// <summary>
+        /// Заменяет все ингредиенты в рецепте на новые. Создает в процессе несуществующие.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
+        /// <param name="request">Запрос на замену ингредиентов.</param>
+        [HttpPut]
+        public IActionResult ReplaceIngredients([FromRoute] Guid recipeId, [FromBody] ReplaceIngredientsRequest request)
+        {
+            _replaceIngredientsList.Execute(
+                new ReplaceIngredientsListCommand(
+                    request.NewIngredients
+                        .Select(i => new Ingredient(Guid.NewGuid(), i))
+                        .ToArray(),
+                    recipeId));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Заменяет старый ингредиент на новый. Новый создается, если отсутствует в базе.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта, в котором находятся ингредиенты.</param>
+        /// <param name="ingredientId">ID старого ингредиента, который будет заменен.</param>
+        [HttpPut("{ingredientId}")]
+        public IActionResult ReplaceIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] ReplaceIngredientRequest request)
+        {
+            _replaceIngredient.Execute(
+                new ReplaceRecipeIngredientCommand(
+                    new Ingredient(
+                        ingredientId,
+                        request.OldIngredientName),
+                    new Ingredient(
+                        Guid.NewGuid(),
+                        request.NewIngredientName),
+                    recipeId));
+
             return Ok();
         }
 
@@ -82,48 +124,6 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         public IActionResult RemoveIngredient([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId)
         {
             _removeIngredient.Execute(new RemoveRecipeIngredientCommand(recipeId, ingredientId));
-            return Ok();
-        }
-
-        /// <summary>
-        /// Заменяет старый ингредиент на новый. Новый создается, если отсутствует в базе.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, в котором находятся ингредиенты.</param>
-        /// <param name="ingredientId">ID старого ингредиента, который будет заменен.</param>
-        [HttpPut("{ingredientId}")]
-        public IActionResult ReplaceIngredient(
-            [FromRoute] Guid recipeId,
-            [FromRoute] Guid ingredientId,
-            [FromBody] ReplaceIngredientRequest request)
-        {
-            _replaceIngredient.Execute(
-                new ReplaceRecipeIngredientCommand(
-                    new Ingredient(
-                        ingredientId,
-                        request.OldIngredientName),
-                    new Ingredient(
-                        Guid.NewGuid(),
-                        request.NewIngredientName),
-                    recipeId));
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Заменяет все ингредиенты в рецепте на новые. Создает в процессе несуществующие.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта.</param>
-        /// <param name="request">Запрос на замену ингредиентов.</param>
-        [HttpPut("")]
-        public IActionResult ReplaceIngredients([FromRoute] Guid recipeId, [FromBody] ReplaceIngredientsRequest request)
-        {
-            _replaceIngredientsList.Execute(
-                new ReplaceIngredientsListCommand(
-                    request.NewIngredients
-                        .Select(i => new Ingredient(Guid.NewGuid(), i))
-                        .ToArray(),
-                    recipeId));
-
             return Ok();
         }
     }

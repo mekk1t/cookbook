@@ -38,7 +38,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="withRelationships">Включать ли связанные сущности, например, ингредиенты.</param>
         /// <param name="offset">Отступ данных.</param>
         /// <param name="limit">Ограничение выборки элементов.</param>
-        [HttpGet("")]
+        [HttpGet]
         public GetCategoriesResponse GetCategories(
             [FromQuery] bool withRelationships = false,
             [FromQuery] int offset = 0,
@@ -46,6 +46,25 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         {
             var categories = _getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
             return new GetCategoriesResponse(categories);
+        }
+
+        /// <summary>
+        /// Создает новую категорию в приложении.
+        /// </summary>
+        /// <param name="request">Запрос на создание.</param>
+        [HttpPost]
+        public IActionResult CreateCategory(
+            [FromBody] CreateCategoryRequest request)
+        {
+            _createCategory.Execute(new CreateCategoryCommand(request.Name));
+            var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
+
+            if (createdCategory == null)
+            {
+                return Conflict("Не удалось создать категорию.");
+            }
+
+            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }), null);
         }
 
         /// <summary>
@@ -64,22 +83,17 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         }
 
         /// <summary>
-        /// Создает новую категорию в приложении.
+        /// Редактирует категорию по ID.
         /// </summary>
-        /// <param name="request">Запрос на создание.</param>
-        [HttpPost("")]
-        public IActionResult CreateCategory(
-            [FromBody] CreateCategoryRequest request)
+        /// <param name="categoryId">ID категории в формате GUID.</param>
+        /// <param name="request">Запрос на редактирование.</param>
+        [HttpPut("{categoryId}")]
+        public IActionResult EditCategory(
+            [FromRoute] Guid categoryId,
+            [FromBody] EditCategoryRequest request)
         {
-            _createCategory.Execute(new CreateCategoryCommand(request.Name));
-            var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
-
-            if (createdCategory == null)
-            {
-                return Conflict("Не удалось создать категорию.");
-            }
-
-            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }), null);
+            _editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
+            return Ok();
         }
 
         /// <summary>
@@ -92,20 +106,6 @@ namespace KitProjects.MasterChef.WebApplication.Categories
             [FromRoute] string categoryName)
         {
             _deleteCategory.Execute(new DeleteCategoryCommand(categoryName));
-            return Ok();
-        }
-
-        /// <summary>
-        /// Редактирует категорию по ID.
-        /// </summary>
-        /// <param name="categoryId">ID категории в формате GUID.</param>
-        /// <param name="request">Запрос на редактирование.</param>
-        [HttpPut("{categoryId}")]
-        public IActionResult EditCategory(
-            [FromRoute] Guid categoryId,
-            [FromBody] EditCategoryRequest request)
-        {
-            _editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
             return Ok();
         }
     }

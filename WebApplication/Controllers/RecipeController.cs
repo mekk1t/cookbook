@@ -38,7 +38,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// Создает рецепт.
         /// </summary>
         /// <param name="request">Запрос на создание рецепта.</param>
-        [HttpPost("")]
+        [HttpPost]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
         {
             _createRecipe.Execute(new CreateRecipeCommand(Guid.NewGuid(), request.Title, request.Categories, request.IngredientDetails, request.Steps));
@@ -48,7 +48,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// <summary>
         /// Получает список рецептов. Включает все связи.
         /// </summary>
-        [HttpGet("")]
+        [HttpGet]
         public IEnumerable<Recipe> GetRecipes() => _getRecipes.Execute(new GetRecipesQuery(true));
 
         /// <summary>

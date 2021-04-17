@@ -21,27 +21,27 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         }
 
         /// <summary>
-        /// Удаляет из рецепта категорию по имени.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, из которого будет удаляться категория.</param>
-        /// <param name="categoryName">Название категории для удаления.</param>
-        [HttpDelete("")]
-        public IActionResult RemoveCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
-        {
-            _removeCategory.Execute(new RemoveRecipeCategoryCommand(recipeId, categoryName));
-            return Ok();
-        }
-
-        /// <summary>
         /// Добавляет категорию в рецепт.
         /// </summary>
         /// <param name="recipeId">ID рецепта, куда будет добавлена категория.</param>
         /// <param name="categoryName">Название существующей категории.</param>
         /// <returns></returns>
-        [HttpPut("")]
+        [HttpPut]
         public IActionResult AppendCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
         {
             _appendCategory.Execute(new AppendCategoryToRecipeCommand(categoryName, recipeId));
+            return Ok();
+        }
+
+        /// <summary>
+        /// Удаляет из рецепта категорию по имени.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта, из которого будет удаляться категория.</param>
+        /// <param name="categoryName">Название категории для удаления.</param>
+        [HttpDelete]
+        public IActionResult RemoveCategory([FromRoute] Guid recipeId, [FromRoute] string categoryName)
+        {
+            _removeCategory.Execute(new RemoveRecipeCategoryCommand(recipeId, categoryName));
             return Ok();
         }
     }

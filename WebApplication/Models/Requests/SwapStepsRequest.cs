@@ -15,9 +15,5 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// ID другого шага.
         /// </summary>
         public Guid SecondStepId { get; set; }
-        /// <summary>
-        /// ID рецепта, в котором будут меняться шаги.
-        /// </summary>
-        public Guid RecipeId { get; set; }
     }
 }
