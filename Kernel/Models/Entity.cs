@@ -8,6 +8,7 @@ namespace KitProjects.MasterChef.Kernel
 
         protected Entity()
         {
+            Id = Guid.NewGuid();
         }
 
         protected Entity(Guid id)
