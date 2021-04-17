@@ -10,6 +10,7 @@ using SimpleInjector;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace WebApplication
 {
@@ -28,7 +29,8 @@ namespace WebApplication
                     .AddControllerActivation();
             });
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer("Server=localhost;Database=MasterChef;Trusted_Connection=True;"));
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API агрегатора кулинарных рецептов \"Мастер Шеф\"", Version = "v1" });
