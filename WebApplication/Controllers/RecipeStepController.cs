@@ -5,6 +5,7 @@ using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Linq;
 
@@ -13,8 +14,12 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
     [Route("recipeSteps")]
     public class RecipeStepController : ControllerBase
     {
+        private readonly ICommand<EditStepPictureCommand> _editPicture;
+        private readonly ICommand<SwapStepsCommand> _swapSteps;
         private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
         private readonly ICommand<ReplaceStepCommand> _replaceStep;
+        private readonly ICommand<EditStepDescriptionCommand> _editDescription;
+        private readonly ICommand<AppendRecipeStepCommand> _appendStep;
 
         public RecipeStepController(
             ICommand<RemoveRecipeStepCommand> removeStep,
@@ -31,7 +36,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         [HttpPost("swap")]
         public IActionResult SwapSteps([FromBody] SwapStepsRequest request)
         {
-            _editor.SwapSteps(request.FirstStepId, request.SecondStepId, request.RecipeId);
+            _swapSteps.Execute(new SwapStepsCommand(request.FirstStepId, request.SecondStepId, request.RecipeId));
             return Ok();
         }
 
@@ -64,10 +69,13 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// Меняет содержимое картинки в шаге рецепта.
         /// </summary>
         /// <param name="pictureBase64">Изображение в кодировке base64.</param>
-        [HttpPut("{stepId}/picture")]
-        public IActionResult ChangeStepPicture([FromBody] string pictureBase64, [FromRoute] Guid stepId)
+        [HttpPut("{recipeId}/{stepId}/picture")]
+        public IActionResult ChangeStepPicture(
+            [FromBody] string pictureBase64,
+            [FromRoute] Guid stepId,
+            [FromRoute] Guid recipeId)
         {
-            _editor.ChangePicture(stepId, pictureBase64);
+            _editPicture.Execute(new EditStepPictureCommand(pictureBase64, stepId, recipeId));
             return Ok();
         }
 
@@ -75,10 +83,13 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
         /// Редактирует описание шага в рецепте.
         /// </summary>
         /// <param name="description">Новое описание шага по приготовлению.</param>
-        [HttpPut("{stepId}/description")]
-        public IActionResult ChangeStepDescription([FromBody] string description, [FromRoute] Guid stepId)
+        [HttpPut("{recipeId}/{stepId}/description")]
+        public IActionResult ChangeStepDescription(
+            [FromBody] string description,
+            [FromRoute] Guid stepId,
+            [FromRoute] Guid recipeId)
         {
-            _editor.ChangeDescription(stepId, description);
+            _editDescription.Execute(new EditStepDescriptionCommand(description, stepId, recipeId));
             return Ok();
         }
 
@@ -103,7 +114,7 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
                     Amount = c.Amount
                 }));
 
-            _editor.AppendStep(recipeId, step);
+            _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
             return Ok();
         }
 
