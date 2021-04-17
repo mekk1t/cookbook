@@ -3,8 +3,10 @@ using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Database.Models;
+using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Ingredients;
@@ -20,7 +22,7 @@ namespace KitProjects.MasterChef.Tests.Services
     [Collection("Db")]
     public sealed class RecipeServiceTests : IDisposable
     {
-        private readonly RecipeService _sut;
+        private readonly CreateRecipeDecorator _sut;
         private readonly DbFixture _fixture;
         private readonly List<AppDbContext> _dbContexts;
 
@@ -30,20 +32,19 @@ namespace KitProjects.MasterChef.Tests.Services
             _dbContexts = new List<AppDbContext>();
             var dbContext = _fixture.DbContext;
             _dbContexts.Add(dbContext);
-            var categoryService = new CategoryService(
+            var categoryService = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext));
-            var ingredientService = new IngredientService(
+                new CategoryChecker(
+                    new GetCategoryQueryHandler(dbContext)));
+            var ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQueryHandler(dbContext),
-                categoryService,
-                new GetCategoriesQueryHandler(dbContext));
-            _sut = new RecipeService(
+                new IngredientChecker(
+                    new GetIngredientQueryHandler(dbContext)),
+                categoryService);
+            _sut = new CreateRecipeDecorator(
                 new CreateRecipeCommandHandler(dbContext),
                 categoryService,
-                ingredientService,
-                new SearchIngredientQueryHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext));
+                ingredientService);
         }
 
         [Fact]
@@ -51,7 +52,7 @@ namespace KitProjects.MasterChef.Tests.Services
         {
             var recipeId = Guid.NewGuid();
 
-            Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
+            Action act = () => _sut.Execute(new CreateRecipeCommand(
                 recipeId,
                 "Тестовый",
                 new[] { "Ахалай махалай", "Букабяка" },
@@ -102,7 +103,7 @@ namespace KitProjects.MasterChef.Tests.Services
             _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName));
             _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.NewGuid(), ingredientName + "1"));
 
-            Action act = () => _sut.CreateRecipe(new CreateRecipeCommand(
+            Action act = () => _sut.Execute(new CreateRecipeCommand(
                 recipeId,
                 "Тестовый",
                 new[] { categoryName, categoryName + "1" },

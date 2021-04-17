@@ -17,13 +17,16 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
 
         public void Execute(AppendCategoryToRecipeCommand command)
         {
+            var category = _dbContext.Categories
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Name == command.CategoryName);
             var recipe = _dbContext.Recipes
                 .Include(r => r.RecipeCategoriesLink)
                 .First(r => r.Id == command.RecipeId);
             recipe.RecipeCategoriesLink.Add(new DbRecipeCategory
             {
                 DbRecipeId = recipe.Id,
-                DbCategoryId = command.CategoryId
+                DbCategoryId = category.Id
             });
             _dbContext.SaveChanges();
         }

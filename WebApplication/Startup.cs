@@ -19,6 +19,7 @@ namespace WebApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
+            _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             services.AddMvcCore();
             services.AddSimpleInjector(_container, options =>
             {
@@ -34,6 +35,7 @@ namespace WebApplication
                 var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 c.IncludeXmlComments(xmlDocPath);
             });
+
             _container.AddApplicationServices();
         }
 

@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -17,8 +20,8 @@ namespace KitProjects.MasterChef.Tests.Moderators
     public sealed class CategoryServiceTests : IDisposable
     {
         private readonly DbFixture _fixture;
-        private readonly CategoryService _sut;
-        private readonly IngredientService _ingredientService;
+        private readonly CreateCategoryDecorator _sut;
+        private readonly CreateIngredientDecorator _ingredientService;
         private List<DbContext> _dbContexts;
 
         public CategoryServiceTests(DbFixture fixture)
@@ -29,20 +32,21 @@ namespace KitProjects.MasterChef.Tests.Moderators
             {
                 dbContext
             };
-            _sut = new CategoryService(
+            _sut = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext));
-            _ingredientService = new IngredientService(
+                new CategoryChecker(
+                    new GetCategoryQueryHandler(dbContext)));
+            _ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQueryHandler(dbContext),
-                _sut,
-                new GetCategoriesQueryHandler(dbContext));
+                new IngredientChecker(
+                    new GetIngredientQueryHandler(dbContext)),
+                _sut);
         }
 
         [Fact]
         public void Category_moderator_creates_a_new_category()
         {
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand("Тест"));
+            Action act = () => _sut.Execute(new CreateCategoryCommand("Тест"));
 
             act.Should().NotThrow();
             using var _dbContext = _fixture.DbContext;
@@ -58,7 +62,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
             using var dbContext = _fixture.DbContext;
 
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand(categoryName));
+            Action act = () => _sut.Execute(new CreateCategoryCommand(categoryName));
 
             act.Should().NotThrow();
             dbContext.Categories.Where(r => r.Name == categoryName).Should().HaveCount(1);
@@ -114,7 +118,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_with_relationships_gets_all_ingredients_related()
         {
             var ingredientName = "вжыьлдмывмлд";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: true);
             using var dbContext = _fixture.DbContext;
             var sut = new GetCategoriesQueryHandler(dbContext);
@@ -129,7 +133,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_without_relationships_doesnt_have_related_ingredients()
         {
             var ingredientName = "as;lvmasd;lvmsd;lvm";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: false);
             using var dbContext = _fixture.DbContext;
             var sut = new GetCategoriesQueryHandler(dbContext);
