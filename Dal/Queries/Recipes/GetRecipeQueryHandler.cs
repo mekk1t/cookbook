@@ -4,11 +4,7 @@ using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Models.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KitProjects.MasterChef.Dal.Queries.Recipes
 {
@@ -30,7 +26,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
                 .Include(r => r.RecipeIngredientLink).ThenInclude(r => r.DbIngredient)
                 .FirstOrDefault(r => r.Id == query.RecipeId);
             if (recipe == null)
-                throw new EntityNotFoundException();
+                return null;
 
             var result = new RecipeDetails
             {

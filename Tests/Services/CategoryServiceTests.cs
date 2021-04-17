@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -31,12 +34,13 @@ namespace KitProjects.MasterChef.Tests.Moderators
             };
             _sut = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext));
+                new CategoryChecker(
+                    new GetCategoryQueryHandler(dbContext)));
             _ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQueryHandler(dbContext),
-                _sut,
-                new GetCategoriesQueryHandler(dbContext));
+                new IngredientChecker(
+                    new GetIngredientQueryHandler(dbContext)),
+                _sut);
         }
 
         [Fact]
