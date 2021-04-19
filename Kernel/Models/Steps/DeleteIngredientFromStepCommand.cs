@@ -2,12 +2,12 @@
 
 namespace KitProjects.MasterChef.Kernel.Models.Steps
 {
-    public class RemoveIngredientFromStepCommand
+    public class DeleteIngredientFromStepCommand
     {
         public RecipeStepIds Ids { get; }
         public Guid IngredientId { get; }
 
-        public RemoveIngredientFromStepCommand(RecipeStepIds ids, Guid ingredientId)
+        public DeleteIngredientFromStepCommand(RecipeStepIds ids, Guid ingredientId)
         {
             Ids = ids;
             IngredientId = ingredientId;
