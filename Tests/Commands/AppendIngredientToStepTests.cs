@@ -3,6 +3,7 @@ using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
+using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
@@ -37,6 +38,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             var ingredientChecker = new IngredientChecker(new GetIngredientQueryHandler(_dbContext));
             _sut =
                 new AppendIngredientToStepDecorator(
+                    new AppendIngredientToStepCommandHandler(_dbContext),
                     getRecipeQueryHandler,
                     new AppendIngredientToRecipeDecorator(
                         new AppendIngredientCommandHandler(_dbContext),
@@ -87,7 +89,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             var ingredientName = Guid.NewGuid().ToString();
-            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientName));
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.Parse(ingredientName), ingredientName));
             _fixture.SeedRecipe(new DbRecipe
             {
                 Id = recipeId,
@@ -103,7 +105,7 @@ namespace KitProjects.MasterChef.Tests.Commands
 
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
-                new Ingredient(ingredientName),
+                new Ingredient(Guid.Parse(ingredientName), ingredientName),
                 new AppendIngredientParameters(0, Measures.Milliliters)));
 
             act.Should().NotThrow();
