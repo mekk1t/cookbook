@@ -37,6 +37,9 @@ namespace KitProjects.MasterChef.Kernel.Decorators
             if (step == null)
                 throw new EntityNotFoundException(typeof(RecipeStep), command.Ids.Step);
 
+            if (step.IngredientsDetails.Select(details => details.IngredientName).Contains(command.Ingredient.Name))
+                throw new EntityDuplicateException("Добавляемый ингредиент уже есть в шаге рецепта.");
+
             if (!recipe.Ingredients.Select(i => i.IngredientName).Contains(command.Ingredient.Name))
             {
                 _appendIngredientToRecipe.Execute(
