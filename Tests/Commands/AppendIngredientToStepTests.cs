@@ -155,6 +155,42 @@ namespace KitProjects.MasterChef.Tests.Commands
                 .Contain(ingredientName);
         }
 
+        [Fact]
+        public void Cant_append_ingredient_that_is_already_in_that_step()
+        {
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(Guid.Parse(ingredientName), ingredientName));
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        Index = 1,
+                        StepIngredientsLink = new List<DbRecipeStepIngredient>
+                        {
+                            new DbRecipeStepIngredient
+                            {
+                                DbRecipeStepId = stepId,
+                                DbIngredientId = Guid.Parse(ingredientName)
+                            }
+                        }
+                    }
+                }
+            });
+
+            Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
+                new RecipeStepIds(recipeId, stepId),
+                new Ingredient(ingredientName),
+                new AppendIngredientParameters(0, Measures.Milliliters)));
+
+            act.Should().ThrowExactly<EntityDuplicateException>();
+        }
+
         public void Dispose() => _dbContext.Dispose();
     }
 }
