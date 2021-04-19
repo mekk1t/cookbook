@@ -3,6 +3,7 @@ using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
+using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
@@ -48,11 +49,29 @@ namespace KitProjects.MasterChef.Tests.Commands
         }
 
         [Fact]
-        public void Cant_append_step_to_nonexistent_recipe()
+        public void Cant_append_ingredient_to_step_in_nonexistent_recipe()
         {
             Action act = () => _sut.Execute(
                 new AppendIngredientToStepCommand(
                     new RecipeStepIds(Guid.NewGuid(), Guid.NewGuid()),
+                    null,
+                    null));
+
+            act.Should().ThrowExactly<EntityNotFoundException>();
+        }
+
+        [Fact]
+        public void Cant_append_ingredient_to_nonexistent_step_in_recipe()
+        {
+            var recipeId = Guid.NewGuid();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId
+            });
+
+            Action act = () => _sut.Execute(
+                new AppendIngredientToStepCommand(
+                    new RecipeStepIds(recipeId, Guid.NewGuid()),
                     null,
                     null));
 
