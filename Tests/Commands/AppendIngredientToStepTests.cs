@@ -12,8 +12,12 @@ using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
+using KitProjects.MasterChef.Kernel.Models.Ingredients;
 using KitProjects.MasterChef.Kernel.Models.Steps;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Commands
@@ -33,7 +37,6 @@ namespace KitProjects.MasterChef.Tests.Commands
             var ingredientChecker = new IngredientChecker(new GetIngredientQueryHandler(_dbContext));
             _sut =
                 new AppendIngredientToStepDecorator(
-                    null,
                     getRecipeQueryHandler,
                     new AppendIngredientToRecipeDecorator(
                         new AppendIngredientCommandHandler(_dbContext),
@@ -76,6 +79,48 @@ namespace KitProjects.MasterChef.Tests.Commands
                     null));
 
             act.Should().ThrowExactly<EntityNotFoundException>();
+        }
+
+        [Fact]
+        public void Recipe_gets_ingredient_appended_when_step_adds_new_to_recipe_ingredient()
+        {
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientName));
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        Index = 1
+                    }
+                }
+            });
+
+            Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
+                new RecipeStepIds(recipeId, stepId),
+                new Ingredient(ingredientName),
+                new AppendIngredientParameters(0, Measures.Milliliters)));
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.RecipeIngredientLink.Select(link => link.DbIngredient.Name)
+                .Should()
+                .Contain(ingredientName);
+            result.Steps
+                .First(step => step.Id == stepId).StepIngredientsLink.Select(link => link.DbIngredient.Name)
+                .Should()
+                .Contain(ingredientName);
+        }
+
+        [Fact]
+        public void Recipe_gets_newly_created_ingredient_appended_when_step_adds_totally_new_ingredient()
+        {
+
         }
 
         public void Dispose() => _dbContext.Dispose();
