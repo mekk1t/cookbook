@@ -15,6 +15,16 @@ namespace KitProjects.MasterChef.Kernel.Decorators
         private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipe;
         private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredientToRecipe;
 
+        public AppendIngredientToStepDecorator(
+            ICommand<AppendIngredientToStepCommand> decoratee,
+            IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
+            ICommand<AppendRecipeIngredientCommand> appendIngredientToRecipe)
+        {
+            _decoratee = decoratee;
+            _getRecipe = getRecipe;
+            _appendIngredientToRecipe = appendIngredientToRecipe;
+        }
+
         public void Execute(AppendIngredientToStepCommand command)
         {
             var recipe = _getRecipe.Execute(new GetRecipeQuery(command.Ids.Recipe));
