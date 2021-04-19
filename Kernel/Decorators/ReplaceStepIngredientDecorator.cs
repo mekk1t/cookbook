@@ -16,6 +16,18 @@ namespace KitProjects.MasterChef.Kernel.Decorators
         private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredientToRecipe;
         private readonly IQuery<Ingredient, GetIngredientQuery> _getIngredient;
 
+        public ReplaceStepIngredientDecorator(
+            ICommand<ReplaceStepIngredientCommand> decoratee,
+            IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
+            ICommand<AppendRecipeIngredientCommand> appendIngredientToRecipe,
+            IQuery<Ingredient, GetIngredientQuery> getIngredient)
+        {
+            _decoratee = decoratee;
+            _getIngredient = getIngredient;
+            _getRecipe = getRecipe;
+            _appendIngredientToRecipe = appendIngredientToRecipe;
+        }
+
         public void Execute(ReplaceStepIngredientCommand command)
         {
             if (command.OldIngredient == command.NewIngredient)
