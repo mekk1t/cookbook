@@ -122,7 +122,36 @@ namespace KitProjects.MasterChef.Tests.Commands
         [Fact]
         public void Recipe_gets_newly_created_ingredient_appended_when_step_adds_totally_new_ingredient()
         {
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var ingredientName = Guid.NewGuid().ToString();
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        Index = 1
+                    }
+                }
+            });
 
+            Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
+                new RecipeStepIds(recipeId, stepId),
+                new Ingredient(ingredientName),
+                new AppendIngredientParameters(0, Measures.Milliliters)));
+
+            act.Should().NotThrow();
+            var result = _fixture.FindRecipe(recipeId);
+            result.RecipeIngredientLink.Select(link => link.DbIngredient.Name)
+                .Should()
+                .Contain(ingredientName);
+            result.Steps
+                .First(step => step.Id == stepId).StepIngredientsLink.Select(link => link.DbIngredient.Name)
+                .Should()
+                .Contain(ingredientName);
         }
 
         public void Dispose() => _dbContext.Dispose();
