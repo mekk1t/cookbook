@@ -50,7 +50,8 @@ namespace KitProjects.MasterChef.Tests.Commands
                             new CreateCategoryDecorator(
                                 new CreateCategoryCommandHandler(_dbContext),
                                 new CategoryChecker(
-                                    new GetCategoryQueryHandler(_dbContext))))));
+                                    new GetCategoryQueryHandler(_dbContext))))),
+                    new GetIngredientQueryHandler(_dbContext));
         }
 
         [Fact]
