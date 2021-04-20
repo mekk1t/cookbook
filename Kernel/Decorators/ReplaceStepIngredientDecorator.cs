@@ -41,6 +41,9 @@ namespace KitProjects.MasterChef.Kernel.Decorators
             if (step == null)
                 throw new EntityNotFoundException();
 
+            if (step.IngredientsDetails.Select(details => details.IngredientName).Contains(command.NewIngredient.Name))
+                throw new InvalidOperationException();
+
             var oldIngredientFromStep = step.IngredientsDetails.FirstOrDefault(details => details.IngredientName == command.OldIngredient.Name);
             if (oldIngredientFromStep == null)
                 throw new InvalidOperationException();
