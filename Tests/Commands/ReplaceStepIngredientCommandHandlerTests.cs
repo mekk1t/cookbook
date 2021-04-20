@@ -3,6 +3,7 @@ using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.Dal.Commands;
 using KitProjects.MasterChef.Dal.Commands.Edit.Recipe;
+using KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep;
 using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Dal.Queries.Categories;
 using KitProjects.MasterChef.Dal.Queries.Ingredients;
@@ -16,8 +17,6 @@ using KitProjects.MasterChef.Kernel.Models.Steps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace KitProjects.MasterChef.Tests.Commands
@@ -37,7 +36,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             var ingredientChecker = new IngredientChecker(new GetIngredientQueryHandler(_dbContext));
             _sut =
                 new ReplaceStepIngredientDecorator(
-                    null,
+                    new ReplaceStepIngredientCommandHandler(_dbContext),
                     getRecipe,
                     new AppendIngredientToRecipeDecorator(
                         new AppendIngredientCommandHandler(_dbContext),
@@ -177,6 +176,112 @@ namespace KitProjects.MasterChef.Tests.Commands
                     new Ingredient(Guid.NewGuid().ToString())));
 
             act.Should().ThrowExactly<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Recipe_has_a_replacement_ingredient_appended()
+        {
+            var ingredientId = Guid.NewGuid();
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var newIngredientName = Guid.NewGuid().ToString();
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                RecipeIngredientLink = new List<DbRecipeIngredient>
+                {
+                    new DbRecipeIngredient
+                    {
+                        DbRecipeId = recipeId,
+                        DbIngredientId = ingredientId
+                    }
+                },
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        StepIngredientsLink = new List<DbRecipeStepIngredient>
+                        {
+                            new DbRecipeStepIngredient
+                            {
+                                DbRecipeStepId = stepId,
+                                DbIngredientId = ingredientId
+                            }
+                        }
+                    }
+                }
+            });
+
+            _sut.Execute(
+                new ReplaceStepIngredientCommand(
+                    new RecipeStepIds(
+                        recipeId,
+                        stepId),
+                    new Ingredient(ingredientId, ingredientId.ToString()),
+                    new Ingredient(newIngredientName)));
+
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps
+                .First(step => step.Id == stepId).StepIngredientsLink
+                    .First().DbIngredient.Name
+                    .Should()
+                    .Be(newIngredientName);
+            result.RecipeIngredientLink.First().DbIngredient.Name.Should().Be(newIngredientName);
+        }
+
+        [Fact]
+        public void Recipe_step_gets_ingredient_replaced()
+        {
+
+            var ingredientId = Guid.NewGuid();
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            var newIngredientName = Guid.NewGuid().ToString();
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                RecipeIngredientLink = new List<DbRecipeIngredient>
+                {
+                    new DbRecipeIngredient
+                    {
+                        DbRecipeId = recipeId,
+                        DbIngredientId = ingredientId
+                    }
+                },
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId,
+                        StepIngredientsLink = new List<DbRecipeStepIngredient>
+                        {
+                            new DbRecipeStepIngredient
+                            {
+                                DbRecipeStepId = stepId,
+                                DbIngredientId = ingredientId
+                            }
+                        }
+                    }
+                }
+            });
+
+            _sut.Execute(
+                new ReplaceStepIngredientCommand(
+                    new RecipeStepIds(
+                        recipeId,
+                        stepId),
+                    new Ingredient(ingredientId, ingredientId.ToString()),
+                    new Ingredient(newIngredientName)));
+
+            var result = _fixture.FindRecipe(recipeId);
+            result.Steps
+                .First(step => step.Id == stepId).StepIngredientsLink
+                    .First().DbIngredient.Name
+                    .Should()
+                    .Be(newIngredientName);
         }
 
         public void Dispose() => _dbContext.Dispose();
