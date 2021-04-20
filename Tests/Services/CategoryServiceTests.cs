@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using KitProjects.Fixtures;
 using KitProjects.MasterChef.Dal.Commands;
+using KitProjects.MasterChef.Dal.Queries.Categories;
+using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Kernel;
+using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
@@ -17,8 +20,8 @@ namespace KitProjects.MasterChef.Tests.Moderators
     public sealed class CategoryServiceTests : IDisposable
     {
         private readonly DbFixture _fixture;
-        private readonly CategoryService _sut;
-        private readonly IngredientService _ingredientService;
+        private readonly CreateCategoryDecorator _sut;
+        private readonly CreateIngredientDecorator _ingredientService;
         private List<DbContext> _dbContexts;
 
         public CategoryServiceTests(DbFixture fixture)
@@ -29,23 +32,21 @@ namespace KitProjects.MasterChef.Tests.Moderators
             {
                 dbContext
             };
-            _sut = new CategoryService(
+            _sut = new CreateCategoryDecorator(
                 new CreateCategoryCommandHandler(dbContext),
-                new GetCategoriesQueryHandler(dbContext),
-                new DeleteCategoryCommandHandler(dbContext),
-                new EditCategoryCommandHandler(dbContext));
-            _ingredientService = new IngredientService(
+                new CategoryChecker(
+                    new GetCategoryQueryHandler(dbContext)));
+            _ingredientService = new CreateIngredientDecorator(
                 new CreateIngredientCommandHandler(dbContext),
-                new GetIngredientsQueryHandler(dbContext),
-                _sut,
-                new EditIngredientCommandHandler(dbContext),
-                new DeleteIngredientCommandHandler(dbContext));
+                new IngredientChecker(
+                    new GetIngredientQueryHandler(dbContext)),
+                _sut);
         }
 
         [Fact]
         public void Category_moderator_creates_a_new_category()
         {
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand("Тест"));
+            Action act = () => _sut.Execute(new CreateCategoryCommand("Тест"));
 
             act.Should().NotThrow();
             using var _dbContext = _fixture.DbContext;
@@ -59,11 +60,12 @@ namespace KitProjects.MasterChef.Tests.Moderators
         {
             var categoryName = "бавгд";
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
+            using var dbContext = _fixture.DbContext;
 
-            Action act = () => _sut.CreateCategory(new CreateCategoryCommand(categoryName));
+            Action act = () => _sut.Execute(new CreateCategoryCommand(categoryName));
 
             act.Should().NotThrow();
-            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == categoryName).Should().HaveCount(1);
+            dbContext.Categories.Where(r => r.Name == categoryName).Should().HaveCount(1);
         }
 
         [Fact]
@@ -71,22 +73,26 @@ namespace KitProjects.MasterChef.Tests.Moderators
         {
             var categoryName = "12345";
             _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
+            using var dbContext = _fixture.DbContext;
+            var sut = new DeleteCategoryCommandHandler(dbContext);
 
-            Action act = () => _sut.DeleteCategory(new DeleteCategoryCommand(categoryName));
+            Action act = () => sut.Execute(new DeleteCategoryCommand(categoryName));
 
             act.Should().NotThrow();
-            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == categoryName).Should().BeEmpty();
+            dbContext.Categories.AsNoTracking().Where(r => r.Name == categoryName).Should().BeEmpty();
         }
 
         [Fact]
         public void Moderator_doesnt_throw_when_deleting_category_does_not_exist()
         {
             var randomName = Guid.NewGuid().ToString();
+            using var dbContext = _fixture.DbContext;
+            var sut = new DeleteCategoryCommandHandler(dbContext);
 
-            Action act = () => _sut.DeleteCategory(new DeleteCategoryCommand(randomName));
+            Action act = () => sut.Execute(new DeleteCategoryCommand(randomName));
 
             act.Should().NotThrow();
-            _sut.GetCategories(new GetCategoriesQuery()).Where(r => r.Name == randomName).Should().BeEmpty();
+            dbContext.Categories.AsNoTracking().Where(r => r.Name == randomName).Should().BeEmpty();
         }
 
         [Fact]
@@ -96,14 +102,15 @@ namespace KitProjects.MasterChef.Tests.Moderators
             var oldName = "12345";
             var newName = "НовоеИмя";
             _fixture.SeedCategory(new Category(categoryId, oldName));
+            using var dbContext = _fixture.DbContext;
+            var sut = new EditCategoryCommandHandler(dbContext);
 
-            Action act = () => _sut.EditCategory(new EditCategoryCommand(categoryId, newName));
+            Action act = () => sut.Execute(new EditCategoryCommand(categoryId, newName));
 
             act.Should().NotThrow();
             var category = _fixture.FindCategory(newName);
             category.Should().NotBeNull();
             category.Name.Should().Be(newName);
-            using var dbContext = _fixture.DbContext;
             dbContext.Categories.Where(c => c.Name == oldName).Should().BeEmpty();
         }
 
@@ -111,10 +118,12 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_with_relationships_gets_all_ingredients_related()
         {
             var ingredientName = "вжыьлдмывмлд";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: true);
+            using var dbContext = _fixture.DbContext;
+            var sut = new GetCategoriesQueryHandler(dbContext);
 
-            var result = _sut.GetCategories(query);
+            var result = sut.Execute(query);
 
             var categoriesWithIngredients = result.Where(r => r.Name == "Категория1" || r.Name == "Категория2");
             categoriesWithIngredients.Select(c => c.Name).Should().Contain(new[] { "Категория1", "Категория2" });
@@ -124,10 +133,12 @@ namespace KitProjects.MasterChef.Tests.Moderators
         public void Category_query_without_relationships_doesnt_have_related_ingredients()
         {
             var ingredientName = "as;lvmasd;lvmsd;lvm";
-            _ingredientService.CreateIngredient(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
+            _ingredientService.Execute(new CreateIngredientCommand(ingredientName, new[] { "Категория1", "Категория2" }));
             var query = new GetCategoriesQuery(withRelationships: false);
+            using var dbContext = _fixture.DbContext;
+            var sut = new GetCategoriesQueryHandler(dbContext);
 
-            var result = _sut.GetCategories(query);
+            var result = sut.Execute(query);
 
             result.ToList().ForEach(category => category.Ingredients.Should().BeNullOrEmpty());
         }

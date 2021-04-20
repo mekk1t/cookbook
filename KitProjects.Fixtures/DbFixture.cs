@@ -57,7 +57,7 @@ namespace KitProjects.Fixtures
             return new Category(dbCategory.Id, dbCategory.Name);
         }
 
-        public void SeedIngredient(Ingredient ingredient)
+        public void SeedIngredientWithNewCategories(Ingredient ingredient)
         {
             using var dbContext = this.DbContext;
             dbContext.Ingredients.Add(new DbIngredient(
@@ -91,6 +91,16 @@ namespace KitProjects.Fixtures
             using var dbContext = this.DbContext;
             dbContext.Recipes.Add(recipe);
             dbContext.SaveChanges();
+        }
+
+        public DbRecipe FindRecipe(Guid recipeId)
+        {
+            using var dbContext = this.DbContext;
+            return dbContext.Recipes.AsNoTracking()
+                .Include(r => r.RecipeCategoriesLink).ThenInclude(link => link.DbCategory)
+                .Include(r => r.RecipeIngredientLink).ThenInclude(link => link.DbIngredient)
+                .Include(r => r.Steps).ThenInclude(s => s.StepIngredientsLink).ThenInclude(link => link.DbIngredient)
+                .First(r => r.Id == recipeId);
         }
 
         public void Dispose() => Connection.Dispose();
