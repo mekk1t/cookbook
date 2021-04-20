@@ -1,5 +1,8 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Steps;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
+using KitProjects.MasterChef.WebApplication.Recipes;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -23,6 +26,31 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
             _editStepIngredientDescription = editStepIngredientDescription;
             _deleteIngredient = deleteIngredient;
             _appendIngredient = appendIngredient;
+        }
+
+        /// <summary>
+        /// Добавляет ингредиент в шаг рецепта.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
+        /// <param name="stepId">ID шага.</param>
+        /// <param name="request">Запрос на добавление ингредиента.</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult AppendIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromBody] AppendIngredientRequest request)
+        {
+            _appendIngredient.Execute(
+                new AppendIngredientToStepCommand(
+                    new RecipeStepIds(recipeId, stepId),
+                    new Ingredient(request.IngredientName),
+                    new AppendIngredientParameters(
+                        request.Amount,
+                        request.Measure,
+                        request.Notes)));
+
+            return Ok();
         }
 
         /// <summary>
