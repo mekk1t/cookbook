@@ -57,13 +57,14 @@ namespace KitProjects.MasterChef.Kernel.Decorators
                         new AppendIngredientParameters(
                             oldIngredientFromStep.Amount,
                             oldIngredientFromStep.Measure)));
-                var appendedIngredient = _getIngredient.Execute(new GetIngredientQuery(command.NewIngredient.Name));
-                command =
-                    new ReplaceStepIngredientCommand(
-                        command.Ids,
-                        command.OldIngredient,
-                        appendedIngredient);
             }
+
+            var appendedIngredient = _getIngredient.Execute(new GetIngredientQuery(command.NewIngredient.Name));
+            command =
+                new ReplaceStepIngredientCommand(
+                    command.Ids,
+                    command.OldIngredient,
+                    appendedIngredient);
 
             _decoratee.Execute(command);
         }
