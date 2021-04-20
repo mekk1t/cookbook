@@ -35,7 +35,9 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.RecipeStep
             step.StepIngredientsLink.Add(new Database.Models.DbRecipeStepIngredient
             {
                 DbRecipeStepId = step.Id,
-                DbIngredientId = command.NewIngredient.Id
+                DbIngredientId = command.NewIngredient.Id,
+                Amount = oldIngredient.Amount,
+                Measure = oldIngredient.Measure
             });
             _dbContext.SaveChanges();
         }
