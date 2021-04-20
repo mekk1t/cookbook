@@ -141,6 +141,44 @@ namespace KitProjects.MasterChef.Tests.Commands
             act.Should().ThrowExactly<EntityNotFoundException>();
         }
 
+        [Fact]
+        public void Cant_replace_nonexistent_ingredient_from_step()
+        {
+            var ingredientId = Guid.NewGuid();
+            var recipeId = Guid.NewGuid();
+            var stepId = Guid.NewGuid();
+            _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
+            _fixture.SeedRecipe(new DbRecipe
+            {
+                Id = recipeId,
+                RecipeIngredientLink = new List<DbRecipeIngredient>
+                {
+                    new DbRecipeIngredient
+                    {
+                        DbRecipeId = recipeId,
+                        DbIngredientId = ingredientId
+                    }
+                },
+                Steps = new List<DbRecipeStep>
+                {
+                    new DbRecipeStep
+                    {
+                        Id = stepId
+                    }
+                }
+            });
+
+            Action act = () => _sut.Execute(
+                new ReplaceStepIngredientCommand(
+                    new RecipeStepIds(
+                        recipeId,
+                        stepId),
+                    new Ingredient(ingredientId, ingredientId.ToString()),
+                    new Ingredient(Guid.NewGuid().ToString())));
+
+            act.Should().ThrowExactly<InvalidOperationException>();
+        }
+
         public void Dispose() => _dbContext.Dispose();
     }
 }
