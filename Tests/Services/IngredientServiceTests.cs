@@ -135,29 +135,31 @@ namespace KitProjects.MasterChef.Tests.Services
         [Fact]
         public void Ingredients_query_with_relationships_gets_all_related_categories()
         {
-            _sut.Execute(new CreateIngredientCommand("Тестовый", new[] { "Абвгд", "Еёжз" }));
-            var query = new GetIngredientsQuery(withRelationships: true);
+            var ingredientName = Guid.NewGuid().ToString();
+            _sut.Execute(new CreateIngredientCommand(ingredientName, new[] { "Абвгд", "Еёжз" }));
+            var query = new GetIngredientsQuery(withRelationships: true, limit: 100);
             using var dbContext = _fixture.DbContext;
             var sut = new GetIngredientsQueryHandler(dbContext);
 
             var result = sut.Execute(query);
 
-            result.First(r => r.Name == "Тестовый")
+            result.First(r => r.Name == ingredientName)
                 .Categories.Select(c => c.Name).Should().Contain(new[] { "Абвгд", "Еёжз" });
         }
 
         [Fact]
         public void Ingredients_query_without_relationships_doesnt_have_related_categories()
         {
-            _sut.Execute(new CreateIngredientCommand("Тестовый", new[] { "Абвгд", "Еёжз" }));
-            var query = new GetIngredientsQuery(withRelationships: false);
+            var ingredientName = Guid.NewGuid().ToString();
+            _sut.Execute(new CreateIngredientCommand(ingredientName, new[] { "Абвгд", "Еёжз" }));
+            var query = new GetIngredientsQuery(withRelationships: false, limit: 100);
             using var dbContext = _fixture.DbContext;
             var sut = new GetIngredientsQueryHandler(dbContext);
 
             var result = sut.Execute(query);
 
-            result.First(r => r.Name == "Тестовый")
-                .Categories.Select(c => c.Name).Should().NotContain(new[] { "Абвгд", "Еёжз" });
+            result.First(r => r.Name == ingredientName)
+                .Categories.Select(c => c.Name).Should().BeEmpty();
         }
     }
 }

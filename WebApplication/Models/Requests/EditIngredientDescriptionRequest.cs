@@ -2,7 +2,7 @@
 
 namespace KitProjects.MasterChef.WebApplication.Recipes.Requests
 {
-    public class EditRecipeIngredientDescriptionRequest
+    public class EditIngredientDescriptionRequest
     {
         public decimal Amount { get; set; }
         public Measures Measure { get; set; }

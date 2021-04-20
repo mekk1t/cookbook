@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

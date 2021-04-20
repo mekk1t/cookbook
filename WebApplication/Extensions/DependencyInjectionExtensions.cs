@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.Ingredients;
 using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using KitProjects.MasterChef.Kernel.Models.Steps;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
@@ -40,6 +41,9 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.RegisterDecorator<ICommand<EditStepDescriptionCommand>, EditRecipeStepDescriptionDecorator>();
             container.RegisterDecorator<ICommand<EditStepPictureCommand>, EditRecipeStepPictureDecorator>();
             container.RegisterDecorator<ICommand<RemoveRecipeStepCommand>, RemoveStepFromRecipeDecorator>();
+
+            container.RegisterDecorator<ICommand<AppendIngredientToStepCommand>, AppendIngredientToStepDecorator>();
+            container.RegisterDecorator<ICommand<ReplaceStepIngredientCommand>, ReplaceStepIngredientDecorator>();
 
             container.Register(typeof(IQuery<,>), assemblies);
             container.Register(typeof(IQuery<>), assemblies);

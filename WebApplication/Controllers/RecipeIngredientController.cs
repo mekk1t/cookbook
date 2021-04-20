@@ -101,7 +101,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         public IActionResult EditIngredientDescription(
             [FromRoute] Guid recipeId,
             [FromRoute] Guid ingredientId,
-            [FromBody] EditRecipeIngredientDescriptionRequest request)
+            [FromBody] EditIngredientDescriptionRequest request)
         {
             _editIngredientDescription.Execute(
                 new EditRecipeIngredientDescriptionCommand(

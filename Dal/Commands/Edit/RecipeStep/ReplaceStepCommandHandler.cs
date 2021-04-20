@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Dal.Database.Models;
 using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Steps;
 using Microsoft.EntityFrameworkCore;
 using System;
