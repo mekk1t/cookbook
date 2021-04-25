@@ -1,28 +1,30 @@
 body {
     background-color: #91BAF1;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
   }
-  
+
   ul {
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  
+
   nav {
     display: grid;
     grid-template-columns: 45px 1fr;
     column-gap: 75px;
     align-items: center;
     background-color: teal;
+    font-size: 18px;
   }
-  
+
   nav ul {
     display: flex;
     justify-content: space-between;
-    margin-right: 30px;  
+    margin-right: 30px;
   }
-  
+
   nav a {
     display: block;
     padding: 20px;
