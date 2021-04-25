@@ -1,12 +1,13 @@
 window.onload = function() {
     var testResponse = fetch('https://localhost:5001/recipes')
-        .then((response) => {
+        .then(response => {
             return response.json();
         })
-        .then((data) => {
+        .then(data => {
             let firstRecipe = data[0];
             let ingredients = firstRecipe.ingredients;
-
+            let title = document.querySelector('.recipe-title');
+            title.innerHTML = firstRecipe.title;
             let ingredientsList = document.getElementsByClassName("ingredients")[0];
             for (let ingredient of ingredients) {
                 let li = document.createElement("li");
