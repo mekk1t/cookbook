@@ -12,14 +12,15 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="ingredients-list.html">Ингредиенты</a></li>
-                    <li><a href="categories-list.html">Категории</a></li>
-                    <li><a href="recipes-list.html"><b>Рецепты</b></a></li>
+                    <li><a href="/admin/ingredients">Ингредиенты</a></li>
+                    <li><a href="/admin/categories">Категории</a></li>
+                    <li><a href="/admin/recipes"><b>Рецепты</b></a></li>
                 </ul>
             </nav>
         </header>
         <main>
-            @await RenderSectionAsync("Scripts", false)
+            @RenderBody()
         </main>
+        @await RenderSectionAsync("Scripts", false)
     </body>
 </html>
