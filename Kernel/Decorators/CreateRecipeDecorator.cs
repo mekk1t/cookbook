@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,30 @@ namespace KitProjects.MasterChef.Kernel
                 foreach (var category in command.Categories)
                 {
                     _createCategory.Execute(new CreateCategoryCommand(category));
+                }
+            }
+
+            if (command.Steps != null)
+            {
+                int index = 1;
+                var indexedSteps = new List<RecipeStep>();
+                foreach (var step in command.Steps)
+                {
+                    var indexedStep = new RecipeStep(step.Id)
+                    {
+                        Index = index,
+                        Description = step.Description,
+                        Image = step.Image
+                    };
+                    indexedStep.IngredientsDetails.AddRange(step.IngredientsDetails);
+                    indexedSteps.Add(indexedStep);
+                    index++;
+                }
+
+                command.Steps.Clear();
+                foreach (var step in indexedSteps)
+                {
+                    command.Steps.Add(step);
                 }
             }
 

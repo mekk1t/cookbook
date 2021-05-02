@@ -1,4 +1,4 @@
-﻿using KitProjects.MasterChef.Kernel.Models;
+﻿using KitProjects.MasterChef.WebApplication.Models.Requests.Create.Recipe;
 using System.Collections.Generic;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
@@ -16,10 +16,10 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// <summary>
         /// Информация об ингредиентах рецепта.
         /// </summary>
-        public IEnumerable<RecipeIngredientDetails> IngredientDetails { get; set; }
+        public IEnumerable<CreateRecipeIngredientDetails> Ingredients { get; set; }
         /// <summary>
         /// Шаги рецепта.
         /// </summary>
-        public IEnumerable<RecipeStep> Steps { get; set; }
+        public IEnumerable<CreateRecipeStepDetails> Steps { get; set; }
     }
 }
