@@ -85,7 +85,7 @@ function getAddRecipeForm() {
         event.preventDefault();
         let requestBody = {
             categories: [],
-            ingredientDetails: [],
+            ingredients: [],
             steps: [],
             title: _titleInput.value
         };
