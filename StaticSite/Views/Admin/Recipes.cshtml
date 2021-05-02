@@ -1,14 +1,10 @@
-﻿<table>
+﻿@section Scripts {
+    <script src="~/js/admin/recipes.js"></script>
+}
+
+<table id="recipes-admin-table">
     <tbody>
         <tr>
-            <td><img src="https://via.placeholder.com/400x100.png"></td>
-            <td class="recipe">
-                Рецепт 1
-                <span class="actions">
-                    <img src="~/icons/edit-box.svg">
-                    <img src="~/icons/cross-symbol.svg">
-                </span>
-            </td>
         </tr>
         <tr>
             <td><img src="https://via.placeholder.com/400x100.png"></td>
@@ -23,6 +19,7 @@
         <tr>
             <td>
                 <img class="add" height="50" src="~/icons/collapse-plus.svg">
+                <span>Добавить новый рецепт</span>
             </td>
         </tr>
     </tbody>
