@@ -81,5 +81,22 @@ function getAddRecipeForm() {
     _form.appendChild(_submitButton);
     _form.appendChild(_backButton);
 
+    _form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let requestBody = {
+            categories: [],
+            ingredientDetails: [],
+            steps: [],
+            title: _titleInput.value
+        };
+        fetch('https://localhost:5001/recipes', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+            }
+        })
+    });
+
     return _form;
 }
