@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel.Models.Commands
 {
@@ -10,7 +11,7 @@ namespace KitProjects.MasterChef.Kernel.Models.Commands
         public string Description { get; }
         public IEnumerable<string> Categories { get; }
         public IEnumerable<RecipeIngredientDetails> IngredientsDetails { get; }
-        public IEnumerable<RecipeStep> Steps { get; }
+        public IList<RecipeStep> Steps { get; }
 
         public CreateRecipeCommand(Guid id, string title,
             IEnumerable<string> categories,
@@ -23,7 +24,7 @@ namespace KitProjects.MasterChef.Kernel.Models.Commands
             Description = description;
             Categories = categories;
             IngredientsDetails = ingredientsDetails;
-            Steps = steps;
+            Steps = steps.ToList();
         }
     }
 }

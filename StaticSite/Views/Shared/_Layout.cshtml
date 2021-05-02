@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="ru-ru" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="~/css/common.css" />
+    @await RenderSectionAsync("Styles", false)
+    <title>Мастер Шеф</title>
+</head>
+<body>
+    <header>
+        <nav class="navigation-header">
+            <img class="logo" height="45" src="~/images/logo.png" alt="Логотип">
+            <ul>
+                <li><a href="/about">О нас</a></li>
+                <li><a href="/contacts">Обратная связь</a></li>
+                <li><a href="/calculator">Калькулятор</a></li>
+                <li class="app-title"><a href="/">Мастер Шеф</a></li>
+                <li><a href="/recipes">Рецепты</a></li>
+                <li><a href="/admin">Админка</a></li>
+                <li><a href="/profile">Профиль</a></li>
+                <li><a href="/login">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="page-footer">
+        <ul class="footer-links">
+            <li>Copyright - 2021 &COPY; KitProjects</li>
+            <li><a href="https://github.com/mekk1t/master-chef" target="_blank">GitHub</a></li>
+            <li><a href="https://vk.com/mekk1t" target="_blank">VK</a></li>
+            <li><a href="https://vk.com/mekk1t" target="_blank">Другая ссылка</a></li>
+        </ul>
+    </footer>
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

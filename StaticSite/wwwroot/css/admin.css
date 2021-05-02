@@ -1,0 +1,46 @@
+caption {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+table {
+    margin: 15px;
+}
+
+th, td {
+    padding: 10px;
+}
+
+td > img {
+    border-radius: 20px;
+}
+
+.actions {
+    display: none;
+}
+
+.recipe:hover .actions {
+    display: inline;
+}
+
+.actions > img {
+    height: 15px;
+    margin-right: 5px;
+}
+
+.actions > img:first-child {
+    margin-left: 10px;
+}
+
+.actions > img:last-child {
+    margin-right: 0px;
+}
+
+.actions img:hover {
+    cursor: pointer;
+}
+
+.add {
+    border-radius: 0px;
+}
+

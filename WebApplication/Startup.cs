@@ -22,6 +22,7 @@ namespace WebApplication
         {
             _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             services.AddMvcCore();
+            services.AddCors();
             services.AddSimpleInjector(_container, options =>
             {
                 options
@@ -60,7 +61,10 @@ namespace WebApplication
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
             {

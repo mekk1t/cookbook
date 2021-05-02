@@ -7,6 +7,7 @@ using KitProjects.MasterChef.Kernel.Recipes;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
 {
@@ -41,7 +42,17 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpPost]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
         {
-            _createRecipe.Execute(new CreateRecipeCommand(Guid.NewGuid(), request.Title, request.Categories, request.IngredientDetails, request.Steps));
+            _createRecipe.Execute(
+                new CreateRecipeCommand(
+                    Guid.NewGuid(),
+                    request.Title,
+                    request.Categories,
+                    request.Ingredients.Select(details => new RecipeIngredientDetails(details.IngredientName, details.Measure, details.Amount, details.Notes)),
+                    request.Steps.Select(step => new RecipeStep
+                    {
+                        Description = step.Description,
+                        Image = step.Image
+                    })));
             return Ok();
         }
 
