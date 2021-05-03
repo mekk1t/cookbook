@@ -39,7 +39,7 @@ function clearPage() {
 }
 
 function initAddRecipeEvent() {
-    let _add = document.querySelector(".add");
+    let _add = document.querySelector(".add-recipe");
     _add.addEventListener("click", renderAddRecipeForm);
 }
 
