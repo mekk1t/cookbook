@@ -47,8 +47,10 @@ function appendActionsToTable(_tableBody, tableCellsSelector) {
         actions.classList.add("actions");
         let editIcon = document.createElement("img");
         editIcon.src = "/icons/edit-box.svg";
+        editIcon.classList.add("edit-icon");
         let deleteIcon = document.createElement("img");
         deleteIcon.src = "/icons/cross-symbol.svg";
+        deleteIcon.classList.add("delete-icon");
         actions.appendChild(editIcon);
         actions.appendChild(deleteIcon);
         cell.appendChild(actions);
