@@ -35,11 +35,11 @@ function appendActionsToList(listSelector) {
         let editIcon = document.createElement("img");
         editIcon.src = "/icons/edit-box.svg";
         editIcon.classList.add("edit-icon", "action-button");
-        editIcon.height = _item.scrollHeight - 11;
+        editIcon.height = _item.scrollHeight - 21;
         let deleteIcon = document.createElement("img");
         deleteIcon.src = "/icons/cross-symbol.svg";
         deleteIcon.classList.add("delete-icon", "action-button");
-        deleteIcon.height = _item.scrollHeight - 11;
+        deleteIcon.height = _item.scrollHeight - 21;
         actions.appendChild(editIcon);
         actions.appendChild(deleteIcon);
         _item.appendChild(actions);
