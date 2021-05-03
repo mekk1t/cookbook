@@ -1,6 +1,6 @@
 ﻿const _pageBody = document.getElementById("admin-body");
 let _previousPageState = _pageBody.innerHTML;
-document.querySelector("#admin-recipes-link").style.fontWeight = "bold";
+boldLink("#admin-recipes-link");
 
 initAddRecipeEvent();
 
@@ -23,18 +23,7 @@ window.onload = function () {
                 _recipesTable.appendChild(_tr);
             }
 
-            _recipesTableRows = _recipesTable.querySelectorAll("tr td.recipe");
-            for (let row of _recipesTableRows) {
-                let actions = document.createElement("span");
-                actions.classList.add("actions");
-                let editIcon = document.createElement("img");
-                editIcon.src = "/icons/edit-box.svg";
-                let deleteIcon = document.createElement("img");
-                deleteIcon.src = "/icons/cross-symbol.svg";
-                actions.appendChild(editIcon);
-                actions.appendChild(deleteIcon);
-                row.appendChild(actions);
-            }
+            appendActionsToTable(_recipesTable, "tr td.recipe");
         });
 }
 
@@ -47,14 +36,6 @@ function renderAddRecipeForm() {
 
 function clearPage() {
     _pageBody.innerHTML = '';
-}
-
-function td(innerHtml, id = null) {
-    let result = document.createElement("td");
-    result.innerHTML = innerHtml;
-    if (id != null)
-        result.id = id;
-    return result;
 }
 
 function initAddRecipeEvent() {

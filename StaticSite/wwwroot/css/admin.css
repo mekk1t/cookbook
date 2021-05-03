@@ -27,7 +27,7 @@ td > img {
     display: none;
 }
 
-.recipe:hover .actions {
+.recipe:hover .actions, .category:hover .actions {
     display: inline;
 }
 
