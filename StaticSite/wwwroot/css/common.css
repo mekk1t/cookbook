@@ -11,13 +11,16 @@ body {
   }
 
   nav {
-    display: grid;
-    grid-template-columns: 45px 1fr;
-    column-gap: 75px;
-    align-items: center;
     background-color: teal;
     font-size: 16px;
   }
+
+nav.navigation-header {
+display: grid;
+grid-template-columns: 45px 1fr;
+column-gap: 75px;
+align-items: center;
+}
 
   nav ul {
     display: flex;

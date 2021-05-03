@@ -1,5 +1,6 @@
 ﻿const _pageBody = document.getElementById("admin-body");
 let _previousPageState = _pageBody.innerHTML;
+document.querySelector("#admin-recipes-link").style.fontWeight = "bold";
 
 initAddRecipeEvent();
 
