@@ -57,3 +57,11 @@ nav.admin-nav {
     justify-content: space-around;
 }
 
+ul.categories-list, ul.recipes-list {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+row-gap: 20px;
+column-gap: 20px;
+margin: 30px;
+}
+

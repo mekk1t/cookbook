@@ -10,7 +10,7 @@ window.onload = function () {
             return response.json();
         })
         .then(data => {
-            let _recipesList = document.querySelector("ol.recipes-list");
+            let _recipesList = document.querySelector("ul.recipes-list");
             for (let recipe of data) {
                 let _li = _new("li");
                 _li.textContent = recipe.title;

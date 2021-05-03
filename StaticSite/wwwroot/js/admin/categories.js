@@ -8,7 +8,7 @@ window.onload = function () {
             return response.json();
         })
         .then(data => {
-            let _categoriesList = selectFirst("ol.categories-list");
+            let _categoriesList = selectFirst("ul.categories-list");
             for (let category of data.categories) {
                 let _li = _new("li");
                 _li.textContent = category.name;
