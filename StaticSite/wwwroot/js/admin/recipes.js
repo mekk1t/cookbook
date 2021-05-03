@@ -10,20 +10,14 @@ window.onload = function () {
             return response.json();
         })
         .then(data => {
-            let _recipesTable = document.querySelector("#recipes-admin-table").querySelector("tbody");
+            let _recipesList = document.querySelector("ol.recipes-list");
             for (let recipe of data) {
-                let _tr = document.createElement("tr");
-                let _tdTitle = td(recipe.title, `title_${recipe.id}`);
-                _tdTitle.classList.add("recipe");
-                let _tdId = td(recipe.id, "id");
-                _tdId.style.display = "none";
-                _tr.appendChild(_tdId);
-                _tr.appendChild(_tdTitle);
-
-                _recipesTable.appendChild(_tr);
+                let _li = _new("li");
+                _li.textContent = recipe.title;
+                _li.id = recipe.id;
+                _li.classList.add("recipe");
+                _recipesList.appendChild(_li);
             }
-
-            appendActionsToTable(_recipesTable, "tr td.recipe");
         });
 }
 
