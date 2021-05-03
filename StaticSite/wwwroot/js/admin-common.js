@@ -23,36 +23,25 @@ function _new(elementTag) {
 }
 
 /**
- * Создает ячейку таблицы.
- * @param {string} innerHtml Внутренний HTML ячейки.
- * @param {string} id ID элемента.
- */
-function td(innerHtml, id = null) {
-    let result = document.createElement("td");
-    result.innerHTML = innerHtml;
-    if (id != null)
-        result.id = id;
-    return result;
-}
-
-/**
  * Рендерит popup-иконки редактирования и удаления строки в таблице.
  * @param {HTMLTableSectionElement} tableBody
  * @param {string} tableCellsSelector
  */
-function appendActionsToTable(_tableBody, tableCellsSelector) {
-    _tableCells = _tableBody.querySelectorAll(tableCellsSelector);
-    for (let cell of _tableCells) {
-        let actions = document.createElement("span");
+function appendActionsToList(listSelector) {
+    let _listItems = document.querySelector(listSelector).querySelectorAll("li");
+    for (let _item of _listItems) {
+        let actions = document.createElement("div");
         actions.classList.add("actions");
         let editIcon = document.createElement("img");
         editIcon.src = "/icons/edit-box.svg";
         editIcon.classList.add("edit-icon", "action-button");
+        editIcon.height = _item.scrollHeight - 11;
         let deleteIcon = document.createElement("img");
         deleteIcon.src = "/icons/cross-symbol.svg";
         deleteIcon.classList.add("delete-icon", "action-button");
+        deleteIcon.height = _item.scrollHeight - 11;
         actions.appendChild(editIcon);
         actions.appendChild(deleteIcon);
-        cell.appendChild(actions);
+        _item.appendChild(actions);
     }
 }

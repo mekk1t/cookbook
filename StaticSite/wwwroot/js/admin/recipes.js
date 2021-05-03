@@ -18,6 +18,8 @@ window.onload = function () {
                 _li.classList.add("recipe");
                 _recipesList.appendChild(_li);
             }
+
+            appendActionsToList("ul.recipes-list");
         });
 }
 

@@ -19,29 +19,25 @@ th, td {
     padding: 10px;
 }
 
-td > img {
-    border-radius: 20px;
-}
-
 .actions {
     display: none;
 }
 
-.recipe:hover .actions, .category:hover .actions {
-    display: inline;
+.actions img {
+    margin: 0;
+    margin-left: 5px;
+    padding: 0;
 }
 
-.actions > img {
-    height: 15px;
-    margin-right: 5px;
+ul.categories-list li:hover .actions, .recipes-list li:hover .actions {
+    display: inline-flex;
+    align-items: flex-end;
 }
 
-.actions > img:first-child {
-    margin-left: 10px;
-}
-
-.actions > img:last-child {
-    margin-right: 0px;
+ul.categories-list li, ul.recipes-list li {
+    padding: 5px;
+    display: inline-flex;
+    align-items: flex-end;
 }
 
 .actions img:hover {

@@ -16,6 +16,8 @@ window.onload = function () {
                 _li.classList.add("category");
                 _categoriesList.appendChild(_li);
             }
+
+            appendActionsToList("ul.categories-list");
         });
 }
 
