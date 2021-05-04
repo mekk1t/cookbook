@@ -131,9 +131,7 @@ function newCategoryForm() {
 function editCategoryForm(categoryId, categoryName) {
     let _form = document.createElement("form");
     _form.classList.add("edit-category-form");
-    let _titleLabel = document.createElement("label");
-    _titleLabel.htmlFor = "category-name";
-    _titleLabel.textContent = "Новое имя для категории \"" + categoryName + "\"";
+    document.querySelector("#id02 h2.edit-category-modal-title").textContent = "Новое имя для категории \"" + categoryName + "\"";
     let _titleInput = document.createElement("input");
     _titleInput.name = "category-name";
     _titleInput.id = "category-name";
@@ -146,8 +144,6 @@ function editCategoryForm(categoryId, categoryName) {
     }
 
     let _closeButton = document.querySelector("#close-edit-modal");
-
-    _form.appendChild(_titleLabel);
     _form.appendChild(_br());
     _form.appendChild(_titleInput);
     _form.appendChild(_br());
