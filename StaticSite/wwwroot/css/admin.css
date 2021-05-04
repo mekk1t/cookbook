@@ -55,6 +55,7 @@ nav.admin-nav {
     display: flex;
     justify-content: space-around;
     background-color: #2a9d8f;
+    box-shadow: 0 1px 5px 0 red;
 }
 
 ul.categories-list, ul.recipes-list, ul.ingredients-list {
