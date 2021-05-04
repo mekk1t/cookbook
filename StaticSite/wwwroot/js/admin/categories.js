@@ -8,6 +8,9 @@ document.getElementById("show-add-modal").addEventListener("click", function () 
 document.getElementById("close-add-modal").addEventListener("click", function () {
     document.getElementById('id01').style.display = 'none';
 });
+document.getElementById("close-edit-modal").addEventListener("click", function () {
+    document.getElementById('id02').style.display = 'none';
+});
 
 /**
  * Меняет состояние страницы.
@@ -18,18 +21,14 @@ function replacePageBody(newChild) {
     _pageBody.appendChild(newChild);
 }
 
-initAddEntityEvent(function () {
-    let _addForm = newCategoryForm();
-    replacePageBody(_addForm);
-});
-
-function refreshPage() {
+function refreshList() {
+    let _categoriesList = selectFirst("ul.categories-list");
+    _categoriesList.innerHTML = '';
     fetch('https://localhost:5001/categories')
         .then(response => {
             return response.json();
         })
         .then(data => {
-            let _categoriesList = selectFirst("ul.categories-list");
             for (let category of data.categories) {
                 let _li = _new("li");
                 _li.textContent = category.name;
@@ -44,7 +43,7 @@ function refreshPage() {
 }
 
 window.onload = function () {
-    refreshPage();
+    refreshList();
 }
 
 function attachEventHandlersToActions() {
@@ -55,8 +54,8 @@ function attachEventHandlersToActions() {
         let _edit = _li.querySelector(".edit-icon");
         let _delete = _li.querySelector(".delete-icon");
         _edit.addEventListener("click", function () {
-            let _editForm = editCategoryForm(categoryId, categoryName);
-            replacePageBody(_editForm);
+            document.querySelector("#id02 div.w3-container").appendChild(editCategoryForm(categoryId, categoryName));
+            document.getElementById('id02').style.display = 'block';
         });
         _delete.addEventListener("click", function () {
             _li.style.display = "none";
@@ -115,12 +114,12 @@ function newCategoryForm() {
             .then(response => {
                 if (response.ok) {
                     alert("Создание прошло успешно!");
-                    refreshPage();
+                    refreshList();
                     _closeButton.click();
 
                 } else {
                     alert("Возникла ошибка во время создания: " + response.statusText);
-                    refreshPage();
+                    refreshList();
                     _closeButton.click();
                 }
             });
@@ -141,24 +140,18 @@ function editCategoryForm(categoryId, categoryName) {
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
     _submitButton.textContent = "Обновить";
-    let _backButton = document.createElement("button");
-    _backButton.type = "button";
-    _backButton.textContent = "Назад";
-    _backButton.addEventListener("click", function () {
-        _pageBody.innerHTML = _initialPageState;
-        initAddRecipeEvent();
-    })
 
     let _br = function () {
         return document.createElement("br");
     }
+
+    let _closeButton = document.querySelector("#close-edit-modal");
 
     _form.appendChild(_titleLabel);
     _form.appendChild(_br());
     _form.appendChild(_titleInput);
     _form.appendChild(_br());
     _form.appendChild(_submitButton);
-    _form.appendChild(_backButton);
 
     _form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -175,12 +168,12 @@ function editCategoryForm(categoryId, categoryName) {
             .then(response => {
                 if (response.ok) {
                     alert("Обновление прошло успешно!");
-                    _backButton.click();
-                    refreshPage();
+                    refreshList();
+                    _closeButton.click();
                 } else {
                     alert("Возникла ошибка во время редактирования: " + response.statusText);
-                    _backButton.click();
-                    refreshPage();
+                    refreshList();
+                    _closeButton.click();
                 }
             });
     });
