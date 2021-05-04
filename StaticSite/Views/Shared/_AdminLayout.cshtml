@@ -6,21 +6,23 @@
         <link rel="stylesheet" href="~/css/common.css">
         <link rel="stylesheet" href="~/css/admin.css">
         @await RenderSectionAsync("Styles", false)
-        <title>Мастер Шеф</title>
+        <title>Мастер Шеф: Админка</title>
     </head>
     <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="/admin/ingredients">Ингредиенты</a></li>
-                    <li><a href="/admin/categories">Категории</a></li>
-                    <li><a href="/admin/recipes"><b>Рецепты</b></a></li>
+        <header class="admin-header">
+            <nav class="admin-nav">
+                <ul class="admin-nav-links">
+                    <li><a href="/admin/ingredients" id="admin-ingredients-link">Ингредиенты</a></li>
+                    <li><a href="/admin/categories" id="admin-categories-link">Категории</a></li>
+                    <li><a href="/admin/recipes" id="admin-recipes-link">Рецепты</a></li>
+                    <li><a href="/" id="back-home"><i>Обычный режим сайта</i></a></li>
                 </ul>
             </nav>
         </header>
         <main id="admin-body">
             @RenderBody()
         </main>
+        <script src="~/js/admin-common.js"></script>
         @await RenderSectionAsync("Scripts", false)
     </body>
 </html>

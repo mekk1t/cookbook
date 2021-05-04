@@ -11,13 +11,16 @@ body {
   }
 
   nav {
-    display: grid;
-    grid-template-columns: 45px 1fr;
-    column-gap: 75px;
-    align-items: center;
     background-color: teal;
-    font-size: 18px;
+    font-size: 16px;
   }
+
+nav.navigation-header {
+display: grid;
+grid-template-columns: 45px 1fr;
+column-gap: 75px;
+align-items: center;
+}
 
   nav ul {
     display: flex;
@@ -127,18 +130,16 @@ nav a {
     margin-bottom: 15px;
 }
 
-.recipe-generator {
+.action-button {
     padding: 15px;
-    color: white;
-    border-radius: 10px;
-    background-color: #941C2F;
+    background-color: #E9C46A;
     margin-bottom: 15px;
     margin-right: 15px;
 }
 
-    .recipe-generator:hover {
-        cursor: pointer;
-    }
+.action-button:hover {
+    cursor: pointer;
+}
 
 /*
   Стилизация подвала
