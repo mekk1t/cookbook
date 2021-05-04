@@ -18,20 +18,21 @@ window.onload = function () {
             }
 
             appendActionsToList("ul.categories-list");
-        });
+        })
+        .then(attachEventHandlersToActions);
 }
 
 function attachEventHandlersToActions() {
-    let _tableRows = document.querySelectorAll("tbody tr");
-    for (let _row of _tableRows) {
-        let categoryId = _row.querySelectorAll("td")[0].id;
-        let categoryName = _row.querySelector("td.category").textContent;
-        let _edit = _row.querySelector(".edit-icon");
-        let _delete = _row.querySelector(".delete-icon");
+    let _categoriesListItems = document.querySelectorAll("li.category");
+    for (let _li of _categoriesListItems) {
+        let categoryId = _li.id;
+        let categoryName = _li.textContent;
+        let _edit = _li.querySelector(".edit-icon");
+        let _delete = _li.querySelector(".delete-icon");
         _edit.addEventListener("click", function () {
             _previousPageState = _pageBody.innerHTML;
+            let _editForm = editCategoryForm(categoryId, categoryName);
             _pageBody.innerHTML = '';
-            let _editForm = editCategoryForm(categoryId);
             _pageBody.appendChild(_editForm);
         });
         _delete.addEventListener("click", function () {
@@ -42,14 +43,18 @@ function attachEventHandlersToActions() {
     }
 }
 
-function editCategoryForm(categoryId) {
+function editCategoryForm(categoryId, categoryName) {
     let _form = document.createElement("form");
     _form.classList.add("edit-category-form");
+    let _titleLabel = document.createElement("label");
+    _titleLabel.htmlFor = "category-name";
+    _titleLabel.textContent = "Новое имя для категории \"" + categoryName + "\"";
     let _titleInput = document.createElement("input");
     _titleInput.name = "category-name";
+    _titleInput.id = "category-name";
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
-    _submitButton.textContent = "Редактировать";
+    _submitButton.textContent = "Обновить";
     let _backButton = document.createElement("button");
     _backButton.type = "button";
     _backButton.textContent = "Назад";
@@ -58,7 +63,14 @@ function editCategoryForm(categoryId) {
         initAddRecipeEvent();
     })
 
+    let _br = function () {
+        return document.createElement("br");
+    }
+
+    _form.appendChild(_titleLabel);
+    _form.appendChild(_br());
     _form.appendChild(_titleInput);
+    _form.appendChild(_br());
     _form.appendChild(_submitButton);
     _form.appendChild(_backButton);
 
