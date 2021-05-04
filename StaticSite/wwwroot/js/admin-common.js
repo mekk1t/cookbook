@@ -45,3 +45,11 @@ function appendActionsToList(listSelector) {
         _item.appendChild(actions);
     }
 }
+
+/**
+ * Навешивает обработчик события "Клик" на кнопку "Добавить" на странице.
+ * @param {void} clickEventHandler Обработчик события "Клик".
+ */
+function initAddEntityEvent(clickEventHandler) {
+    document.querySelector("img.action-button.add").addEventListener("click", clickEventHandler);
+}
