@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\icons\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

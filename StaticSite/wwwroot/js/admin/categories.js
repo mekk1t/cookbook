@@ -1,6 +1,13 @@
 ﻿const _pageBody = document.getElementById("admin-body");
 const _initialPageState = _pageBody.innerHTML;
 boldLink("#admin-categories-link");
+document.getElementById("show-add-modal").addEventListener("click", function () {
+    document.querySelector("#id01 div.w3-container").appendChild(newCategoryForm());
+    document.getElementById('id01').style.display = 'block';
+});
+document.getElementById("close-add-modal").addEventListener("click", function () {
+    document.getElementById('id01').style.display = 'none';
+});
 
 /**
  * Меняет состояние страницы.
@@ -80,12 +87,6 @@ function newCategoryForm() {
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
     _submitButton.textContent = "Создать";
-    let _backButton = document.createElement("button");
-    _backButton.type = "button";
-    _backButton.textContent = "Назад";
-    _backButton.addEventListener("click", function () {
-        _pageBody.innerHTML = _initialPageState;
-    })
 
     let _br = function () {
         return document.createElement("br");
@@ -96,7 +97,8 @@ function newCategoryForm() {
     _form.appendChild(_titleInput);
     _form.appendChild(_br());
     _form.appendChild(_submitButton);
-    _form.appendChild(_backButton);
+
+    let _closeButton = document.querySelector("#close-add-modal");
 
     _form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -113,12 +115,13 @@ function newCategoryForm() {
             .then(response => {
                 if (response.ok) {
                     alert("Создание прошло успешно!");
-                    _backButton.click();
                     refreshPage();
+                    _closeButton.click();
+
                 } else {
                     alert("Возникла ошибка во время создания: " + response.statusText);
-                    _backButton.click();
                     refreshPage();
+                    _closeButton.click();
                 }
             });
     });
