@@ -1,8 +1,8 @@
 ﻿const _pageBody = document.getElementById("admin-body");
-let _previousPageState = _pageBody.innerHTML;
+const _initialPageState = _pageBody.innerHTML;
 boldLink("#admin-categories-link");
 
-window.onload = function () {
+function refreshPage() {
     fetch('https://localhost:5001/categories')
         .then(response => {
             return response.json();
@@ -22,6 +22,10 @@ window.onload = function () {
         .then(attachEventHandlersToActions);
 }
 
+window.onload = function () {
+    refreshPage();
+}
+
 function attachEventHandlersToActions() {
     let _categoriesListItems = document.querySelectorAll("li.category");
     for (let _li of _categoriesListItems) {
@@ -30,15 +34,23 @@ function attachEventHandlersToActions() {
         let _edit = _li.querySelector(".edit-icon");
         let _delete = _li.querySelector(".delete-icon");
         _edit.addEventListener("click", function () {
-            _previousPageState = _pageBody.innerHTML;
             let _editForm = editCategoryForm(categoryId, categoryName);
             _pageBody.innerHTML = '';
             _pageBody.appendChild(_editForm);
         });
         _delete.addEventListener("click", function () {
+            _li.style.display = "none";
             fetch(`https://localhost:5001/categories/${categoryName}`, {
                 method: 'DELETE'
-            });
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Категория " + categoryName + " успешно удалена.");
+                        _li.remove();
+                    } else {
+                        alert("Не удалось удалить категорию: " + response.statusText);
+                    }
+                })
         });
     }
 }
@@ -59,7 +71,7 @@ function editCategoryForm(categoryId, categoryName) {
     _backButton.type = "button";
     _backButton.textContent = "Назад";
     _backButton.addEventListener("click", function () {
-        _pageBody.innerHTML = _previousPageState;
+        _pageBody.innerHTML = _initialPageState;
         initAddRecipeEvent();
     })
 
@@ -86,6 +98,17 @@ function editCategoryForm(categoryId, categoryName) {
                 'Content-Type': 'application/json;charset=utf-8',
             }
         })
+            .then(response => {
+                if (response.ok) {
+                    alert("Обновление прошло успешно!");
+                    _backButton.click();
+                    refreshPage();
+                } else {
+                    alert("Возникла ошибка во время редактирования: " + response.statusText);
+                    _backButton.click();
+                    refreshPage();
+                }
+            });
     });
 
     return _form;
