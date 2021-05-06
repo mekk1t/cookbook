@@ -251,5 +251,5 @@ function showOperationStatus(title, description, operationStatusClass) {
     setTimeout(function () {
         _statusDiv.style.display = "none";
         _statusDiv.classList.remove(operationStatusClass);
-    }, 2000);
+    }, 3000);
 }
