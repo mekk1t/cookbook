@@ -88,3 +88,14 @@ ul.categories-list, ul.recipes-list, ul.ingredients-list {
 .w3-modal-content form button {
     margin-top: 10px;
 }
+
+.w3-select.ingredient-categories {
+    border-bottom: none;
+    color: inherit;
+    background-color: inherit;
+    font-weight: bold;
+}
+
+.w3-select.ingredient-categories option {
+    color: black;
+}

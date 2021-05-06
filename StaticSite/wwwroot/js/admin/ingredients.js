@@ -204,7 +204,7 @@ function editIngredientForm(ingredientId, ingredientName) {
 
     let _submitRow = document.createElement("div");
     _submitRow.classList.add("w3-row-padding");
-    _submitRow.style.cssText = 'margin-top: 10px; margin: 9px;';
+    _submitRow.style.cssText = 'margin-top: 10px;';
     _submitRow.appendChild(_submitButton);
 
     _row.appendChild(_rowBlock);
