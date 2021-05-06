@@ -99,3 +99,9 @@ ul.categories-list, ul.recipes-list, ul.ingredients-list {
 .w3-select.ingredient-categories option {
     color: black;
 }
+
+form.add-ingredient-form input.w3-input {
+    background-color: inherit;
+    border: none !important;
+    color: inherit;
+}
