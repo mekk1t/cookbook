@@ -111,3 +111,7 @@ form.edit-ingredient-form input.w3-input {
     border: none !important;
     color: inherit;
 }
+
+div.operation-status {
+    display: none;
+}

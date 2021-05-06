@@ -64,10 +64,10 @@ function attachEventHandlersToActions() {
             })
                 .then(response => {
                     if (response.ok) {
-                        alert("Категория " + ingredientName + " успешно удалена.");
+                        showOperationStatus("УСПЕХ", "Ингредиент " + ingredientName + " успешно удален.", "w3-pale-green");
                         _li.remove();
                     } else {
-                        alert("Не удалось удалить категорию: " + response.statusText);
+                        showOperationStatus("ПРОВАЛ", "Не удалось удалить ингредиент", "w3-pale-red");
                     }
                 })
         });
@@ -166,12 +166,12 @@ function newIngredientForm() {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Создание прошло успешно!");
+                    showOperationStatus("УСПЕХ", "Создание прошло успешно.", "w3-pale-green");
                     refreshList();
                     _closeButton.click();
 
                 } else {
-                    alert("Возникла ошибка во время создания: " + response.statusText);
+                    showOperationStatus("ПРОВАЛ", "Что-то пошло не так.", "w3-pale-red");
                     refreshList();
                     _closeButton.click();
                 }
@@ -228,11 +228,11 @@ function editIngredientForm(ingredientId, ingredientName) {
         })
             .then(response => {
                 if (response.ok) {
-                    alert("Обновление прошло успешно!");
+                    showOperationStatus("УСПЕХ", "Обновление прошло успешно.", "w3-pale-green");
                     refreshList();
                     _closeButton.click();
                 } else {
-                    alert("Возникла ошибка во время редактирования: " + response.statusText);
+                    showOperationStatus("ПРОВАЛ", "Что-то пошло не так.", "w3-pale-red");
                     refreshList();
                     _closeButton.click();
                 }
@@ -240,4 +240,16 @@ function editIngredientForm(ingredientId, ingredientName) {
     });
 
     return _form;
+}
+
+function showOperationStatus(title, description, operationStatusClass) {
+    let _statusDiv = document.querySelector("div.operation-status");
+    _statusDiv.querySelector(".operation-status-title").textContent = title;
+    _statusDiv.querySelector(".operation-status-description").textContent = description;
+    _statusDiv.classList.add(operationStatusClass);
+    _statusDiv.style.display = "block";
+    setTimeout(function () {
+        _statusDiv.style.display = "none";
+        _statusDiv.classList.remove(operationStatusClass);
+    }, 2000);
 }
