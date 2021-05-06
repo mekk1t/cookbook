@@ -191,11 +191,12 @@ function editIngredientForm(ingredientId, ingredientName) {
 
     let _form = document.createElement("form");
     _form.classList.add("edit-ingredient-form");
-    document.querySelector("#id02 h2.edit-ingredient-modal-title").textContent = "Новое имя для ингредиента \"" + ingredientName + "\"";
+    document.querySelector("#id02 h2.edit-ingredient-modal-title").textContent = "Редактирование ингредиента \"" + ingredientName + "\"";
     let _titleInput = document.createElement("input");
     _titleInput.name = "ingredient-name";
     _titleInput.id = "ingredient-name";
     _titleInput.classList.add("w3-input", "w3-border");
+    _titleInput.placeholder = "Введите новое название";
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
     _submitButton.textContent = "Обновить";

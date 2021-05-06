@@ -105,3 +105,9 @@ form.add-ingredient-form input.w3-input {
     border: none !important;
     color: inherit;
 }
+
+form.edit-ingredient-form input.w3-input {
+    background-color: inherit;
+    border: none !important;
+    color: inherit;
+}
