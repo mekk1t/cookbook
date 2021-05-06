@@ -77,3 +77,14 @@ ul.categories-list, ul.recipes-list, ul.ingredients-list {
     background-color: #941C2F;
 }
 
+.w3-modal-content .w3-container {
+    background-color: #264653;
+}
+
+.w3-modal-content form {
+    padding: 15px;
+}
+
+.w3-modal-content form button {
+    margin-top: 10px;
+}

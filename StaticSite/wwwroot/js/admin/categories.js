@@ -7,9 +7,17 @@ document.getElementById("show-add-modal").addEventListener("click", function () 
 });
 document.getElementById("close-add-modal").addEventListener("click", function () {
     document.getElementById('id01').style.display = 'none';
+    let form = document.querySelector("form.add-category-form");
+    if (form) {
+        form.remove();
+    }
 });
 document.getElementById("close-edit-modal").addEventListener("click", function () {
     document.getElementById('id02').style.display = 'none';
+    let form = document.querySelector("form.edit-category-form");
+    if (form) {
+        form.remove();
+    }
 });
 
 /**
