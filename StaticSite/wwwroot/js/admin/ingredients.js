@@ -75,6 +75,17 @@ function attachEventHandlersToActions() {
 }
 
 function newIngredientForm() {
+    let _row = document.createElement("div");
+    _row.classList.add("w3-row-padding");
+    let _oneHalf = document.createElement("div");
+    _oneHalf.classList.add("w3-half");
+    let _secondHalf = document.createElement("div");
+    _secondHalf.classList.add("w3-half");
+
+    _row.appendChild(_oneHalf);
+    _row.appendChild(_secondHalf);
+
+
     let _form = document.createElement("form");
     _form.classList.add("add-ingredient-form");
     let _titleLabel = document.createElement("label");
@@ -83,13 +94,20 @@ function newIngredientForm() {
     let _titleInput = document.createElement("input");
     _titleInput.name = "ingredient-name";
     _titleInput.id = "ingredient-name";
+    _titleInput.classList.add("w3-input", "w3-border");
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
     _submitButton.textContent = "Создать";
+    _submitButton.classList.add("w3-btn", "w3-block", "w3-hover-green");
+
+    let _selectCategoriesLabel = document.createElement("label");
+    _selectCategoriesLabel.htmlFor = "select-categories";
+    _selectCategoriesLabel.textContent = "Категория";
 
     let _selectCategories = document.createElement("select");
     _selectCategories.classList.add("w3-select", "ingredient-categories");
     _selectCategories.name = "option";
+    _selectCategories.id = "select-categories";
 
     let _defaultOption = document.createElement("option");
     _defaultOption.value = "";
@@ -112,13 +130,21 @@ function newIngredientForm() {
         return document.createElement("br");
     }
 
-    _form.appendChild(_titleLabel);
-    _form.appendChild(_br());
-    _form.appendChild(_titleInput);
-    _form.appendChild(_br());
-    _form.appendChild(_selectCategories);
-    _form.appendChild(_br());
-    _form.appendChild(_submitButton);
+    _oneHalf.appendChild(_titleLabel);
+    _oneHalf.appendChild(_br());
+    _oneHalf.appendChild(_titleInput);
+    _secondHalf.appendChild(_selectCategoriesLabel);
+    _secondHalf.appendChild(_selectCategories);
+
+    _row.appendChild(_submitButton);
+
+    let _submitButtonRow = document.createElement("div");
+    _submitButtonRow.classList.add("w3-row-padding");
+    _submitButtonRow.style.cssText = 'margin-top: 10px; margin: 9px;';
+    _submitButtonRow.appendChild(_submitButton);
+
+    _form.appendChild(_row);
+    _form.appendChild(_submitButtonRow);
 
     let _closeButton = document.querySelector("#close-add-modal");
 
