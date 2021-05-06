@@ -181,25 +181,36 @@ function newIngredientForm() {
 }
 
 function editIngredientForm(ingredientId, ingredientName) {
+    let _row = document.createElement("div");
+    _row.classList.add("w3-row-padding");
+    let _rowBlock = document.createElement("div");
+    _rowBlock.classList.add("w3-block");
+
+    _row.appendChild(_rowBlock);
+
     let _form = document.createElement("form");
     _form.classList.add("edit-ingredient-form");
     document.querySelector("#id02 h2.edit-ingredient-modal-title").textContent = "Новое имя для ингредиента \"" + ingredientName + "\"";
     let _titleInput = document.createElement("input");
     _titleInput.name = "ingredient-name";
     _titleInput.id = "ingredient-name";
+    _titleInput.classList.add("w3-input", "w3-border");
     let _submitButton = document.createElement("button");
     _submitButton.type = "submit";
     _submitButton.textContent = "Обновить";
-
-    let _br = function () {
-        return document.createElement("br");
-    }
+    _submitButton.classList.add("w3-btn", "w3-block", "w3-hover-green");
 
     let _closeButton = document.querySelector("#close-edit-modal");
-    _form.appendChild(_br());
-    _form.appendChild(_titleInput);
-    _form.appendChild(_br());
-    _form.appendChild(_submitButton);
+
+    let _submitRow = document.createElement("div");
+    _submitRow.classList.add("w3-row-padding");
+    _submitRow.style.cssText = 'margin-top: 10px; margin: 9px;';
+    _submitRow.appendChild(_submitButton);
+
+    _row.appendChild(_rowBlock);
+    _rowBlock.appendChild(_titleInput);
+    _form.appendChild(_row);
+    _form.appendChild(_submitRow);
 
     _form.addEventListener("submit", function (event) {
         event.preventDefault();
