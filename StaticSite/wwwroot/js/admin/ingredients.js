@@ -87,6 +87,35 @@ function newIngredientForm() {
     _submitButton.type = "submit";
     _submitButton.textContent = "Создать";
 
+    let _selectCategories = document.createElement("select");
+    _selectCategories.classList.add("w3-select");
+    _selectCategories.name = "option";
+
+    let appendDefaultOption = function () {
+        let _defaultOption = document.createElement("option");
+        _defaultOption.value = "";
+        _defaultOption.selected = true;
+        _defaultOption.disabled = true;
+        _defaultOption.text = "Выберите категорию";
+        _selectCategories.appendChild(_defaultOption);
+    };
+
+    appendDefaultOption();
+
+    _selectCategories.onclick = function () {
+        _selectCategories.innerHTML = '';
+        appendDefaultOption();
+            getCategories()
+                .then(data => {
+                    for (let category of data.categories) {
+                        let _option = document.createElement("option");
+                        _option.value = category.name;
+                        _option.text = category.name;
+                        _selectCategories.appendChild(_option);
+                    }
+                });
+    }
+
     let _br = function () {
         return document.createElement("br");
     }
@@ -94,6 +123,8 @@ function newIngredientForm() {
     _form.appendChild(_titleLabel);
     _form.appendChild(_br());
     _form.appendChild(_titleInput);
+    _form.appendChild(_br());
+    _form.appendChild(_selectCategories);
     _form.appendChild(_br());
     _form.appendChild(_submitButton);
 
