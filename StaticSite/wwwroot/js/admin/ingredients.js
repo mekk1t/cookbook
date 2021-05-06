@@ -88,33 +88,25 @@ function newIngredientForm() {
     _submitButton.textContent = "Создать";
 
     let _selectCategories = document.createElement("select");
-    _selectCategories.classList.add("w3-select");
+    _selectCategories.classList.add("w3-select", "ingredient-categories");
     _selectCategories.name = "option";
 
-    let appendDefaultOption = function () {
-        let _defaultOption = document.createElement("option");
-        _defaultOption.value = "";
-        _defaultOption.selected = true;
-        _defaultOption.disabled = true;
-        _defaultOption.text = "Выберите категорию";
-        _selectCategories.appendChild(_defaultOption);
-    };
+    let _defaultOption = document.createElement("option");
+    _defaultOption.value = "";
+    _defaultOption.selected = true;
+    _defaultOption.disabled = true;
+    _defaultOption.text = "Выберите категорию";
+    _selectCategories.appendChild(_defaultOption);
 
-    appendDefaultOption();
-
-    _selectCategories.onclick = function () {
-        _selectCategories.innerHTML = '';
-        appendDefaultOption();
-            getCategories()
-                .then(data => {
-                    for (let category of data.categories) {
-                        let _option = document.createElement("option");
-                        _option.value = category.name;
-                        _option.text = category.name;
-                        _selectCategories.appendChild(_option);
-                    }
-                });
-    }
+    getCategories()
+        .then(data => {
+            for (let category of data.categories) {
+                let _option = document.createElement("option");
+                _option.value = category.name;
+                _option.text = category.name;
+                _selectCategories.appendChild(_option);
+            }
+        });
 
     let _br = function () {
         return document.createElement("br");
@@ -132,9 +124,11 @@ function newIngredientForm() {
 
     _form.addEventListener("submit", function (event) {
         event.preventDefault();
+        let _categories = document.querySelector("select.ingredient-categories");
+        let _selectedCategory = _categories.options[_categories.selectedIndex].value;
         let requestBody = {
             name: _titleInput.value,
-            categories: []
+            categories: [ _selectedCategory ]
         };
         fetch(`https://localhost:5001/ingredients`, {
             method: 'POST',
