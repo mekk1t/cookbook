@@ -55,6 +55,7 @@ nav.admin-nav {
     display: flex;
     justify-content: space-around;
     background-color: #2a9d8f;
+    box-shadow: 0 1px 5px 0 red;
 }
 
 ul.categories-list, ul.recipes-list, ul.ingredients-list {
@@ -76,3 +77,41 @@ ul.categories-list, ul.recipes-list, ul.ingredients-list {
     background-color: #941C2F;
 }
 
+.w3-modal-content .w3-container {
+    background-color: #264653;
+}
+
+.w3-modal-content form {
+    padding: 15px;
+}
+
+.w3-modal-content form button {
+    margin-top: 10px;
+}
+
+.w3-select.ingredient-categories {
+    border-bottom: none;
+    color: inherit;
+    background-color: inherit;
+    font-weight: bold;
+}
+
+.w3-select.ingredient-categories option {
+    color: black;
+}
+
+form.add-ingredient-form input.w3-input {
+    background-color: inherit;
+    border: none !important;
+    color: inherit;
+}
+
+form.edit-ingredient-form input.w3-input {
+    background-color: inherit;
+    border: none !important;
+    color: inherit;
+}
+
+div.operation-status {
+    display: none;
+}
