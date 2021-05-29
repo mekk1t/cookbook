@@ -2,6 +2,7 @@
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
+using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,20 +15,20 @@ namespace KitProjects.MasterChef.WebApplication.Categories
     {
         private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
-        private readonly IQuery<Category, SearchCategoryQuery> _searchCategory;
+        private readonly IQuery<Category, GetCategoryQuery> _getCategory;
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly ICommand<EditCategoryCommand> _editCategory;
 
         public CategoryController(
             ICommand<DeleteCategoryCommand> deleteCategory,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
-            IQuery<Category, SearchCategoryQuery> searchCategory,
+            IQuery<Category, GetCategoryQuery> getCategory,
             ICommand<CreateCategoryCommand> createCategory,
             ICommand<EditCategoryCommand> editCategory)
         {
             _deleteCategory = deleteCategory;
             _getCategories = getCategories;
-            _searchCategory = searchCategory;
+            _getCategory = getCategory;
             _createCategory = createCategory;
             _editCategory = editCategory;
         }
@@ -57,14 +58,15 @@ namespace KitProjects.MasterChef.WebApplication.Categories
             [FromBody] CreateCategoryRequest request)
         {
             _createCategory.Execute(new CreateCategoryCommand(request.Name));
-            var createdCategory = _searchCategory.Execute(new SearchCategoryQuery(request.Name));
+            var createdCategory = _getCategory.Execute(new GetCategoryQuery(request.Name));
 
             if (createdCategory == null)
             {
                 return Conflict("Не удалось создать категорию.");
             }
 
-            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }), null);
+            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }),
+                new { IsSuccess = true, CategoryName = createdCategory.Name, createdCategory.Id });
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public IActionResult GetCategory(
             [FromRoute] string categoryName)
         {
-            var category = _searchCategory.Execute(new SearchCategoryQuery(categoryName));
+            var category = _getCategory.Execute(new GetCategoryQuery(categoryName));
             if (category == null)
                 return NotFound();
 
