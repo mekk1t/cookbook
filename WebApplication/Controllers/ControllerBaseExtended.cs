@@ -6,6 +6,7 @@ using System.Net;
 namespace KitProjects.MasterChef.WebApplication.Controllers
 {
     [Route("api")]
+    [ApiController]
     [Produces("application/json")]
     public class ControllerBaseExtended : ControllerBase
     {
