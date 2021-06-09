@@ -1,5 +1,6 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models.Commands;
+using System;
 using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands
@@ -15,10 +16,15 @@ namespace KitProjects.MasterChef.Dal.Commands
 
         public void Execute(DeleteCategoryCommand command)
         {
-            var category = _dbContext.Categories.FirstOrDefault(r => r.Name == command.Name);
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+            if (command.Id == default)
+                throw new ArgumentException("ID категории не может быть значением по умолчанию.");
+
+            var category = _dbContext.Categories.FirstOrDefault(r => r.Id == command.Id);
 
             if (category == null)
-                return;
+                throw new ArgumentException($"Не удалось найти категорию, которую пытались удалить. Её ID: {command.Id}");
 
             _dbContext.Categories.Remove(category);
             _dbContext.SaveChanges();

@@ -10,5 +10,10 @@
         /// Ответ от сервера.
         /// </summary>
         public T Data { get; }
+
+        public ApiResponse(T data)
+        {
+            Data = data;
+        }
     }
 }

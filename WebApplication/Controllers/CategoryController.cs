@@ -1,20 +1,22 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Extensions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
+using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Models.Responses.Categories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
-    [Produces("application/json")]
     [Route("categories")]
-    public class CategoryController : ControllerBase
+    public class CategoryController : ControllerBaseExtended
     {
         private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
@@ -37,7 +39,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         }
 
         /// <summary>
-        /// Получает список категорий.
+        /// Список категорий.
         /// </summary>
         /// <param name="withRelationships">Включать ли связанные сущности, например, ингредиенты.</param>
         /// <param name="offset">Отступ данных.</param>
@@ -50,7 +52,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         {
             var categories = _getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
             if (categories == null || !categories.Any())
-                return NotFound();
+                return ApiError("Не удалось получить список категорий.", HttpStatusCode.NotFound);
 
             var result = categories.Select(cat => new CategoryShortResponse(cat.Id, cat.Name)).ToList();
 
@@ -58,38 +60,52 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         }
 
         /// <summary>
-        /// Создает новую категорию в приложении.
+        /// Создание новой категории.
         /// </summary>
         /// <param name="request">Запрос на создание.</param>
         [HttpPost]
-        public IActionResult CreateCategory(
-            [FromBody] CreateCategoryRequest request)
+        public IActionResult CreateCategory([FromBody] CreateCategoryRequest request)
         {
+            if (request == null)
+                return ApiError("Тело запроса не может быть пустым.");
+
+            if (request.Name.IsNullOrEmpty())
+                return ApiError("Имя новой категории не может быть пустым.");
+
             _createCategory.Execute(new CreateCategoryCommand(request.Name));
             var createdCategory = _getCategory.Execute(new GetCategoryQuery(request.Name));
 
             if (createdCategory == null)
-            {
-                return Conflict("Не удалось создать категорию.");
-            }
+                return ApiError($"Не удалось создать категорию под именем {request.Name}", HttpStatusCode.Conflict);
 
-            return Created(Url.Action(nameof(GetCategory), new { categoryName = createdCategory.Name }),
-                new { IsSuccess = true, CategoryName = createdCategory.Name, createdCategory.Id });
+            return
+                Created(
+                    Url.Action(
+                        nameof(GetCategory),
+                        new { categoryName = createdCategory.Name }),
+                    new
+                    {
+                        IsSuccess = true,
+                        CategoryName = createdCategory.Name,
+                        createdCategory.Id
+                    });
         }
 
         /// <summary>
         /// Подробная информация о категории. Без связей.
         /// </summary>
-        /// <param name="categoryName">Название категории.</param>
-        [HttpGet("{categoryName}")]
-        public IActionResult GetCategory(
-            [FromRoute] string categoryName)
+        /// <param name="categoryId">Название категории.</param>
+        [HttpGet("{categoryId}")]
+        public IActionResult GetCategory([FromRoute] Guid categoryId)
         {
-            var category = _getCategory.Execute(new GetCategoryQuery(categoryName));
-            if (category == null)
-                return NotFound();
+            if (categoryId == default)
+                return ApiError("ID категории не может быть пустым.");
 
-            return Ok(new GetCategoryResponse(category.Id, category.Name));
+            var category = _getCategory.Execute(new GetCategoryQuery(categoryId));
+            if (category == null)
+                return ApiError("Запрашиваемая категория не была найдена.", HttpStatusCode.NotFound);
+
+            return Ok(new ApiResponse<CategoryShortResponse>(new CategoryShortResponse(category.Id, category.Name)));
         }
 
         /// <summary>
@@ -98,24 +114,31 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="categoryId">ID категории в формате GUID.</param>
         /// <param name="request">Запрос на редактирование.</param>
         [HttpPut("{categoryId}")]
-        public IActionResult EditCategory(
-            [FromRoute] Guid categoryId,
-            [FromBody] EditCategoryRequest request)
+        public IActionResult EditCategory([FromRoute] Guid categoryId, [FromBody] EditCategoryRequest request)
         {
+            if (categoryId == default)
+                return ApiError("ID категории не может быть пустым.");
+            if (request == null)
+                return ApiError("Тело запроса не может быть пустым.");
+            if (request.NewName.IsNullOrEmpty())
+                return ApiError("Новое имя категории не может быть пустым.");
+
             _editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
             return Ok();
         }
 
         /// <summary>
-        /// Удаляет категорию по названию.
+        /// Удаляет категорию по ID.
         /// </summary>
-        /// <param name="categoryName">Название категории.</param>
-        /// <returns></returns>
-        [HttpDelete("{categoryName}")]
-        public IActionResult DeleteCategory(
-            [FromRoute] string categoryName)
+        /// <param name="categoryId">Название категории.</param>
+        [HttpDelete("{categoryId}")]
+        public IActionResult DeleteCategory([FromRoute] Guid categoryId)
         {
-            _deleteCategory.Execute(new DeleteCategoryCommand(categoryName));
+            if (categoryId == default)
+                return ApiError("ID категории не может быть пустым.");
+
+            _deleteCategory.Execute(new DeleteCategoryCommand(categoryId));
+
             return Ok();
         }
     }
