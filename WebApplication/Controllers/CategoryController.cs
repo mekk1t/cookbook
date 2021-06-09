@@ -3,9 +3,12 @@ using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
+using KitProjects.MasterChef.WebApplication.Models.Responses;
+using KitProjects.MasterChef.WebApplication.Models.Responses.Categories;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
@@ -40,13 +43,18 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <param name="offset">Отступ данных.</param>
         /// <param name="limit">Ограничение выборки элементов.</param>
         [HttpGet]
-        public GetCategoriesResponse GetCategories(
+        public IActionResult GetCategories(
             [FromQuery] bool withRelationships = false,
             [FromQuery] int offset = 0,
             [FromQuery] int limit = 25)
         {
             var categories = _getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
-            return new GetCategoriesResponse(categories);
+            if (categories == null || !categories.Any())
+                return NotFound();
+
+            var result = categories.Select(cat => new CategoryShortResponse(cat.Id, cat.Name)).ToList();
+
+            return Ok(new ApiCollectionResponse<CategoryShortResponse>(result));
         }
 
         /// <summary>
