@@ -54,7 +54,6 @@ namespace WebApplication
                 {
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
                     await context.Response.WriteAsJsonAsync(new ApiErrorResponse(new[] { exceptionHandlerPathFeature.Error.Message }));
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 });
             });
 
