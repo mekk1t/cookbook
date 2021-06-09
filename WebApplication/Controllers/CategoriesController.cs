@@ -15,8 +15,7 @@ using System.Net;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
-    [Route("categories")]
-    public class CategoryController : ControllerBaseExtended
+    public class CategoriesController : ApiController
     {
         private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
         private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
@@ -24,7 +23,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         private readonly ICommand<CreateCategoryCommand> _createCategory;
         private readonly ICommand<EditCategoryCommand> _editCategory;
 
-        public CategoryController(
+        public CategoriesController(
             ICommand<DeleteCategoryCommand> deleteCategory,
             IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
             IQuery<Category, GetCategoryQuery> getCategory,

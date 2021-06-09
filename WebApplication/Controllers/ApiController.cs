@@ -5,10 +5,11 @@ using System.Net;
 
 namespace KitProjects.MasterChef.WebApplication.Controllers
 {
-    [Route("api")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
-    public class ControllerBaseExtended : ControllerBase
+    [Route("api/[controller]", Name = "[controller]_[action]")]
+    public class ApiController : ControllerBase
     {
         protected IActionResult ApiError(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest) =>
             StatusCode((int)statusCode, new ApiErrorResponse(new[] { message }));
