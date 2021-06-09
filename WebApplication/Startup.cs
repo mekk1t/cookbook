@@ -1,7 +1,10 @@
 ﻿using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.WebApplication.Extensions;
+using KitProjects.MasterChef.WebApplication.Models.Responses;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using SimpleInjector;
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -44,18 +48,24 @@ namespace WebApplication
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    await context.Response.WriteAsJsonAsync(new ApiErrorResponse(new[] { exceptionHandlerPathFeature.Error.Message }));
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                });
+            });
+
             app.UseSimpleInjector(_container);
 
-            if (env.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-                    c.RoutePrefix = string.Empty;
-                });
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
