@@ -27,7 +27,7 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             _container.Options.DefaultLifestyle = Lifestyle.Scoped;
-            services.AddMvcCore();
+            services.AddMvcCore().AddApiExplorer();
             services.AddCors();
             services.AddSimpleInjector(_container, options =>
             {
@@ -69,6 +69,7 @@ namespace WebApplication
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
                 c.RoutePrefix = string.Empty;
+                c.DocumentTitle = "Мастер-Шеф: API";
             });
 
             app.UseHttpsRedirection();
