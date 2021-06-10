@@ -5,6 +5,7 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.WebApplication.Controllers;
+using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Models.Responses.Categories;
 using Microsoft.AspNetCore.Mvc;
@@ -40,17 +41,11 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <summary>
         /// Список категорий.
         /// </summary>
-        /// <param name="withRelationships">Включать ли связанные сущности, например, ингредиенты.</param>
-        /// <param name="offset">Отступ данных.</param>
-        /// <param name="limit">Ограничение выборки элементов.</param>
         [HttpGet]
-        public IActionResult GetCategories(
-            [FromQuery] bool withRelationships = false,
-            [FromQuery] int offset = 0,
-            [FromQuery] int limit = 25) =>
+        public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
             ProcessRequest(() =>
             {
-                var categories = _getCategories.Execute(new GetCategoriesQuery(withRelationships, limit, offset));
+                var categories = _getCategories.Execute(new GetCategoriesQuery(filter.WithRelationships, filter.Limit, filter.Offset));
                 if (categories == null || !categories.Any())
                     throw new Exception("Не удалось получить список категорий.");
 
