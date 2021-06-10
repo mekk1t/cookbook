@@ -41,7 +41,15 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         /// <summary>
         /// Список категорий.
         /// </summary>
+        /// <remarks>
+        /// На данный момент пока без связанных данных.
+        /// </remarks>
+        /// <param name="filter">Фильтр для списка категорий.</param>
+        /// <response code="200">Список категорий.</response>
+        /// <response code="500">Ошибка на стороне сервера.</response>
         [HttpGet]
+        [ProducesResponseType(typeof(ApiCollectionResponse<CategoryShortResponse>), 200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
             ProcessRequest(() =>
             {
