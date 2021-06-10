@@ -10,11 +10,11 @@ namespace KitProjects.MasterChef.WebApplication.Models.Responses
         /// <summary>
         /// Список сообщений об ошибках.
         /// </summary>
-        public IReadOnlyList<string> Messages { get; }
+        public IReadOnlyList<string> Errors { get; }
 
-        public ApiErrorResponse(IReadOnlyList<string> messages)
+        public ApiErrorResponse(IReadOnlyList<string> errors)
         {
-            Messages = messages;
+            Errors = errors;
         }
     }
 }
