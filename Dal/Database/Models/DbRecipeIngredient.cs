@@ -12,7 +12,7 @@ namespace KitProjects.MasterChef.Dal.Database.Models
         public DbIngredient DbIngredient { get; set; }
 
         public Measures IngredientMeasure { get; set; }
-        public decimal IngredientxAmount { get; set; }
+        public decimal IngredientsAmount { get; set; }
         public string Notes { get; set; }
     }
 }

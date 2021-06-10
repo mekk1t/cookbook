@@ -255,7 +255,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             sut.Execute(new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.Pieces));
 
             var result = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First();
-            result.IngredientxAmount.Should().Be(228M);
+            result.IngredientsAmount.Should().Be(228M);
             result.IngredientMeasure.Should().Be(Measures.Pieces);
         }
     }

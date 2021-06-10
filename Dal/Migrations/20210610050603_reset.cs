@@ -3,12 +3,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace KitProjects.MasterChef.Dal.Migrations
 {
-    public partial class RecipeAndManyToManyRelationships : Migration
+    public partial class reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DbRecipe",
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -17,7 +41,31 @@ namespace KitProjects.MasterChef.Dal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DbRecipe", x => x.Id);
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DbCategoryDbIngredient",
+                columns: table => new
+                {
+                    CategoriesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IngredientsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DbCategoryDbIngredient", x => new { x.CategoriesId, x.IngredientsId });
+                    table.ForeignKey(
+                        name: "FK_DbCategoryDbIngredient_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DbCategoryDbIngredient_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,9 +85,9 @@ namespace KitProjects.MasterChef.Dal.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DbRecipeCategory_DbRecipe_DbRecipeId",
+                        name: "FK_DbRecipeCategory_Recipes_DbRecipeId",
                         column: x => x.DbRecipeId,
-                        principalTable: "DbRecipe",
+                        principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -51,22 +99,22 @@ namespace KitProjects.MasterChef.Dal.Migrations
                     DbRecipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DbIngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IngredientMeasure = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IngredientxAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IngredientsAmount = table.Column<decimal>(type: "decimal(5,1)", precision: 5, scale: 1, nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DbRecipeIngredient", x => new { x.DbRecipeId, x.DbIngredientId });
                     table.ForeignKey(
-                        name: "FK_DbRecipeIngredient_DbRecipe_DbRecipeId",
-                        column: x => x.DbRecipeId,
-                        principalTable: "DbRecipe",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_DbRecipeIngredient_Ingredients_DbIngredientId",
                         column: x => x.DbIngredientId,
                         principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DbRecipeIngredient_Recipes_DbRecipeId",
+                        column: x => x.DbRecipeId,
+                        principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -85,9 +133,9 @@ namespace KitProjects.MasterChef.Dal.Migrations
                 {
                     table.PrimaryKey("PK_DbRecipeStep", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DbRecipeStep_DbRecipe_DbRecipeId",
+                        name: "FK_DbRecipeStep_Recipes_DbRecipeId",
                         column: x => x.DbRecipeId,
-                        principalTable: "DbRecipe",
+                        principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -98,7 +146,7 @@ namespace KitProjects.MasterChef.Dal.Migrations
                 {
                     DbRecipeStepId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DbIngredientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(5,1)", precision: 5, scale: 1, nullable: false),
                     Measure = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -117,6 +165,11 @@ namespace KitProjects.MasterChef.Dal.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DbCategoryDbIngredient_IngredientsId",
+                table: "DbCategoryDbIngredient",
+                column: "IngredientsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DbRecipeCategory_DbCategoryId",
@@ -142,6 +195,9 @@ namespace KitProjects.MasterChef.Dal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DbCategoryDbIngredient");
+
+            migrationBuilder.DropTable(
                 name: "DbRecipeCategory");
 
             migrationBuilder.DropTable(
@@ -151,10 +207,16 @@ namespace KitProjects.MasterChef.Dal.Migrations
                 name: "DbRecipeStepIngredient");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "DbRecipeStep");
 
             migrationBuilder.DropTable(
-                name: "DbRecipe");
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
         }
     }
 }

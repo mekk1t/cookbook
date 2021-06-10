@@ -193,7 +193,7 @@ namespace KitProjects.MasterChef.Tests.Services
                         DbRecipeId = recipeId,
                         DbIngredientId = ingredientId,
                         IngredientMeasure = Measures.None,
-                        IngredientxAmount = 1
+                        IngredientsAmount = 1
                     }
                 }
             };

@@ -33,7 +33,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
                 DbIngredient = ingredient,
                 DbRecipe = recipe,
                 IngredientMeasure = command.Parameters.Measure,
-                IngredientxAmount = command.Parameters.Amount,
+                IngredientsAmount = command.Parameters.Amount,
                 Notes = command.Parameters.Notes
             });
 
