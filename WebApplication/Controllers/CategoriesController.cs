@@ -1,40 +1,22 @@
-﻿using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Extensions;
-using KitProjects.MasterChef.Kernel.Models;
-using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries;
-using KitProjects.MasterChef.Kernel.Models.Queries.Get;
+﻿using KitProjects.MasterChef.Kernel.Extensions;
+using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Models.Responses.Categories;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
     public class CategoriesController : ApiController
     {
-        private readonly ICommand<DeleteCategoryCommand> _deleteCategory;
-        private readonly IQuery<IEnumerable<Category>, GetCategoriesQuery> _getCategories;
-        private readonly IQuery<Category, GetCategoryQuery> _getCategory;
-        private readonly ICommand<CreateCategoryCommand> _createCategory;
-        private readonly ICommand<EditCategoryCommand> _editCategory;
+        private readonly CategoryCrud _crud;
 
-        public CategoriesController(
-            ICommand<DeleteCategoryCommand> deleteCategory,
-            IQuery<IEnumerable<Category>, GetCategoriesQuery> getCategories,
-            IQuery<Category, GetCategoryQuery> getCategory,
-            ICommand<CreateCategoryCommand> createCategory,
-            ICommand<EditCategoryCommand> editCategory)
+        public CategoriesController(CategoryCrud crud)
         {
-            _deleteCategory = deleteCategory;
-            _getCategories = getCategories;
-            _getCategory = getCategory;
-            _createCategory = createCategory;
-            _editCategory = editCategory;
+            _crud = crud;
         }
 
         /// <summary>
@@ -52,7 +34,10 @@ namespace KitProjects.MasterChef.WebApplication.Categories
         public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
             ProcessRequest(() =>
             {
-                var categories = _getCategories.Execute(new GetCategoriesQuery(filter.WithRelationships, filter.Limit, filter.Offset));
+                if (filter == null)
+                    filter = new PaginationFilter();
+
+                var categories = _crud.Read(filter.Limit, filter.Offset);
                 if (categories == null || !categories.Any())
                     throw new Exception("Не удалось получить список категорий.");
 
@@ -75,8 +60,8 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 if (request.Name.IsNullOrEmpty())
                     throw new Exception("Имя новой категории не может быть пустым.");
 
-                _createCategory.Execute(new CreateCategoryCommand(request.Name));
-                var createdCategory = _getCategory.Execute(new GetCategoryQuery(request.Name));
+                _crud.Create(request.Name);
+                var createdCategory = _crud.Read(request.Name);
 
                 if (createdCategory == null)
                     throw new Exception($"Не удалось создать категорию под именем {request.Name}");
@@ -100,7 +85,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 if (categoryId == default)
                     throw new Exception("ID категории не может быть пустым.");
 
-                var category = _getCategory.Execute(new GetCategoryQuery(categoryId));
+                var category = _crud.Read(categoryId);
                 if (category == null)
                     throw new Exception("Запрашиваемая категория не была найдена.");
 
@@ -123,7 +108,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 if (request.NewName.IsNullOrEmpty())
                     throw new Exception("Новое имя категории не может быть пустым.");
 
-                _editCategory.Execute(new EditCategoryCommand(categoryId, request.NewName));
+                _crud.Update(categoryId, request.NewName);
             });
 
         /// <summary>
@@ -137,7 +122,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 if (categoryId == default)
                     throw new Exception("ID категории не может быть пустым.");
 
-                _deleteCategory.Execute(new DeleteCategoryCommand(categoryId));
+                _crud.Delete(categoryId);
             });
     }
 }

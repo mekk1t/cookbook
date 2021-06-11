@@ -8,6 +8,7 @@ using KitProjects.MasterChef.Kernel.Models.Steps;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
+using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using SimpleInjector;
 using System;
 
@@ -19,6 +20,9 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             container.Register(typeof(ICommand<>), assemblies);
+            container.Register(typeof(IQuery<,>), assemblies);
+            container.Register(typeof(IQuery<>), assemblies);
+            container.Register(typeof(IEntityChecker<,>), assemblies);
 
             container.RegisterDecorator<ICommand<CreateCategoryCommand>, CreateCategoryDecorator>();
             container.RegisterDecorator<ICommand<CreateIngredientCommand>, CreateIngredientDecorator>();
@@ -45,14 +49,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.RegisterDecorator<ICommand<AppendIngredientToStepCommand>, AppendIngredientToStepDecorator>();
             container.RegisterDecorator<ICommand<ReplaceStepIngredientCommand>, ReplaceStepIngredientDecorator>();
 
-            container.Register(typeof(IQuery<,>), assemblies);
-            container.Register(typeof(IQuery<>), assemblies);
-            container.Register(typeof(IEntityChecker<,>), assemblies);
-
-            container.Register<CreateRecipeDecorator>();
-            container.Register<RemoveCategoryFromIngredientDecorator>();
-            container.Register<AppendStepDecorator>();
-            container.Register<EditRecipeIngredientDescriptionDecorator>();
+            container.Register(typeof(CategoryCrud));
         }
     }
 }
