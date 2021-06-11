@@ -1,11 +1,15 @@
-﻿using KitProjects.MasterChef.Kernel.Extensions;
+﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Extensions;
+using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
+using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Ingredients
@@ -13,10 +17,17 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     public class IngredientsController : ApiController
     {
         private readonly IngredientsCrud _crud;
+        private readonly ICommand<AppendIngredientCategoryCommand> _appendIngredientCategory;
+        private readonly ICommand<RemoveIngredientCategoryCommand> _removeIngredientCategory;
 
-        public IngredientsController(IngredientsCrud crud)
+        public IngredientsController(
+            IngredientsCrud crud,
+            ICommand<RemoveIngredientCategoryCommand> removeIngredientCategory,
+            ICommand<AppendIngredientCategoryCommand> appendIngredientCategory)
         {
             _crud = crud;
+            _appendIngredientCategory = appendIngredientCategory;
+            _removeIngredientCategory = removeIngredientCategory;
         }
 
         /// <summary>
@@ -107,6 +118,49 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
                     throw new Exception("ID ингредиента не может быть значением по умолчанию.");
 
                 _crud.Delete(ingredientId);
+            });
+
+        [HttpGet("{ingredientId}/categories")]
+        public IActionResult GetIngredientCategories([FromRoute] Guid ingredientId) =>
+            ProcessRequest(() =>
+            {
+                if (ingredientId == default)
+                    throw new Exception("Указан пустой ID ингредиента.");
+
+                var ingredient = _crud.Read(ingredientId);
+
+                return new ApiCollectionResponse<Category>(ingredient.Categories ?? new List<Category>());
+            });
+
+        [HttpPost("{ingredientId}/categories")]
+        public IActionResult AddCategoryToIngredient(
+            [FromRoute] Guid ingredientId,
+            [FromBody] AppendCategoryToIngredientRequest request) =>
+            ProcessRequest(() =>
+            {
+                if (ingredientId == default)
+                    throw new Exception("Указан пустой ID ингредиента.");
+
+                if (request == null)
+                    throw new Exception("Пустое тело запроса.");
+
+                if (request.CategoryName.IsNullOrEmpty())
+                    throw new Exception("Указано пустое имя новой категории.");
+
+                _appendIngredientCategory.Execute(new AppendIngredientCategoryCommand(request.CategoryName, ingredientId));
+            });
+
+        [HttpDelete("{ingredientId}/categories/{categoryId}")]
+        public IActionResult RemoveCategoryFromIngredient([FromRoute] Guid ingredientId, [FromRoute] Guid categoryId) =>
+            ProcessRequest(() =>
+            {
+                if (ingredientId == default)
+                    throw new Exception("Указан пустой ID ингредиента.");
+
+                if (categoryId == default)
+                    throw new Exception("Указан пустой ID категории.");
+
+                _removeIngredientCategory.Execute(new RemoveIngredientCategoryCommand(categoryId, ingredientId));
             });
     }
 }

@@ -50,6 +50,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
             container.RegisterDecorator<ICommand<ReplaceStepIngredientCommand>, ReplaceStepIngredientDecorator>();
 
             container.Register(typeof(CategoryCrud));
+            container.Register(typeof(IngredientsCrud));
         }
     }
 }

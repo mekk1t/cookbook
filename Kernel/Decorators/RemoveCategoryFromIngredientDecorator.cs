@@ -7,12 +7,12 @@ namespace KitProjects.MasterChef.Kernel.Ingredients
 {
     public class RemoveCategoryFromIngredientDecorator : ICommand<RemoveIngredientCategoryCommand>
     {
-        private readonly IEntityChecker<Category, string> _categoryChecker;
+        private readonly IEntityChecker<Category, Guid> _categoryChecker;
         private readonly IEntityChecker<Ingredient, Guid> _ingredientChecker;
         private readonly ICommand<RemoveIngredientCategoryCommand> _decoratee;
 
         public RemoveCategoryFromIngredientDecorator(
-            IEntityChecker<Category, string> categoryChecker,
+            IEntityChecker<Category, Guid> categoryChecker,
             IEntityChecker<Ingredient, Guid> ingredientChecker,
             ICommand<RemoveIngredientCategoryCommand> decoratee)
         {
@@ -23,7 +23,7 @@ namespace KitProjects.MasterChef.Kernel.Ingredients
 
         public void Execute(RemoveIngredientCategoryCommand command)
         {
-            bool categoryExists = _categoryChecker.CheckExistence(command.CategoryName);
+            bool categoryExists = _categoryChecker.CheckExistence(command.CategoryId);
             if (!categoryExists)
                 return;
 
