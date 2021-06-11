@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace KitProjects.MasterChef.WebApplication.Ingredients
+﻿namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
     public class CreateIngredientRequest
     {
@@ -11,6 +9,6 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <summary>
         /// Список категорий ингредиента. Если не существуют, будут созданы.
         /// </summary>
-        public IEnumerable<string> Categories { get; set; }
+        public string[] Categories { get; set; }
     }
 }
