@@ -60,7 +60,7 @@ namespace KitProjects.MasterChef.Tests.Commands
                     Measures.Gramms));
 
             var result = _fixture.FindRecipe(recipeId);
-            result.Steps.First().StepIngredientsLink.First().Amount.Should().Be(12.48M);
+            result.Steps.First().StepIngredientsLink.First().Amount.Should().Be(12.5M);
         }
     }
 }

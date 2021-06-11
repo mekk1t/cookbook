@@ -83,7 +83,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
         }
 
         [Fact]
-        public void Moderator_doesnt_throw_when_deleting_category_does_not_exist()
+        public void Moderator_does_throw_when_deleting_category_does_not_exist()
         {
             var randomId = Guid.NewGuid();
             using var dbContext = _fixture.DbContext;
@@ -91,8 +91,7 @@ namespace KitProjects.MasterChef.Tests.Moderators
 
             Action act = () => sut.Execute(new DeleteCategoryCommand(randomId));
 
-            act.Should().NotThrow();
-            dbContext.Categories.AsNoTracking().Where(r => r.Id == randomId).Should().BeEmpty();
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
