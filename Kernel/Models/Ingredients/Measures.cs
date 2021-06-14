@@ -2,9 +2,21 @@
 {
     public enum Measures
     {
+        /// <summary>
+        /// Значение перечисления по умолчанию.
+        /// </summary>
         None,
-        Milliliters,
-        Gramms,
-        Pieces
+        /// <summary>
+        /// ml - МЛ - Миллилитры.
+        /// </summary>
+        ml,
+        /// <summary>
+        /// gm - Г - Граммы.
+        /// </summary>
+        gm,
+        /// <summary>
+        /// pc - Pieces - Количество штук.
+        /// </summary>
+        pc
     }
 }
