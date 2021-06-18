@@ -4,6 +4,9 @@ using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Models.Queries;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.WebApplication.ApplicationServices;
+using KitProjects.MasterChef.WebApplication.Controllers;
+using KitProjects.MasterChef.WebApplication.Models.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,28 +14,13 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
 {
-    [Produces("application/json")]
-    [Route("recipes")]
-    public class RecipeController : ControllerBase
+    public class RecipesController : ApiController
     {
-        private readonly ICommand<CreateRecipeCommand> _createRecipe;
-        private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
-        private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipe;
-        private readonly ICommand<EditRecipeCommand> _editRecipe;
-        private readonly ICommand<DeleteRecipeCommand> _deleteRecipe;
+        private readonly RecipeCrud _crud;
 
-        public RecipeController(
-            ICommand<CreateRecipeCommand> createRecipe,
-            IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
-            IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
-            ICommand<EditRecipeCommand> editRecipe,
-            ICommand<DeleteRecipeCommand> deleteRecipe)
+        public RecipesController(RecipeCrud crud)
         {
-            _createRecipe = createRecipe;
-            _getRecipes = getRecipes;
-            _getRecipe = getRecipe;
-            _editRecipe = editRecipe;
-            _deleteRecipe = deleteRecipe;
+            _crud = crud;
         }
 
         /// <summary>
@@ -42,7 +30,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpPost]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request)
         {
-            _createRecipe.Execute(
+            _crud.Create(
                 new CreateRecipeCommand(
                     Guid.NewGuid(),
                     request.Title,
@@ -60,15 +48,14 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// Получает список рецептов. Включает все связи.
         /// </summary>
         [HttpGet]
-        public IEnumerable<Recipe> GetRecipes() => _getRecipes.Execute(new GetRecipesQuery(true));
+        public IEnumerable<Recipe> GetRecipes(PaginationFilter filter) => _crud.Read(filter);
 
         /// <summary>
         /// Получает подробную информацию о рецепте.
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
-        public RecipeDetails GetRecipe([FromRoute] Guid recipeId) =>
-            _getRecipe.Execute(new GetRecipeQuery(recipeId));
+        public RecipeDetails GetRecipe([FromRoute] Guid recipeId) => _crud.Read(recipeId);
 
         /// <summary>
         /// Редактирует название и описание рецепта по ID.
@@ -80,7 +67,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             [FromRoute] Guid recipeId,
             [FromBody] EditRecipeRequest request)
         {
-            _editRecipe.Execute(new EditRecipeCommand(recipeId, request.NewTitle, request.NewDescription));
+            _crud.Update(recipeId, request.NewTitle, request.NewDescription);
             return Ok();
         }
 
@@ -91,7 +78,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpDelete("{recipeId}")]
         public IActionResult DeleteRecipe([FromRoute] Guid recipeId)
         {
-            _deleteRecipe.Execute(new DeleteRecipeCommand(recipeId));
+            _crud.Delete(recipeId);
             return Ok();
         }
     }

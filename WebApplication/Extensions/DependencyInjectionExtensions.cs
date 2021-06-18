@@ -51,6 +51,7 @@ namespace KitProjects.MasterChef.WebApplication.Extensions
 
             container.Register(typeof(CategoryCrud));
             container.Register(typeof(IngredientsCrud));
+            container.Register(typeof(RecipeCrud));
         }
     }
 }
