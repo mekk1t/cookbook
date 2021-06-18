@@ -30,7 +30,7 @@ namespace KitProjects.MasterChef.Tests.Commands
                 new CategoryChecker(
                     new GetCategoryQueryHandler(_dbContext)),
                 new GetIngredientQueryHandler(_dbContext),
-                new AppendIngredientCategoryCommandHandler(_dbContext));
+                new AppendExistingCategoryToIngredientCommandHandler(_dbContext));
         }
 
         [Fact]

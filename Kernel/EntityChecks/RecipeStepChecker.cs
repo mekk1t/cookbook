@@ -1,19 +1,18 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.EntityChecks;
-using KitProjects.MasterChef.Kernel.Models.Queries.Search;
-using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Queries.Get;
 using System;
 
 namespace KitProjects.MasterChef.Kernel.EntityChecks
 {
     public class RecipeStepChecker : IEntityChecker<RecipeStep, StepEntityCheckParameters>
     {
-        private readonly IQuery<RecipeStep, SearchStepQuery> _searchStep;
+        private readonly IQuery<RecipeStep, GetRecipeStepQuery> _getStep;
 
-        public RecipeStepChecker(IQuery<RecipeStep, SearchStepQuery> searchStep)
+        public RecipeStepChecker(IQuery<RecipeStep, GetRecipeStepQuery> getStep)
         {
-            _searchStep = searchStep;
+            _getStep = getStep;
         }
 
         public bool CheckExistence(StepEntityCheckParameters parameters)
@@ -21,7 +20,7 @@ namespace KitProjects.MasterChef.Kernel.EntityChecks
             if (parameters.RecipeId == Guid.Empty || parameters.StepId == Guid.Empty)
                 throw new ArgumentException(null, nameof(parameters));
 
-            var step = _searchStep.Execute(new SearchStepQuery(parameters.StepId, new SearchStepQueryParameters(parameters.RecipeId)));
+            var step = _getStep.Execute(new GetRecipeStepQuery(parameters.RecipeId, parameters.StepId));
             if (step == null)
                 return false;
 
