@@ -1,8 +1,5 @@
-﻿using KitProjects.MasterChef.Kernel.Abstractions;
-using KitProjects.MasterChef.Kernel.Models;
+﻿using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
-using KitProjects.MasterChef.Kernel.Models.Queries;
-using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
