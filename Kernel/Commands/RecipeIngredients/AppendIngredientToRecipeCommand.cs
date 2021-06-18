@@ -4,13 +4,13 @@ using System;
 
 namespace KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients
 {
-    public class AppendRecipeIngredientCommand
+    public class AppendIngredientToRecipeCommand
     {
         public Guid RecipeId { get; }
         public Ingredient Ingredient { get; }
         public AppendIngredientParameters Parameters { get; }
 
-        public AppendRecipeIngredientCommand(Guid recipeId, Ingredient ingredient, AppendIngredientParameters parameters)
+        public AppendIngredientToRecipeCommand(Guid recipeId, Ingredient ingredient, AppendIngredientParameters parameters)
         {
             RecipeId = recipeId;
             Ingredient = ingredient;

@@ -51,7 +51,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
 
-            sut.Execute(new AppendRecipeIngredientCommand(
+            sut.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
@@ -81,15 +81,15 @@ namespace KitProjects.MasterChef.Tests.Editors
                                 new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Чтозачерт"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
@@ -102,7 +102,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new RecipeChecker(
                         new GetRecipeQueryHandler(dbContext)));
 
-            sut.Execute(new RemoveRecipeIngredientCommand(recipeId, ingredientId));
+            sut.Execute(new RemoveIngredientFromRecipeCommand(recipeId, ingredientId));
 
             var result = _fixture.FindRecipe(recipeId);
             result.RecipeIngredientLink.Should().HaveCount(2);
@@ -131,7 +131,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             var newIngredientId = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId, newIngredientId.ToString()));
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
@@ -182,11 +182,11 @@ namespace KitProjects.MasterChef.Tests.Editors
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId, newIngredientId.ToString()));
             _fixture.SeedIngredientWithNewCategories(new Ingredient(newIngredientId2, newIngredientId2.ToString()));
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));
@@ -207,7 +207,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                                 new GetCategoryQueryHandler(dbContext)))));
 
 
-           sut.Execute(new ReplaceIngredientsListCommand(
+           sut.Execute(new ReplaceRecipeIngredientsListCommand(
                 new[]
                 {
                     new Ingredient(newIngredientId, newIngredientId.ToString()),
@@ -243,7 +243,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                                 new GetCategoryQueryHandler(dbContext)))));
             var recipeId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe { Id = recipeId });
-            appendIngredient.Execute(new AppendRecipeIngredientCommand(
+            appendIngredient.Execute(new AppendIngredientToRecipeCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
                 new AppendIngredientParameters(1.10M, Measures.ml)));

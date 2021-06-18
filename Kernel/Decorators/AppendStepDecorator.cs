@@ -12,12 +12,12 @@ namespace KitProjects.MasterChef.Kernel.Recipes
     {
         private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipe;
         private readonly ICommand<AppendRecipeStepCommand> _decoratee;
-        private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredientToRecipe;
+        private readonly ICommand<AppendIngredientToRecipeCommand> _appendIngredientToRecipe;
 
         public AppendStepDecorator(
             IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
-            ICommand<AppendRecipeIngredientCommand> appendIngredientToRecipe)
+            ICommand<AppendIngredientToRecipeCommand> appendIngredientToRecipe)
         {
             _getRecipe = getRecipe;
             _decoratee = appendStep;
@@ -36,7 +36,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
                 if (!recipeIngredientNames.Contains(ingredient.IngredientName))
                 {
                     _appendIngredientToRecipe.Execute(
-                        new AppendRecipeIngredientCommand(
+                        new AppendIngredientToRecipeCommand(
                             command.RecipeId,
                             new Ingredient(
                                 Guid.NewGuid(),

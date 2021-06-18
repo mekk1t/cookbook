@@ -7,15 +7,15 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Kernel.Decorators
 {
-    public class ReplaceIngredientsListInRecipeDecorator : ICommand<ReplaceIngredientsListCommand>
+    public class ReplaceIngredientsListInRecipeDecorator : ICommand<ReplaceRecipeIngredientsListCommand>
     {
-        private readonly ICommand<ReplaceIngredientsListCommand> _decoratee;
+        private readonly ICommand<ReplaceRecipeIngredientsListCommand> _decoratee;
         private readonly IEntityChecker<Ingredient, string> _ingredientChecker;
         private readonly IEntityChecker<Recipe, Guid> _recipeChecker;
         private readonly ICommand<CreateIngredientCommand> _createIngredient;
 
         public ReplaceIngredientsListInRecipeDecorator(
-            ICommand<ReplaceIngredientsListCommand> decoratee,
+            ICommand<ReplaceRecipeIngredientsListCommand> decoratee,
             IEntityChecker<Ingredient, string> ingredientChecker,
             IEntityChecker<Recipe, Guid> recipeChecker,
             ICommand<CreateIngredientCommand> createIngredient)
@@ -26,7 +26,7 @@ namespace KitProjects.MasterChef.Kernel.Decorators
             _createIngredient = createIngredient;
         }
 
-        public void Execute(ReplaceIngredientsListCommand command)
+        public void Execute(ReplaceRecipeIngredientsListCommand command)
         {
             bool recipeExists = _recipeChecker.CheckExistence(command.RecipeId);
             if (!recipeExists)

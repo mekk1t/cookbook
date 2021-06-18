@@ -5,14 +5,14 @@ using System;
 
 namespace KitProjects.MasterChef.Kernel.Decorators
 {
-    public class RemoveIngredientFromRecipeDecorator : ICommand<RemoveRecipeIngredientCommand>
+    public class RemoveIngredientFromRecipeDecorator : ICommand<RemoveIngredientFromRecipeCommand>
     {
-        private readonly ICommand<RemoveRecipeIngredientCommand> _decoratee;
+        private readonly ICommand<RemoveIngredientFromRecipeCommand> _decoratee;
         private readonly IEntityChecker<Ingredient, Guid> _ingredientChecker;
         private readonly IEntityChecker<Recipe, Guid> _recipeChecker;
 
         public RemoveIngredientFromRecipeDecorator(
-            ICommand<RemoveRecipeIngredientCommand> decoratee,
+            ICommand<RemoveIngredientFromRecipeCommand> decoratee,
             IEntityChecker<Ingredient, Guid> ingredientChecker,
             IEntityChecker<Recipe, Guid> recipeChecker)
         {
@@ -21,7 +21,7 @@ namespace KitProjects.MasterChef.Kernel.Decorators
             _recipeChecker = recipeChecker;
         }
 
-        public void Execute(RemoveRecipeIngredientCommand command)
+        public void Execute(RemoveIngredientFromRecipeCommand command)
         {
             bool ingredientExists = _ingredientChecker.CheckExistence(command.IngredientId);
             if (!ingredientExists)

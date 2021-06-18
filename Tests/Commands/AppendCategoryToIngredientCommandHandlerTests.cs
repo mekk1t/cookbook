@@ -20,7 +20,7 @@ namespace KitProjects.MasterChef.Tests.Commands
     {
         private readonly AppDbContext _dbContext;
         private readonly DbFixture _fixture;
-        private readonly ICommand<AppendIngredientCategoryCommand> _sut;
+        private readonly ICommand<AppendExistingCategoryToIngredientCommand> _sut;
 
         public AppendCategoryToIngredientCommandHandlerTests(DbFixture fixture)
         {
@@ -43,7 +43,7 @@ namespace KitProjects.MasterChef.Tests.Commands
                 Categories = { new Category(categoryId, categoryId.ToString()) }
             });
 
-            Action act = () => _sut.Execute(new AppendIngredientCategoryCommand(categoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new AppendExistingCategoryToIngredientCommand(categoryId.ToString(), ingredientId));
 
             act.Should().ThrowExactly<ArgumentException>();
         }
@@ -60,7 +60,7 @@ namespace KitProjects.MasterChef.Tests.Commands
                 Categories = { new Category(categoryId, categoryId.ToString()) }
             });
 
-            Action act = () => _sut.Execute(new AppendIngredientCategoryCommand(appendCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new AppendExistingCategoryToIngredientCommand(appendCategoryId.ToString(), ingredientId));
 
             act.Should().NotThrow();
             var result = _fixture.FindIngredient(ingredientId.ToString());
@@ -75,7 +75,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             _fixture.SeedCategory(new Category(appendCategoryId, appendCategoryId.ToString()));
             _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
 
-            Action act = () => _sut.Execute(new AppendIngredientCategoryCommand(appendCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new AppendExistingCategoryToIngredientCommand(appendCategoryId.ToString(), ingredientId));
 
             act.Should().NotThrow();
             var result = _fixture.FindIngredient(ingredientId.ToString());
@@ -89,7 +89,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             var appendCategoryId = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
 
-            Action act = () => _sut.Execute(new AppendIngredientCategoryCommand(appendCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new AppendExistingCategoryToIngredientCommand(appendCategoryId.ToString(), ingredientId));
 
             act.Should().Throw<Exception>();
         }
@@ -101,7 +101,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             var appendCategoryId = Guid.NewGuid();
             _fixture.SeedCategory(new Category(appendCategoryId, appendCategoryId.ToString()));
 
-            Action act = () => _sut.Execute(new AppendIngredientCategoryCommand(appendCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new AppendExistingCategoryToIngredientCommand(appendCategoryId.ToString(), ingredientId));
 
             act.Should().Throw<Exception>();
         }

@@ -2,12 +2,12 @@
 
 namespace KitProjects.MasterChef.Kernel.Ingredients.Commands
 {
-    public class AppendIngredientCategoryCommand
+    public class AppendExistingCategoryToIngredientCommand
     {
         public string CategoryName { get; }
         public Guid IngredientId { get; }
 
-        public AppendIngredientCategoryCommand(string categoryName, Guid ingredientId)
+        public AppendExistingCategoryToIngredientCommand(string categoryName, Guid ingredientId)
         {
             CategoryName = categoryName;
             IngredientId = ingredientId;

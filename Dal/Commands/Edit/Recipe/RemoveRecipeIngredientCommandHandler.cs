@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
 {
-    public class RemoveRecipeIngredientCommandHandler : ICommand<RemoveRecipeIngredientCommand>
+    public class RemoveRecipeIngredientCommandHandler : ICommand<RemoveIngredientFromRecipeCommand>
     {
         private readonly AppDbContext _dbContext;
 
@@ -15,7 +15,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
             _dbContext = dbContext;
         }
 
-        public void Execute(RemoveRecipeIngredientCommand command)
+        public void Execute(RemoveIngredientFromRecipeCommand command)
         {
             var recipe = _dbContext.Recipes
                 .Include(r => r.RecipeIngredientLink)

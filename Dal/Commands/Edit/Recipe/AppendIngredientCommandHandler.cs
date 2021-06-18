@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
 {
-    public class AppendIngredientCommandHandler : ICommand<AppendRecipeIngredientCommand>
+    public class AppendIngredientCommandHandler : ICommand<AppendIngredientToRecipeCommand>
     {
         private readonly AppDbContext _dbContext;
 
@@ -16,7 +16,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
             _dbContext = dbContext;
         }
 
-        public void Execute(AppendRecipeIngredientCommand command)
+        public void Execute(AppendIngredientToRecipeCommand command)
         {
             var recipe = _dbContext.Recipes
                 .Include(r => r.RecipeIngredientLink)

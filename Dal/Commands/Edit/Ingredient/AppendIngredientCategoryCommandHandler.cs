@@ -7,16 +7,16 @@ using System.Linq;
 
 namespace KitProjects.MasterChef.Dal.Commands.Edit.Ingredient
 {
-    public class AppendIngredientCategoryCommandHandler : ICommand<AppendIngredientCategoryCommand>
+    public class AppendExistingCategoryToIngredientCommandHandler : ICommand<AppendExistingCategoryToIngredientCommand>
     {
         private readonly AppDbContext _dbContext;
 
-        public AppendIngredientCategoryCommandHandler(AppDbContext dbContext)
+        public AppendExistingCategoryToIngredientCommandHandler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public void Execute(AppendIngredientCategoryCommand command)
+        public void Execute(AppendExistingCategoryToIngredientCommand command)
         {
             var ingredient = _dbContext.Ingredients
                 .Include(i => i.Categories)

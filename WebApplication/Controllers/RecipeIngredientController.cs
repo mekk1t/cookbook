@@ -13,17 +13,17 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
     [Route("recipes/{recipeId}/ingredients")]
     public class RecipeIngredientController : ControllerBase
     {
-        private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredient;
+        private readonly ICommand<AppendIngredientToRecipeCommand> _appendIngredient;
         private readonly ICommand<EditRecipeIngredientDescriptionCommand> _editIngredientDescription;
-        private readonly ICommand<RemoveRecipeIngredientCommand> _removeIngredient;
-        private readonly ICommand<ReplaceIngredientsListCommand> _replaceIngredientsList;
+        private readonly ICommand<RemoveIngredientFromRecipeCommand> _removeIngredient;
+        private readonly ICommand<ReplaceRecipeIngredientsListCommand> _replaceIngredientsList;
         private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
 
         public RecipeIngredientController(
-            ICommand<AppendRecipeIngredientCommand> appendIngredient,
+            ICommand<AppendIngredientToRecipeCommand> appendIngredient,
             ICommand<EditRecipeIngredientDescriptionCommand> editIngredientDescription,
-            ICommand<RemoveRecipeIngredientCommand> removeIngredient,
-            ICommand<ReplaceIngredientsListCommand> replaceIngredientsList,
+            ICommand<RemoveIngredientFromRecipeCommand> removeIngredient,
+            ICommand<ReplaceRecipeIngredientsListCommand> replaceIngredientsList,
             ICommand<ReplaceRecipeIngredientCommand> replaceIngredient)
         {
             _appendIngredient = appendIngredient;
@@ -41,7 +41,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         public IActionResult AppendIngredient([FromRoute] Guid recipeId, [FromBody] AppendIngredientRequest request)
         {
             _appendIngredient.Execute(
-                new AppendRecipeIngredientCommand(
+                new AppendIngredientToRecipeCommand(
                     recipeId,
                     new Ingredient(Guid.NewGuid(), request.IngredientName),
                     new AppendIngredientParameters(request.Amount, request.Measure, request.Notes)));
@@ -57,7 +57,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         public IActionResult ReplaceIngredients([FromRoute] Guid recipeId, [FromBody] ReplaceIngredientsRequest request)
         {
             _replaceIngredientsList.Execute(
-                new ReplaceIngredientsListCommand(
+                new ReplaceRecipeIngredientsListCommand(
                     request.NewIngredients
                         .Select(i => new Ingredient(Guid.NewGuid(), i))
                         .ToArray(),
@@ -123,7 +123,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
         [HttpDelete("{ingredientId}")]
         public IActionResult RemoveIngredient([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId)
         {
-            _removeIngredient.Execute(new RemoveRecipeIngredientCommand(recipeId, ingredientId));
+            _removeIngredient.Execute(new RemoveIngredientFromRecipeCommand(recipeId, ingredientId));
             return Ok();
         }
     }

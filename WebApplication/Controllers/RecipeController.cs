@@ -17,20 +17,20 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     {
         private readonly ICommand<CreateRecipeCommand> _createRecipe;
         private readonly IQuery<IEnumerable<Recipe>, GetRecipesQuery> _getRecipes;
-        private readonly IQuery<RecipeDetails, GetRecipeQuery> _searchRecipe;
+        private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipe;
         private readonly ICommand<EditRecipeCommand> _editRecipe;
         private readonly ICommand<DeleteRecipeCommand> _deleteRecipe;
 
         public RecipeController(
             ICommand<CreateRecipeCommand> createRecipe,
             IQuery<IEnumerable<Recipe>, GetRecipesQuery> getRecipes,
-            IQuery<RecipeDetails, GetRecipeQuery> searchRecipe,
+            IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
             ICommand<EditRecipeCommand> editRecipe,
             ICommand<DeleteRecipeCommand> deleteRecipe)
         {
             _createRecipe = createRecipe;
             _getRecipes = getRecipes;
-            _searchRecipe = searchRecipe;
+            _getRecipe = getRecipe;
             _editRecipe = editRecipe;
             _deleteRecipe = deleteRecipe;
         }
@@ -68,7 +68,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
         public RecipeDetails GetRecipe([FromRoute] Guid recipeId) =>
-            _searchRecipe.Execute(new GetRecipeQuery(recipeId));
+            _getRecipe.Execute(new GetRecipeQuery(recipeId));
 
         /// <summary>
         /// Редактирует название и описание рецепта по ID.

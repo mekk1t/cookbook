@@ -17,13 +17,13 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
     public class IngredientsController : ApiController
     {
         private readonly IngredientsCrud _crud;
-        private readonly ICommand<AppendIngredientCategoryCommand> _appendIngredientCategory;
+        private readonly ICommand<AppendExistingCategoryToIngredientCommand> _appendIngredientCategory;
         private readonly ICommand<RemoveIngredientCategoryCommand> _removeIngredientCategory;
 
         public IngredientsController(
             IngredientsCrud crud,
             ICommand<RemoveIngredientCategoryCommand> removeIngredientCategory,
-            ICommand<AppendIngredientCategoryCommand> appendIngredientCategory)
+            ICommand<AppendExistingCategoryToIngredientCommand> appendIngredientCategory)
         {
             _crud = crud;
             _appendIngredientCategory = appendIngredientCategory;
@@ -147,7 +147,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
                 if (request.CategoryName.IsNullOrEmpty())
                     throw new Exception("Указано пустое имя новой категории.");
 
-                _appendIngredientCategory.Execute(new AppendIngredientCategoryCommand(request.CategoryName, ingredientId));
+                _appendIngredientCategory.Execute(new AppendExistingCategoryToIngredientCommand(request.CategoryName, ingredientId));
             });
 
         [HttpDelete("{ingredientId}/categories/{categoryId}")]
