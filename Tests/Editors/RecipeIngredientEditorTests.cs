@@ -54,7 +54,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             sut.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
 
             var result = _fixture.FindRecipe(recipeId);
             result.RecipeIngredientLink.Should().HaveCount(1);
@@ -84,15 +84,15 @@ namespace KitProjects.MasterChef.Tests.Editors
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Чтозачерт"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.Select(link => link.DbIngredientId).First();
             var sut =
                 new RemoveIngredientFromRecipeDecorator(
@@ -134,7 +134,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.Select(link => link.DbIngredientId).First();
             var sut =
                 new ReplaceIngredientInRecipeDecorator(
@@ -185,11 +185,11 @@ namespace KitProjects.MasterChef.Tests.Editors
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Ахалай махалай"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             var sut =
                 new ReplaceIngredientsListInRecipeDecorator(
                     new ReplaceRecipeIngredientsListCommandHandler(dbContext),
@@ -246,17 +246,17 @@ namespace KitProjects.MasterChef.Tests.Editors
             appendIngredient.Execute(new AppendRecipeIngredientCommand(
                 recipeId,
                 new Ingredient(Guid.NewGuid(), "Хэйлялясан"),
-                new AppendIngredientParameters(1.10M, Measures.Milliliters)));
+                new AppendIngredientParameters(1.10M, Measures.ml)));
             var ingredientId = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First().DbIngredientId;
             var sut =
                 new EditRecipeIngredientDescriptionDecorator(
                     new EditRecipeIngredientDescriptionCommandHandler(dbContext));
 
-            sut.Execute(new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.Pieces));
+            sut.Execute(new EditRecipeIngredientDescriptionCommand(recipeId, ingredientId, amount: 228M, measure: Measures.pc));
 
             var result = _fixture.FindRecipe(recipeId).RecipeIngredientLink.First();
             result.IngredientsAmount.Should().Be(228M);
-            result.IngredientMeasure.Should().Be(Measures.Pieces);
+            result.IngredientMeasure.Should().Be(Measures.pc);
         }
     }
 }

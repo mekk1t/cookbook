@@ -232,7 +232,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new Kernel.Models.Recipes.StepIngredientDetails
                     {
                         Amount = 1,
-                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        Measure = Kernel.Models.Ingredients.Measures.gm,
                         IngredientName = ingredientName
                     }
                 }
@@ -275,7 +275,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new Kernel.Models.Recipes.StepIngredientDetails
                     {
                         Amount = 1,
-                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        Measure = Kernel.Models.Ingredients.Measures.gm,
                         IngredientName = ingredientName
                     }
                 }

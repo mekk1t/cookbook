@@ -57,7 +57,7 @@ namespace KitProjects.MasterChef.Tests.Commands
                         stepId),
                     ingredientId,
                     12.48M,
-                    Measures.Gramms));
+                    Measures.gm));
 
             var result = _fixture.FindRecipe(recipeId);
             result.Steps.First().StepIngredientsLink.First().Amount.Should().Be(12.5M);
