@@ -4,6 +4,7 @@ using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
+using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,10 +15,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     public class RecipesController : ApiController
     {
         private readonly RecipeCrud _crud;
+        private readonly CategoryManager _categoryManager;
 
-        public RecipesController(RecipeCrud crud)
+        public RecipesController(RecipeCrud crud, CategoryManager categoryManager)
         {
             _crud = crud;
+            _categoryManager = categoryManager;
         }
 
         /// <summary>
@@ -97,5 +100,17 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult DeleteRecipe([FromRoute] Guid recipeId) =>
             ProcessRequest(() => _crud.Delete(recipeId));
+
+        [HttpPost("{recipeId}/categories")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        public IActionResult AddCategoryToRecipe([FromRoute] Guid recipeId, [FromBody] AppendCategoryToRecipeRequest request) =>
+            ProcessRequest(() => _categoryManager.AddToRecipe(recipeId, request.CategoryName));
+
+        [HttpDelete("{recipeId}/categories/{categoryName}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        public IActionResult AddCategoryToRecipe([FromRoute] Guid recipeId, [FromRoute] string categoryName) =>
+            ProcessRequest(() => _categoryManager.RemoveFromRecipe(recipeId, categoryName));
     }
 }
