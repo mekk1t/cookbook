@@ -6,15 +6,15 @@ using System;
 
 namespace KitProjects.MasterChef.Kernel.Decorators
 {
-    public class AppendIngredientToRecipeDecorator : ICommand<AppendRecipeIngredientCommand>
+    public class AppendIngredientToRecipeDecorator : ICommand<AppendIngredientToRecipeCommand>
     {
-        private readonly ICommand<AppendRecipeIngredientCommand> _decoratee;
+        private readonly ICommand<AppendIngredientToRecipeCommand> _decoratee;
         private readonly IEntityChecker<Recipe, Guid> _recipeChecker;
         private readonly IEntityChecker<Ingredient, Guid> _ingredientChecker;
         private readonly ICommand<CreateIngredientCommand> _createIngredient;
 
         public AppendIngredientToRecipeDecorator(
-            ICommand<AppendRecipeIngredientCommand> decoratee,
+            ICommand<AppendIngredientToRecipeCommand> decoratee,
             IEntityChecker<Recipe, Guid> recipeChecker,
             IEntityChecker<Ingredient, Guid> ingredientChecker,
             ICommand<CreateIngredientCommand> createIngredient)
@@ -25,7 +25,7 @@ namespace KitProjects.MasterChef.Kernel.Decorators
             _createIngredient = createIngredient;
         }
 
-        public void Execute(AppendRecipeIngredientCommand command)
+        public void Execute(AppendIngredientToRecipeCommand command)
         {
             bool recipeExists = _recipeChecker.CheckExistence(command.RecipeId);
             if (!recipeExists)

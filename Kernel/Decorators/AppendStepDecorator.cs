@@ -1,4 +1,5 @@
 ﻿using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Queries.Get;
 using KitProjects.MasterChef.Kernel.Recipes.Commands;
@@ -12,12 +13,12 @@ namespace KitProjects.MasterChef.Kernel.Recipes
     {
         private readonly IQuery<RecipeDetails, GetRecipeQuery> _getRecipe;
         private readonly ICommand<AppendRecipeStepCommand> _decoratee;
-        private readonly ICommand<AppendRecipeIngredientCommand> _appendIngredientToRecipe;
+        private readonly ICommand<AppendIngredientToRecipeCommand> _appendIngredientToRecipe;
 
         public AppendStepDecorator(
             IQuery<RecipeDetails, GetRecipeQuery> getRecipe,
             ICommand<AppendRecipeStepCommand> appendStep,
-            ICommand<AppendRecipeIngredientCommand> appendIngredientToRecipe)
+            ICommand<AppendIngredientToRecipeCommand> appendIngredientToRecipe)
         {
             _getRecipe = getRecipe;
             _decoratee = appendStep;
@@ -36,12 +37,12 @@ namespace KitProjects.MasterChef.Kernel.Recipes
                 if (!recipeIngredientNames.Contains(ingredient.IngredientName))
                 {
                     _appendIngredientToRecipe.Execute(
-                        new AppendRecipeIngredientCommand(
+                        new AppendIngredientToRecipeCommand(
                             command.RecipeId,
                             new Ingredient(
                                 Guid.NewGuid(),
                                 ingredient.IngredientName),
-                            new AppendIngredientParameters(ingredient.Amount, ingredient.Measure)));
+                            new IngredientParameters(ingredient.Amount, ingredient.Measure)));
                 }
             }
 

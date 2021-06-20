@@ -10,6 +10,7 @@ using KitProjects.MasterChef.Dal.Queries.Ingredients;
 using KitProjects.MasterChef.Dal.Queries.Recipes;
 using KitProjects.MasterChef.Kernel;
 using KitProjects.MasterChef.Kernel.Abstractions;
+using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 using KitProjects.MasterChef.Kernel.Decorators;
 using KitProjects.MasterChef.Kernel.EntityChecks;
 using KitProjects.MasterChef.Kernel.Models;
@@ -107,7 +108,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(Guid.Parse(ingredientName), ingredientName),
-                new AppendIngredientParameters(0, Measures.Milliliters)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -142,7 +143,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(ingredientName),
-                new AppendIngredientParameters(0, Measures.Milliliters)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -186,7 +187,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(ingredientName),
-                new AppendIngredientParameters(0, Measures.Milliliters)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().ThrowExactly<EntityDuplicateException>();
         }

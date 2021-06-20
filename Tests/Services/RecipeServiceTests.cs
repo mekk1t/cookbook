@@ -58,8 +58,8 @@ namespace KitProjects.MasterChef.Tests.Services
                 new[] { "Ахалай махалай", "Букабяка" },
                 new List<RecipeIngredientDetails>
                 {
-                    new RecipeIngredientDetails("Какао", Measures.Gramms, 20, "Сыпь не жалей!"),
-                    new RecipeIngredientDetails("Шоколад", Measures.Gramms, 15, "Горький. > 65% какао.")
+                    new RecipeIngredientDetails("Какао", Measures.gm, 20, "Сыпь не жалей!"),
+                    new RecipeIngredientDetails("Шоколад", Measures.gm, 15, "Горький. > 65% какао.")
                 },
                 new List<RecipeStep>
                 {
@@ -73,7 +73,7 @@ namespace KitProjects.MasterChef.Tests.Services
                             {
                                 IngredientName = "Какао",
                                 Amount = 20,
-                                Measure = Measures.Gramms
+                                Measure = Measures.gm
                             }
                         }
                     }
@@ -109,8 +109,8 @@ namespace KitProjects.MasterChef.Tests.Services
                 new[] { categoryName, categoryName + "1" },
                 new List<RecipeIngredientDetails>
                 {
-                    new RecipeIngredientDetails(ingredientName, Measures.Milliliters, 14, "Сыпь не жалей!"),
-                    new RecipeIngredientDetails(ingredientName + "1", Measures.Gramms, 15, "Горький. > 65% какао.")
+                    new RecipeIngredientDetails(ingredientName, Measures.ml, 14, "Сыпь не жалей!"),
+                    new RecipeIngredientDetails(ingredientName + "1", Measures.gm, 15, "Горький. > 65% какао.")
                 },
                 new List<RecipeStep>
                 {
@@ -124,7 +124,7 @@ namespace KitProjects.MasterChef.Tests.Services
                             {
                                 IngredientName = ingredientName,
                                 Amount = 20,
-                                Measure = Measures.Gramms
+                                Measure = Measures.gm
                             }
                         }
                     }
@@ -193,7 +193,7 @@ namespace KitProjects.MasterChef.Tests.Services
                         DbRecipeId = recipeId,
                         DbIngredientId = ingredientId,
                         IngredientMeasure = Measures.None,
-                        IngredientxAmount = 1
+                        IngredientsAmount = 1
                     }
                 }
             };

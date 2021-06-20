@@ -34,7 +34,7 @@ namespace KitProjects.MasterChef.Dal.Commands
                     DbRecipeId = command.Id,
                     DbIngredientId = c.Id,
                     IngredientMeasure = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Measure,
-                    IngredientxAmount = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Amount,
+                    IngredientsAmount = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Amount,
                     Notes = command.IngredientsDetails.First(details => details.IngredientName == c.Name).Notes
                 }).ToList(),
                 Steps = command.Steps.Select(step => new DbRecipeStep

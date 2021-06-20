@@ -1,4 +1,4 @@
-﻿using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
+﻿using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 
 namespace KitProjects.MasterChef.Kernel.Models.Steps
 {
@@ -6,9 +6,9 @@ namespace KitProjects.MasterChef.Kernel.Models.Steps
     {
         public RecipeStepIds Ids { get; }
         public Ingredient Ingredient { get; }
-        public AppendIngredientParameters Parameters { get; }
+        public IngredientParameters Parameters { get; }
 
-        public AppendIngredientToStepCommand(RecipeStepIds ids, Ingredient ingredient, AppendIngredientParameters parameters)
+        public AppendIngredientToStepCommand(RecipeStepIds ids, Ingredient ingredient, IngredientParameters parameters)
         {
             Ids = ids;
             Ingredient = ingredient;

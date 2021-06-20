@@ -106,8 +106,9 @@ namespace KitProjects.MasterChef.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("IngredientxAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("IngredientsAmount")
+                        .HasPrecision(5, 1)
+                        .HasColumnType("decimal(5,1)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -122,7 +123,6 @@ namespace KitProjects.MasterChef.Dal.Migrations
             modelBuilder.Entity("KitProjects.MasterChef.Dal.Database.Models.DbRecipeStep", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("DbRecipeId")
@@ -153,7 +153,8 @@ namespace KitProjects.MasterChef.Dal.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 1)
+                        .HasColumnType("decimal(5,1)");
 
                     b.Property<string>("Measure")
                         .IsRequired()

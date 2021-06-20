@@ -30,7 +30,7 @@ namespace KitProjects.MasterChef.Dal.Commands.Edit.Recipe
                 throw new ArgumentException(null, nameof(command));
 
             if (command.Amount != default)
-                editLink.IngredientxAmount = command.Amount;
+                editLink.IngredientsAmount = command.Amount;
             if (command.Measure != Kernel.Models.Ingredients.Measures.None)
                 editLink.IngredientMeasure = command.Measure;
             if (command.Notes.IsNotNullOrEmpty())

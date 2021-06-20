@@ -56,7 +56,7 @@ namespace KitProjects.MasterChef.Dal.Queries.Recipes
                 new RecipeIngredientDetails(
                     link.DbIngredient.Name,
                     link.IngredientMeasure,
-                    link.IngredientxAmount,
+                    link.IngredientsAmount,
                     link.Notes,
                     link.DbIngredientId)));
 

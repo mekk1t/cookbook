@@ -1,12 +1,11 @@
-﻿namespace KitProjects.MasterChef.Kernel.Models.Commands
+﻿using System;
+
+namespace KitProjects.MasterChef.Kernel.Models.Commands
 {
     public class DeleteCategoryCommand
     {
-        public string Name { get; }
+        public Guid Id { get; }
 
-        public DeleteCategoryCommand(string name)
-        {
-            Name = name;
-        }
+        public DeleteCategoryCommand(Guid id) => Id = id;
     }
 }

@@ -43,6 +43,10 @@ namespace KitProjects.MasterChef.Dal.Database
                 builder
                     .Property(b => b.Measure)
                     .HasConversion<string>();
+
+                builder
+                    .Property(b => b.Amount)
+                    .HasPrecision(5, 1);
             }
         }
 
@@ -73,6 +77,10 @@ namespace KitProjects.MasterChef.Dal.Database
                 builder
                     .Property(b => b.IngredientMeasure)
                     .HasConversion<string>();
+
+                builder
+                    .Property(b => b.IngredientsAmount)
+                    .HasPrecision(5, 1);
             }
         }
     }

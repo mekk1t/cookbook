@@ -44,7 +44,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 Categories = { new Category(removeCategoryId, removeCategoryId.ToString()) }
             });
 
-            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId, ingredientId));
 
             act.Should().NotThrow();
             var result = _fixture.FindIngredient(ingredientId.ToString());
@@ -58,7 +58,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             var removeCategoryId = Guid.NewGuid();
             _fixture.SeedIngredientWithNewCategories(new Ingredient(ingredientId, ingredientId.ToString()));
 
-            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId, ingredientId));
 
             act.Should().NotThrow();
         }
@@ -70,7 +70,7 @@ namespace KitProjects.MasterChef.Tests.Editors
             var removeCategoryId = Guid.NewGuid();
             _fixture.SeedCategory(new Category(removeCategoryId, removeCategoryId.ToString()));
 
-            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(removeCategoryId, ingredientId));
 
             act.Should().Throw<Exception>();
         }
@@ -86,7 +86,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 Categories = { new Category(removeCategoryId, removeCategoryId.ToString()) }
             });
 
-            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(otherCategoryId.ToString(), ingredientId));
+            Action act = () => _sut.Execute(new RemoveIngredientCategoryCommand(otherCategoryId, ingredientId));
 
             act.Should().NotThrow();
         }

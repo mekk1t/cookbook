@@ -57,13 +57,13 @@ namespace KitProjects.MasterChef.Tests.Commands
                     {
                         IngredientName = "Новый",
                         Amount = 1,
-                        Measure = Measures.Milliliters
+                        Measure = Measures.ml
                     },
                     new StepIngredientDetails
                     {
                         IngredientName = "Старый",
                         Amount = 12,
-                        Measure = Measures.Pieces
+                        Measure = Measures.pc
                     }
                 }));
 
@@ -101,13 +101,13 @@ namespace KitProjects.MasterChef.Tests.Commands
                     {
                         IngredientName = "Новый",
                         Amount = 1,
-                        Measure = Measures.Milliliters
+                        Measure = Measures.ml
                     },
                     new StepIngredientDetails
                     {
                         IngredientName = "Старый",
                         Amount = 12,
-                        Measure = Measures.Pieces
+                        Measure = Measures.pc
                     }
                 }));
 

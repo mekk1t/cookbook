@@ -37,7 +37,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new EditRecipeStepDescriptionDecorator(
                     new EditStepDescriptionCommandHandler(dbContext),
                     new RecipeStepChecker(
-                        new SearchStepQueryHandler(dbContext)));
+                        new GetRecipeStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe
@@ -69,7 +69,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new EditRecipeStepDescriptionDecorator(
                     new EditStepDescriptionCommandHandler(dbContext),
                     new RecipeStepChecker(
-                        new SearchStepQueryHandler(dbContext)));
+                        new GetRecipeStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe
@@ -91,7 +91,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new EditRecipeStepPictureDecorator(
                     new EditStepPictureCommandHandler(dbContext),
                     new RecipeStepChecker(
-                        new SearchStepQueryHandler(dbContext)));
+                        new GetRecipeStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe
@@ -123,7 +123,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new EditRecipeStepPictureDecorator(
                     new EditStepPictureCommandHandler(dbContext),
                     new RecipeStepChecker(
-                        new SearchStepQueryHandler(dbContext)));
+                        new GetRecipeStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var stepId = Guid.NewGuid();
             _fixture.SeedRecipe(new DbRecipe
@@ -145,7 +145,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                 new SwapRecipeStepsDecorator(
                     new SwapStepsCommandHandler(dbContext),
                     new RecipeStepChecker(
-                        new SearchStepQueryHandler(dbContext)));
+                        new GetRecipeStepQueryHandler(dbContext)));
             var recipeId = Guid.NewGuid();
             var firstStepId = Guid.NewGuid();
             var secondStepId = Guid.NewGuid();
@@ -232,7 +232,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new Kernel.Models.Recipes.StepIngredientDetails
                     {
                         Amount = 1,
-                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        Measure = Kernel.Models.Ingredients.Measures.gm,
                         IngredientName = ingredientName
                     }
                 }
@@ -275,7 +275,7 @@ namespace KitProjects.MasterChef.Tests.Editors
                     new Kernel.Models.Recipes.StepIngredientDetails
                     {
                         Amount = 1,
-                        Measure = Kernel.Models.Ingredients.Measures.Gramms,
+                        Measure = Kernel.Models.Ingredients.Measures.gm,
                         IngredientName = ingredientName
                     }
                 }

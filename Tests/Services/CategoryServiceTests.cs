@@ -71,28 +71,27 @@ namespace KitProjects.MasterChef.Tests.Moderators
         [Fact]
         public void Moderator_deletes_category_by_name()
         {
-            var categoryName = "12345";
-            _fixture.SeedCategory(new Category(Guid.NewGuid(), categoryName));
+            var categoryId = Guid.NewGuid();
+            _fixture.SeedCategory(new Category(categoryId, categoryId.ToString()));
             using var dbContext = _fixture.DbContext;
             var sut = new DeleteCategoryCommandHandler(dbContext);
 
-            Action act = () => sut.Execute(new DeleteCategoryCommand(categoryName));
+            Action act = () => sut.Execute(new DeleteCategoryCommand(categoryId));
 
             act.Should().NotThrow();
-            dbContext.Categories.AsNoTracking().Where(r => r.Name == categoryName).Should().BeEmpty();
+            dbContext.Categories.AsNoTracking().Where(r => r.Id == categoryId).Should().BeEmpty();
         }
 
         [Fact]
-        public void Moderator_doesnt_throw_when_deleting_category_does_not_exist()
+        public void Moderator_does_throw_when_deleting_category_does_not_exist()
         {
-            var randomName = Guid.NewGuid().ToString();
+            var randomId = Guid.NewGuid();
             using var dbContext = _fixture.DbContext;
             var sut = new DeleteCategoryCommandHandler(dbContext);
 
-            Action act = () => sut.Execute(new DeleteCategoryCommand(randomName));
+            Action act = () => sut.Execute(new DeleteCategoryCommand(randomId));
 
-            act.Should().NotThrow();
-            dbContext.Categories.AsNoTracking().Where(r => r.Name == randomName).Should().BeEmpty();
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
