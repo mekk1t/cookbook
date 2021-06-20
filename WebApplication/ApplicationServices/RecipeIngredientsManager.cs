@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using System;
+using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.ApplicationServices
 {
@@ -35,6 +36,11 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
             _replaceIngredient.Execute(new ReplaceRecipeIngredientCommand(
                 new Ingredient(oldIngredientId, oldIngredientName),
                 new Ingredient(newIngredientName),
+                recipeId));
+
+        public void ReplaceIngredientsList(Guid recipeId, string[] newIngredientNames) =>
+            _replaceIngredientsList.Execute(new ReplaceRecipeIngredientsListCommand(
+                newIngredientNames.Select(name => new Ingredient(name)).ToArray(),
                 recipeId));
 
         public void EditIngredientDescription(Guid recipeId, Guid ingredientId, IngredientParameters parameters) =>

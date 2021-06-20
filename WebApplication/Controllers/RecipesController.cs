@@ -129,6 +129,13 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                     request.Measure,
                     request.Notes)));
 
+        [HttpPut("{recipeId}/ingredients")]
+        public IActionResult ReplaceIngredientsList([FromRoute] Guid recipeId, [FromBody] ReplaceIngredientsRequest request) =>
+            ProcessRequest(() =>
+            {
+                _ingredientsManager.ReplaceIngredientsList(recipeId, request.NewIngredients);
+            });
+
         [HttpPut("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult ReplaceIngredient(
             [FromRoute] Guid recipeId,
