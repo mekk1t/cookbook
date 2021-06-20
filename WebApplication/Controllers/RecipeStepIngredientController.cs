@@ -57,22 +57,5 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
 
             return Ok();
         }
-
-        /// <summary>
-        /// Удаляет ингредиент из шага рецепта.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта.</param>
-        /// <param name="stepId">ID шага в рецепте.</param>
-        /// <param name="ingredientId">ID ингредиента, который будет удален.</param>
-        /// <returns></returns>
-        [HttpDelete("{ingredientId}")]
-        public IActionResult DeleteIngredient(
-            [FromRoute] Guid recipeId,
-            [FromRoute] Guid stepId,
-            [FromRoute] Guid ingredientId)
-        {
-            _deleteIngredient.Execute(new DeleteIngredientFromStepCommand(new RecipeStepIds(recipeId, stepId), ingredientId));
-            return Ok();
-        }
     }
 }

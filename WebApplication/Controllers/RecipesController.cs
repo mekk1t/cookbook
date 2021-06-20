@@ -314,5 +314,22 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             {
                 _stepIngredientsManager.AddIngredientToStep(recipeId, stepId, request);
             });
+
+        /// <summary>
+        /// Удаление ингредиента из шага приготовления.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="ingredientId"></param>
+        /// <returns></returns>
+        [HttpDelete("{recipeId}/steps/{stepId}/ingredients/{ingredientId}")]
+        public IActionResult RemoveIngredientFromStep(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromRoute] Guid ingredientId) =>
+            ProcessRequest(() =>
+            {
+                _stepIngredientsManager.RemoveIngredientFromStep(recipeId, stepId, ingredientId);
+            });
     }
 }

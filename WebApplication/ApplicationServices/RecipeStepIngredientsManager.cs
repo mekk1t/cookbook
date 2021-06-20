@@ -34,5 +34,8 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
                     request.Amount,
                     request.Measure,
                     request.Notes)));
+
+        public void RemoveIngredientFromStep(Guid recipeId, Guid stepId, Guid ingredientId) =>
+            _deleteIngredient.Execute(new DeleteIngredientFromStepCommand(new RecipeStepIds(recipeId, stepId), ingredientId));
     }
 }
