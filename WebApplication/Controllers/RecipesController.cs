@@ -8,6 +8,7 @@ using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Recipes.Requests;
+using KitProjects.MasterChef.WebApplication.RecipeSteps;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -19,12 +20,18 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         private readonly RecipeCrud _crud;
         private readonly CategoryManager _categoryManager;
         private readonly RecipeIngredientsManager _ingredientsManager;
+        private readonly RecipeStepsManager _stepsManager;
 
-        public RecipesController(RecipeCrud crud, CategoryManager categoryManager, RecipeIngredientsManager ingredientsManager)
+        public RecipesController(
+            RecipeCrud crud,
+            CategoryManager categoryManager,
+            RecipeIngredientsManager ingredientsManager,
+            RecipeStepsManager stepsManager)
         {
             _crud = crud;
             _categoryManager = categoryManager;
             _ingredientsManager = ingredientsManager;
+            _stepsManager = stepsManager;
         }
 
         /// <summary>
@@ -209,5 +216,15 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [HttpDelete("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult RemoveIngredientFromRecipe([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId) =>
             ProcessRequest(() => _ingredientsManager.RemoveIngredientFromRecipe(recipeId, ingredientId));
+
+        /// <summary>
+        /// Добавление шага приготовления в рецепт.
+        /// </summary>
+        [HttpPost("{recipeId}/steps")]
+        public IActionResult AddStepToRecipe([FromRoute] Guid recipeId, [FromBody] AppendStepRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepsManager.AddStepToRecipe(recipeId, request);
+            });
     }
 }

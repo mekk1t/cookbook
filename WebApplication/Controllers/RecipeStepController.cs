@@ -12,54 +12,6 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
     [Route("recipes/{recipeId}/steps")]
     public class RecipeStepController : ControllerBase
     {
-        private readonly ICommand<EditStepPictureCommand> _editPicture;
-        private readonly ICommand<SwapStepsCommand> _swapSteps;
-        private readonly ICommand<RemoveRecipeStepCommand> _removeStep;
-        private readonly ICommand<ReplaceStepCommand> _replaceStep;
-        private readonly ICommand<EditStepDescriptionCommand> _editDescription;
-        private readonly ICommand<AppendRecipeStepCommand> _appendStep;
-
-        public RecipeStepController(
-            ICommand<RemoveRecipeStepCommand> removeStep,
-            ICommand<ReplaceStepCommand> replaceStep,
-            ICommand<EditStepPictureCommand> editPicture,
-            ICommand<SwapStepsCommand> swapSteps,
-            ICommand<EditStepDescriptionCommand> editDescription,
-            ICommand<AppendRecipeStepCommand> appendStep)
-        {
-            _editDescription = editDescription;
-            _editPicture = editPicture;
-            _removeStep = removeStep;
-            _replaceStep = replaceStep;
-            _swapSteps = swapSteps;
-            _appendStep = appendStep;
-        }
-
-        /// <summary>
-        /// Добавляет шаг в рецепт.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, куда добавится шаг.</param>
-        /// <param name="request">Информация о шаге для добавления.</param>
-        [HttpPost]
-        public IActionResult AppendStep([FromRoute] Guid recipeId, [FromBody] AppendStepRequest request)
-        {
-            var step = new RecipeStep(Guid.NewGuid())
-            {
-                Description = request.Description,
-                Image = request.ImageBase64
-            };
-            step.IngredientsDetails.AddRange(request.Ingredients
-                .Select(c => new StepIngredientDetails
-                {
-                    IngredientName = c.IngredientName,
-                    Measure = c.Measure,
-                    Amount = c.Amount
-                }));
-
-            _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
-            return Ok();
-        }
-
         /// <summary>
         /// Меняет шаги в рецепте местами.
         /// </summary>
