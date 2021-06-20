@@ -51,5 +51,8 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
 
             _appendStep.Execute(new AppendRecipeStepCommand(recipeId, step));
         }
+
+        public void SwapSteps(Guid recipeId, Guid firstStepId, Guid secondStepId) =>
+            _swapSteps.Execute(new SwapStepsCommand(firstStepId, secondStepId, recipeId));
     }
 }

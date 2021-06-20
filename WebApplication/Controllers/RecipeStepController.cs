@@ -13,19 +13,6 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
     public class RecipeStepController : ControllerBase
     {
         /// <summary>
-        /// Меняет шаги в рецепте местами.
-        /// </summary>
-        /// <param name="request">Запрос на смену мест шагов.</param>
-        [HttpPost("swap")]
-        public IActionResult SwapSteps(
-            [FromRoute] Guid recipeId,
-            [FromBody] SwapStepsRequest request)
-        {
-            _swapSteps.Execute(new SwapStepsCommand(request.FirstStepId, request.SecondStepId, recipeId));
-            return Ok();
-        }
-
-        /// <summary>
         /// Заменяет старый шаг на новый.
         /// </summary>
         /// <param name="stepId">ID шага.</param>

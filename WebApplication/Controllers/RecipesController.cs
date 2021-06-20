@@ -226,5 +226,18 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             {
                 _stepsManager.AddStepToRecipe(recipeId, request);
             });
+
+        /// <summary>
+        /// Перестановка двух шагов местами.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("{recipeId}/steps/swap")]
+        public IActionResult SwapStepsPlaces([FromRoute] Guid recipeId, [FromBody] SwapStepsRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepsManager.SwapSteps(recipeId, request.FirstStepId, request.SecondStepId);
+            });
     }
 }
