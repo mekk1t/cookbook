@@ -316,6 +316,21 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             });
 
         /// <summary>
+        /// Замена ингредиента в шаге приготовления на новый.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("{recipeId}/steps/{stepId}/ingredients/{ingredientId}")]
+        public IActionResult ReplaceStepIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] ReplaceIngredientRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepIngredientsManager.ReplaceIngredient(recipeId, stepId, ingredientId, request);
+            });
+
+        /// <summary>
         /// Удаление ингредиента из шага приготовления.
         /// </summary>
         /// <param name="recipeId"></param>

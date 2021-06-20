@@ -3,6 +3,7 @@ using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Steps;
 using KitProjects.MasterChef.WebApplication.Recipes;
+using KitProjects.MasterChef.WebApplication.Recipes.Requests;
 using System;
 
 namespace KitProjects.MasterChef.WebApplication.ApplicationServices
@@ -34,6 +35,12 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
                     request.Amount,
                     request.Measure,
                     request.Notes)));
+
+        public void ReplaceIngredient(Guid recipeId, Guid stepId, Guid ingredientId, ReplaceIngredientRequest request) =>
+            _replaceStepIngredient.Execute(new ReplaceStepIngredientCommand(
+                new RecipeStepIds(recipeId, stepId),
+                new Ingredient(ingredientId, request.OldIngredientName),
+                new Ingredient(request.NewIngredientName)));
 
         public void RemoveIngredientFromStep(Guid recipeId, Guid stepId, Guid ingredientId) =>
             _deleteIngredient.Execute(new DeleteIngredientFromStepCommand(new RecipeStepIds(recipeId, stepId), ingredientId));
