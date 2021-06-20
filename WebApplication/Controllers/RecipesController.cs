@@ -22,17 +22,20 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         private readonly CategoryManager _categoryManager;
         private readonly RecipeIngredientsManager _ingredientsManager;
         private readonly RecipeStepsManager _stepsManager;
+        private readonly RecipeStepIngredientsManager _stepIngredientsManager;
 
         public RecipesController(
             RecipeCrud crud,
             CategoryManager categoryManager,
             RecipeIngredientsManager ingredientsManager,
-            RecipeStepsManager stepsManager)
+            RecipeStepsManager stepsManager,
+            RecipeStepIngredientsManager stepIngredientsManager)
         {
             _crud = crud;
             _categoryManager = categoryManager;
             _ingredientsManager = ingredientsManager;
             _stepsManager = stepsManager;
+            _stepIngredientsManager = stepIngredientsManager;
         }
 
         /// <summary>
@@ -293,6 +296,23 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             ProcessRequest(() =>
             {
                 _stepsManager.DeleteStep(recipeId, stepId);
+            });
+
+        /// <summary>
+        /// Добавление ингредиента в шаг приготовления.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("{recipeId}/steps/{stepId}/ingredients")]
+        public IActionResult AddIngredientToStep(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromRoute] AppendIngredientRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepIngredientsManager.AddIngredientToStep(recipeId, stepId, request);
             });
     }
 }
