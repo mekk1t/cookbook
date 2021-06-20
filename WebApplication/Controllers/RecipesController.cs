@@ -331,6 +331,25 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             });
 
         /// <summary>
+        /// Редактирование описания ингредиента в шаге приготовления.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="ingredientId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPatch("{recipeId}/steps/{stepId}/ingredients/{ingredientId}")]
+        public IActionResult EditStepIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] EditIngredientDescriptionRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepIngredientsManager.EditIngredient(recipeId, stepId, ingredientId, request);
+            });
+
+        /// <summary>
         /// Удаление ингредиента из шага приготовления.
         /// </summary>
         /// <param name="recipeId"></param>

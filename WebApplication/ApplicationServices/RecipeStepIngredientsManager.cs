@@ -42,6 +42,13 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
                 new Ingredient(ingredientId, request.OldIngredientName),
                 new Ingredient(request.NewIngredientName)));
 
+        public void EditIngredient(Guid recipeId, Guid stepId, Guid ingredientId, EditIngredientDescriptionRequest request) =>
+            _editStepIngredientDescription.Execute(new EditStepIngredientDescriptionCommand(
+                new RecipeStepIds(recipeId, stepId),
+                ingredientId,
+                request.Amount,
+                request.Measure));
+
         public void RemoveIngredientFromStep(Guid recipeId, Guid stepId, Guid ingredientId) =>
             _deleteIngredient.Execute(new DeleteIngredientFromStepCommand(new RecipeStepIds(recipeId, stepId), ingredientId));
     }
