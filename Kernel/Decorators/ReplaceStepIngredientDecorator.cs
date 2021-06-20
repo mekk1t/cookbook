@@ -54,7 +54,7 @@ namespace KitProjects.MasterChef.Kernel.Decorators
                     new AppendIngredientToRecipeCommand(
                         command.Ids.Recipe,
                         command.NewIngredient,
-                        new AppendIngredientParameters(
+                        new IngredientParameters(
                             oldIngredientFromStep.Amount,
                             oldIngredientFromStep.Measure)));
             }

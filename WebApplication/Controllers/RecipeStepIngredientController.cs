@@ -46,7 +46,7 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
                 new AppendIngredientToStepCommand(
                     new RecipeStepIds(recipeId, stepId),
                     new Ingredient(request.IngredientName),
-                    new AppendIngredientParameters(
+                    new IngredientParameters(
                         request.Amount,
                         request.Measure,
                         request.Notes)));

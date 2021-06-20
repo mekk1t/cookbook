@@ -41,7 +41,7 @@ namespace KitProjects.MasterChef.Kernel.Recipes
                             new Ingredient(
                                 Guid.NewGuid(),
                                 ingredient.IngredientName),
-                            new AppendIngredientParameters(ingredient.Amount, ingredient.Measure)));
+                            new IngredientParameters(ingredient.Amount, ingredient.Measure)));
                 }
             }
 

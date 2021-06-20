@@ -13,41 +13,6 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
     [Route("recipes/{recipeId}/ingredients")]
     public class RecipeIngredientController : ControllerBase
     {
-        private readonly ICommand<AppendIngredientToRecipeCommand> _appendIngredient;
-        private readonly ICommand<EditRecipeIngredientDescriptionCommand> _editIngredientDescription;
-        private readonly ICommand<RemoveIngredientFromRecipeCommand> _removeIngredient;
-        private readonly ICommand<ReplaceRecipeIngredientsListCommand> _replaceIngredientsList;
-        private readonly ICommand<ReplaceRecipeIngredientCommand> _replaceIngredient;
-
-        public RecipeIngredientController(
-            ICommand<AppendIngredientToRecipeCommand> appendIngredient,
-            ICommand<EditRecipeIngredientDescriptionCommand> editIngredientDescription,
-            ICommand<RemoveIngredientFromRecipeCommand> removeIngredient,
-            ICommand<ReplaceRecipeIngredientsListCommand> replaceIngredientsList,
-            ICommand<ReplaceRecipeIngredientCommand> replaceIngredient)
-        {
-            _appendIngredient = appendIngredient;
-            _editIngredientDescription = editIngredientDescription;
-            _removeIngredient = removeIngredient;
-            _replaceIngredientsList = replaceIngredientsList;
-            _replaceIngredient = replaceIngredient;
-        }
-
-        /// <summary>
-        /// Добавляет ингредиент в рецепт.
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult AppendIngredient([FromRoute] Guid recipeId, [FromBody] AppendIngredientRequest request)
-        {
-            _appendIngredient.Execute(
-                new AppendIngredientToRecipeCommand(
-                    recipeId,
-                    new Ingredient(Guid.NewGuid(), request.IngredientName),
-                    new AppendIngredientParameters(request.Amount, request.Measure, request.Notes)));
-            return Ok();
-        }
-
         /// <summary>
         /// Заменяет все ингредиенты в рецепте на новые. Создает в процессе несуществующие.
         /// </summary>
@@ -87,43 +52,6 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
                         request.NewIngredientName),
                     recipeId));
 
-            return Ok();
-        }
-
-        /// <summary>
-        /// Редактирует описание ингредиента в рецепте.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта.</param>
-        /// <param name="ingredientId">ID ингредиента для редактирования.</param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPut("{ingredientId}/description")]
-        public IActionResult EditIngredientDescription(
-            [FromRoute] Guid recipeId,
-            [FromRoute] Guid ingredientId,
-            [FromBody] EditIngredientDescriptionRequest request)
-        {
-            _editIngredientDescription.Execute(
-                new EditRecipeIngredientDescriptionCommand(
-                    recipeId,
-                    ingredientId,
-                    request.Amount,
-                    request.Measure,
-                    request.Notes));
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Удаляет ингредиент из рецепта.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, в котором находится искомый ингредиент.</param>
-        /// <param name="ingredientId">ID ингредиента на удаление.</param>
-        /// <returns></returns>
-        [HttpDelete("{ingredientId}")]
-        public IActionResult RemoveIngredient([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId)
-        {
-            _removeIngredient.Execute(new RemoveIngredientFromRecipeCommand(recipeId, ingredientId));
             return Ok();
         }
     }

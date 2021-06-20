@@ -107,7 +107,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(Guid.Parse(ingredientName), ingredientName),
-                new AppendIngredientParameters(0, Measures.ml)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -142,7 +142,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(ingredientName),
-                new AppendIngredientParameters(0, Measures.ml)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().NotThrow();
             var result = _fixture.FindRecipe(recipeId);
@@ -186,7 +186,7 @@ namespace KitProjects.MasterChef.Tests.Commands
             Action act = () => _sut.Execute(new AppendIngredientToStepCommand(
                 new RecipeStepIds(recipeId, stepId),
                 new Ingredient(ingredientName),
-                new AppendIngredientParameters(0, Measures.ml)));
+                new IngredientParameters(0, Measures.ml)));
 
             act.Should().ThrowExactly<EntityDuplicateException>();
         }

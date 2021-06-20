@@ -1,11 +1,14 @@
-﻿using KitProjects.MasterChef.Kernel.Models;
+﻿using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
+using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Recipes;
+using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
+using KitProjects.MasterChef.WebApplication.Recipes.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -16,11 +19,13 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
     {
         private readonly RecipeCrud _crud;
         private readonly CategoryManager _categoryManager;
+        private readonly RecipeIngredientsManager _ingredientsManager;
 
-        public RecipesController(RecipeCrud crud, CategoryManager categoryManager)
+        public RecipesController(RecipeCrud crud, CategoryManager categoryManager, RecipeIngredientsManager ingredientsManager)
         {
             _crud = crud;
             _categoryManager = categoryManager;
+            _ingredientsManager = ingredientsManager;
         }
 
         /// <summary>
@@ -112,5 +117,37 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult AddCategoryToRecipe([FromRoute] Guid recipeId, [FromRoute] string categoryName) =>
             ProcessRequest(() => _categoryManager.RemoveFromRecipe(recipeId, categoryName));
+
+        [HttpPost("{recipeId}/ingredients")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        public IActionResult AddIngredientToRecipe([FromRoute] Guid recipeId, [FromBody] AppendIngredientRequest request) =>
+            ProcessRequest(() => _ingredientsManager.AppendIngredientToRecipe(
+                recipeId,
+                request.IngredientName,
+                new IngredientParameters(
+                    request.Amount,
+                    request.Measure,
+                    request.Notes)));
+
+        [HttpPatch("{recipeId}/ingredients/{ingredientId}")]
+        public IActionResult EditIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] EditIngredientDescriptionRequest request) =>
+            ProcessRequest(() =>
+            {
+                _ingredientsManager.EditIngredientDescription(
+                    recipeId,
+                    ingredientId,
+                    new IngredientParameters(
+                        request.Amount,
+                        request.Measure,
+                        request.Notes));
+            });
+
+        [HttpDelete("{recipeId}/ingredients/{ingredientId}")]
+        public IActionResult RemoveIngredientFromRecipe([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId) =>
+            ProcessRequest(() => _ingredientsManager.RemoveIngredientFromRecipe(recipeId, ingredientId));
     }
 }
