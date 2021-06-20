@@ -1,4 +1,4 @@
-﻿using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
+﻿using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 
 namespace KitProjects.MasterChef.Kernel.Models.Steps
 {
