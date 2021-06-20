@@ -54,5 +54,8 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
 
         public void SwapSteps(Guid recipeId, Guid firstStepId, Guid secondStepId) =>
             _swapSteps.Execute(new SwapStepsCommand(firstStepId, secondStepId, recipeId));
+
+        public void DeleteStep(Guid recipeId, Guid stepId) =>
+            _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
     }
 }

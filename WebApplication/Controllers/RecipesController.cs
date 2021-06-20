@@ -239,5 +239,18 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             {
                 _stepsManager.SwapSteps(recipeId, request.FirstStepId, request.SecondStepId);
             });
+
+        /// <summary>
+        /// Удаление шага из рецепта.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <returns></returns>
+        [HttpDelete("{recipeId}/steps/{stepId}")]
+        public IActionResult DeleteRecipeStep([FromRoute] Guid recipeId, [FromRoute] Guid stepId) =>
+            ProcessRequest(() =>
+            {
+                _stepsManager.DeleteStep(recipeId, stepId);
+            });
     }
 }

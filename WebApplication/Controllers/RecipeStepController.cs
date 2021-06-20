@@ -64,17 +64,5 @@ namespace KitProjects.MasterChef.WebApplication.RecipeSteps
             _editDescription.Execute(new EditStepDescriptionCommand(description, stepId, recipeId));
             return Ok();
         }
-
-        /// <summary>
-        /// Удаляет шаг из рецепта по ID.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, из которого будет удаляться шаг.</param>
-        /// <param name="stepId">ID шага для удаления.</param>
-        [HttpDelete("{stepId}")]
-        public IActionResult DeleteStep([FromRoute] Guid recipeId, [FromRoute] Guid stepId)
-        {
-            _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
-            return Ok();
-        }
     }
 }
