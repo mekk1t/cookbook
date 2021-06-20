@@ -57,5 +57,24 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
 
         public void DeleteStep(Guid recipeId, Guid stepId) =>
             _removeStep.Execute(new RemoveRecipeStepCommand(recipeId, stepId));
+
+        public void EditStepDescription(Guid recipeId, Guid stepId, string description) =>
+            _editDescription.Execute(new EditStepDescriptionCommand(description, stepId, recipeId));
+
+        public void EditStepPicture(Guid recipeId, Guid stepId, string picture) =>
+            _editPicture.Execute(new EditStepPictureCommand(picture, stepId, recipeId));
+
+        public void ReplaceStep(Guid recipeId, Guid oldStepId, ReplaceStepRequest request) =>
+            _replaceStep.Execute(new ReplaceStepCommand(
+                recipeId,
+                oldStepId,
+                request.Description,
+                request.Image,
+                request.Ingredients.Select(ingr => new StepIngredientDetails
+                {
+                    Amount = ingr.Amount,
+                    IngredientName = ingr.IngredientName,
+                    Measure = ingr.Measure
+                }).ToList()));
     }
 }

@@ -6,6 +6,7 @@ using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
+using KitProjects.MasterChef.WebApplication.Models.Requests.Edit;
 using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Recipes.Requests;
 using KitProjects.MasterChef.WebApplication.RecipeSteps;
@@ -238,6 +239,47 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             ProcessRequest(() =>
             {
                 _stepsManager.SwapSteps(recipeId, request.FirstStepId, request.SecondStepId);
+            });
+
+        /// <summary>
+        /// Замена старого шага на новый.
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("{recipeId}/steps/{stepId}")]
+        public IActionResult ReplaceStep(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromBody] ReplaceStepRequest request) =>
+            ProcessRequest(() =>
+            {
+                _stepsManager.ReplaceStep(recipeId, stepId, request);
+            });
+
+        /// <summary>
+        /// Редактирование информации о шаге рецепта.
+        /// </summary>
+        /// <remarks>
+        /// Редактирование осуществляется для заданных полей в запросе. Их значение должно быть не null.
+        /// </remarks>
+        /// <param name="recipeId"></param>
+        /// <param name="stepId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPatch("{recipeId}/steps/{stepId}")]
+        public IActionResult EditStep(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid stepId,
+            [FromBody] EditStepRequest request) =>
+            ProcessRequest(() =>
+            {
+                if (request.Description != null)
+                    _stepsManager.EditStepDescription(recipeId, stepId, request.Description);
+
+                if (request.PictureBase64 != null)
+                    _stepsManager.EditStepPicture(recipeId, stepId, request.PictureBase64);
             });
 
         /// <summary>
