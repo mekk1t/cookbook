@@ -28,7 +28,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         }
 
         /// <summary>
-        /// Получает список рецептов.
+        /// Список рецептов.
         /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(ApiCollectionResponse<Recipe>), 200)]
@@ -40,7 +40,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             });
 
         /// <summary>
-        /// Создает рецепт.
+        /// Создание рецепта.
         /// </summary>
         /// <param name="request">Запрос на создание рецепта.</param>
         [HttpPost]
@@ -72,7 +72,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             });
 
         /// <summary>
-        /// Получает подробную информацию о рецепте.
+        /// Подробная информация о рецепте.
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
@@ -85,7 +85,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             });
 
         /// <summary>
-        /// Редактирует название и описание рецепта по ID.
+        /// Редактирование названия и описания рецепта по ID.
         /// </summary>
         /// <param name="recipeId">ID рецепта в формате GUID.</param>
         /// <param name="request">Запрос на редактирование рецепта.</param>
@@ -96,7 +96,7 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             ProcessRequest(() => _crud.Update(recipeId, request.NewTitle, request.NewDescription));
 
         /// <summary>
-        /// Удаляет рецепт по ID.
+        /// Удаление рецепта по ID.
         /// </summary>
         /// <param name="recipeId">ID в формате GUID.</param>
         [HttpDelete("{recipeId}")]
@@ -105,18 +105,36 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         public IActionResult DeleteRecipe([FromRoute] Guid recipeId) =>
             ProcessRequest(() => _crud.Delete(recipeId));
 
+        /// <summary>
+        /// Добавление новой категории рецепту.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="request">Запрос на добавление категории.</param>
+        /// <returns></returns>
         [HttpPost("{recipeId}/categories")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult AddCategoryToRecipe([FromRoute] Guid recipeId, [FromBody] AppendCategoryToRecipeRequest request) =>
             ProcessRequest(() => _categoryManager.AddToRecipe(recipeId, request.CategoryName));
 
+        /// <summary>
+        /// Удаление категории у рецепта.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="categoryName">Название категории, которая будет удалена из рецепта.</param>
+        /// <returns></returns>
         [HttpDelete("{recipeId}/categories/{categoryName}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult AddCategoryToRecipe([FromRoute] Guid recipeId, [FromRoute] string categoryName) =>
             ProcessRequest(() => _categoryManager.RemoveFromRecipe(recipeId, categoryName));
 
+        /// <summary>
+        /// Добавление ингредиента в рецепт.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="request">Запрос на добавление ингредиента.</param>
+        /// <returns></returns>
         [HttpPost("{recipeId}/ingredients")]
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
@@ -129,6 +147,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                     request.Measure,
                     request.Notes)));
 
+        /// <summary>
+        /// Замена текущего списка ингредиентов в рецепте на новый.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="request">Запрос на замену ингредиентов.</param>
+        /// <returns></returns>
         [HttpPut("{recipeId}/ingredients")]
         public IActionResult ReplaceIngredientsList([FromRoute] Guid recipeId, [FromBody] ReplaceIngredientsRequest request) =>
             ProcessRequest(() =>
@@ -136,6 +160,13 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                 _ingredientsManager.ReplaceIngredientsList(recipeId, request.NewIngredients);
             });
 
+        /// <summary>
+        /// Замена одного ингредиента в рецепте на другой.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="ingredientId">ID старого ингредиента, который будет заменен.</param>
+        /// <param name="request">Запрос на замену ингредиента.</param>
+        /// <returns></returns>
         [HttpPut("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult ReplaceIngredient(
             [FromRoute] Guid recipeId,
@@ -146,6 +177,13 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                 _ingredientsManager.ReplaceIngredient(recipeId, ingredientId, request.OldIngredientName, request.NewIngredientName);
             });
 
+        /// <summary>
+        /// Редактирование описания ингредиента в рецепте.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
+        /// <param name="request">Запрос на редактирование описания.</param>
+        /// <returns></returns>
         [HttpPatch("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult EditIngredient(
             [FromRoute] Guid recipeId,
@@ -162,6 +200,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                         request.Notes));
             });
 
+        /// <summary>
+        /// Удаление ингредиента из рецепта по ID.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта в формате GUID.</param>
+        /// <param name="ingredientId">ID ингредиента в формате GUID.</param>
+        /// <returns></returns>
         [HttpDelete("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult RemoveIngredientFromRecipe([FromRoute] Guid recipeId, [FromRoute] Guid ingredientId) =>
             ProcessRequest(() => _ingredientsManager.RemoveIngredientFromRecipe(recipeId, ingredientId));
