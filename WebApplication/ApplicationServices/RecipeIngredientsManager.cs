@@ -31,6 +31,12 @@ namespace KitProjects.MasterChef.WebApplication.ApplicationServices
         public void AppendIngredientToRecipe(Guid recipeId, string ingredientName, IngredientParameters parameters) =>
             _appendIngredient.Execute(new AppendIngredientToRecipeCommand(recipeId, new Ingredient(ingredientName), parameters));
 
+        public void ReplaceIngredient(Guid recipeId, Guid oldIngredientId, string oldIngredientName, string newIngredientName) =>
+            _replaceIngredient.Execute(new ReplaceRecipeIngredientCommand(
+                new Ingredient(oldIngredientId, oldIngredientName),
+                new Ingredient(newIngredientName),
+                recipeId));
+
         public void EditIngredientDescription(Guid recipeId, Guid ingredientId, IngredientParameters parameters) =>
             _editIngredientDescription.Execute(new EditRecipeIngredientDescriptionCommand(
                 recipeId,

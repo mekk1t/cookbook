@@ -2,7 +2,6 @@
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Recipes;
-using KitProjects.MasterChef.Kernel.Recipes.Commands.Ingredients;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
 using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
@@ -129,6 +128,16 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                     request.Amount,
                     request.Measure,
                     request.Notes)));
+
+        [HttpPut("{recipeId}/ingredients/{ingredientId}")]
+        public IActionResult ReplaceIngredient(
+            [FromRoute] Guid recipeId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] ReplaceIngredientRequest request) =>
+            ProcessRequest(() =>
+            {
+                _ingredientsManager.ReplaceIngredient(recipeId, ingredientId, request.OldIngredientName, request.NewIngredientName);
+            });
 
         [HttpPatch("{recipeId}/ingredients/{ingredientId}")]
         public IActionResult EditIngredient(

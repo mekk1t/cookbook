@@ -30,29 +30,5 @@ namespace KitProjects.MasterChef.WebApplication.Controllers
 
             return Ok();
         }
-
-        /// <summary>
-        /// Заменяет старый ингредиент на новый. Новый создается, если отсутствует в базе.
-        /// </summary>
-        /// <param name="recipeId">ID рецепта, в котором находятся ингредиенты.</param>
-        /// <param name="ingredientId">ID старого ингредиента, который будет заменен.</param>
-        [HttpPut("{ingredientId}")]
-        public IActionResult ReplaceIngredient(
-            [FromRoute] Guid recipeId,
-            [FromRoute] Guid ingredientId,
-            [FromBody] ReplaceIngredientRequest request)
-        {
-            _replaceIngredient.Execute(
-                new ReplaceRecipeIngredientCommand(
-                    new Ingredient(
-                        ingredientId,
-                        request.OldIngredientName),
-                    new Ingredient(
-                        Guid.NewGuid(),
-                        request.NewIngredientName),
-                    recipeId));
-
-            return Ok();
-        }
     }
 }
