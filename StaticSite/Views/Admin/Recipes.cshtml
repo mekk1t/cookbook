@@ -3,6 +3,11 @@
 }
 
 <div class="w3-container">
+    <header>
+        <button onclick="document.querySelector('div.w3-modal').style.display = 'block';" class="w3-btn w3-blue">
+            Добавить рецепт
+        </button>
+    </header>
     <table class="w3-table w3-border">
         <caption>
             <h3>Список рецептов</h3>
@@ -14,4 +19,31 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container">
+            <h2>Новый рецепт</h2>
+        </div>
+        <form class="w3-container">
+            <div class="w3-section">
+                <label>Название</label>
+                <input class="w3-input" type="text" name="title" />
+            </div>
+            <div class="w3-section">
+                <label>Описание</label>
+                <textarea class="w3-input w3-border"></textarea>
+            </div>
+            <button class="w3-btn w3-green" type="submit">
+                Добавить
+            </button>
+            <button class="w3-btn w3-yellow" type="reset">
+                Очистить
+            </button>
+            <button onclick="document.querySelector('div.w3-modal').style.display = 'none';" class="w3-btn w3-red" type="button">
+                Отмена
+            </button>
+        </form>
+    </div>
 </div>

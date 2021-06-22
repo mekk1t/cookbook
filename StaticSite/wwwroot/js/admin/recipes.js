@@ -22,4 +22,13 @@ window.onload = function () {
                 table.appendChild(tableRow);
             }
         });
+    let addRecipeForm = document.querySelector('form');
+    addRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+        addRecipe();
+    })
+}
+
+function addRecipe() {
+
 }

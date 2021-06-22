@@ -78,7 +78,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
                                 {
                                     Description = step.Description,
                                     Image = step.Image
-                                })));
+                                }),
+                        request.Description));
                 return Ok();
             });
 
