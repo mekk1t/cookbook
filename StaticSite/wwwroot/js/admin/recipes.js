@@ -9,6 +9,8 @@ window.onload = function () {
     })
 }
 
+
+
 function refresh() {
     _fetch("recipes")
         .then(json => {
@@ -29,9 +31,21 @@ function refresh() {
                 tableRow.appendChild(name);
                 tableRow.appendChild(description);
 
+                tableRow.addEventListener('click', function () {
+                    openEditRecipeForm(recipe);
+                });
+
                 table.appendChild(tableRow);
             }
         });
+}
+
+function openEditRecipeForm(recipe) {
+    let form = document.querySelector('form');
+    form.querySelector('input[name="title"]').value = recipe.title;
+    form.querySelector('textarea').value = recipe.description;
+    form.querySelector('input[name="id"]').value = recipe.id;
+    openModal();
 }
 
 function addRecipe() {
@@ -52,6 +66,10 @@ function addRecipe() {
                 closeModal();
             }
         });
+}
+
+function openModal() {
+    document.querySelector('.w3-modal').style.display = 'block';
 }
 
 function closeModal() {
