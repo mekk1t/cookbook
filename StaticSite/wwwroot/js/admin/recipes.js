@@ -30,5 +30,19 @@ window.onload = function () {
 }
 
 function addRecipe() {
-
+    let form = document.querySelector('form');
+    let title = form.querySelector('input[name="title"]').value;
+    let description = form.querySelector('textarea').value;
+    _post("recipes", JSON.stringify({
+        title,
+        description
+    }))
+        .then(response => {
+            if (response.ok) {
+                alert("Создал!");
+            }
+            else {
+                alert(getApiErrorsAsString(response.json()));
+            }
+        });
 }
