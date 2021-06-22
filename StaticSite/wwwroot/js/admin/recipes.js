@@ -1,10 +1,20 @@
 ﻿boldLink("#admin-recipes-link");
 
 window.onload = function () {
+    refresh();
+    let addRecipeForm = document.querySelector('form');
+    addRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+        addRecipe();
+    })
+}
+
+function refresh() {
     _fetch("recipes")
         .then(json => {
             let recipes = json.items;
             let table = document.querySelector('table tbody');
+            table.innerHTML = '';
             for (let recipe of recipes) {
                 let tableRow = document.createElement('tr');
                 let name = document.createElement('td');
@@ -22,11 +32,6 @@ window.onload = function () {
                 table.appendChild(tableRow);
             }
         });
-    let addRecipeForm = document.querySelector('form');
-    addRecipeForm.addEventListener('submit', event => {
-        event.preventDefault();
-        addRecipe();
-    })
 }
 
 function addRecipe() {
@@ -39,10 +44,16 @@ function addRecipe() {
     }))
         .then(response => {
             if (response.ok) {
-                alert("Создал!");
+                refresh();
+                closeModal();
             }
             else {
                 alert(getApiErrorsAsString(response.json()));
+                closeModal();
             }
         });
+}
+
+function closeModal() {
+    document.querySelector('.w3-modal').style.display = 'none';
 }
