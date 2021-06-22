@@ -45,6 +45,11 @@ function openEditRecipeForm(recipe) {
     form.querySelector('input[name="title"]').value = recipe.title;
     form.querySelector('textarea').value = recipe.description;
     form.querySelector('input[name="id"]').value = recipe.id;
+
+    document.querySelector('#add').style.display = 'none';
+    document.querySelector('#update').style.display = 'block';
+    document.querySelector('#delete').style.display = 'block';
+
     openModal();
 }
 

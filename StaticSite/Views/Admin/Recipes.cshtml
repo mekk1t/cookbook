@@ -37,13 +37,19 @@
                 <label>Описание</label>
                 <textarea class="w3-input w3-border"></textarea>
             </div>
-            <button class="w3-btn w3-green" type="submit">
+            <button id="add" class="w3-btn w3-green" type="submit">
                 Добавить
             </button>
-            <button class="w3-btn w3-yellow" type="reset">
-                Очистить
+            <button id="update" class="w3-btn w3-hide w3-green" type="submit">
+                Обновить
             </button>
-            <button onclick="document.querySelector('div.w3-modal').style.display = 'none';" class="w3-btn w3-red" type="button">
+            <button id="delete" class="w3-btn w3-hide w3-red" type="submit">
+                Удалить
+            </button>
+            <button class="w3-btn" type="reset">
+                Сброс
+            </button>
+            <button onclick="document.querySelector('div.w3-modal').style.display = 'none';" class="w3-btn " type="button">
                 Отмена
             </button>
             <input type="hidden" name="id" />
