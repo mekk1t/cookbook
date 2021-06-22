@@ -38,6 +38,13 @@ function _put(endpoint, jsonBody) {
     return promise;
 }
 
+function _delete(endpoint) {
+    let promise = fetch(`${BASE_URL}/api/${endpoint}`, {
+        method: 'DELETE'
+    });
+    return promise;
+}
+
 /**
  * Извлекает все сообщения об ошибках из ответа сервера как одну строку.
  * @param {{ errors: [''] }} apiErrorResponse

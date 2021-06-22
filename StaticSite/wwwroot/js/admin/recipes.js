@@ -14,8 +14,6 @@ window.onload = function () {
     });
 }
 
-
-
 function refresh() {
     _fetch("recipes")
         .then(json => {
@@ -51,6 +49,18 @@ function openEditRecipeForm(recipe) {
     form.querySelector('textarea').value = recipe.description;
     form.querySelector('input[name="id"]').value = recipe.id;
     document.querySelector('#edit-recipe h2').textContent = `Редактирование рецепта ${recipe.title}`;
+    document.querySelector('#delete-recipe').addEventListener('click', function () {
+        _delete(`recipes/${recipe.id}`)
+            .then(response => {
+                if (response.ok) {
+                    refresh();
+                    alert("Удаление прошло успешно");
+                }
+                else {
+                    alert(getApiErrorsAsString(response.json()));
+                }
+            });
+    });
 
     openModal('#edit-recipe');
 }
