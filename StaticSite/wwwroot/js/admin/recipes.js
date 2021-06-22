@@ -2,11 +2,16 @@
 
 window.onload = function () {
     refresh();
-    let addRecipeForm = document.querySelector('form');
+    let addRecipeForm = document.querySelector('#add-recipe form');
     addRecipeForm.addEventListener('submit', event => {
         event.preventDefault();
         addRecipe();
     })
+    let editRecipeForm = document.querySelector('#edit-recipe form');
+    editRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+        editRecipe();
+    });
 }
 
 
@@ -41,20 +46,17 @@ function refresh() {
 }
 
 function openEditRecipeForm(recipe) {
-    let form = document.querySelector('form');
+    let form = document.querySelector('#edit-recipe form');
     form.querySelector('input[name="title"]').value = recipe.title;
     form.querySelector('textarea').value = recipe.description;
     form.querySelector('input[name="id"]').value = recipe.id;
+    document.querySelector('#edit-recipe h2').textContent = `Редактирование рецепта ${recipe.title}`;
 
-    document.querySelector('#add').style.display = 'none';
-    document.querySelector('#update').style.display = 'block';
-    document.querySelector('#delete').style.display = 'block';
-
-    openModal();
+    openModal('#edit-recipe');
 }
 
 function addRecipe() {
-    let form = document.querySelector('form');
+    let form = document.querySelector('#add-recipe form');
     let title = form.querySelector('input[name="title"]').value;
     let description = form.querySelector('textarea').value;
     _post("recipes", JSON.stringify({
@@ -64,19 +66,41 @@ function addRecipe() {
         .then(response => {
             if (response.ok) {
                 refresh();
-                closeModal();
+                closeModal('#add-recipe');
             }
             else {
                 alert(getApiErrorsAsString(response.json()));
-                closeModal();
+                closeModal('#add-recipe');
             }
         });
 }
 
-function openModal() {
-    document.querySelector('.w3-modal').style.display = 'block';
+function editRecipe() {
+    let form = document.querySelector('#edit-recipe form');
+    let title = form.querySelector('input[name="title"]').value;
+    let description = form.querySelector('textarea').value;
+    let id = form.querySelector('input[name="id"]').value;
+
+    _put(`recipes/${id}`, JSON.stringify({
+        newTitle : title,
+        newDescription : description
+    }))
+        .then(response => {
+            if (response.ok) {
+                refresh();
+                closeModal('#edit-recipe');
+            }
+            else {
+                alert(getApiErrorsAsString(response.json()));
+                closeModal('#edit-recipe');
+            }
+        });
 }
 
-function closeModal() {
-    document.querySelector('.w3-modal').style.display = 'none';
+function openModal(modalIdSelector) {
+    document.querySelector(modalIdSelector).style.display = 'block';
+}
+
+function closeModal(modalIdSelector) {
+    document.querySelector(modalIdSelector).style.display = 'none';
 }

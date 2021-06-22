@@ -27,6 +27,17 @@ function _post(endpoint, jsonBody) {
     return promise;
 }
 
+function _put(endpoint, jsonBody) {
+    let promise = fetch(`${BASE_URL}/api/${endpoint}`, {
+        method: 'PUT',
+        body: jsonBody,
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    });
+    return promise;
+}
+
 /**
  * Извлекает все сообщения об ошибках из ответа сервера как одну строку.
  * @param {{ errors: [''] }} apiErrorResponse

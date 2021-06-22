@@ -4,7 +4,7 @@
 
 <div class="w3-container">
     <header class="w3-container w3-margin-top">
-        <button onclick="document.querySelector('div.w3-modal').style.display = 'block';" class="w3-btn w3-blue">
+        <button onclick="document.querySelector('#add-recipe').style.display = 'block';" class="w3-btn w3-blue">
             Добавить рецепт
         </button>
     </header>
@@ -23,7 +23,7 @@
     </table>
 </div>
 
-<div class="w3-modal">
+<div id="add-recipe" class="w3-modal">
     <div class="w3-modal-content">
         <div class="w3-container">
             <h2>Новый рецепт</h2>
@@ -37,19 +37,44 @@
                 <label>Описание</label>
                 <textarea class="w3-input w3-border"></textarea>
             </div>
-            <button id="add" class="w3-btn w3-green" type="submit">
+            <button class="w3-btn w3-green" type="submit">
                 Добавить
             </button>
-            <button id="update" class="w3-btn w3-hide w3-green" type="submit">
+            <button class="w3-btn" type="reset">
+                Сброс
+            </button>
+            <button onclick="document.querySelector('#add-recipe').style.display = 'none';" class="w3-btn " type="button">
+                Отмена
+            </button>
+            <input type="hidden" name="id" />
+        </form>
+    </div>
+</div>
+
+<div id="edit-recipe" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container">
+            <h2></h2>
+        </div>
+        <form class="w3-container">
+            <div class="w3-section">
+                <label>Название</label>
+                <input class="w3-input" type="text" name="title" />
+            </div>
+            <div class="w3-section">
+                <label>Описание</label>
+                <textarea class="w3-input w3-border"></textarea>
+            </div>
+            <button class="w3-btn w3-green" type="submit">
                 Обновить
             </button>
-            <button id="delete" class="w3-btn w3-hide w3-red" type="submit">
+            <button class="w3-btn w3-red" type="submit">
                 Удалить
             </button>
             <button class="w3-btn" type="reset">
                 Сброс
             </button>
-            <button onclick="document.querySelector('div.w3-modal').style.display = 'none';" class="w3-btn " type="button">
+            <button onclick="document.querySelector('#edit-recipe').style.display = 'none';" class="w3-btn " type="button">
                 Отмена
             </button>
             <input type="hidden" name="id" />
