@@ -1,80 +1,151 @@
-﻿const _pageBody = document.getElementById("admin-body");
-let _previousPageState = _pageBody.innerHTML;
-boldLink("#admin-recipes-link");
-
-initAddRecipeEvent();
+﻿boldLink("#admin-recipes-link");
 
 window.onload = function () {
-    fetch('https://localhost:5001/recipes')
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            let _recipesList = document.querySelector("ul.recipes-list");
-            for (let recipe of data) {
-                let _li = _new("li");
-                _li.textContent = recipe.title;
-                _li.id = recipe.id;
-                _li.classList.add("recipe");
-                _recipesList.appendChild(_li);
-            }
+    refresh();
+    let addRecipeForm = document.querySelector('#add-recipe form');
+    addRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+        addRecipe();
+    })
+    let editRecipeForm = document.querySelector('#edit-recipe form');
+    editRecipeForm.addEventListener('submit', event => {
+        event.preventDefault();
+        editRecipe();
+    });
+}
 
-            appendActionsToList("ul.recipes-list");
+function refresh() {
+    _fetch("recipes")
+        .then(json => {
+            let recipes = json.items;
+            let table = document.querySelector('table tbody');
+            table.innerHTML = '';
+            for (let recipe of recipes) {
+                let tableRow = document.createElement('tr');
+                let name = document.createElement('td');
+                name.innerHTML = recipe.title;
+                let id = document.createElement('td');
+                id.classList.add('w3-hide');
+                id.innerHTML = recipe.id;
+                let description = document.createElement('td');
+                description.innerHTML = recipe.description;
+
+                tableRow.appendChild(id);
+                tableRow.appendChild(name);
+                tableRow.appendChild(description);
+
+                tableRow.addEventListener('click', function () {
+                    openEditRecipeForm(recipe);
+                    addRecipeCategoriesToEditForm(recipe);
+                });
+
+                table.appendChild(tableRow);
+            }
         });
 }
 
-function renderAddRecipeForm() {
-    _previousPageState = _pageBody.innerHTML;
-    clearPage();
-    let _addForm = getAddRecipeForm();
-    _pageBody.appendChild(_addForm);
-}
-
-function clearPage() {
-    _pageBody.innerHTML = '';
-}
-
-function initAddRecipeEvent() {
-    let _add = document.querySelector(".add-recipe");
-    _add.addEventListener("click", renderAddRecipeForm);
-}
-
-function getAddRecipeForm() {
-    let _form = document.createElement("form");
-    _form.classList.add("add-recipe-form");
-    let _titleInput = document.createElement("input");
-    _titleInput.name = "recipe-title";
-    let _submitButton = document.createElement("button");
-    _submitButton.type = "submit";
-    _submitButton.textContent = "Создать";
-    let _backButton = document.createElement("button");
-    _backButton.type = "button";
-    _backButton.textContent = "Назад";
-    _backButton.addEventListener("click", function () {
-        _pageBody.innerHTML = _previousPageState;
-        initAddRecipeEvent();
-    })
-
-    _form.appendChild(_titleInput);
-    _form.appendChild(_submitButton);
-    _form.appendChild(_backButton);
-
-    _form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        let requestBody = {
-            categories: [],
-            ingredients: [],
-            steps: [],
-            title: _titleInput.value
-        };
-        fetch('https://localhost:5001/recipes', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
+function addRecipeCategoriesToEditForm(recipe) {
+    let categoriesList = document.querySelector('ul.recipe-categories');
+    _fetch(`recipes/${recipe.id}`)
+        .then(json => {
+            let categories = json.data.categories;
+            for (let category of categories) {
+                let li = document.createElement('li');
+                li.textContent = category.name;
+                li.id = category.name;
+                let deleteSpan = document.createElement('span');
+                deleteSpan.innerHTML = '&times;'
+                deleteSpan.classList.add('w3-hover-red', 'w3-padding', 'w3-text-white', 'w3-button', 'w3-ripple');
+                deleteSpan.onclick = function () {
+                    _delete(`recipes/${recipe.id}/categories/${category.name}`)
+                        .then(response => {
+                            if (response.ok) {
+                                alert('Категория удалена.');
+                                categoriesList.removeChild(li);
+                            }
+                        })
+                };
+                li.appendChild(deleteSpan);
+                categoriesList.appendChild(li);
             }
         })
-    });
 
-    return _form;
+}
+
+function openEditRecipeForm(recipe) {
+    let form = document.querySelector('#edit-recipe form');
+    form.querySelector('input[name="title"]').value = recipe.title;
+    form.querySelector('textarea').value = recipe.description;
+    form.querySelector('input[name="id"]').value = recipe.id;
+    document.querySelector('#edit-recipe h2').textContent = `Редактирование рецепта ${recipe.title}`;
+    document.querySelector('#delete-recipe').onclick = function () {
+        _delete(`recipes/${recipe.id}`)
+            .then(response => {
+                if (response.ok) {
+                    refresh();
+                    alert("Удаление прошло успешно");
+                }
+                else {
+                    alert(getApiErrorsAsString(response.json()));
+                }
+            });
+    };
+
+    openModal('#edit-recipe');
+}
+
+function addRecipe() {
+    let form = document.querySelector('#add-recipe form');
+    let title = form.querySelector('input[name="title"]').value;
+    let description = form.querySelector('textarea').value;
+    let selectedCategories = form.querySelector('select[name="categories-list"]').selectedOptions;
+    let categories = [];
+    for (let option of selectedCategories) {
+        categories.push(option.value);
+    }
+    _post("recipes", JSON.stringify({
+        title,
+        description,
+        categories
+    }))
+        .then(response => {
+            if (response.ok) {
+                refresh();
+                closeModal('#add-recipe');
+            }
+            else {
+                alert(getApiErrorsAsString(response.json()));
+                closeModal('#add-recipe');
+            }
+        });
+}
+
+function editRecipe() {
+    let form = document.querySelector('#edit-recipe form');
+    let title = form.querySelector('input[name="title"]').value;
+    let description = form.querySelector('textarea').value;
+    let id = form.querySelector('input[name="id"]').value;
+
+    _put(`recipes/${id}`, JSON.stringify({
+        newTitle : title,
+        newDescription : description
+    }))
+        .then(response => {
+            if (response.ok) {
+                refresh();
+                closeModal('#edit-recipe');
+            }
+            else {
+                alert(getApiErrorsAsString(response.json()));
+                closeModal('#edit-recipe');
+            }
+        });
+}
+
+function openModal(modalIdSelector) {
+    document.querySelector(modalIdSelector).style.display = 'block';
+}
+
+function closeModal(modalIdSelector) {
+    document.querySelector(modalIdSelector).style.display = 'none';
 }

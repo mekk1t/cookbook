@@ -1,0 +1,7 @@
+﻿td {
+    word-break: break-word;
+}
+
+td:last-child {
+    width: 70%;
+}
