@@ -36,11 +36,40 @@ function refresh() {
 
                 tableRow.addEventListener('click', function () {
                     openEditRecipeForm(recipe);
+                    addRecipeCategoriesToEditForm(recipe);
                 });
 
                 table.appendChild(tableRow);
             }
         });
+}
+
+function addRecipeCategoriesToEditForm(recipe) {
+    let categoriesList = document.querySelector('ul.recipe-categories');
+    _fetch(`recipes/${recipe.id}`)
+        .then(json => {
+            let categories = json.data.categories;
+            for (let category of categories) {
+                let li = document.createElement('li');
+                li.textContent = category.name;
+                li.id = category.name;
+                let deleteSpan = document.createElement('span');
+                deleteSpan.innerHTML = '&times;'
+                deleteSpan.classList.add('w3-hover-red', 'w3-padding', 'w3-text-white', 'w3-button', 'w3-ripple');
+                deleteSpan.onclick = function () {
+                    _delete(`recipes/${recipe.id}/categories/${category.name}`)
+                        .then(response => {
+                            if (response.ok) {
+                                alert('Категория удалена.');
+                                categoriesList.removeChild(li);
+                            }
+                        })
+                };
+                li.appendChild(deleteSpan);
+                categoriesList.appendChild(li);
+            }
+        })
+
 }
 
 function openEditRecipeForm(recipe) {
