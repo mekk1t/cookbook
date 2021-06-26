@@ -69,9 +69,15 @@ function addRecipe() {
     let form = document.querySelector('#add-recipe form');
     let title = form.querySelector('input[name="title"]').value;
     let description = form.querySelector('textarea').value;
+    let selectedCategories = form.querySelector('select[name="categories-list"]').selectedOptions;
+    let categories = [];
+    for (let option of selectedCategories) {
+        categories.push(option.value);
+    }
     _post("recipes", JSON.stringify({
         title,
-        description
+        description,
+        categories
     }))
         .then(response => {
             if (response.ok) {
