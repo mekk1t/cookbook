@@ -5,7 +5,7 @@
     <AssemblyName>KitProjects.Api.AspNetCore</AssemblyName>
     <RootNamespace>KitProjects.Api.AspNetCore</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Набор инструментов для быстрой настройки API. Включает в себя документацию Swagger, подключение основных сервисов ASP.NET Core для работы с API, а также унификацию ответов от сервера.</Description>
     <PackageReleaseNotes>Начало положено! Посмотрим, насколько мне удастся развить эту библиотеку.</PackageReleaseNotes>
     <PackageTags>API, aspnetcore, swagger, swagger-ui, jsonapi</PackageTags>
