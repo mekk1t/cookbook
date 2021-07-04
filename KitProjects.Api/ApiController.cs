@@ -1,9 +1,8 @@
-﻿using KitProjects.MasterChef.WebApplication.Models.Responses;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 
-namespace KitProjects.MasterChef.WebApplication.Controllers
+namespace KitProjects.Api.AspNetCore
 {
     [ApiController]
     [Consumes("application/json")]

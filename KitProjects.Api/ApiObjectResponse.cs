@@ -1,7 +1,7 @@
-﻿namespace KitProjects.MasterChef.WebApplication.Models.Responses
+﻿namespace KitProjects.Api.AspNetCore
 {
     /// <summary>
-    /// Модель ответа от сервера с данными об объекте.
+    /// Ответ от сервера, в котором данные обернуты в поле Data.
     /// </summary>
     /// <typeparam name="T">Тип данных в ответе сервера.</typeparam>
     public class ApiObjectResponse<T>
@@ -11,6 +11,10 @@
         /// </summary>
         public T Data { get; }
 
+        /// <summary>
+        /// Создает ответ от сервера для обертки данных в поле Data.
+        /// </summary>
+        /// <param name="data">Данные для обертки.</param>
         public ApiObjectResponse(T data)
         {
             Data = data;

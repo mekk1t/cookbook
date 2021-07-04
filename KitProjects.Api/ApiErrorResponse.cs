@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace KitProjects.MasterChef.WebApplication.Models.Responses
+namespace KitProjects.Api.AspNetCore
 {
     /// <summary>
     /// Ответ от сервера с информацией об ошибках.
@@ -12,6 +12,10 @@ namespace KitProjects.MasterChef.WebApplication.Models.Responses
         /// </summary>
         public IReadOnlyList<string> Errors { get; }
 
+        /// <summary>
+        /// Создает ответ от сервера с информацией об ошибках.
+        /// </summary>
+        /// <param name="errors">Список сообщений об ошибках.</param>
         public ApiErrorResponse(IReadOnlyList<string> errors)
         {
             Errors = errors;

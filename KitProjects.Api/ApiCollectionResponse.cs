@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace KitProjects.MasterChef.WebApplication.Models.Responses
+namespace KitProjects.Api.AspNetCore
 {
     /// <summary>
-    /// Модель ответа от сервера с коллекцией данных.
+    /// Ответ от сервера для коллекции данных.
     /// </summary>
     /// <typeparam name="T">Тип данных в коллекции.</typeparam>
     public class ApiCollectionResponse<T>
     {
         /// <summary>
-        /// Отступ для получения данных далее по списку с текущими параметрами.
-        /// </summary>
-        public int? NextOffset { get; }
-        /// <summary>
-        /// Есть ли по текущим параметрам ещё данные.
+        /// Есть ли еще данные по текущему запросу.
         /// </summary>
         public bool? HasMoreItems { get; }
         /// <summary>
@@ -22,12 +18,20 @@ namespace KitProjects.MasterChef.WebApplication.Models.Responses
         /// </summary>
         public IEnumerable<T> Items { get; }
 
+        /// <summary>
+        /// Создает ответ от сервера для статической коллекции данных.
+        /// </summary>
+        /// <param name="items"></param>
         public ApiCollectionResponse(IEnumerable<T> items) => Items = items ?? Array.Empty<T>();
 
-        public ApiCollectionResponse(IEnumerable<T> items, int nextOffset, bool hasMoreItems)
+        /// <summary>
+        /// Создает ответ от сервера для динамической коллекции данных с параметрами.
+        /// </summary>
+        /// <param name="items">Коллекция данных.</param>
+        /// <param name="hasMoreItems">Есть ли еще данные по текущему запросу.</param>
+        public ApiCollectionResponse(IEnumerable<T> items, bool hasMoreItems)
         {
             Items = items ?? Array.Empty<T>();
-            NextOffset = nextOffset;
             HasMoreItems = hasMoreItems;
         }
     }

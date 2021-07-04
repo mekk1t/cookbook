@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MasterChefApi", "MasterChef
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{61C0F427-66D6-4903-B94F-B454C7F1929B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Api", "KitProjects.Api\KitProjects.Api.csproj", "{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Api.AspNetCore", "KitProjects.Api\KitProjects.Api.AspNetCore.csproj", "{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
