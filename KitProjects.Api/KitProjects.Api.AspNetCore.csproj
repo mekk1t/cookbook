@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>KitProjects.Api.AspNetCore</AssemblyName>
+    <RootNamespace>KitProjects.Api.AspNetCore</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\KitProjects.Api.AspNetCore.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\KitProjects.Api.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
+</Project>

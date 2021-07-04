@@ -2,7 +2,7 @@
 
 namespace KitProjects.MasterChef.WebApplication
 {
-    public class SlugifyParameterTransformer : IOutboundParameterTransformer
+    public class LowercaseControllerTokenTransformer : IOutboundParameterTransformer
     {
         public string TransformOutbound(object value) => value?.ToString().ToLower();
     }
