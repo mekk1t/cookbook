@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace KitProjects.Api.AspNetCore
 {
@@ -10,12 +12,14 @@ namespace KitProjects.Api.AspNetCore
     public class ApiCollectionResponse<T>
     {
         /// <summary>
-        /// Есть ли еще данные по текущему запросу.
+        /// Есть ли еще данные по текущему запросу. Отсутствует в ответе для статических коллекций.
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public bool? HasMoreItems { get; }
         /// <summary>
         /// Коллекция данных.
         /// </summary>
+        [Required]
         public IEnumerable<T> Items { get; }
 
         /// <summary>

@@ -7,7 +7,7 @@
     public class ApiObjectResponse<T>
     {
         /// <summary>
-        /// Ответ от сервера.
+        /// Данные в формате <typeparamref name="T"/>.
         /// </summary>
         public T Data { get; }
 
