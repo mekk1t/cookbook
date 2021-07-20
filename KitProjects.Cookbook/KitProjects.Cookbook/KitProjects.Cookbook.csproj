@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KitProjects.Cookbook.Core\KitProjects.Cookbook.Core.csproj" />
+    <ProjectReference Include="..\KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj" />
   </ItemGroup>
 
 </Project>
