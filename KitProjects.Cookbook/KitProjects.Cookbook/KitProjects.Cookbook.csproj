@@ -16,4 +16,8 @@
     <DocumentationFile>bin\KitProjects.Cookbook.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KitProjects.Cookbook.Core\KitProjects.Cookbook.Core.csproj" />
+  </ItemGroup>
+
 </Project>
