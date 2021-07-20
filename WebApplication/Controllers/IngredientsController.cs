@@ -1,20 +1,20 @@
-﻿using KitProjects.MasterChef.Kernel.Abstractions;
+﻿using KitProjects.Api.AspNetCore;
+using KitProjects.MasterChef.Kernel.Abstractions;
 using KitProjects.MasterChef.Kernel.Extensions;
 using KitProjects.MasterChef.Kernel.Ingredients.Commands;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
-using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
-using KitProjects.MasterChef.WebApplication.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Ingredients
 {
-    public class IngredientsController : ApiController
+    public class IngredientsController : ApiJsonController
     {
         private readonly IngredientsCrud _crud;
         private readonly ICommand<AppendExistingCategoryToIngredientCommand> _appendIngredientCategory;
@@ -23,7 +23,8 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         public IngredientsController(
             IngredientsCrud crud,
             ICommand<RemoveIngredientCategoryCommand> removeIngredientCategory,
-            ICommand<AppendExistingCategoryToIngredientCommand> appendIngredientCategory)
+            ICommand<AppendExistingCategoryToIngredientCommand> appendIngredientCategory,
+            ILogger<IngredientsController> logger) : base(logger)
         {
             _crud = crud;
             _appendIngredientCategory = appendIngredientCategory;
@@ -71,7 +72,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
         /// <param name="ingredientId"></param>
         /// <returns></returns>
         [HttpGet("{ingredientId}")]
-        [ProducesResponseType(typeof(ApiResponse<Ingredient>), 200)]
+        [ProducesResponseType(typeof(ApiObjectResponse<Ingredient>), 200)]
         public IActionResult GetIngredient([FromRoute] Guid ingredientId) =>
             ProcessRequest(() =>
             {
@@ -82,7 +83,7 @@ namespace KitProjects.MasterChef.WebApplication.Ingredients
                 if (ingredient == null)
                     throw new Exception($"Не удалось найти ингредиент с ID {ingredientId}");
 
-                return new ApiResponse<Ingredient>(ingredient);
+                return new ApiObjectResponse<Ingredient>(ingredient);
             });
 
         /// <summary>

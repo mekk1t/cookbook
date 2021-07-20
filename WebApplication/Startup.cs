@@ -1,7 +1,8 @@
-﻿using KitProjects.MasterChef.Dal;
+﻿using KitProjects.Api.AspNetCore;
+using KitProjects.Api.AspNetCore.Extensions;
+using KitProjects.MasterChef.Dal;
 using KitProjects.MasterChef.WebApplication;
 using KitProjects.MasterChef.WebApplication.Extensions;
-using KitProjects.MasterChef.WebApplication.Models.Responses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -10,13 +11,8 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using SimpleInjector;
-using System;
-using System.IO;
-using System.Net;
 using System.Reflection;
-using System.Text.Json.Serialization;
 
 namespace WebApplication
 {
@@ -27,8 +23,9 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             _container.Options.DefaultLifestyle = Lifestyle.Scoped;
-            services.AddMvcCore().AddApiExplorer();
             services.AddCors();
+            services.AddApiCore(true, mvc => mvc.Conventions.Add(
+                new RouteTokenTransformerConvention(new LowercaseControllerTokenTransformer())));
             services.AddSimpleInjector(_container, options =>
             {
                 options
@@ -36,22 +33,15 @@ namespace WebApplication
                     .AddControllerActivation();
             });
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer("Server=localhost;Database=MasterChef;Trusted_Connection=True;"));
-            services
-                .AddControllers(options =>
-                    options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer())))
-                .AddJsonOptions(options =>
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API агрегатора кулинарных рецептов \"Мастер Шеф\"", Version = "v1" });
-                var xmlDocPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
-                c.IncludeXmlComments(xmlDocPath);
-            });
+
+            services.AddSwaggerV1(
+                title: "API агрегатора кулинарных рецептов \"Мастер Шеф\"",
+                xmlDocumentationFileName: $"{Assembly.GetExecutingAssembly().GetName().Name}");
 
             _container.AddApplicationServices();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseExceptionHandler(errorApp =>
             {
@@ -63,19 +53,9 @@ namespace WebApplication
             });
 
             app.UseSimpleInjector(_container);
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
-                c.RoutePrefix = string.Empty;
-                c.DocumentTitle = "Мастер-Шеф: API";
-            });
-
+            app.UseSwaggerDocumentation("Мастер-Шеф: API");
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyHeader()
