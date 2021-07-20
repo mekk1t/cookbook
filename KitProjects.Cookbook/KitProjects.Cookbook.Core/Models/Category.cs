@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KitProjects.Cookbook.Core.Models
+﻿namespace KitProjects.Cookbook.Core.Models
 {
-    public class Category
+    public class Category : Entity
     {
+        public string Name { get; set; }
 
+        public Category()
+        {
+
+        }
+
+        public Category(long id) : base(id)
+        {
+
+        }
     }
 }
