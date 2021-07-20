@@ -24,6 +24,8 @@ namespace WebApplication
         {
             _container.Options.DefaultLifestyle = Lifestyle.Scoped;
             services.AddCors();
+            services.AddApiCore(true, mvc => mvc.Conventions.Add(
+                new RouteTokenTransformerConvention(new LowercaseControllerTokenTransformer())));
             services.AddSimpleInjector(_container, options =>
             {
                 options
@@ -32,12 +34,9 @@ namespace WebApplication
             });
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer("Server=localhost;Database=MasterChef;Trusted_Connection=True;"));
 
-            services.AddApiCore(true, mvc => mvc.Conventions.Add(
-                new RouteTokenTransformerConvention(new LowercaseControllerTokenTransformer())));
-
             services.AddSwaggerV1(
                 title: "API агрегатора кулинарных рецептов \"Мастер Шеф\"",
-                xmlDocumentationFileName: $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+                xmlDocumentationFileName: $"{Assembly.GetExecutingAssembly().GetName().Name}");
 
             _container.AddApplicationServices();
         }
