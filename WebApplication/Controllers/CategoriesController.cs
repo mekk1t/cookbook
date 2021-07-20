@@ -1,20 +1,20 @@
-﻿using KitProjects.MasterChef.Kernel.Extensions;
+﻿using KitProjects.Api.AspNetCore;
+using KitProjects.MasterChef.Kernel.Extensions;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
-using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
-using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Models.Responses.Categories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Categories
 {
-    public class CategoriesController : ApiController
+    public class CategoriesController : ApiJsonController
     {
         private readonly CategoryCrud _crud;
 
-        public CategoriesController(CategoryCrud crud)
+        public CategoriesController(CategoryCrud crud, ILogger<CategoriesController> logger) : base(logger)
         {
             _crud = crud;
         }
@@ -89,7 +89,7 @@ namespace KitProjects.MasterChef.WebApplication.Categories
                 if (category == null)
                     throw new Exception("Запрашиваемая категория не была найдена.");
 
-                return new ApiResponse<CategoryShortResponse>(new CategoryShortResponse(category.Id, category.Name));
+                return new ApiObjectResponse<CategoryShortResponse>(new CategoryShortResponse(category.Id, category.Name));
             });
 
         /// <summary>

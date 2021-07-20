@@ -1,22 +1,22 @@
-﻿using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
+﻿using KitProjects.Api.AspNetCore;
+using KitProjects.MasterChef.Kernel.Commands.RecipeIngredients;
 using KitProjects.MasterChef.Kernel.Models;
 using KitProjects.MasterChef.Kernel.Models.Commands;
 using KitProjects.MasterChef.Kernel.Recipes;
 using KitProjects.MasterChef.WebApplication.ApplicationServices;
-using KitProjects.MasterChef.WebApplication.Controllers;
 using KitProjects.MasterChef.WebApplication.Models.Filters;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Append;
 using KitProjects.MasterChef.WebApplication.Models.Requests.Edit;
-using KitProjects.MasterChef.WebApplication.Models.Responses;
 using KitProjects.MasterChef.WebApplication.Recipes.Requests;
 using KitProjects.MasterChef.WebApplication.RecipeSteps;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
 namespace KitProjects.MasterChef.WebApplication.Recipes
 {
-    public class RecipesController : ApiController
+    public class RecipesController : ApiJsonController
     {
         private readonly RecipeCrud _crud;
         private readonly CategoryManager _categoryManager;
@@ -29,7 +29,8 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
             CategoryManager categoryManager,
             RecipeIngredientsManager ingredientsManager,
             RecipeStepsManager stepsManager,
-            RecipeStepIngredientsManager stepIngredientsManager)
+            RecipeStepIngredientsManager stepIngredientsManager,
+            ILogger<RecipesController> logger) : base(logger)
         {
             _crud = crud;
             _categoryManager = categoryManager;
@@ -88,12 +89,12 @@ namespace KitProjects.MasterChef.WebApplication.Recipes
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet("{recipeId}")]
-        [ProducesResponseType(typeof(ApiResponse<RecipeDetails>), 200)]
+        [ProducesResponseType(typeof(ApiObjectResponse<RecipeDetails>), 200)]
         [ProducesResponseType(typeof(ApiErrorResponse), 500)]
         public IActionResult GetRecipe([FromRoute] Guid recipeId) =>
             ProcessRequest(() =>
             {
-                return new ApiResponse<RecipeDetails>(_crud.Read(recipeId));
+                return new ApiObjectResponse<RecipeDetails>(_crud.Read(recipeId));
             });
 
         /// <summary>

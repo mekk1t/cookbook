@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MasterChefApi", "MasterChef
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{61C0F427-66D6-4903-B94F-B454C7F1929B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Api.AspNetCore", "KitProjects.Api\KitProjects.Api.AspNetCore.csproj", "{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{BB9DEA80-C1DC-446E-AA80-4E64A745CC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB9DEA80-C1DC-446E-AA80-4E64A745CC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB9DEA80-C1DC-446E-AA80-4E64A745CC97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DCC75DC-1A2A-47E9-91A1-906FEE46818B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
