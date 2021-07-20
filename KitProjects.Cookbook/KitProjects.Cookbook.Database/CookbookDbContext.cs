@@ -18,10 +18,7 @@ namespace KitProjects.Cookbook.Database
             modelBuilder.Entity<Category>(category =>
             {
                 category.Property(c => c.Type).HasConversion<int>();
-                category.HasBaseType<Entity>();
             });
-
-            modelBuilder.Entity<Ingredient>(ingredient => ingredient.HasBaseType<Entity>());
         }
     }
 }
