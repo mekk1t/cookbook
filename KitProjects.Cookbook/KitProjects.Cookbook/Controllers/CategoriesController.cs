@@ -22,19 +22,37 @@ namespace KitProjects.Cookbook.Controllers
 
         [HttpGet]
         public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
-            ProcessRequest(() => _categoryRepository.GetList(filter));
+            ProcessRequest(() =>
+            {
+                if (filter == null)
+                    filter = new PaginationFilter();
+
+                var categories = _categoryRepository.GetList(new PaginationFilter
+                {
+                    LastId = filter.LastId,
+                    Limit = filter.Limit + 1
+                });
+                if (categories == null)
+                    return new ApiCollectionResponse<Category>(null, false);
+
+                bool thereAreMoreCategories = categories.Count == filter.Limit + 1;
+                if (thereAreMoreCategories)
+                    categories.RemoveAt(categories.Count - 1);
+
+                return new ApiCollectionResponse<Category>(categories, thereAreMoreCategories);
+            });
 
         [HttpGet("{id}")]
         public IActionResult GetCategoryById([FromRoute] long id) =>
-            ProcessRequest(() => _crud.Read(id));
+            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Read(id)));
 
         [HttpPost]
         public IActionResult CreateCategory([FromBody] Category category) =>
-            ProcessRequest(() => _crud.Create(category));
+            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Create(category)));
 
         [HttpPut]
         public IActionResult UpdateCategory([FromBody] Category category) =>
-            ProcessRequest(() => _crud.Update(category));
+            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Update(category)));
 
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory([FromRoute] long id) =>
