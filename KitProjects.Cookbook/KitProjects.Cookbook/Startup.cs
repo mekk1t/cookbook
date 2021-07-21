@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace KitProjects.Cookbook
 {
@@ -26,7 +29,10 @@ namespace KitProjects.Cookbook
             services.AddDbContext<CookbookDbContext>(
                 options => options.UseSqlServer(_configuration.GetConnectionString("Database")));
             services.AddApiCore(true);
-            services.AddSwaggerV1("Cookbook API", "KitProjects.Cookbook");
+            services.AddSwaggerV1("Cookbook API", "KitProjects.Cookbook", options =>
+            {
+                options.IncludeXmlComments(typeof(Entity).GetAssemblyXmlDocumentationPath());
+            });
 
             services.AddScoped<ICrud<Category, long>, CategoryCrud>();
             services.AddScoped<IRepository<Category, PaginationFilter>, CategoryCrud>();
