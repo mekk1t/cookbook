@@ -21,4 +21,8 @@
     <ProjectReference Include="..\KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="KitProjects.Api.AspNetCore" Version="1.0.1" />
+  </ItemGroup>
+
 </Project>
