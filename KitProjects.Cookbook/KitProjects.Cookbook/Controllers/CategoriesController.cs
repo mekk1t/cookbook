@@ -9,13 +9,20 @@ namespace KitProjects.Cookbook.Controllers
     public class CategoriesController : ApiJsonController
     {
         private readonly ICrud<Category, long> _crud;
+        private readonly IRepository<Category, PaginationFilter> _categoryRepository;
 
         public CategoriesController(
             ILogger<CategoriesController> logger,
-            ICrud<Category, long> crud) : base(logger)
+            ICrud<Category, long> crud,
+            IRepository<Category, PaginationFilter> categoryRepository) : base(logger)
         {
             _crud = crud;
+            _categoryRepository = categoryRepository;
         }
+
+        [HttpGet]
+        public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
+            ProcessRequest(() => _categoryRepository.GetList(filter));
 
         [HttpGet("{id}")]
         public IActionResult GetCategoryById([FromRoute] long id) =>

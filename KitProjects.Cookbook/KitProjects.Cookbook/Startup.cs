@@ -29,6 +29,7 @@ namespace KitProjects.Cookbook
             services.AddSwaggerV1("Cookbook API", "KitProjects.Cookbook");
 
             services.AddScoped<ICrud<Category, long>, CategoryCrud>();
+            services.AddScoped<IRepository<Category, PaginationFilter>, CategoryCrud>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

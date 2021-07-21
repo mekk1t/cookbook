@@ -1,11 +1,12 @@
 ﻿using KitProjects.Cookbook.Core.Abstractions;
 using KitProjects.Cookbook.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KitProjects.Cookbook.Database.Crud
 {
-    public class CategoryCrud : ICrud<Category, long>
+    public class CategoryCrud : ICrud<Category, long>, IRepository<Category, PaginationFilter>
     {
         private readonly CookbookDbContext _dbContext;
 
@@ -77,6 +78,19 @@ namespace KitProjects.Cookbook.Database.Crud
             oldCategory.Type = newCategory.Type;
             oldCategory.Name = newCategory.Name;
             oldCategory.Ingredients = newCategory.Ingredients;
+        }
+
+        public List<Category> GetList(PaginationFilter filter = null)
+        {
+            if (filter == null)
+                filter = new PaginationFilter();
+
+            return _dbContext.Categories
+                .AsNoTracking()
+                .OrderBy(c => c.Id)
+                .Where(c => c.Id >= filter.LastId)
+                .Take(filter.Limit)
+                .ToList();
         }
     }
 }
