@@ -28,7 +28,7 @@ namespace KitProjects.Cookbook.Database.Crud
         public void Delete(Category entity)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
-            category.ThrowIfNull();
+            category.ThrowIfEntityIsNull(entity.Id);
 
             _dbContext.Categories.Remove(category);
             _dbContext.SaveChanges();
@@ -37,14 +37,14 @@ namespace KitProjects.Cookbook.Database.Crud
         public Category Read(long key)
         {
             var category = _dbContext.Categories.AsNoTracking().FirstOrDefault(c => c.Id == key);
-            category.ThrowIfNull();
+            category.ThrowIfEntityIsNull(key);
             return category;
         }
 
         public Category Update(Category entity)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
-            category.ThrowIfNull();
+            category.ThrowIfEntityIsNull(entity.Id);
 
             UpdateCategory(category, entity);
             LookForExistingIngredients(category);
