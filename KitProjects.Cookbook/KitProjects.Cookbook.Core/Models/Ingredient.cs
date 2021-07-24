@@ -16,5 +16,10 @@ namespace KitProjects.Cookbook.Core.Models
         {
 
         }
+
+        public Ingredient(Ingredient other) : base(other.Id)
+        {
+            Name = other.Name;
+        }
     }
 }

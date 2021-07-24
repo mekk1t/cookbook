@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace KitProjects.Cookbook.Core.Models
 {
@@ -16,6 +17,20 @@ namespace KitProjects.Cookbook.Core.Models
         public Category(long id) : base(id)
         {
 
+        }
+
+        /// <summary>
+        /// Копирует данные из другого объекта категории.
+        /// </summary>
+        /// <remarks>
+        /// Ингредиенты также копируются, если есть.
+        /// </remarks>
+        /// <param name="other"></param>
+        public Category(Category other) : base(other.Id)
+        {
+            Name = other.Name;
+            Type = other.Type;
+            Ingredients = other.Ingredients?.Select(i => new Ingredient(i))?.ToList() ?? new List<Ingredient>(0);
         }
     }
 }

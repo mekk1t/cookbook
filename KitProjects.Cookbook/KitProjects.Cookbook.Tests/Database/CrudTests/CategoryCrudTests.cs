@@ -59,13 +59,33 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         [Fact]
         public void Успешное_создание_валидной_категории_с_уже_существующими_ингредиентами()
         {
+            var existingIngredients = new[]
+            {
+                SeedIngredient("Хоух"),
+                SeedIngredient("Пройдемте в дом")
+            };
+            var category = CreateCategoryWithIngredients();
+            category.Ingredients = existingIngredients.ToList();
 
+            var result = _sut.Create(category);
+
+            result.Ingredients.Should().HaveCount(2);
         }
 
         [Fact]
         public void Успешное_создание_валидной_категории_с_существующими_и_новыми_ингредиентами()
         {
+            var existingIngredients = new[]
+            {
+                SeedIngredient("НОВИНКА!"),
+                SeedIngredient("НЕ ПОВТОРЯЙТЕ ЭТО ДОМА!")
+            };
+            var category = CreateCategoryWithIngredients("Мафака новенький ингредиентик");
+            category.Ingredients.AddRange(existingIngredients);
 
+            var result = _sut.Create(category);
+
+            result.Ingredients.Should().HaveCount(3);
         }
 
         [Fact]
@@ -78,10 +98,18 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
             act.Should().NotThrow();
         }
 
+        private Ingredient SeedIngredient(string name)
+        {
+            var entity = new Ingredient { Name = name };
+            _dbContext.Ingredients.Add(entity);
+            _dbContext.SaveChanges();
+            return new Ingredient(entity);
+        }
+
         private Category SeedCategory(string name) =>
             _sut.Create(new Category { Name = name });
 
-        private Category CreateCategoryWithIngredients(params string[] ingredientNames) =>
+        private static Category CreateCategoryWithIngredients(params string[] ingredientNames) =>
             new()
             {
                 Name = Guid.NewGuid().ToString(),

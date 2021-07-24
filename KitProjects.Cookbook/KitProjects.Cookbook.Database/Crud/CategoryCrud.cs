@@ -22,7 +22,7 @@ namespace KitProjects.Cookbook.Database.Crud
             _dbContext.Categories.Add(entity);
             _dbContext.SaveChanges();
 
-            return entity;
+            return new Category(entity);
         }
 
         public void Delete(Category entity)
