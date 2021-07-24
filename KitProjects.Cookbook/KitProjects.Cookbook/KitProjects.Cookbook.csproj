@@ -28,9 +28,10 @@
   <Target Name="Foo" BeforeTargets="Build">
     <ItemGroup>
       <DocumentationFiles Include="%(Reference.RelativeDir)%(Reference.Filename).xml" />
+      <FilteredDocumentationFiles Include="@(DocumentationFiles)" Condition="$([System.String]::new('%(RecursiveDir)%(FileName)').Contains('KitProjects'))"></FilteredDocumentationFiles>
     </ItemGroup>
 
-    <Copy SourceFiles="@(DocumentationFiles)" DestinationFolder="$(OutputPath)" Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(FilteredDocumentationFiles)" DestinationFolder="$(OutputPath)" Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')" />
   </Target>
 
 </Project>
