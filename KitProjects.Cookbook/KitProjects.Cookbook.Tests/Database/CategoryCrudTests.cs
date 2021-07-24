@@ -1,23 +1,19 @@
-﻿using KitProjects.Cookbook.Core.Abstractions;
+﻿using FluentAssertions;
 using KitProjects.Cookbook.Core.Models;
 using KitProjects.Cookbook.Database.Crud;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace KitProjects.Cookbook.Tests.DatabaseTests
+namespace KitProjects.Cookbook.Tests.Database
 {
     [Collection(nameof(DbFixture))]
-    public class CategoryCrudTests
+    public class CategoryCrudTests : DatabaseTests
     {
         private readonly CategoryCrud _sut;
 
-        public CategoryCrudTests(DbFixture dbFixture)
+        public CategoryCrudTests(DbFixture dbFixture) : base(dbFixture)
         {
-            _sut = new CategoryCrud()
+            _sut = new CategoryCrud(_dbContext);
         }
 
         [Fact]
@@ -29,7 +25,9 @@ namespace KitProjects.Cookbook.Tests.DatabaseTests
                 Name = null
             };
 
-            var result =
+            Action act = () => _sut.Create(newCategory);
+
+            act.Should().Throw<Exception>();
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data.Common;
 
-namespace KitProjects.Cookbook.Tests.DatabaseTests
+namespace KitProjects.Cookbook.Tests.Database
 {
     public sealed class DbFixture : IDisposable
     {
