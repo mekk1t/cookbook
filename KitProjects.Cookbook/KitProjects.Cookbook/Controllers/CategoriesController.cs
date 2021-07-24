@@ -1,8 +1,10 @@
 ﻿using KitProjects.Api.AspNetCore;
 using KitProjects.Cookbook.Core.Abstractions;
 using KitProjects.Cookbook.Core.Models;
+using KitProjects.Cookbook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace KitProjects.Cookbook.Controllers
 {
@@ -20,7 +22,13 @@ namespace KitProjects.Cookbook.Controllers
             _categoryRepository = categoryRepository;
         }
 
+        /// <summary>
+        /// Список категорий.
+        /// </summary>
+        /// <param name="filter">Фильтры для списка.</param>
+        /// <response code="200">Список категорий.</response>
         [HttpGet]
+        [ProducesResponseType(typeof(ApiCollectionResponse<CategoryResponse>), 200)]
         public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
             ProcessRequest(() =>
             {
@@ -33,28 +41,77 @@ namespace KitProjects.Cookbook.Controllers
                     Limit = filter.Limit + 1
                 });
                 if (categories == null)
-                    return new ApiCollectionResponse<Category>(null, false);
+                    return new ApiCollectionResponse<CategoryResponse>(null, false);
 
                 bool thereAreMoreCategories = categories.Count == filter.Limit + 1;
                 if (thereAreMoreCategories)
                     categories.RemoveAt(categories.Count - 1);
 
-                return new ApiCollectionResponse<Category>(categories, thereAreMoreCategories);
+                return new ApiCollectionResponse<CategoryResponse>(categories.Select(c => new CategoryResponse(c)), thereAreMoreCategories);
             });
 
+        /// <summary>
+        /// Подробная информация о категории.
+        /// </summary>
+        /// <param name="id">ID категории.</param>
+        /// <response code="200">Информация о категории.</response>
+        /// <response code="404">Категория не найдена.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ApiObjectResponse<CategoryResponse>), 200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 404)]
         public IActionResult GetCategoryById([FromRoute] long id) =>
-            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Read(id)));
+            ProcessRequest(() => new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Read(id))));
 
+        /// <summary>
+        /// Создание новой категории.
+        /// </summary>
+        /// <param name="update">Запрос на создание категории.</param>
+        /// <response code="200">Созданная категория.</response>
         [HttpPost]
-        public IActionResult CreateCategory([FromBody] Category category) =>
-            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Create(category)));
+        [ProducesResponseType(typeof(ApiObjectResponse<CategoryResponse>), 200)]
+        public IActionResult CreateCategory([FromBody] UpdateCategory update)
+        {
+            if (update == null)
+                return ApiError("Пустое тело запроса.");
 
+            return ProcessRequest(() => new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Create(new Category
+            {
+                Name = update.Name,
+                Type = update.Type
+            }))));
+        }
+
+        /// <summary>
+        /// Редактирование категории.
+        /// </summary>
+        /// <param name="update">Запрос на редактирование категории.</param>
+        /// <response code="200">Обновленная категория.</response>
+        /// <response code="400">Некорректный запрос.</response>
+        [ProducesResponseType(typeof(ApiObjectResponse<CategoryResponse>), 200)]
+        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
         [HttpPut]
-        public IActionResult UpdateCategory([FromBody] Category category) =>
-            ProcessRequest(() => new ApiObjectResponse<Category>(_crud.Update(category)));
+        public IActionResult UpdateCategory([FromBody] UpdateCategory update)
+        {
+            if (update == null)
+                return ApiError("Пустое тело запроса.");
 
+            return ProcessRequest(() =>
+            {
+                return new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Update(new Category(update.Id)
+                {
+                    Name = update.Name,
+                    Type = update.Type
+                })));
+            });
+        }
+
+        /// <summary>
+        /// Удаление категории по ID.
+        /// </summary>
+        /// <param name="id">ID категории.</param>
+        /// <response code="204">Категория удалена.</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
         public IActionResult DeleteCategory([FromRoute] long id) =>
             ProcessRequest(() =>
             {

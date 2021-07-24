@@ -3,15 +3,13 @@ using KitProjects.Cookbook.Core.Abstractions;
 using KitProjects.Cookbook.Core.Models;
 using KitProjects.Cookbook.Database;
 using KitProjects.Cookbook.Database.Crud;
+using KitProjects.Cookbook.SwaggerCustomization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.IO;
-using System.Reflection;
 
 namespace KitProjects.Cookbook
 {
@@ -32,6 +30,7 @@ namespace KitProjects.Cookbook
             services.AddSwaggerV1("Cookbook API", "KitProjects.Cookbook", options =>
             {
                 options.IncludeXmlComments(typeof(Entity).GetAssemblyXmlDocumentationPath());
+                options.SchemaFilter<EnumSchemaFilter>();
             });
 
             services.AddScoped<ICrud<Category, long>, CategoryCrud>();
