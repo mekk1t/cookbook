@@ -25,6 +25,21 @@ namespace KitProjects.Cookbook.Database.Crud
             return new Category(entity);
         }
 
+        private void LookForExistingIngredients(Category entity)
+        {
+            if (entity.Ingredients?.Any(i => i.Id != default) ?? false)
+            {
+                for (int i = 0; i < entity.Ingredients.Count; i++)
+                {
+                    var ingredient = entity.Ingredients[i];
+                    if (ingredient.Id == default)
+                        continue;
+
+                    entity.Ingredients[i] = _dbContext.Ingredients.First(i => i.Id == ingredient.Id);
+                }
+            }
+        }
+
         public void Delete(Category entity)
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
@@ -45,32 +60,17 @@ namespace KitProjects.Cookbook.Database.Crud
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
             category.ThrowIfEntityIsNull(entity.Id);
+            category.Ingredients?.Clear();
 
             UpdateCategory(category, entity);
-            LookForExistingIngredients(category);
 
             _dbContext.SaveChanges();
             return new Category(category.Id)
             {
                 Name = category.Name,
                 Type = category.Type,
-                Ingredients = category.Ingredients.Select(i => new Ingredient(i.Id) { Name = i.Name }).ToList()
+                Ingredients = category.Ingredients?.Select(i => new Ingredient(i.Id) { Name = i.Name }).ToList()
             };
-        }
-
-        private void LookForExistingIngredients(Category entity)
-        {
-            if (entity.Ingredients?.Any(i => i.Id != default) ?? false)
-            {
-                for (int i = 0; i < entity.Ingredients.Count; i++)
-                {
-                    var ingredient = entity.Ingredients[i];
-                    if (ingredient.Id == default)
-                        continue;
-
-                    entity.Ingredients[i] = _dbContext.Ingredients.First(i => i.Id == ingredient.Id);
-                }
-            }
         }
 
         private static void UpdateCategory(Category oldCategory, Category newCategory)

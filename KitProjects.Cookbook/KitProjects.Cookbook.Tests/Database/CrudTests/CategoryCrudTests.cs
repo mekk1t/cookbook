@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using KitProjects.Cookbook.Core.Models;
+using KitProjects.Cookbook.Database;
 using KitProjects.Cookbook.Database.Crud;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -96,6 +97,31 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
             Action act = () => _sut.Delete(existingCategory);
 
             act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Нельзя_удалить_несуществующую_категорию()
+        {
+            var newCategory = new Category(long.MaxValue);
+
+            Action act = () => _sut.Delete(newCategory);
+
+            act.Should().Throw<EntityNotFoundException>();
+        }
+
+        [Fact]
+        public void Можно_отредактировать_тип_и_имя_категории()
+        {
+            var category = SeedCategory(Guid.NewGuid().ToString());
+            var editedCategory = new Category(category.Id)
+            {
+                Name = "Новое имя",
+                Type = CategoryType.Ingredient
+            };
+
+            var result = _sut.Update(editedCategory);
+
+            result.Type.Should().Be(CategoryType.Ingredient);
         }
 
         private Ingredient SeedIngredient(string name)
