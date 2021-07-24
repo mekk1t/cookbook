@@ -10,11 +10,12 @@ using Xunit;
 
 namespace KitProjects.Cookbook.Tests.DatabaseTests
 {
+    [Collection(nameof(DbFixture))]
     public class CategoryCrudTests
     {
         private readonly CategoryCrud _sut;
 
-        public CategoryCrudTests()
+        public CategoryCrudTests(DbFixture dbFixture)
         {
             _sut = new CategoryCrud()
         }
