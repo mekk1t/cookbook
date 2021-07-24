@@ -7,7 +7,7 @@ namespace KitProjects.Cookbook.Core.Models
     {
         public string Name { get; set; }
         public CategoryType Type { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        public List<Ingredient> Ingredients { get; } = new List<Ingredient>();
 
         public Category()
         {
@@ -30,7 +30,7 @@ namespace KitProjects.Cookbook.Core.Models
         {
             Name = other.Name;
             Type = other.Type;
-            Ingredients = other.Ingredients?.Select(i => new Ingredient(i))?.ToList() ?? new List<Ingredient>(0);
+            Ingredients = other.Ingredients.Select(i => new Ingredient(i)).ToList();
         }
     }
 }

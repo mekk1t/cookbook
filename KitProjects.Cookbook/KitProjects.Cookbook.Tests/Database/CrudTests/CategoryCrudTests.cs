@@ -66,7 +66,7 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
                 SeedIngredient("Пройдемте в дом")
             };
             var category = CreateCategoryWithIngredients();
-            category.Ingredients = existingIngredients.ToList();
+            category.Ingredients.AddRange(existingIngredients);
 
             var result = _sut.Create(category);
 
@@ -135,15 +135,17 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         private Category SeedCategory(string name) =>
             _sut.Create(new Category { Name = name });
 
-        private static Category CreateCategoryWithIngredients(params string[] ingredientNames) =>
-            new()
+        private static Category CreateCategoryWithIngredients(params string[] ingredientNames)
+        {
+            var category = new Category
             {
                 Name = Guid.NewGuid().ToString(),
-                Type = CategoryType.Recipe,
-                Ingredients = ingredientNames.Select(name => new Ingredient
-                {
-                    Name = name
-                }).ToList()
+                Type = CategoryType.Recipe
             };
+
+            category.Ingredients.AddRange(ingredientNames.Select(name => new Ingredient { Name = name }));
+
+            return category;
+        }
     }
 }

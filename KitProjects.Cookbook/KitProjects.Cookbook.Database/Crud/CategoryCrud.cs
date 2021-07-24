@@ -27,7 +27,7 @@ namespace KitProjects.Cookbook.Database.Crud
 
         private void LookForExistingIngredients(Category entity)
         {
-            if (entity.Ingredients?.Any(i => i.Id != default) ?? false)
+            if (entity.Ingredients.Any(i => i.Id != default))
             {
                 for (int i = 0; i < entity.Ingredients.Count; i++)
                 {
@@ -60,24 +60,17 @@ namespace KitProjects.Cookbook.Database.Crud
         {
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
             category.ThrowIfEntityIsNull(entity.Id);
-            category.Ingredients?.Clear();
 
             UpdateCategory(category, entity);
 
             _dbContext.SaveChanges();
-            return new Category(category.Id)
-            {
-                Name = category.Name,
-                Type = category.Type,
-                Ingredients = category.Ingredients?.Select(i => new Ingredient(i.Id) { Name = i.Name }).ToList()
-            };
+            return new Category(entity);
         }
 
         private static void UpdateCategory(Category oldCategory, Category newCategory)
         {
             oldCategory.Type = newCategory.Type;
             oldCategory.Name = newCategory.Name;
-            oldCategory.Ingredients = newCategory.Ingredients;
         }
 
         public List<Category> GetList(PaginationFilter filter = null)
