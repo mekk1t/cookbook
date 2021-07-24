@@ -22,7 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="KitProjects.Api.AspNetCore" Version="1.0.1" />
+    <PackageReference Include="KitProjects.Api.AspNetCore" Version="1.0.3" />
   </ItemGroup>
+
+  <Target Name="Foo" BeforeTargets="Build">
+    <ItemGroup>
+      <DocumentationFiles Include="%(Reference.RelativeDir)%(Reference.Filename).xml" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(DocumentationFiles)" DestinationFolder="$(OutputPath)" Condition="Exists('%(RootDir)%(Directory)%(Filename)%(Extension)')" />
+  </Target>
 
 </Project>
