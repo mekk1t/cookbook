@@ -19,6 +19,13 @@ namespace KitProjects.Cookbook.Database
             {
                 category.Property(c => c.Type).HasConversion<int>();
                 category.Property(c => c.Name).IsRequired();
+                category.HasIndex(c => c.Name).IsUnique();
+            });
+
+            modelBuilder.Entity<Ingredient>(ingredient =>
+            {
+                ingredient.HasIndex(i => i.Name).IsUnique();
+                ingredient.Property(i => i.Name).IsRequired();
             });
         }
     }

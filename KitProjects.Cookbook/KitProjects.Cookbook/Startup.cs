@@ -35,6 +35,9 @@ namespace KitProjects.Cookbook
 
             services.AddScoped<ICrud<Category, long>, CategoryCrud>();
             services.AddScoped<IRepository<Category, PaginationFilter>, CategoryCrud>();
+
+            services.AddScoped<ICrud<Ingredient, long>, IngredientCrud>();
+            services.AddScoped<IRepository<Ingredient, PaginationFilter>, IngredientCrud>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

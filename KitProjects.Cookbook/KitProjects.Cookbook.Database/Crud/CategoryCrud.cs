@@ -17,27 +17,10 @@ namespace KitProjects.Cookbook.Database.Crud
 
         public Category Create(Category entity)
         {
-            LookForExistingIngredients(entity);
-
             _dbContext.Categories.Add(entity);
             _dbContext.SaveChanges();
 
             return new Category(entity);
-        }
-
-        private void LookForExistingIngredients(Category entity)
-        {
-            if (entity.Ingredients.Any(i => i.Id != default))
-            {
-                for (int i = 0; i < entity.Ingredients.Count; i++)
-                {
-                    var ingredient = entity.Ingredients[i];
-                    if (ingredient.Id == default)
-                        continue;
-
-                    entity.Ingredients[i] = _dbContext.Ingredients.First(i => i.Id == ingredient.Id);
-                }
-            }
         }
 
         public void Delete(Category entity)

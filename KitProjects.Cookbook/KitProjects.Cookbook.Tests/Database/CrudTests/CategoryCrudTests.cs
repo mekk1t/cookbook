@@ -48,48 +48,6 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         }
 
         [Fact]
-        public void Успешное_создание_валидной_категории_с_прежде_не_существовавшими_ингредиентами()
-        {
-            var newCategory = CreateCategoryWithIngredients("ТЕСТ", "ДРУГОЙ_ТЕСТ", "ИНГРЕДИЕНТИЩЕ");
-
-            var result = _sut.Create(newCategory);
-
-            result.Ingredients.Count.Should().Be(3);
-        }
-
-        [Fact]
-        public void Успешное_создание_валидной_категории_с_уже_существующими_ингредиентами()
-        {
-            var existingIngredients = new[]
-            {
-                SeedIngredient("Хоух"),
-                SeedIngredient("Пройдемте в дом")
-            };
-            var category = CreateCategoryWithIngredients();
-            category.Ingredients.AddRange(existingIngredients);
-
-            var result = _sut.Create(category);
-
-            result.Ingredients.Should().HaveCount(2);
-        }
-
-        [Fact]
-        public void Успешное_создание_валидной_категории_с_существующими_и_новыми_ингредиентами()
-        {
-            var existingIngredients = new[]
-            {
-                SeedIngredient("НОВИНКА!"),
-                SeedIngredient("НЕ ПОВТОРЯЙТЕ ЭТО ДОМА!")
-            };
-            var category = CreateCategoryWithIngredients("Мафака новенький ингредиентик");
-            category.Ingredients.AddRange(existingIngredients);
-
-            var result = _sut.Create(category);
-
-            result.Ingredients.Should().HaveCount(3);
-        }
-
-        [Fact]
         public void Круд_удаляет_категорию_по_ID()
         {
             var existingCategory = SeedCategory("МАФАКА");

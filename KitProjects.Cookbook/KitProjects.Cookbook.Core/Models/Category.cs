@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace KitProjects.Cookbook.Core.Models
 {
@@ -30,7 +29,6 @@ namespace KitProjects.Cookbook.Core.Models
         {
             Name = other.Name;
             Type = other.Type;
-            Ingredients = other.Ingredients.Select(i => new Ingredient(i)).ToList();
         }
     }
 }

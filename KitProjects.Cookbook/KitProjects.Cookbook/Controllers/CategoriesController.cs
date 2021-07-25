@@ -30,7 +30,7 @@ namespace KitProjects.Cookbook.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ApiCollectionResponse<CategoryResponse>), 200)]
         public IActionResult GetCategories([FromQuery] PaginationFilter filter) =>
-            ProcessRequest(() =>
+            ExecutePaginatedCollectionRequest(() =>
             {
                 if (filter == null)
                     filter = new PaginationFilter();
@@ -41,13 +41,13 @@ namespace KitProjects.Cookbook.Controllers
                     Limit = filter.Limit + 1
                 });
                 if (categories == null)
-                    return new ApiCollectionResponse<CategoryResponse>(null, false);
+                    return new PaginatedCollection<CategoryResponse>(null, false);
 
                 bool thereAreMoreCategories = categories.Count == filter.Limit + 1;
                 if (thereAreMoreCategories)
                     categories.RemoveAt(categories.Count - 1);
 
-                return new ApiCollectionResponse<CategoryResponse>(categories.Select(c => new CategoryResponse(c)), thereAreMoreCategories);
+                return new PaginatedCollection<CategoryResponse>(categories.Select(c => new CategoryResponse(c)).ToArray(), thereAreMoreCategories);
             });
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace KitProjects.Cookbook.Controllers
         [ProducesResponseType(typeof(ApiObjectResponse<CategoryResponse>), 200)]
         [ProducesResponseType(typeof(ApiErrorResponse), 404)]
         public IActionResult GetCategoryById([FromRoute] long id) =>
-            ProcessRequest(() => new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Read(id))));
+            ExecuteObjectRequest(() => new CategoryResponse(_crud.Read(id)));
 
         /// <summary>
         /// Создание новой категории.
@@ -74,11 +74,11 @@ namespace KitProjects.Cookbook.Controllers
             if (update == null)
                 return ApiError("Пустое тело запроса.");
 
-            return ProcessRequest(() => new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Create(new Category
+            return ExecuteObjectRequest(() => new CategoryResponse(_crud.Create(new Category
             {
                 Name = update.Name,
                 Type = update.Type
-            }))));
+            })));
         }
 
         /// <summary>
@@ -95,14 +95,11 @@ namespace KitProjects.Cookbook.Controllers
             if (update == null)
                 return ApiError("Пустое тело запроса.");
 
-            return ProcessRequest(() =>
-            {
-                return new ApiObjectResponse<CategoryResponse>(new CategoryResponse(_crud.Update(new Category(update.Id)
+            return ExecuteObjectRequest(() => new CategoryResponse(_crud.Update(new Category(update.Id)
                 {
                     Name = update.Name,
                     Type = update.Type
                 })));
-            });
         }
 
         /// <summary>
@@ -113,7 +110,7 @@ namespace KitProjects.Cookbook.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public IActionResult DeleteCategory([FromRoute] long id) =>
-            ProcessRequest(() =>
+            ExecuteAction(() =>
             {
                 var category = _crud.Read(id);
                 _crud.Delete(category);
