@@ -68,7 +68,7 @@ namespace KitProjects.Cookbook.Controllers
                 {
                     Name = update.Name
                 };
-                ingredient.Categories.AddRange(update.Categories.Select(c => new Category(c.Id) { Name = c.Name, Type = CategoryType.Ingredient }));
+                ingredient.Categories.AddRange(update.Categories.Select(c => new Category(c.Id) { Name = c.Name }));
 
                 return new IngredientResponse(_crud.Create(ingredient));
             });
@@ -95,7 +95,7 @@ namespace KitProjects.Cookbook.Controllers
                 {
                     Name = update.Name
                 };
-                ingredient.Categories.AddRange(update.Categories.Select(c => new Category(c.Id) { Name = c.Name, Type = CategoryType.Ingredient }));
+                ingredient.Categories.AddRange(update.Categories.Select(c => new Category(c.Id) { Name = c.Name }));
 
                 return new IngredientResponse(_crud.Update(ingredient));
             });

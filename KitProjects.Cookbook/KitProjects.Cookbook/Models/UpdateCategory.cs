@@ -1,5 +1,4 @@
-﻿using KitProjects.Cookbook.Core.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KitProjects.Cookbook.Models
 {
@@ -17,10 +16,5 @@ namespace KitProjects.Cookbook.Models
         /// </summary>
         [Required]
         public string Name { get; set; }
-        /// <summary>
-        /// Тип категории.
-        /// </summary>
-        [Required]
-        public CategoryType Type { get; set; }
     }
 }

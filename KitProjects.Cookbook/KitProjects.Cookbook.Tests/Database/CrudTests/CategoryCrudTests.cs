@@ -24,7 +24,6 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         {
             var newCategory = new Category
             {
-                Type = CategoryType.Ingredient,
                 Name = null
             };
 
@@ -38,7 +37,6 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         {
             var newCategory = new Category
             {
-                Type = CategoryType.Recipe,
                 Name = "Heisenberg"
             };
 
@@ -73,13 +71,12 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
             var category = SeedCategory(Guid.NewGuid().ToString());
             var editedCategory = new Category(category.Id)
             {
-                Name = "Новое имя",
-                Type = CategoryType.Ingredient
+                Name = "Новое имя"
             };
 
             var result = _sut.Update(editedCategory);
 
-            result.Type.Should().Be(CategoryType.Ingredient);
+            result.Name.Should().NotBeSameAs(category.Name);
         }
 
         private Ingredient SeedIngredient(string name)
@@ -97,8 +94,7 @@ namespace KitProjects.Cookbook.Tests.Database.CrudTests
         {
             var category = new Category
             {
-                Name = Guid.NewGuid().ToString(),
-                Type = CategoryType.Recipe
+                Name = Guid.NewGuid().ToString()
             };
 
             category.Ingredients.AddRange(ingredientNames.Select(name => new Ingredient { Name = name }));

@@ -18,11 +18,6 @@ namespace KitProjects.Cookbook.Models
         /// </summary>
         [Required]
         public string Name { get; }
-        /// <summary>
-        /// Тип категории: ингредиент или рецепт.
-        /// </summary>
-        [Required]
-        public CategoryType Type { get; }
 
         public CategoryResponse(Category category)
         {
@@ -31,7 +26,6 @@ namespace KitProjects.Cookbook.Models
 
             Id = category.Id;
             Name = category.Name;
-            Type = category.Type;
         }
     }
 }

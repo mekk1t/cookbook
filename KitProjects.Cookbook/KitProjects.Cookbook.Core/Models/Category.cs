@@ -5,7 +5,6 @@ namespace KitProjects.Cookbook.Core.Models
     public class Category : Entity
     {
         public string Name { get; set; }
-        public CategoryType Type { get; set; }
         public List<Ingredient> Ingredients { get; } = new List<Ingredient>();
 
         public Category()
@@ -28,7 +27,6 @@ namespace KitProjects.Cookbook.Core.Models
         public Category(Category other) : base(other.Id)
         {
             Name = other.Name;
-            Type = other.Type;
         }
     }
 }

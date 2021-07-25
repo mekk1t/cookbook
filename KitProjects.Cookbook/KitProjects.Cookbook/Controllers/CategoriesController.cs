@@ -76,8 +76,7 @@ namespace KitProjects.Cookbook.Controllers
 
             return ExecuteObjectRequest(() => new CategoryResponse(_crud.Create(new Category
             {
-                Name = update.Name,
-                Type = update.Type
+                Name = update.Name
             })));
         }
 
@@ -97,8 +96,7 @@ namespace KitProjects.Cookbook.Controllers
 
             return ExecuteObjectRequest(() => new CategoryResponse(_crud.Update(new Category(update.Id)
                 {
-                    Name = update.Name,
-                    Type = update.Type
+                    Name = update.Name
                 })));
         }
 

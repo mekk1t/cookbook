@@ -44,16 +44,10 @@ namespace KitProjects.Cookbook.Database.Crud
             var category = _dbContext.Categories.FirstOrDefault(c => c.Id == entity.Id);
             category.ThrowIfEntityIsNull(entity.Id);
 
-            UpdateCategory(category, entity);
+            category.Name = entity.Name;
 
             _dbContext.SaveChanges();
             return new Category(entity);
-        }
-
-        private static void UpdateCategory(Category oldCategory, Category newCategory)
-        {
-            oldCategory.Type = newCategory.Type;
-            oldCategory.Name = newCategory.Name;
         }
 
         public List<Category> GetList(PaginationFilter filter = null)
