@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj" />
+    <ProjectReference Include="..\KitProjects.Cookbook.Domain\KitProjects.Cookbook.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
