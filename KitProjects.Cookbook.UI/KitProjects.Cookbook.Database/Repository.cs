@@ -7,7 +7,7 @@ namespace KitProjects.Cookbook.Database
 {
     public abstract class Repository<T> where T : Entity
     {
-        private readonly CookbookDbContext _dbContext;
+        protected readonly CookbookDbContext _dbContext;
 
         public Repository(CookbookDbContext dbContext)
         {
