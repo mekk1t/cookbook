@@ -11,7 +11,7 @@ namespace KitProjects.Cookbook.Database
         {
         }
 
-        public override Recipe GetDetails(long id)
+        public Recipe GetDetails(long id)
         {
             var recipe = _dbContext.Recipes
                 .Include(r => r.Steps)

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace KitProjects.Cookbook.Database
 {
-    public abstract class Repository<T> where T : Entity
+    public class Repository<T> where T : Entity
     {
         protected readonly CookbookDbContext _dbContext;
 
@@ -25,8 +25,6 @@ namespace KitProjects.Cookbook.Database
             _dbContext.Set<T>().Update(entity);
             _dbContext.SaveChanges();
         }
-
-        public abstract T GetDetails(long id);
 
         public List<T> GetList(long lastId = 0, int limit = 10)
         {

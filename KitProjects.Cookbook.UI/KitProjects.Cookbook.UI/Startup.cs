@@ -1,4 +1,5 @@
 using KitProjects.Cookbook.Database;
+using KitProjects.Cookbook.Domain.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace KitProjects.Cookbook.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddScoped<Repository<Ingredient>>();
             services.AddScoped<RecipeRepository>();
             services.AddDbContext<CookbookDbContext>(builder => builder.UseSqlServer("Server=localhost;Database=cookbookrazorpages;Trusted_Connection=True;"));
         }
