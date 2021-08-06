@@ -1,0 +1,30 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <button class="btn btn-outline-success date">
+        Время!
+    </button>
+    <div id="date-time">
+    </div>
+</div>
+@section scripts{
+    <script>
+        function setClickHandler() {
+            $('button.date').on('click', function () {
+                $('#date-time').load('?handler=UpdateTime');
+            });
+        }
+        $(function () {
+            setClickHandler();
+            setInterval(function () {
+                $('button.date').click();
+            }, 1000);
+        });
+    </script>
+}
