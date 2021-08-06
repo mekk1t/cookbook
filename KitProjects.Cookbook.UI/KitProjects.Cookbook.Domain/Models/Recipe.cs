@@ -12,6 +12,7 @@ namespace KitProjects.Cookbook.Domain.Models
         public List<string> Tags { get; set; }
         public List<Category> Categories { get; set; }
         public List<IngredientDetails> IngredientDetails { get; set; }
+        public List<Step> Steps { get; set; }
         public int CookingDuration { get; set; }
         public List<CookingType> CookingTypes { get; set; }
         public Difficulty Difficulty { get; set; }
