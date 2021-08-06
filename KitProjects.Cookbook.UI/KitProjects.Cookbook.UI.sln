@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Cookbook.UI", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Cookbook.Domain", "KitProjects.Cookbook.Domain\KitProjects.Cookbook.Domain.csproj", "{51447BE0-4296-4E62-BB00-E1852AFEF0D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Cookbook.Database", "KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj", "{4866AE63-B660-4A1D-8504-22BF23E0F0B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{51447BE0-4296-4E62-BB00-E1852AFEF0D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51447BE0-4296-4E62-BB00-E1852AFEF0D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51447BE0-4296-4E62-BB00-E1852AFEF0D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
