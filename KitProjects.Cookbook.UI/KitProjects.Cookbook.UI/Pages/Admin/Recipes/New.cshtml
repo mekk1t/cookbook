@@ -1,1 +1,18 @@
 ﻿@page
+@using KitProjects.Cookbook.Domain.Models
+@model Recipe
+<h3>Новый рецепт</h3>
+<form class="w3-container">
+    <label asp-for="Title">Название</label>
+    <input type="text" asp-for="Title"/>
+    <label asp-for="Description">Описание</label>
+    <textarea asp-for="Description" />
+    <label asp-for="Categories">Категории</label>
+    <select multiple asp-for="Categories" asp-items="Html.GetEnumSelectList<Category>()"></select>
+    <label asp-for="CookingDuration">Время готовки</label>
+    <input type="number" asp-for="CookingDuration" />
+    <label asp-for="CookingTypes">Способы приготовления</label>
+    <select multiple asp-for="CookingTypes" asp-items="Html.GetEnumSelectList<CookingType>()"></select>
+    <label asp-for="Difficulty">Уровень сложности</label>
+    <select asp-for="Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
+</form>
