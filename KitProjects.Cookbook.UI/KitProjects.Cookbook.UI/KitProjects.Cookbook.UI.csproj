@@ -14,4 +14,8 @@
     <ProjectReference Include="..\KitProjects.Cookbook.Domain\KitProjects.Cookbook.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Admin\Dashboard\" />
+  </ItemGroup>
+
 </Project>
