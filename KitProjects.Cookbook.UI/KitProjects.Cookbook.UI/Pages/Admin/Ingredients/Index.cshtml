@@ -10,7 +10,7 @@
         <input type="text" class="form-control" asp-for="Name" />
     </div>
     <div class="form-group">
-        <label asp-for="Type">Название</label>
+        <label asp-for="Type">Тип</label>
         <select asp-for="Type" asp-items="Html.GetEnumSelectList<KitProjects.Cookbook.Domain.Models.IngredientType>()">
             <option value="" disabled>Выберите тип</option>
         </select>
