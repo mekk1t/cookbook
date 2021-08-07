@@ -1,17 +1,30 @@
 ﻿@page
+@using KitProjects.Cookbook.UI.Models;
+@{
+    var recipeCard = new Card
+    {
+        ImageUrl = "/img/recipe-book.jpg",
+        Link = new Link
+        {
+            Text = "Рецепты",
+            Url = "/admin/recipes/index"
+        }
+    };
+    var ingredientsCard = new Card
+    {
+        ImageUrl = "/img/ingredients.jpg",
+        Link = new Link
+        {
+            Text = "Ингредиенты",
+            Url = "/admin/ingredients/index"
+        }
+    };
+}
 <ul class="flex-ul flex-space-between">
     <li>
-        <div class="w3-card-4">
-            <img class="img-w-50" src="~/img/recipe-book.jpg" alt="recipe-book"/>
-            <div class="w3-container w3-center">
-                <p><a asp-page="/recipes/index">Рецепты</a></p>
-            </div>
-        </div>
-        <div class="w3-card-4">
-            <img class="img-w-50" src="~/img/ingredients.jpg" alt="ingredients"/>
-            <div class="w3-container w3-center">
-                <p><a asp-page="/ingredients/index">Ингредиенты</a></p>
-            </div>
-        </div>
+        <partial name="_CardPartial" model="recipeCard" />
+    </li>
+    <li>
+        <partial name="_CardPartial" model="ingredientsCard" />
     </li>
 </ul>
