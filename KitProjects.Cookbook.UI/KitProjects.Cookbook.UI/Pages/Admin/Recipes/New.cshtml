@@ -16,9 +16,31 @@
     <label asp-for="Recipe.Difficulty">Уровень сложности</label>
     <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container">
-        <div class="step">
+        <div class="ingredient">
             <h4>Ингредиент 1</h4>
-            <label></label>
+            <label>Название</label>
+            <input type="text" name="Recipe.IngredientDetails[0].Ingredient.Name" />
+            <label>Тип ингредиента</label>
+            <select name="Recipe.IngredientDetails[0].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+            <label>Количество</label>
+            <input type="number" step="any" name="Recipe.IngredientDetails[0].Amount" />
+            <label>Мера объема</label>
+            <select name="Recipe.IngredientDetails[0].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+            <label>Необязательный</label>
+            <input type="checkbox" name="Recipe.IngredientDetails[0].Optional" value="false" />
+        </div>
+        <div class="ingredient">
+            <h4>Ингредиент 2</h4>
+            <label>Название</label>
+            <input type="text" name="Recipe.IngredientDetails[0].Ingredient.Name" />
+            <label>Тип ингредиента</label>
+            <select name="Recipe.IngredientDetails[0].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+            <label>Количество</label>
+            <input type="number" step="any" name="Recipe.IngredientDetails[1].Amount" />
+            <label>Мера объема</label>
+            <select name="Recipe.IngredientDetails[1].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+            <label>Необязательный</label>
+            <input type="checkbox" name="Recipe.IngredientDetails[1].Optional" value="false" />
         </div>
     </div>
     <button type="submit">ОК</button>
