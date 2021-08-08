@@ -21,7 +21,7 @@ namespace KitProjects.Cookbook.Database
             modelBuilder.Entity<Recipe>(builder =>
             {
                 builder.OwnsMany(recipe => recipe.IngredientDetails)
-                    .Property(details => details.Amount).HasPrecision(4, 2);
+                    .Property(details => details.Amount).HasPrecision(8, 2);
                 builder
                     .Property(r => r.Tags)
                     .HasConversion(
@@ -48,7 +48,7 @@ namespace KitProjects.Cookbook.Database
             modelBuilder.Entity<Step>(builder =>
             {
                 builder.OwnsMany(step => step.IngredientDetails)
-                    .Property(details => details.Amount).HasPrecision(4, 2);
+                    .Property(details => details.Amount).HasPrecision(8, 2);
             });
         }
     }
