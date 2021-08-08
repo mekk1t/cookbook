@@ -27,7 +27,7 @@
             <label>Мера объема</label>
             <select name="Recipe.IngredientDetails[0].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
             <label>Необязательный</label>
-            <input type="checkbox" name="Recipe.IngredientDetails[0].Optional" value="false" />
+            <input type="checkbox" name="Recipe.IngredientDetails[0].Optional" value="true"/>
         </div>
         <div class="ingredient">
             <h4>Ингредиент 2</h4>
@@ -40,7 +40,7 @@
             <label>Мера объема</label>
             <select name="Recipe.IngredientDetails[1].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
             <label>Необязательный</label>
-            <input type="checkbox" name="Recipe.IngredientDetails[1].Optional" value="false" />
+            <input type="checkbox" name="Recipe.IngredientDetails[1].Optional" value="true"/>
         </div>
     </div>
     <button type="submit">ОК</button>
