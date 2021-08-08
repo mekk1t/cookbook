@@ -32,9 +32,9 @@
         <div class="ingredient">
             <h4>Ингредиент 2</h4>
             <label>Название</label>
-            <input type="text" name="Recipe.IngredientDetails[0].Ingredient.Name" />
+            <input type="text" name="Recipe.IngredientDetails[1].Ingredient.Name" />
             <label>Тип ингредиента</label>
-            <select name="Recipe.IngredientDetails[0].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+            <select name="Recipe.IngredientDetails[1].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
             <label>Количество</label>
             <input type="number" step="any" name="Recipe.IngredientDetails[1].Amount" />
             <label>Мера объема</label>
@@ -67,9 +67,9 @@
             <div class="ingredient">
                 <h4>Ингредиент 2</h4>
                 <label>Название</label>
-                <input type="text" name="Recipe.Steps[0].IngredientDetails[0].Ingredient.Name" />
+                <input type="text" name="Recipe.Steps[0].IngredientDetails[1].Ingredient.Name" />
                 <label>Тип ингредиента</label>
-                <select name="Recipe.Steps[0].IngredientDetails[0].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+                <select name="Recipe.Steps[0].IngredientDetails[1].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
                 <label>Количество</label>
                 <input type="number" step="any" name="Recipe.Steps[0].IngredientDetails[1].Amount" />
                 <label>Мера объема</label>
@@ -102,9 +102,9 @@
             <div class="ingredient">
                 <h4>Ингредиент 2</h4>
                 <label>Название</label>
-                <input type="text" name="Recipe.Steps[1].IngredientDetails[0].Ingredient.Name" />
+                <input type="text" name="Recipe.Steps[1].IngredientDetails[1].Ingredient.Name" />
                 <label>Тип ингредиента</label>
-                <select name="Recipe.Steps[1].IngredientDetails[0].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+                <select name="Recipe.Steps[1].IngredientDetails[1].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
                 <label>Количество</label>
                 <input type="number" step="any" name="Recipe.Steps[1].IngredientDetails[1].Amount" />
                 <label>Мера объема</label>
