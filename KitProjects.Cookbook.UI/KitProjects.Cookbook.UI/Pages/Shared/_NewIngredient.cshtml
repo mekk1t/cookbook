@@ -6,22 +6,12 @@
       <span onclick="document.getElementById('new-ingredient').style.display='none'" class="w3-button w3-display-topright">&times;</span>
         <form>
             <label for="ingredient-name">Название</label>
-            <input type="text" id="ingredient-name" required />
+            <input type="text" id="new-ingredient-name" required />
             <label>Тип</label>
-            <select required asp-items="Html.GetEnumSelectList<IngredientType>()">
+            <select id="new-ingredient-type" required asp-items="Html.GetEnumSelectList<IngredientType>()">
                 <option value="" disabled>Выбрать</option>
             </select>
         </form>
     </div>
   </div>
 </div>
-
-<script>
-    $('#new-ingredient form').on('click', function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '?handler=NewIngredient',
-            dataType: 'html'
-        });
-    });
-</script>
