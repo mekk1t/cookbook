@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KitProjects.Cookbook.Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KitProjects.Cookbook.Database", "KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj", "{4866AE63-B660-4A1D-8504-22BF23E0F0B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitProjects.Cookbook.Tests", "KitProjects.Cookbook.Tests\KitProjects.Cookbook.Tests.csproj", "{44FBB2FD-01E6-4F46-8090-CD6E2FDF420D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4866AE63-B660-4A1D-8504-22BF23E0F0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44FBB2FD-01E6-4F46-8090-CD6E2FDF420D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44FBB2FD-01E6-4F46-8090-CD6E2FDF420D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44FBB2FD-01E6-4F46-8090-CD6E2FDF420D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44FBB2FD-01E6-4F46-8090-CD6E2FDF420D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
