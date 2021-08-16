@@ -7,6 +7,7 @@ namespace KitProjects.Cookbook.Domain.Models
     {
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow.AddHours(3);
         public string Title { get; set; }
+        public string Synopsis { get; set; }
         public string Description { get; set; }
         public string ThumbnailBase64 { get; set; }
         public List<string> Tags { get; set; }
