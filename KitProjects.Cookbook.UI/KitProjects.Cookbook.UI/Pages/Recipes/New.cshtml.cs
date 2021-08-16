@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 
-namespace KitProjects.Cookbook.UI.Pages.Admin.Recipes
+namespace KitProjects.Cookbook.UI.Pages.Recipes
 {
     public class NewModel : PageModel
     {
