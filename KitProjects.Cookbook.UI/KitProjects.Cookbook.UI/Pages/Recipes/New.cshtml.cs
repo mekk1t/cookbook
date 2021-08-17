@@ -29,14 +29,14 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         }
 
         public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order) =>
-            Partial("_RecipeIngredient", new IngredientFormModel
+            Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = "Recipe.IngredientDetails",
                 Order = order
             });
 
         public PartialViewResult OnGetIngredientToStep([FromQuery] int stepOrder, [FromQuery] int ingredientOrder) =>
-            Partial("_RecipeIngredient", new IngredientFormModel
+            Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = $"Recipe.Steps[{stepOrder}].IngredientDetails",
                 Order = ingredientOrder
