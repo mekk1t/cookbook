@@ -26,7 +26,7 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         public JsonResult OnPostNewIngredient([FromBody] Ingredient ingredient)
         {
             _ingredientRepository.Save(ingredient);
-            return new JsonResult(ingredient.Id);
+            return new JsonResult(new { ingredient.Id });
         }
 
         public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order, [FromQuery] long ingredientId)

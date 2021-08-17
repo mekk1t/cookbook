@@ -16,8 +16,14 @@
     <label asp-for="Recipe.Difficulty">Уровень сложности</label>
     <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container ingredients-list">
-        <small>Эту кнопку надо сделать дропдауном</small>
-        <button type="button" id="add-ingredient-to-recipe">Добавить ингредиент в рецепт</button>
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">Добавить ингредиент в рецепт</button>
+            <div class="w3-dropdown-content w3-border w3-bar-block">
+                <span onclick="document.getElementById('new-ingredient').style.display = 'block';" class="w3-bar-item"><i>Новый</i></span>
+            </div>
+        </div>
+        @*Этот обработчик надо навесить по щелчку каждого <span> внутри дропдауна ингредиентов.*@
+        @*<button type="button" id="add-ingredient-to-recipe">Добавить ингредиент в рецепт</button>*@
     </div>
     <div class="w3-container steps-list">
         <button type="button" id="add-step-to-recipe">Добавить шаг</button>
@@ -36,6 +42,12 @@
             url: window.location.pathname + '?handler=NewIngredient',
             method: 'POST',
             data: JSON.stringify({ Name: $('#new-ingredient-name').val(), Type: $('#new-ingredient-type').val() })
+        }).done(function (result) {
+            $.ajax({
+                url: window.location.pathname + '?handler=IngredientToRecipe',
+                method: 'GET',
+                data: JSON.stringify({ order: recipeIngredientsOrder, ingredientId: result.Id })
+            });
         });
     });
 
@@ -48,29 +60,29 @@
         }).done(function (result) {
             $('div.steps-list').append(result);
             recipeStepsOrder += 1;
-            $('#add-ingredient-to-step').on('click', function () {
-                $.ajax({
-                    url: window.location.pathname + '?handler=IngredientToStep',
-                    data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder },
-                    dataType: 'html',
-                    method: 'GET'
-                }).done(function (result) {
-                    $('div.step-ingredients').append(result);
-                    stepIngredientsOrder += 1;
-                });
-            });
+            //$('#add-ingredient-to-step').on('click', function () {
+            //    $.ajax({
+            //        url: window.location.pathname + '?handler=IngredientToStep',
+            //        data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder },
+            //        dataType: 'html',
+            //        method: 'GET'
+            //    }).done(function (result) {
+            //        $('div.step-ingredients').append(result);
+            //        stepIngredientsOrder += 1;
+            //    });
+            //});
         });
     });
-    $('#add-ingredient-to-recipe').on('click', function () {
-        $.ajax({
-            url: window.location.pathname + '?handler=IngredientToRecipe',
-            data: { order: recipeIngredientsOrder },
-            dataType: 'html',
-            method: 'GET'
-        }).done(function (result) {
-            $('div.ingredients-list').append(result);
-            recipeIngredientsOrder += 1;
-        });
-    });
+    //$('#add-ingredient-to-recipe').on('click', function () {
+    //    $.ajax({
+    //        url: window.location.pathname + '?handler=IngredientToRecipe',
+    //        data: { order: recipeIngredientsOrder },
+    //        dataType: 'html',
+    //        method: 'GET'
+    //    }).done(function (result) {
+    //        $('div.ingredients-list').append(result);
+    //        recipeIngredientsOrder += 1;
+    //    });
+    //});
 </script>
 }
