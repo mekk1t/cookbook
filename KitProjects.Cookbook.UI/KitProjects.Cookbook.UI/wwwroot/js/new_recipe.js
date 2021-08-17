@@ -37,7 +37,10 @@ $.ajax({
             }
         });
         $('#ingredients-select-list').select2({
-            data: ingredients
+            data: ingredients,
+            createTag: function (params) {
+
+            }
         });
     }
 });
