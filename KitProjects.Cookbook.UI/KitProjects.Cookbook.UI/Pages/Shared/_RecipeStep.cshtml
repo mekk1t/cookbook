@@ -1,15 +1,30 @@
 ﻿@model int
 @{ Layout = null; }
-
-<div class="step">
-    <h4>Шаг @(Model)</h4>
+<div id="step-@(Model)">
+    <h4>Шаг №@(Model + 1)</h4>
     <input type="hidden" value="@(Model + 1)" name="Recipe.Steps[@(Model)].Order"/>
-    <label>Описание</label>
-    <textarea name="Recipe.Steps[@(Model)].Description"></textarea>
-    <label>Время (мин)</label>
-    <input type="number" step="1" name="Recipe.Steps[@(Model)].Duration"/>
-    <div class="step-ingredients">
-        <h5>Ингредиенты шага</h5>
-        <small><i>Тут будет дропдаун из ингредиентов текущего рецепта.</i></small>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label>Описание</label>
+            <textarea placeholder="Подробно опишите, что делать на этом шаге" style="min-height: 100px;" class="w3-input w3-border" name="Recipe.Steps[@(Model)].Description"></textarea>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-half">
+            <label>Картинка</label>
+            <input class="w3-input w3-border min-h-50" type="file" />
+        </div>
+        <div class="w3-half">
+            <label>Продолжительность в минутах</label>
+            <input class="w3-input w3-border min-h-50" type="number" step="1" name="Recipe.Steps[@(Model)].Duration"/>
+        </div>
+    </div>
+    <h5>Ингредиенты шага №@(Model + 1)</h5>
+    <div id="step-@(Model)-ingredients">
+        <div class="w3-row">
+            <div class="w3-rest">
+                <select id="step-@(Model)-ingredients-select-list" class="w3-select"></select>
+            </div>
+        </div>
     </div>
 </div>
