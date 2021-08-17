@@ -18,7 +18,7 @@ $('#new-ingredient form button').on('click', function (event) {
         $.ajax({
             url: window.location.pathname + '?handler=IngredientToRecipe',
             method: 'GET',
-            data: JSON.stringify({ order: recipeIngredientsOrder, ingredientId: result.id })
+            data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
         }).done(function (partial) {
             $('div.ingredients-list').append(partial);
             $('#new-ingredient.form').hide();
