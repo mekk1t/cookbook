@@ -1,5 +1,6 @@
 ﻿using KitProjects.Cookbook.Database;
 using KitProjects.Cookbook.Domain.Models;
+using KitProjects.Cookbook.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -26,5 +27,21 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         {
             _ingredientRepository.Save(ingredient);
         }
+
+        public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order) =>
+            Partial("_RecipeIngredient", new IngredientFormModel
+            {
+                Prefix = "Recipe.IngredientDetails",
+                Order = order
+            });
+
+        public PartialViewResult OnGetIngredientToStep([FromQuery] int stepOrder, [FromQuery] int ingredientOrder) =>
+            Partial("_RecipeIngredient", new IngredientFormModel
+            {
+                Prefix = $"Recipe.Steps[{stepOrder}].IngredientDetails",
+                Order = ingredientOrder
+            });
+
+        public PartialViewResult OnGetStepToRecipe([FromQuery] int order) => Partial("_RecipeStep", order);
     }
 }
