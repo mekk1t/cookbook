@@ -46,6 +46,17 @@
         }).done(function (result) {
             $('div.steps-list').append(result);
             recipeStepsOrder += 1;
+            $('#add-ingredient-to-step').on('click', function () {
+                $.ajax({
+                    url: '?handler=IngredientToStep',
+                    data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder },
+                    dataType: 'html',
+                    method: 'GET'
+                }).done(function (result) {
+                    $('div.step-ingredients').append(result);
+                    stepIngredientsOrder += 1;
+                });
+            });
         });
     });
     $('#add-ingredient-to-recipe').on('click', function () {
