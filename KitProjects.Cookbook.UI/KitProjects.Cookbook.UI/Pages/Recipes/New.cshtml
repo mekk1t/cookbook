@@ -51,23 +51,13 @@
         </div>
     </div>
     <div class="w3-container w3-margin-top ingredients-list">
-        <div class="w3-dropdown-hover">
-            <h4>Ингредиенты</h4>
-            <div class="w3-row">
-                <div class="w3-rest">
-                    <select id="ingredients-select-list" class="w3-select">
-                    </select>
-                </div>
-            </div>
-
-            <button type="button" class="w3-button">Добавить ингредиент в рецепт</button>
-            <div class="w3-dropdown-content w3-border w3-bar-block">
-                <span onclick="document.getElementById('new-ingredient').style.display = 'block';" class="w3-bar-item"><i>Новый</i></span>
-                <select id="ingredients-select-list"></select>
+        <h4>Ингредиенты</h4>
+        <div class="w3-row">
+            <div class="w3-rest">
+                <select id="ingredients-select-list" class="w3-select">
+                </select>
             </div>
         </div>
-        @*Этот обработчик надо навесить по щелчку каждого <span> внутри дропдауна ингредиентов.*@
-        @*<button type="button" id="add-ingredient-to-recipe">Добавить ингредиент в рецепт</button>*@
     </div>
     <div class="w3-container w3-margin-top steps-list">
         <button type="button" id="add-step-to-recipe">Добавить шаг</button>

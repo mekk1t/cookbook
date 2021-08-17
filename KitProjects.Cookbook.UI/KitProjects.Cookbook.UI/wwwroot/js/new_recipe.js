@@ -42,6 +42,22 @@ $.ajax({
 
             }
         });
+        $('#ingredients-select-list option').each(function () {
+            $(this).on('click', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: window.location.pathname + '?handler=IngredientToRecipe',
+                    data: { order: recipeIngredientsOrder },
+                    dataType: 'html',
+                    method: 'GET'
+                }).done(function (result) {
+                    let div = $('<div class="w3-row"><div class="w3-rest"></div></div>');
+                    $('div.ingredients-list').append(div);
+                    $('div.ingredients-list div.w3-rest').last().append(result);
+                    recipeIngredientsOrder += 1;
+                });
+            });
+        });
     }
 });
 
@@ -78,15 +94,7 @@ $('#add-step-to-recipe').on('click', function () {
     });
 });
     //$('#add-ingredient-to-recipe').on('click', function () {
-    //    $.ajax({
-    //        url: window.location.pathname + '?handler=IngredientToRecipe',
-    //        data: { order: recipeIngredientsOrder },
-    //        dataType: 'html',
-    //        method: 'GET'
-    //    }).done(function (result) {
-    //        $('div.ingredients-list').append(result);
-    //        recipeIngredientsOrder += 1;
-    //    });
+    //
     //});
 
 function verificationToken() {
