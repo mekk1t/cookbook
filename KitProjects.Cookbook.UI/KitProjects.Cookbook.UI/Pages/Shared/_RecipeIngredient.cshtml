@@ -1,15 +1,15 @@
 ﻿@using KitProjects.Cookbook.Domain.Models
 
-@model int
+@model KitProjects.Cookbook.UI.Models.IngredientFormModel
 <div class="ingredient">
     <label>Название</label>
-    <input type="text" name="Recipe.IngredientDetails[@(Model)].Ingredient.Name" />
+    <input type="text" name="@(Model.Prefix)[@(Model.Order)].Ingredient.Name" />
     <label>Тип ингредиента</label>
-    <select name="Recipe.IngredientDetails[@(Model)].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+    <select name="@(Model.Prefix)[@(Model.Order)].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
     <label>Количество</label>
-    <input type="number" step="any" name="Recipe.IngredientDetails[@(Model)].Amount" />
+    <input type="number" step="any" name="@(Model.Prefix)[@(Model.Order)].Amount" />
     <label>Мера объема</label>
-    <select name="Recipe.IngredientDetails[@(Model)].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+    <select name="@(Model.Prefix)[@(Model.Order)].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
     <label>Необязательный</label>
-    <input type="checkbox" name="Recipe.IngredientDetails[@(Model)].Optional" value="true"/>
+    <input type="checkbox" name="@(Model.Prefix)[@(Model.Order)].Optional" value="true"/>
 </div>
