@@ -5,35 +5,51 @@
 <form id="new-recipe-form" class="w3-container" method="post">
     <div class="w3-row">
         <div class="w3-rest">
-            <label class="w3-show-inline-block" asp-for="Recipe.Synopsis">Синопсис</label>
-            <input asp-for="Recipe.Synopsis" class="w3-input w3-border" type="text" />
+            <input placeholder="Краткое описание. Одно-два предложения" asp-for="Recipe.Synopsis" class="w3-input w3-border" type="text" />
         </div>
     </div>
     <div class="w3-row">
         <div class="w3-half">
-            <label asp-for="Recipe.Title">Название</label>
-            <input class="w3-input w3-border" type="text" asp-for="Recipe.Title"/>
+            <input placeholder="Название рецепта" class="w3-input w3-border" type="text" asp-for="Recipe.Title"/>
         </div>
         <div class="w3-half">
-            <label>Обложка</label>
-            <input class="w3-input w3-border" type="file" id="recipe-thumbnail"/>
+            <input placeholder="Файл обложки" class="w3-input w3-border" type="file" id="recipe-thumbnail"/>
         </div>
     </div>
     <div class="w3-row">
         <div class="w3-rest">
-            <label asp-for="Recipe.Description">Описание</label>
-            <textarea class="w3-input w3-border" style="min-height: 200px;" asp-for="Recipe.Description"></textarea>
+            <textarea placeholder="Подробное описание рецепта" class="w3-input w3-border" style="min-height: 200px;" asp-for="Recipe.Description"></textarea>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label asp-for="Recipe.Tags">Теги</label>
+            <select id="tags-select-list" class="w3-select" multiple asp-for="Recipe.Tags">
+            </select>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label asp-for="Recipe.Categories">Категории</label>
+            <select class="w3-select" id="categories-select-list" multiple asp-for="Recipe.Categories" asp-items="Html.GetEnumSelectList<Category>()"></select>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label asp-for="Recipe.CookingTypes">Способы приготовления</label>
+            <select class="w3-select" id="cooking-types-select-list" multiple asp-for="Recipe.CookingTypes" asp-items="Html.GetEnumSelectList<CookingType>()"></select>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-half">
+            <input class="w3-input" placeholder="Время готовки в минутах" type="number" asp-for="Recipe.CookingDuration" />
+        </div>
+        <div class="w3-half">
+            <label asp-for="Recipe.Difficulty">Уровень сложности</label>
+            <select class="w3-select" asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
         </div>
     </div>
 
-    <label asp-for="Recipe.Categories">Категории</label>
-    <select multiple asp-for="Recipe.Categories" asp-items="Html.GetEnumSelectList<Category>()"></select>
-    <label asp-for="Recipe.CookingDuration">Время готовки</label>
-    <input type="number" asp-for="Recipe.CookingDuration" />
-    <label asp-for="Recipe.CookingTypes">Способы приготовления</label>
-    <select multiple asp-for="Recipe.CookingTypes" asp-items="Html.GetEnumSelectList<CookingType>()"></select>
-    <label asp-for="Recipe.Difficulty">Уровень сложности</label>
-    <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container ingredients-list">
         <div class="w3-dropdown-hover">
             <button type="button" class="w3-button">Добавить ингредиент в рецепт</button>

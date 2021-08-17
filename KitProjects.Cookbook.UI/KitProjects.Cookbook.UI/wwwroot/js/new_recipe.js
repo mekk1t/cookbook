@@ -42,6 +42,16 @@ $.ajax({
     }
 });
 
+$('#tags-select-list').select2({
+    tags: true
+});
+$('#categories-select-list').select2({
+    tags: true
+})
+$('#cooking-types-select-list').select2({
+    tags: true
+});
+
 $('#add-step-to-recipe').on('click', function () {
     $.ajax({
         url: window.location.pathname + '?handler=StepToRecipe',
