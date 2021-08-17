@@ -1,0 +1,10 @@
+﻿@model int
+
+<div class="step">
+    <h4>Шаг @(Model)</h4>
+    <input type="hidden" value="@(Model + 1)" name="Recipe.Steps[@(Model)].Order"/>
+    <label>Описание</label>
+    <textarea name="Recipe.Steps[@(Model)].Description"></textarea>
+    <label>Время (мин)</label>
+    <input type="number" step="1" name="Recipe.Steps[@(Model)].Duration"/>
+</div>

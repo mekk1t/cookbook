@@ -1,0 +1,15 @@
+﻿@using KitProjects.Cookbook.Domain.Models
+
+@model int
+<div class="ingredient">
+    <label>Название</label>
+    <input type="text" name="Recipe.IngredientDetails[@(Model)].Ingredient.Name" />
+    <label>Тип ингредиента</label>
+    <select name="Recipe.IngredientDetails[@(Model)].Ingredient.Type" asp-items="Html.GetEnumSelectList<IngredientType>()"></select>
+    <label>Количество</label>
+    <input type="number" step="any" name="Recipe.IngredientDetails[@(Model)].Amount" />
+    <label>Мера объема</label>
+    <select name="Recipe.IngredientDetails[@(Model)].Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+    <label>Необязательный</label>
+    <input type="checkbox" name="Recipe.IngredientDetails[@(Model)].Optional" value="true"/>
+</div>
