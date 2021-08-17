@@ -35,5 +35,7 @@ namespace KitProjects.Cookbook.Database
                 .Take(limit)
                 .ToList();
         }
+
+        public T GetOrDefault(long id) => _dbContext.Set<T>().AsNoTracking().FirstOrDefault(entity => entity.Id == id);
     }
 }

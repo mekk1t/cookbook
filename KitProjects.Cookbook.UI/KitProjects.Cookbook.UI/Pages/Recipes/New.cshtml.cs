@@ -28,18 +28,23 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
             _ingredientRepository.Save(ingredient);
         }
 
-        public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order) =>
-            Partial("_IngredientForm", new IngredientFormModel
+        public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order, [FromQuery] long ingredientId)
+        {
+            return Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = "Recipe.IngredientDetails",
-                Order = order
+                Order = order,
+                Ingredient = _ingredientRepository.GetOrDefault(ingredientId)
             });
+        }
 
-        public PartialViewResult OnGetIngredientToStep([FromQuery] int stepOrder, [FromQuery] int ingredientOrder) =>
+
+        public PartialViewResult OnGetIngredientToStep([FromQuery] int stepOrder, [FromQuery] int ingredientOrder, [FromQuery] long ingredientId) =>
             Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = $"Recipe.Steps[{stepOrder}].IngredientDetails",
-                Order = ingredientOrder
+                Order = ingredientOrder,
+                Ingredient = _ingredientRepository.GetOrDefault(ingredientId)
             });
 
         public PartialViewResult OnGetStepToRecipe([FromQuery] int order) => Partial("_RecipeStep", order);
