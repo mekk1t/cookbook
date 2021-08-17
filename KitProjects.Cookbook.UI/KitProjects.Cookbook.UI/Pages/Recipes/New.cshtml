@@ -17,7 +17,7 @@
     <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container ingredients-list">
         <div class="w3-dropdown-hover">
-            <button class="w3-button">Добавить ингредиент в рецепт</button>
+            <button type="button" class="w3-button">Добавить ингредиент в рецепт</button>
             <div class="w3-dropdown-content w3-border w3-bar-block">
                 <span onclick="document.getElementById('new-ingredient').style.display = 'block';" class="w3-bar-item"><i>Новый</i></span>
                 <select id="ingredients-select-list"></select>
