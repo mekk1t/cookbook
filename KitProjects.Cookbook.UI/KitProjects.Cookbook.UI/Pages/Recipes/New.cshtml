@@ -25,13 +25,38 @@
 </form>
 @{ await Html.RenderPartialAsync("_NewIngredient"); }
 <script>
+    var recipeStepsOrder = 0;
+    var recipeIngredientsOrder = 0;
+    var stepIngredientsOrder = 0;
     $('#new-ingredient-form').on('click', function (event) {
         event.preventDefault();
         $.ajax({
             url: '?handler=NewIngredient',
-            dataType: 'html',
             method: 'POST',
             data: JSON.stringify({ Name: $('#new-ingredient-name').val(), Type: $('#new-ingredient-type').val() })
+        });
+    });
+
+    $('#add-step-to-recipe').on('click', function () {
+        $.ajax({
+            url: '?handler=StepToRecipe',
+            data: { order: recipeStepsOrder },
+            dataType: 'html',
+            method: 'GET'
+        }).done(function (result) {
+            $('div.steps-list').append(result);
+            recipeStepsOrder += 1;
+        });
+    });
+    $('#add-ingredient-to-recipe').on('click', function () {
+        $.ajax({
+            url: '?handler=IngredientToRecipe',
+            data: { order: recipeIngredientsOrder },
+            dataType: 'html',
+            method: 'GET'
+        }).done(function (result) {
+            $('div.ingredients-list').append(result);
+            recipeIngredientsOrder += 1;
         });
     });
 </script>
