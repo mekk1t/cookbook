@@ -21,7 +21,7 @@ $('#new-ingredient form button').on('click', function (event) {
             data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
         }).done(function (partial) {
             $('div.ingredients-list').append(partial);
-            $('#new-ingredient.form').hide();
+            $('#new-ingredient form').hide();
         });
     });
 });

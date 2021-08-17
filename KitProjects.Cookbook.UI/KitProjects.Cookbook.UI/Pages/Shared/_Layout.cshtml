@@ -6,6 +6,7 @@
     <title>Kit.Kalimov.Cookbook</title>
     <link rel="stylesheet" href="~/css/w3.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
+    @await RenderSectionAsync("Head", required: false)
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
