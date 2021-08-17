@@ -15,5 +15,9 @@ namespace KitProjects.Cookbook.UI.Models
         /// Номер ингредиента в содержащем списке ингредиентов.
         /// </summary>
         public int Order { get; set; }
+        /// <summary>
+        /// Ингредиент в форму.
+        /// </summary>
+        public Ingredient Ingredient { get; set; }
     }
 }
