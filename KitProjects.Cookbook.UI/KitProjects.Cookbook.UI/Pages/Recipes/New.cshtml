@@ -16,10 +16,10 @@
     <label asp-for="Recipe.Difficulty">Уровень сложности</label>
     <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container ingredients-list">
-        <button id="add-ingredient-to-recipe">Добавить</button>
+        <button type="button" id="add-ingredient-to-recipe">Добавить</button>
     </div>
     <div class="w3-container steps-list">
-        <button id="add-step-to-recipe">Добавить</button>
+        <button type="button" id="add-step-to-recipe">Добавить</button>
     </div>
     <button type="submit">ОК</button>
 </form>
@@ -31,7 +31,7 @@
     $('#new-ingredient-form').on('click', function (event) {
         event.preventDefault();
         $.ajax({
-            url: '?handler=NewIngredient',
+            url: window.location.pathname + '?handler=NewIngredient',
             method: 'POST',
             data: JSON.stringify({ Name: $('#new-ingredient-name').val(), Type: $('#new-ingredient-type').val() })
         });
@@ -39,7 +39,7 @@
 
     $('#add-step-to-recipe').on('click', function () {
         $.ajax({
-            url: '?handler=StepToRecipe',
+            url: window.location.pathname + '?handler=StepToRecipe',
             data: { order: recipeStepsOrder },
             dataType: 'html',
             method: 'GET'
@@ -48,7 +48,7 @@
             recipeStepsOrder += 1;
             $('#add-ingredient-to-step').on('click', function () {
                 $.ajax({
-                    url: '?handler=IngredientToStep',
+                    url: window.location.pathname + '?handler=IngredientToStep',
                     data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder },
                     dataType: 'html',
                     method: 'GET'
@@ -61,7 +61,7 @@
     });
     $('#add-ingredient-to-recipe').on('click', function () {
         $.ajax({
-            url: '?handler=IngredientToRecipe',
+            url: window.location.pathname + '?handler=IngredientToRecipe',
             data: { order: recipeIngredientsOrder },
             dataType: 'html',
             method: 'GET'
