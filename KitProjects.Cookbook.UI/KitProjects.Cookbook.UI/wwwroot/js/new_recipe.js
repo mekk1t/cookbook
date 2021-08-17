@@ -78,6 +78,10 @@ $.ajax({
 });
 
 function appendIngredientDetails(html) {
+    // Можно добавить кнопку удаления. Она будет скрывать или убирать HTML ингредиента, при этом
+    // есть два варианта, как поступить с порядком элементов в массиве:
+    // 1) Переописывать индекс каждого ингредиента.
+    // 2) Обнулять ID ингредиента на клиенте, а на сервере убирать ингредиенты с нулевым ID.
     let div = $('<div class="w3-row"><div class="w3-rest"></div></div>');
     $('div.ingredients-list').append(div);
     $('div.ingredients-list div.w3-rest').last().append(html);
