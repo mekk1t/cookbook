@@ -47,7 +47,7 @@ $.ajax({
                 event.preventDefault();
                 $.ajax({
                     url: window.location.pathname + '?handler=IngredientToRecipe',
-                    data: { order: recipeIngredientsOrder },
+                    data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
                     dataType: 'html',
                     method: 'GET'
                 }).done(function (result) {
