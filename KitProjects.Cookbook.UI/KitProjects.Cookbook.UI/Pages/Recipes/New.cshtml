@@ -10,10 +10,10 @@
     </div>
     <div class="w3-row">
         <div class="w3-half">
-            <input placeholder="Название рецепта" class="w3-input w3-border" type="text" asp-for="Recipe.Title"/>
+            <input placeholder="Название рецепта" class="w3-input w3-border min-h-50" type="text" asp-for="Recipe.Title"/>
         </div>
         <div class="w3-half">
-            <input placeholder="Файл обложки" class="w3-input w3-border" type="file" id="recipe-thumbnail"/>
+            <input placeholder="Файл обложки" class="w3-input w3-border min-h-50" type="file" id="recipe-thumbnail"/>
         </div>
     </div>
     <div class="w3-row">
@@ -42,7 +42,8 @@
     </div>
     <div class="w3-row">
         <div class="w3-half">
-            <input class="w3-input" placeholder="Время готовки в минутах" type="number" asp-for="Recipe.CookingDuration" />
+            <label asp-for="Recipe.CookingDuration">Время готовки в минутах</label>
+            <input class="w3-input" type="number" asp-for="Recipe.CookingDuration" />
         </div>
         <div class="w3-half">
             <label asp-for="Recipe.Difficulty">Уровень сложности</label>

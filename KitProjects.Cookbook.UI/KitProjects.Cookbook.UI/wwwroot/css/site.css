@@ -91,3 +91,7 @@ body {
 .img-fill {
     width: 100%;
 }
+
+.min-h-50 {
+    min-height: 50px;
+}
