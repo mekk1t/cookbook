@@ -50,8 +50,7 @@
             <select class="w3-select" asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
         </div>
     </div>
-
-    <div class="w3-container ingredients-list">
+    <div class="w3-container w3-margin-top ingredients-list">
         <div class="w3-dropdown-hover">
             <button type="button" class="w3-button">Добавить ингредиент в рецепт</button>
             <div class="w3-dropdown-content w3-border w3-bar-block">
@@ -62,10 +61,12 @@
         @*Этот обработчик надо навесить по щелчку каждого <span> внутри дропдауна ингредиентов.*@
         @*<button type="button" id="add-ingredient-to-recipe">Добавить ингредиент в рецепт</button>*@
     </div>
-    <div class="w3-container steps-list">
+    <div class="w3-container w3-margin-top steps-list">
         <button type="button" id="add-step-to-recipe">Добавить шаг</button>
     </div>
-    <button type="submit">ОК</button>
+    <div class="w3-container">
+        <button class="w3-button w3-ripple w3-margin-top w3-margin-bottom w3-green" type="submit">Создать!</button>
+    </div>
 </form>
 @{ await Html.RenderPartialAsync("_NewIngredient"); }
 
