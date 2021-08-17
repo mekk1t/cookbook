@@ -3,7 +3,6 @@ using KitProjects.Cookbook.Domain.Models;
 using KitProjects.Cookbook.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Json;
 
 namespace KitProjects.Cookbook.UI.Pages.Recipes
 {
@@ -22,13 +21,6 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         public void OnPost()
         {
             _repository.Save(Recipe);
-        }
-
-        public JsonResult OnPostNewIngredient([FromBody] string data)
-        {
-            var ingredient = JsonSerializer.Deserialize<Ingredient>(data);
-            _ingredientRepository.Save(ingredient);
-            return new JsonResult(new { ingredient.Id });
         }
 
         public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order, [FromQuery] long ingredientId)
