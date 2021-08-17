@@ -3,10 +3,29 @@
 @model NewModel
 <h3>Новый рецепт</h3>
 <form id="new-recipe-form" class="w3-container" method="post">
-    <label asp-for="Recipe.Title">Название</label>
-    <input type="text" asp-for="Recipe.Title"/>
-    <label asp-for="Recipe.Description">Описание</label>
-    <textarea asp-for="Recipe.Description"></textarea>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label class="w3-show-inline-block" asp-for="Recipe.Synopsis">Синопсис</label>
+            <input asp-for="Recipe.Synopsis" class="w3-input w3-border" type="text" />
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-half">
+            <label asp-for="Recipe.Title">Название</label>
+            <input class="w3-input w3-border" type="text" asp-for="Recipe.Title"/>
+        </div>
+        <div class="w3-half">
+            <label>Обложка</label>
+            <input class="w3-input w3-border" type="file" id="recipe-thumbnail"/>
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <label asp-for="Recipe.Description">Описание</label>
+            <textarea class="w3-input w3-border" style="min-height: 200px;" asp-for="Recipe.Description"></textarea>
+        </div>
+    </div>
+
     <label asp-for="Recipe.Categories">Категории</label>
     <select multiple asp-for="Recipe.Categories" asp-items="Html.GetEnumSelectList<Category>()"></select>
     <label asp-for="Recipe.CookingDuration">Время готовки</label>
