@@ -47,6 +47,9 @@
                 url: window.location.pathname + '?handler=IngredientToRecipe',
                 method: 'GET',
                 data: JSON.stringify({ order: recipeIngredientsOrder, ingredientId: result.Id })
+            }).done(function (partial) {
+                $('div.ingredients-list').append(partial);
+                $('#new-ingredient.form').hide();
             });
         });
     });
