@@ -41,6 +41,7 @@ $.ajax({
         $('#ingredients-select-list').select2({
             data: ingredients,
             tags: true,
+            placeholder: 'Выбрать ингредиент',
             createTag: function (params) {
                 let term = $.trim(params.term);
                 if (term.length < 3) { return null; }
