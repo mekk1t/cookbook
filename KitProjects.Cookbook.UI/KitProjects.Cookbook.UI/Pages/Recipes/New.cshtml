@@ -24,7 +24,8 @@
     <button type="submit">ОК</button>
 </form>
 @{ await Html.RenderPartialAsync("_NewIngredient"); }
-<script>
+@section Scripts{
+    <script>
     var recipeStepsOrder = 0;
     var recipeIngredientsOrder = 0;
     var stepIngredientsOrder = 0;
@@ -71,3 +72,4 @@
         });
     });
 </script>
+}
