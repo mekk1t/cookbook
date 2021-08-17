@@ -22,7 +22,7 @@ $('#new-ingredient form button').on('click', function (event) {
         }).done(function (partial) {
             appendIngredientDetails(partial);
             $('#ingredients-select-list').append(new Option($('#new-ingredient-name').val(), result, false, false)).trigger('change');
-            $('#new-ingredient form').hide();
+            $('#new-ingredient').hide();
             $('#new-ingredient form :input').val('');
         });
     });
@@ -43,9 +43,21 @@ $.ajax({
             tags: true,
             createTag: function (params) {
                 let term = $.trim(params.term);
+                if (term.length < 3) { return null; }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true
+                };
+            }
+        });
+
+        $('#ingredients-select-list').on('select2:select', function (event) {
+            let ingredient = event.params.data;
+            if (ingredient.newTag === true) {
                 $('#new-ingredient').show();
-                $('#new-ingredient-name').val(term);
-                return null;
+                $('#new-ingredient-name').val(ingredient.text);
             }
         });
 
