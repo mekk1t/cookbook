@@ -58,21 +58,15 @@ $.ajax({
             if (ingredient.newTag === true) {
                 $('#new-ingredient').show();
                 $('#new-ingredient-name').val(ingredient.text);
-            }
-        });
-
-        $('#ingredients-select-list option').each(function () {
-            $(this).on('click', function (event) {
-                event.preventDefault();
+            } else {
                 $.ajax({
                     url: window.location.pathname + '?handler=IngredientToRecipe',
                     data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
                     dataType: 'html',
                     method: 'GET'
-                }).done(function (result) {
-                    appendIngredientDetails(result);
-                });
-            });
+                }).done(function (result) { appendIngredientDetails(result); });
+            }
+            $('#ingredients-select-list').val(null).trigger('change');
         });
     }
 });
