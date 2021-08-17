@@ -9,8 +9,11 @@ $('#new-ingredient form button').on('click', function (event) {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({
             name: $('#new-ingredient-name').val(),
-            type: $('#new-ingredient-type').val()
-        })
+            type: Number.parseInt($('#new-ingredient-type').val())
+        }),
+        headers: {
+            'RequestVerificationToken': verificationToken()
+        }
     }).done(function (result) {
         $.ajax({
             url: window.location.pathname + '?handler=IngredientToRecipe',

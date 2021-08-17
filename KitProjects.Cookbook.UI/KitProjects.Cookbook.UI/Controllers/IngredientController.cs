@@ -17,6 +17,7 @@ namespace KitProjects.Cookbook.UI.Controllers
             _repository = repository;
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult CreateNewIngredient([FromBody] Ingredient ingredient)
         {
