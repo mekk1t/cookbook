@@ -110,8 +110,8 @@ $('#add-step-to-recipe').on('click', function () {
         let select2Results = [];
         for (let i = 0; i < ids.length; i++) {
             select2Results.push({
-                id: ids[i].val(),
-                text: names[i].val()
+                id: ids[i].value,
+                text: names[i].value
             });
         }
         $(`#step-${recipeStepsOrder}-ingredients-select-list`).select2({
@@ -128,17 +128,17 @@ $('#add-step-to-recipe').on('click', function () {
                     data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder, ingredientId: $(this).val() },
                     dataType: 'html',
                     method: 'GET'
-                }).done(function (result) { appendIngredientDetails(result); });
+                }).done(function (result) { appendIngredientDetailsToStep(result, recipeStepsOrder); recipeStepsOrder += 1; });
             }
             $('#ingredients-select-list').val(null).trigger('change');
         });
-        recipeStepsOrder += 1;
     });
 });
 
-function appendIngredientDetailsToStep(html, stepOrder, stepObject) {
-    $(`div.step-${stepOrder}-ingredients`).append(html);
-
+// TODO: У меня тут передается на 1 больше чем нужно. Надо пофиксить
+function appendIngredientDetailsToStep(html, stepOrder) {
+    $(`#step-${stepOrder}-ingredients`).append(html);
+    stepIngredientsOrder += 1;
 }
 
 function verificationToken() {
