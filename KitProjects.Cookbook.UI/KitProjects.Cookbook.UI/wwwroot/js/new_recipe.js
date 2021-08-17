@@ -55,18 +55,22 @@ $.ajax({
         });
 
         $('#ingredients-select-list').on('select2:select', function (event) {
-            // TODO: Добавить проверку на наличие инпута по ID ингредиента. Если такой уже выбран, ничего не делать.
             let ingredient = event.params.data;
             if (ingredient.newTag === true) {
                 $('#new-ingredient').show();
                 $('#new-ingredient-name').val(ingredient.text);
             } else {
-                $.ajax({
-                    url: window.location.pathname + '?handler=IngredientToRecipe',
-                    data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
-                    dataType: 'html',
-                    method: 'GET'
-                }).done(function (result) { appendIngredientDetails(result); });
+                if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
+                    $('#ingredients-select-list').val(null).trigger('change');
+                    return;
+                } else {
+                    $.ajax({
+                        url: window.location.pathname + '?handler=IngredientToRecipe',
+                        data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
+                        dataType: 'html',
+                        method: 'GET'
+                    }).done(function (result) { appendIngredientDetails(result); });
+                }
             }
             $('#ingredients-select-list').val(null).trigger('change');
         });
