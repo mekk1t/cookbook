@@ -55,6 +55,7 @@ $.ajax({
         });
 
         $('#ingredients-select-list').on('select2:select', function (event) {
+            // TODO: Добавить проверку на наличие инпута по ID ингредиента. Если такой уже выбран, ничего не делать.
             let ingredient = event.params.data;
             if (ingredient.newTag === true) {
                 $('#new-ingredient').show();

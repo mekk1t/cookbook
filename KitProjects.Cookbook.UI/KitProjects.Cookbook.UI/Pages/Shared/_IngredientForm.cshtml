@@ -6,15 +6,26 @@
 
 @model KitProjects.Cookbook.UI.Models.IngredientFormModel
 <div class="ingredient">
-    <input type="hidden" name="@(name).Ingredient.Id" value="@Model.Ingredient.Id" />
-    <label>Название</label>
-    <input type="text" readonly name="@(name).Ingredient.Name" value="@Model.Ingredient.Name" />
-    <label>Тип</label>
-    <input type="text" readonly name="@(name).Ingredient.Type" value="@Model.Ingredient.Type" />
-    <label>Количество</label>
-    <input type="number" step="any" name="@(name).Amount" />
-    <label>Мера объема</label>
-    <select name="@(name).Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
-    <label>Необязательный</label>
-    <input type="checkbox" name="@(name).Optional" value="true"/>
+    <div class="w3-row">
+        <div class="w3-rest">
+            <input type="hidden" readonly name="@(name).Ingredient.Type" value="@Model.Ingredient.Type" />
+            <input id="ingredient-id-@(Model.Ingredient.Id)" type="hidden" name="@(name).Ingredient.Id" value="@Model.Ingredient.Id" />
+            <label>Название</label>
+            <input class="w3-input" type="text" readonly disabled name="@(name).Ingredient.Name" value="@Model.Ingredient.Name" />
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class="w3-third">
+            <label>Мера объема</label>
+            <select class="w3-select" name="@(name).Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+        </div>
+        <div class="w3-third">
+            <label>Количество</label>
+            <input class="w3-input" type="number" step="any" name="@(name).Amount" />
+        </div>
+        <div class="w3-third">
+            <label>По желанию</label>
+            <input class="w3-check" type="checkbox" name="@(name).Optional" value="true"/>
+        </div>
+    </div>
 </div>
