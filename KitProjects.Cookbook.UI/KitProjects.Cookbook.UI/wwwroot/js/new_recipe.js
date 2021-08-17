@@ -28,16 +28,6 @@ $('#new-ingredient form button').on('click', function (event) {
     });
 });
 
-$('#ingredients-select-list').select2({
-    tags: true,
-    createTag: function (params) {
-        let term = $.trim(params.term);
-        $('#new-ingredient').show();
-        $('#new-ingredient-name').val(term);
-        return null;
-    }
-});
-
 $.ajax({
     url: '/api/ingredients',
     method: 'GET',
@@ -49,7 +39,14 @@ $.ajax({
             }
         });
         $('#ingredients-select-list').select2({
-            data: ingredients
+            data: ingredients,
+            tags: true,
+            createTag: function (params) {
+                let term = $.trim(params.term);
+                $('#new-ingredient').show();
+                $('#new-ingredient-name').val(term);
+                return null;
+            }
         });
 
         $('#ingredients-select-list option').each(function () {
