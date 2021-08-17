@@ -1,5 +1,6 @@
 ﻿var recipeStepsOrder = 0;
 var recipeIngredientsOrder = 0;
+// TODO: Создать мапу между порядковым номером шага и количеством ингредиентов в нем.
 var stepIngredientsOrder = 0;
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
@@ -82,9 +83,7 @@ function appendIngredientDetails(html) {
     // есть два варианта, как поступить с порядком элементов в массиве:
     // 1) Переописывать индекс каждого ингредиента.
     // 2) Обнулять ID ингредиента на клиенте, а на сервере убирать ингредиенты с нулевым ID.
-    let div = $('<div class="w3-row"><div class="w3-rest"></div></div>');
-    $('div.ingredients-list').append(div);
-    $('div.ingredients-list div.w3-rest').last().append(html);
+    $('div.ingredients-list').append(html);
     recipeIngredientsOrder += 1;
 }
 
@@ -106,23 +105,41 @@ $('#add-step-to-recipe').on('click', function () {
         method: 'GET'
     }).done(function (result) {
         $('div.steps-list').append(result);
+        let ids = $('div.ingredients-list div.ingredient div.w3-rest input:nth-child(2)');
+        let names = $('div.ingredients-list div.ingredient div.w3-rest input:last-child');
+        let select2Results = [];
+        for (let i = 0; i < ids.length; i++) {
+            select2Results.push({
+                id: ids[i].val(),
+                text: names[i].val()
+            });
+        }
+        $(`#step-${recipeStepsOrder}-ingredients-select-list`).select2({
+            data: select2Results,
+            placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
+        }).on('select2:select', function (event) {
+            let ingredient = event.params.data;
+            if ($(`div.steps-list #ingredient-id-${ingredient.id}`).length === 1) {
+                $(`#step-${recipeStepsOrder}-ingredients-select-list`).val(null).trigger('change');
+                return;
+            } else {
+                $.ajax({
+                    url: window.location.pathname + '?handler=IngredientToStep',
+                    data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder, ingredientId: $(this).val() },
+                    dataType: 'html',
+                    method: 'GET'
+                }).done(function (result) { appendIngredientDetails(result); });
+            }
+            $('#ingredients-select-list').val(null).trigger('change');
+        });
         recipeStepsOrder += 1;
-        //$('#add-ingredient-to-step').on('click', function () {
-        //    $.ajax({
-        //        url: window.location.pathname + '?handler=IngredientToStep',
-        //        data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder },
-        //        dataType: 'html',
-        //        method: 'GET'
-        //    }).done(function (result) {
-        //        $('div.step-ingredients').append(result);
-        //        stepIngredientsOrder += 1;
-        //    });
-        //});
     });
 });
-    //$('#add-ingredient-to-recipe').on('click', function () {
-    //
-    //});
+
+function appendIngredientDetailsToStep(html, stepOrder, stepObject) {
+    $(`div.step-${stepOrder}-ingredients`).append(html);
+
+}
 
 function verificationToken() {
     return $('input[name="__RequestVerificationToken"]').val();
