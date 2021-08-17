@@ -36,7 +36,7 @@
     var recipeStepsOrder = 0;
     var recipeIngredientsOrder = 0;
     var stepIngredientsOrder = 0;
-    $('#new-ingredient-form').on('click', function (event) {
+    $('#new-ingredient form button').on('submit', function (event) {
         event.preventDefault();
         $.ajax({
             url: window.location.pathname + '?handler=NewIngredient',
