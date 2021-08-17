@@ -60,7 +60,7 @@ $.ajax({
                 $('#new-ingredient').show();
                 $('#new-ingredient-name').val(ingredient.text);
             } else {
-                if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
+                if ($(`div.ingredients-list #ingredient-id-${ingredient.id}`).length === 1) {
                     $('#ingredients-select-list').val(null).trigger('change');
                     return;
                 } else {
