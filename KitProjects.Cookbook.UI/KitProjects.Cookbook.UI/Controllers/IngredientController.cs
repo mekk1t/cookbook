@@ -17,6 +17,12 @@ namespace KitProjects.Cookbook.UI.Controllers
             _repository = repository;
         }
 
+        [HttpGet]
+        public IActionResult GetList()
+        {
+            return new JsonResult(_repository.GetList(limit: int.MaxValue));
+        }
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult CreateNewIngredient([FromBody] Ingredient ingredient)

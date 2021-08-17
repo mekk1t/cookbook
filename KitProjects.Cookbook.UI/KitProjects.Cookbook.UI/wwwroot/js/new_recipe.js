@@ -26,6 +26,22 @@ $('#new-ingredient form button').on('click', function (event) {
     });
 });
 
+$.ajax({
+    url: '/api/ingredients',
+    method: 'GET',
+    success: function (response) {
+        var ingredients = jQuery.map(response, function (element, index) {
+            return {
+                id: element.id,
+                text: element.name
+            }
+        });
+        $('#ingredients-select-list').select2({
+            data: ingredients
+        });
+    }
+});
+
 $('#add-step-to-recipe').on('click', function () {
     $.ajax({
         url: window.location.pathname + '?handler=StepToRecipe',
