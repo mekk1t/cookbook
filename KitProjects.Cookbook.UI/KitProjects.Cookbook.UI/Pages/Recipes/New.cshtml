@@ -16,8 +16,10 @@
     <label asp-for="Recipe.Difficulty">Уровень сложности</label>
     <select asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
     <div class="w3-container ingredients-list">
+        <button id="add-ingredient-to-recipe">Добавить</button>
     </div>
     <div class="w3-container steps-list">
+        <button id="add-step-to-recipe">Добавить</button>
     </div>
     <button type="submit">ОК</button>
 </form>
