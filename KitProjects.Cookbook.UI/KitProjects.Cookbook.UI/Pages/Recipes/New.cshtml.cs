@@ -3,6 +3,7 @@ using KitProjects.Cookbook.Domain.Models;
 using KitProjects.Cookbook.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 
 namespace KitProjects.Cookbook.UI.Pages.Recipes
 {
@@ -20,6 +21,18 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
 
         public void OnPost()
         {
+            foreach (var ingredientDetails in Recipe.IngredientDetails)
+            {
+                foreach (var step in Recipe.Steps)
+                {
+                    var stepIngredientDetails = step.IngredientDetails.FirstOrDefault(details => details.Ingredient.Id == ingredientDetails.Ingredient.Id);
+                    if (stepIngredientDetails != null)
+                    {
+                        stepIngredientDetails.Ingredient = ingredientDetails.Ingredient;
+                    }
+                }
+            }
+
             _repository.Save(Recipe);
         }
 
