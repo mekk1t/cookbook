@@ -1,8 +1,12 @@
 ﻿using KitProjects.Cookbook.Database;
 using KitProjects.Cookbook.Domain.Models;
 using KitProjects.Cookbook.UI.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace KitProjects.Cookbook.UI.Pages.Recipes
@@ -12,6 +16,8 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         private readonly Repository<Ingredient> _ingredientRepository;
         private readonly RecipeRepository _repository;
         [BindProperty] public Recipe Recipe { get; set; }
+        [BindProperty] public IFormFile Thumbnail { get; set; }
+        [BindProperty] public List<StepFormModel> StepForms { get; set; }
 
         public NewModel(RecipeRepository repository, Repository<Ingredient> ingredientRepository)
         {
@@ -32,6 +38,10 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
                     }
                 }
             }
+
+            using var ms = new MemoryStream();
+            Thumbnail.CopyTo(ms);
+            Recipe.ThumbnailBase64 = Convert.ToBase64String(ms.ToArray());
 
             _repository.Save(Recipe);
         }

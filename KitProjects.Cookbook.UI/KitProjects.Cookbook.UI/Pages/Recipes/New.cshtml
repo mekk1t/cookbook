@@ -2,7 +2,7 @@
 @using KitProjects.Cookbook.Domain.Models
 @model NewModel
 <h3>Новый рецепт</h3>
-<form id="new-recipe-form" class="w3-container" method="post">
+<form id="new-recipe-form" class="w3-container" method="post" enctype="multipart/form-data">
     <div id="recipe-block">
         <div class="w3-row">
             <div class="w3-rest">
@@ -14,7 +14,7 @@
                 <input placeholder="Название рецепта" class="w3-input w3-border min-h-50" type="text" asp-for="Recipe.Title"/>
             </div>
             <div class="w3-half">
-                <input placeholder="Файл обложки" class="w3-input w3-border min-h-50" type="file" id="recipe-thumbnail"/>
+                <input asp-for="Thumbnail" placeholder="Файл обложки" class="w3-input w3-border min-h-50" type="file" id="recipe-thumbnail"/>
             </div>
         </div>
         <div class="w3-row">
