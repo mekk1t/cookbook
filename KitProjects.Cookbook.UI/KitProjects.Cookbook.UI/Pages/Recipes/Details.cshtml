@@ -1,4 +1,48 @@
 ﻿@page "{id:long}"
 @model KitProjects.Cookbook.UI.Pages.Recipes.DetailsModel
-@{
-}
+<div class="w3-container">
+    <div id="thumbnail-and-ingredients">
+        <div class="w3-row">
+            <div class="w3-twothird">
+                <img alt="Картинка рецепта" />
+            </div>
+            <div class="w3-third">
+                <div class="w3-border">
+                    <h3>Ингредиенты</h3>
+                    <ul>
+                        <li>Ингредиент 1</li>
+                        <li>Ингредиент 2</li>
+                        <li>Ингредиент 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="steps-mode-buttons">
+        <button class="w3-button w3-border w3-hover-light-green">Пошаговый режим</button>
+        <button class="w3-button w3-border w3-hover-light-green">Все шаги сразу</button>
+    </div>
+    <div id="main-details">
+        <div class="w3-container">
+            <div class="w3-row">
+                <div class="w3-third">
+                    Автор: #ИМЯ?
+                </div>
+                <div class="w3-third">
+                    Дата создания
+                </div>
+                <div class="w3-third">
+                    Время готовки: минуты
+                </div>
+            </div>
+            <div class="w3-row">
+                <div class="w3-rest">
+                    Теги: перечисление
+                </div>
+            </div>
+            <div class="w3-row">
+                <p>Большой абзац с описанием</p>
+            </div>
+        </div>
+    </div>
+</div>
