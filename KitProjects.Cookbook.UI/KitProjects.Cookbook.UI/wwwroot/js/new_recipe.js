@@ -1,6 +1,6 @@
 ﻿var recipeStepsOrder = 0;
 var recipeIngredientsOrder = 0;
-// TODO: Создать мапу между порядковым номером шага и количеством ингредиентов в нем.
+var stepsIngredientsCount = new Object();
 var stepIngredientsOrder = 0;
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
@@ -90,12 +90,8 @@ function appendIngredientDetails(html) {
 $('#tags-select-list').select2({
     tags: true
 });
-$('#categories-select-list').select2({
-    tags: true
-})
-$('#cooking-types-select-list').select2({
-    tags: true
-});
+$('#categories-select-list').select2();
+$('#cooking-types-select-list').select2();
 
 $('#add-step-to-recipe').on('click', function () {
     $.ajax({
@@ -114,31 +110,39 @@ $('#add-step-to-recipe').on('click', function () {
                 text: names[i].value
             });
         }
-        $(`#step-${recipeStepsOrder}-ingredients-select-list`).select2({
+
+        let $currentStepIngredientsSelect2 = $(`#step-${recipeStepsOrder}-ingredients-select-list`);
+        $currentStepIngredientsSelect2.data('step-id', recipeStepsOrder);
+        recipeStepsOrder += 1;
+        $currentStepIngredientsSelect2.select2({
             data: select2Results,
             placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
         }).on('select2:select', function (event) {
             let ingredient = event.params.data;
             if ($(`div.steps-list #ingredient-id-${ingredient.id}`).length === 1) {
-                $(`#step-${recipeStepsOrder}-ingredients-select-list`).val(null).trigger('change');
+                $currentStepIngredientsSelect2.val(null).trigger('change');
                 return;
             } else {
+                let stepNumber = $currentStepIngredientsSelect2.data('step-id');
                 $.ajax({
                     url: window.location.pathname + '?handler=IngredientToStep',
-                    data: { stepOrder: recipeStepsOrder, ingredientOrder: stepIngredientsOrder, ingredientId: $(this).val() },
+                    data: { stepOrder: stepNumber, ingredientOrder: stepsIngredientsCount[stepNumber], ingredientId: $(this).val() },
                     dataType: 'html',
                     method: 'GET'
-                }).done(function (result) { appendIngredientDetailsToStep(result, recipeStepsOrder); recipeStepsOrder += 1; });
+                }).done(function (result) { appendIngredientDetailsToStep(result, stepNumber); });
             }
-            $('#ingredients-select-list').val(null).trigger('change');
+            $currentStepIngredientsSelect2.val(null).trigger('change');
         });
     });
 });
 
-// TODO: У меня тут передается на 1 больше чем нужно. Надо пофиксить
 function appendIngredientDetailsToStep(html, stepOrder) {
     $(`#step-${stepOrder}-ingredients`).append(html);
-    stepIngredientsOrder += 1;
+    if (!stepsIngredientsCount[stepOrder]) {
+        stepsIngredientsCount[stepOrder] = 1;
+    } else {
+        stepsIngredientsCount[stepOrder] += 1;
+    }
 }
 
 function verificationToken() {
