@@ -119,11 +119,11 @@ $('#add-step-to-recipe').on('click', function () {
             placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
         }).on('select2:select', function (event) {
             let ingredient = event.params.data;
-            if ($(`div.steps-list #ingredient-id-${ingredient.id}`).length === 1) {
+            let stepNumber = $currentStepIngredientsSelect2.data('step-id');
+            if ($(`#step-${stepNumber}-ingredients #ingredient-id-${ingredient.id}`).length === 1) {
                 $currentStepIngredientsSelect2.val(null).trigger('change');
                 return;
             } else {
-                let stepNumber = $currentStepIngredientsSelect2.data('step-id');
                 $.ajax({
                     url: window.location.pathname + '?handler=IngredientToStep',
                     data: { stepOrder: stepNumber, ingredientOrder: stepsIngredientsCount[stepNumber], ingredientId: $(this).val() },
