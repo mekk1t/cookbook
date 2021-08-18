@@ -49,9 +49,12 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
                 }
             }
 
-            using var ms = new MemoryStream();
-            Thumbnail.CopyTo(ms);
-            Recipe.ThumbnailBase64 = Convert.ToBase64String(ms.ToArray());
+            if (Thumbnail != null)
+            {
+                using var ms = new MemoryStream();
+                Thumbnail.CopyTo(ms);
+                Recipe.ThumbnailBase64 = Convert.ToBase64String(ms.ToArray());
+            }
 
             _repository.Save(Recipe);
         }
