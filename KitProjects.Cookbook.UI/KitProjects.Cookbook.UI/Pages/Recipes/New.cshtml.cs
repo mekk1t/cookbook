@@ -17,7 +17,7 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
         private readonly RecipeRepository _repository;
         [BindProperty] public Recipe Recipe { get; set; }
         [BindProperty] public IFormFile Thumbnail { get; set; }
-        [BindProperty] public List<StepFormModel> StepForms { get; set; }
+        [BindProperty] public List<StepFormModel> StepForms { get; set; } = new List<StepFormModel>();
 
         public NewModel(RecipeRepository repository, Repository<Ingredient> ingredientRepository)
         {
