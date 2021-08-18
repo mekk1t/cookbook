@@ -24,6 +24,7 @@ namespace KitProjects.Cookbook.Database
         {
             _dbContext.Set<T>().Update(entity);
             _dbContext.SaveChanges();
+            _dbContext.ChangeTracker.Clear();
         }
 
         public List<T> GetList(long lastId = 0, int limit = 10)
