@@ -9,6 +9,7 @@ namespace KitProjects.Cookbook.UI.Models
 {
     public class StepFormModel
     {
+        public long StepId { get; set; }
         public IFormFile Picture { get; set; }
     }
 }

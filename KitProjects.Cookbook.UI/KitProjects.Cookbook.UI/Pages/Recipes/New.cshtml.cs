@@ -39,6 +39,16 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
                 }
             }
 
+            foreach (var step in StepForms)
+            {
+                if (step.Picture != null)
+                {
+                    using var stream = new MemoryStream();
+                    step.Picture.CopyTo(stream);
+                    Recipe.Steps.First(recipeStep => recipeStep.Id == step.StepId).ImageBase64 = Convert.ToBase64String(stream.ToArray());
+                }
+            }
+
             using var ms = new MemoryStream();
             Thumbnail.CopyTo(ms);
             Recipe.ThumbnailBase64 = Convert.ToBase64String(ms.ToArray());
