@@ -1,5 +1,4 @@
-﻿using KitProjects.Cookbook.Database.Extensions;
-using KitProjects.Cookbook.Domain.Models;
+﻿using KitProjects.Cookbook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -27,22 +26,6 @@ namespace KitProjects.Cookbook.Database
                     .HasConversion(
                     convertToProviderExpression: tagsList => string.Join(';', tagsList),
                     convertFromProviderExpression: tagsString => tagsString.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList());
-                builder
-                    .Property(r => r.Categories)
-                    .HasConversion(
-                    categories => string.Join(';', categories.Select(c => c.ToString())),
-                    categoriesString => categoriesString
-                        .Split(';', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(str => str.ToEnum<Category>())
-                        .ToList());
-                builder
-                    .Property(r => r.CookingTypes)
-                    .HasConversion(
-                    types => string.Join(';', types.Select(c => c.ToString())),
-                    typesString => typesString
-                        .Split(';', StringSplitOptions.RemoveEmptyEntries)
-                        .Select(str => str.ToEnum<CookingType>())
-                        .ToList());
             });
 
             modelBuilder.Entity<Step>(builder =>

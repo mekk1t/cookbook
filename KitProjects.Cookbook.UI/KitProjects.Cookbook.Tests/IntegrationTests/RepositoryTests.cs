@@ -30,12 +30,9 @@ namespace KitProjects.Cookbook.Tests.IntegrationTests
             {
                 Description = "Описание",
                 Synopsis = "Синопсис",
-                Difficulty = Difficulty.Hard,
-                CookingTypes = new List<CookingType> { CookingType.Frying },
                 Title = "Название",
                 Tags = new List<string> { "Тег1", "Тег2" },
                 CookingDuration = 12,
-                Categories = new List<Category> { Category.Breakfast, Category.Lunch, Category.Healthy }
             };
 
             _sut.Save(recipe);
@@ -49,7 +46,7 @@ namespace KitProjects.Cookbook.Tests.IntegrationTests
             var ingredient = new Ingredient
             {
                 Name = "Огурец",
-                Type = IngredientType.Vegetables
+                Type = IngredientType.Овощи
             };
             var sut = new Repository<Ingredient>(_dbContext);
 

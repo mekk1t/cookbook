@@ -1,5 +1,4 @@
 ﻿@page
-@using KitProjects.Cookbook.Domain.Models
 @model NewModel
 <h3>Новый рецепт</h3>
 <form id="new-recipe-form" class="w3-container" method="post" enctype="multipart/form-data">
@@ -30,25 +29,9 @@
             </div>
         </div>
         <div class="w3-row">
-            <div class="w3-rest">
-                <label asp-for="Recipe.Categories">Категории</label>
-                <select class="w3-select" id="categories-select-list" multiple asp-for="Recipe.Categories" asp-items="Html.GetEnumSelectList<Category>()"></select>
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-rest">
-                <label asp-for="Recipe.CookingTypes">Способы приготовления</label>
-                <select class="w3-select" id="cooking-types-select-list" multiple asp-for="Recipe.CookingTypes" asp-items="Html.GetEnumSelectList<CookingType>()"></select>
-            </div>
-        </div>
-        <div class="w3-row">
             <div class="w3-half">
                 <label asp-for="Recipe.CookingDuration">Время готовки в минутах</label>
                 <input class="w3-input" type="number" asp-for="Recipe.CookingDuration" />
-            </div>
-            <div class="w3-half">
-                <label asp-for="Recipe.Difficulty">Уровень сложности</label>
-                <select class="w3-select" asp-for="Recipe.Difficulty" asp-items="Html.GetEnumSelectList<Difficulty>()"></select>
             </div>
         </div>
     </div>

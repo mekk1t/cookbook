@@ -2,9 +2,10 @@
 {
     public enum IngredientType
     {
-        Vegetables,
-        Fruits,
-        Fermented_Milk,
-        Milk
+        Хз,
+        Овощи,
+        Фрукты,
+        Молочка,
+        Кисломолочка
     }
 }
