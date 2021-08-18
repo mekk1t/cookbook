@@ -45,4 +45,37 @@
             </div>
         </div>
     </div>
+    <div id="steps-block">
+        @foreach (var step in Model.Recipe.Steps)
+        {
+            StepComponent(step);
+        }
+    </div>
 </div>
+
+@{
+    void StepComponent(KitProjects.Cookbook.Domain.Models.Step step)
+    {
+        @if (string.IsNullOrEmpty(step.ImageBase64))
+        {
+            <h3>Шаг @step.Order</h3>
+            <p>@step.Description</p>
+            <small>Куда-то еще ингредиенты впендюрить</small>
+        }
+        else
+        {
+            <div class="w3-row">
+                <div class="w3-half">
+                    <img height="200" alt="картинка шага" />
+                </div>
+                <div class="w3-half">
+                    <h3>Шаг @step.Order</h3>
+                    <p>@step.Description</p>
+                    <small>Куда-то еще ингредиенты впендюрить</small>
+                </div>
+            </div>
+        }
+        <div class="w3-container">
+        </div>
+    }
+}
