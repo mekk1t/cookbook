@@ -4,15 +4,23 @@
     <div id="thumbnail-and-ingredients">
         <div class="w3-row">
             <div class="w3-twothird">
-                <img alt="Картинка рецепта" />
+                @if (string.IsNullOrEmpty(Model.Recipe.ThumbnailBase64))
+                {
+                    <small>Здесь могла быть картинка</small>
+                }
+                else
+                {
+                    <img src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
+                }
             </div>
             <div class="w3-third">
                 <div class="w3-border">
                     <h3>Ингредиенты</h3>
                     <ul>
-                        <li>Ингредиент 1</li>
-                        <li>Ингредиент 2</li>
-                        <li>Ингредиент 3</li>
+                        @foreach (var ingredient in Model.Recipe.IngredientDetails)
+                        {
+                            <li>@ingredient.Ingredient.Name</li>
+                        }
                     </ul>
                 </div>
             </div>
