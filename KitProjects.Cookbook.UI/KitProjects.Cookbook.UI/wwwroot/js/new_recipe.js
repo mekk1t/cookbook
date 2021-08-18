@@ -2,6 +2,8 @@
 var recipeIngredientsOrder = 0;
 var stepsIngredientsCount = new Object();
 var stepIngredientsOrder = 0;
+var currentBlock = 1;
+
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
     $.ajax({
@@ -134,6 +136,32 @@ $('#add-step-to-recipe').on('click', function () {
             $currentStepIngredientsSelect2.val(null).trigger('change');
         });
     });
+});
+
+$('#ingredients-block').hide();
+$('#steps-block').hide();
+$('#done-block').hide();
+
+$('#navigation-button').on('click', function () {
+    switch (currentBlock) {
+        case 1: {
+            $('#recipe-block').hide();
+            $('#ingredients-block').show();
+            break;
+        }
+        case 2: {
+            $('#ingredients-block').hide();
+            $('#steps-block').show();
+            break;
+        }
+        case 3: {
+            $('#steps-block').hide();
+            $('#done-block').show();
+            $('#navigation-button').hide();
+            break;
+        }
+    }
+    currentBlock += 1;
 });
 
 function appendIngredientDetailsToStep(html, stepOrder) {
