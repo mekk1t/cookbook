@@ -12,7 +12,8 @@
     <div class="w3-row">
         <div class="w3-half">
             <label>Картинка</label>
-            <input class="w3-input w3-border min-h-50" type="file" />
+            <input type="hidden" value="@(Model + 1)" name="StepForms[@(Model)].StepOrder" />
+            <input class="w3-input w3-border min-h-50" type="file" name="StepForms[@(Model)].Picture" />
         </div>
         <div class="w3-half">
             <label>Продолжительность в минутах</label>

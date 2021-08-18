@@ -45,7 +45,7 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
                 {
                     using var stream = new MemoryStream();
                     step.Picture.CopyTo(stream);
-                    Recipe.Steps.First(recipeStep => recipeStep.Id == step.StepId).ImageBase64 = Convert.ToBase64String(stream.ToArray());
+                    Recipe.Steps.First(recipeStep => recipeStep.Order == step.StepOrder).ImageBase64 = Convert.ToBase64String(stream.ToArray());
                 }
             }
 
