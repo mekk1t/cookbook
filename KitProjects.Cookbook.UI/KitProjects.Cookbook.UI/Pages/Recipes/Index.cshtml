@@ -1,4 +1,31 @@
 ﻿@page
-<p>
-    Тут будут рецепты
-</p>
+@model KitProjects.Cookbook.UI.Pages.Recipes.IndexModel
+
+<div class="w3-container">
+    <div id="recipes-filters">
+        <small>Тут будут фильтры</small>
+        <button class="w3-button w3-ripple">Искать</button>
+    </div>
+    <div id="recipes-list">
+        @foreach (var recipe in Model.Recipes)
+        {
+            RenderRecipe(recipe);
+        }
+    </div>
+</div>
+
+@{
+    void RenderRecipe(KitProjects.Cookbook.Domain.Models.Recipe recipe)
+    {
+        <div class="w3-row w3-border-amber">
+            <div class="w3-half">
+                <span>@string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList())</span>
+                <img src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+            </div>
+            <div class="w3-half">
+                <h2>@recipe.Title</h2>
+                <small>@recipe.Synopsis</small>
+            </div>
+        </div>
+    }
+}
