@@ -13,9 +13,10 @@
 @{
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
+        bool thereAreTags = recipe.Tags?.Count > 0;
         <div class="w3-row x-center w3-border recipes-list-row">
             <div class="w3-half h-150 w3-center">
-                <div class="recipes-list-tags w3-border">@string.Join(' ', recipe.Tags?.Select(tag => $"#{tag}")?.ToList() ?? new List<string>(0))</div>
+                <div class="recipes-list-tags w3-border">@(thereAreTags ? string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList()) : "Тегов нет")</div>
                 <img class="x-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
             </div>
             <div class="w3-half w3-center">
