@@ -153,3 +153,11 @@ body {
 .flex-around {
     justify-content: space-around;
 }
+
+.recipe-details-thumbnail {
+    width: 600px;
+}
+
+.recipe-details-ingredients {
+    width: 350px;
+}

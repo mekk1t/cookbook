@@ -1,28 +1,30 @@
 ﻿@page "{id:long}"
 @model KitProjects.Cookbook.UI.Pages.Recipes.DetailsModel
+<h1>
+    @Model.Recipe.Title
+</h1>
 <div class="w3-container">
     <div id="thumbnail-and-ingredients">
-        <div class="w3-row">
-            <div class="w3-twothird">
+        <div class="flex flex-around">
+            <div class="recipe-details-thumbnail w3-center">
                 @if (string.IsNullOrEmpty(Model.Recipe.ThumbnailBase64))
                 {
                     <small>Здесь могла быть картинка</small>
                 }
                 else
                 {
-                    <img src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
+                    <img style="width:100%;" src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
                 }
             </div>
-            <div class="w3-third">
-                <div class="w3-border">
-                    <h3>Ингредиенты</h3>
-                    <ul>
-                        @foreach (var ingredient in Model.Recipe.IngredientDetails)
-                        {
-                            <li>@ingredient.Ingredient.Name</li>
-                        }
-                    </ul>
-                </div>
+            <div class="recipe-details-ingredients w3-border">
+                <h3 class="w3-center">Ингредиенты</h3>
+                <ul>
+                    @foreach (var ingredient in Model.Recipe.IngredientDetails)
+                    {
+                        string optionalText = ingredient.Optional ? "<i>(необязательно)</i>" : "";
+                        <li>@(ingredient.Ingredient.Name): @(ingredient.Amount) @(ingredient.Measure) @optionalText</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
