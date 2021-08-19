@@ -2,10 +2,6 @@
 @model KitProjects.Cookbook.UI.Pages.Recipes.IndexModel
 
 <div class="w3-container">
-    <div id="recipes-filters">
-        <small>Тут будут фильтры</small>
-        <button class="w3-button w3-ripple">Искать</button>
-    </div>
     <div id="recipes-list">
         @foreach (var recipe in Model.Recipes)
         {
