@@ -102,6 +102,10 @@ body {
     width: 90%;
 }
 
+.recipe-card {
+    width: 300px;
+}
+
 .x-center {
     margin-left: auto;
     margin-right: auto;
@@ -115,7 +119,7 @@ body {
 .recipe-list-thumbnail {
     object-fit: contain;
     object-position: center;
-    height: 50%;
+    width: 90%;
     display: block;
 }
 
@@ -128,4 +132,16 @@ body {
 
 .h-150 {
     height: 150px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-center {
+    justify-content: center;
 }
