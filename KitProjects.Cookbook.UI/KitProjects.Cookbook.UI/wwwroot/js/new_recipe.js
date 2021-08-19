@@ -1,4 +1,6 @@
-﻿var recipeStepsOrder = 0;
+﻿'use strict';
+
+var recipeStepsOrder = 0;
 var recipeIngredientsOrder = 0;
 var stepsIngredientsCount = new Object();
 var stepIngredientsOrder = 0;
@@ -81,10 +83,6 @@ $.ajax({
 });
 
 function appendIngredientDetails(html) {
-    // Можно добавить кнопку удаления. Она будет скрывать или убирать HTML ингредиента, при этом
-    // есть два варианта, как поступить с порядком элементов в массиве:
-    // 1) Переописывать индекс каждого ингредиента.
-    // 2) Обнулять ID ингредиента на клиенте, а на сервере убирать ингредиенты с нулевым ID.
     $('div.ingredients-list').append(html);
     recipeIngredientsOrder += 1;
 }
