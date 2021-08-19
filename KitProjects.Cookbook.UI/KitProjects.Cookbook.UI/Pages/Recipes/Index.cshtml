@@ -2,7 +2,7 @@
 @model KitProjects.Cookbook.UI.Pages.Recipes.IndexModel
 
 <div class="w3-container">
-    <ul class="flex-ul flex-space-between">
+    <ul class="flex-ul flex-around">
         @foreach (var recipe in Model.Recipes)
         {
             await RenderRecipeAsync(recipe);
@@ -14,13 +14,19 @@
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
-        <li class="flex flex-column flex-center w3-border recipe-card">
-            <div class="w3-half x-center">
+        <div class="w3-container recipe-card w3-border w3-center">
+            <div class="w3-row">
                 <h2><a asp-page="/recipes/details" asp-route-id="@recipe.Id">@(recipe.Title ?? "Без названия")</a></h2>
-                <small>@recipe.Synopsis</small>
-                <div class="recipes-list-tags w3-border">@(thereAreTags ? string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList()) : "Тегов нет")</div>
-                <img class="recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
             </div>
-        </li>
+            <div class="w3-row">
+                <small>@recipe.Synopsis</small>
+            </div>
+            <div class="w3-row">
+                <div class="x-center recipes-list-tags w3-border">@(thereAreTags ? string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList()) : "Тегов нет")</div>
+            </div>
+            <div class="w3-row">
+                <img class="x-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+            </div>
+        </div>
     }
 }

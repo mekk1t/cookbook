@@ -74,6 +74,7 @@ body {
     list-style: none;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .flex-space-between {
@@ -103,7 +104,8 @@ body {
 }
 
 .recipe-card {
-    width: 300px;
+    width: 350px;
+    margin-top: 20px;
 }
 
 .x-center {
@@ -121,6 +123,8 @@ body {
     object-position: center;
     width: 90%;
     display: block;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .recipes-list-tags {
@@ -144,4 +148,8 @@ body {
 
 .flex-center {
     justify-content: center;
+}
+
+.flex-around {
+    justify-content: space-around;
 }
