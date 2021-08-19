@@ -9,13 +9,13 @@
     <div id="recipes-list">
         @foreach (var recipe in Model.Recipes)
         {
-            RenderRecipe(recipe);
+            await RenderRecipeAsync(recipe);
         }
     </div>
 </div>
 
 @{
-    void RenderRecipe(KitProjects.Cookbook.Domain.Models.Recipe recipe)
+    async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         <div class="w3-row w3-border">
             <div class="w3-half h-150">
@@ -23,7 +23,7 @@
                 <img class="w3-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
             </div>
             <div class="w3-half">
-                <h2>@recipe.Title</h2>
+                <h2><a asp-page="/recipes/details" asp-route-id="@recipe.Id">@recipe.Title</a></h2>
                 <small>@recipe.Synopsis</small>
             </div>
         </div>
