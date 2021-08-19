@@ -95,3 +95,22 @@ body {
 .min-h-50 {
     min-height: 50px;
 }
+
+.recipe-list-thumbnail {
+    object-fit: contain;
+    object-position: center;
+    width: 450px;
+    height: 100px;
+    margin-top: 25px;
+    display: block;
+}
+
+.recipes-list-tags {
+    margin-top: 10px;
+    display: block;
+    font-style: italic;
+}
+
+.h-150 {
+    height: 150px;
+}

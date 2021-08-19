@@ -17,10 +17,10 @@
 @{
     void RenderRecipe(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
-        <div class="w3-row w3-border-amber">
-            <div class="w3-half">
-                <span>@string.Join(' ', recipe.Tags?.Select(tag => $"#{tag}")?.ToList() ?? new List<string>(0))</span>
-                <img src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+        <div class="w3-row w3-border">
+            <div class="w3-half h-150">
+                <span class="w3-center recipes-list-tags">@string.Join(' ', recipe.Tags?.Select(tag => $"#{tag}")?.ToList() ?? new List<string>(0))</span>
+                <img class="w3-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
             </div>
             <div class="w3-half">
                 <h2>@recipe.Title</h2>
