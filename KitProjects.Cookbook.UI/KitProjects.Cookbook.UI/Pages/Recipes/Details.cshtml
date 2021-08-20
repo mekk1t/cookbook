@@ -35,23 +35,20 @@
     <div id="main-details">
         <div class="w3-container">
             <div class="w3-row">
-                <div class="w3-third">
-                    Автор: #ИМЯ?
+                <div class="w3-half w3-center">
+                    Создан @Model.Recipe.CreatedAt.ToShortDateString()
                 </div>
-                <div class="w3-third">
-                    Дата создания
-                </div>
-                <div class="w3-third">
-                    Время готовки: минуты
+                <div class="w3-half w3-center">
+                    Время готовки: @Model.Recipe.CookingDuration минут
                 </div>
             </div>
             <div class="w3-row">
-                <div class="w3-rest">
-                    Теги: перечисление
+                <div class="w3-rest w3-center">
+                    @(string.Join(' ', Model.Recipe.Tags ?? new List<string>(0)))
                 </div>
             </div>
             <div class="w3-row">
-                <p>Большой абзац с описанием</p>
+                <p>@Model.Recipe.Description</p>
             </div>
         </div>
     </div>
@@ -76,7 +73,7 @@
         {
             <div class="w3-row">
                 <div class="w3-half">
-                    <img height="200" alt="картинка шага" />
+                    <img src="data:image/jpg;base64, @(step.ImageBase64)" height="200" alt="картинка шага" />
                 </div>
                 <div class="w3-half">
                     <h3>Шаг @step.Order</h3>
