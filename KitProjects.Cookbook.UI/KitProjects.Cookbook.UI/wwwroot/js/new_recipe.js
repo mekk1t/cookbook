@@ -108,6 +108,12 @@ function initializeIngredientsSelect2() {
 
 $('#tags-select-list').select2({ tags: true });
 
+
+
+$('#add-step-to-recipe').on('click', appendStepToRecipe);
+hideSecondaryBlocks();
+$('#navigation-button').on('click', navigationDisplay);
+
 function appendStepToRecipe() {
     $.ajax({
         url: window.location.pathname + '?handler=StepToRecipe',
@@ -160,10 +166,6 @@ function stepIngredientsSelect2Handler(event) {
     }
     triggerChange();
 }
-
-$('#add-step-to-recipe').on('click', appendStepToRecipe);
-hideSecondaryBlocks();
-$('#navigation-button').on('click', navigationDisplay);
 
 function navigationDisplay() {
     switch (currentBlock) {
