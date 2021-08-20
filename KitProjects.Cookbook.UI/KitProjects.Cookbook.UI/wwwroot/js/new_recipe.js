@@ -12,17 +12,23 @@ function getNewIngredientFromForm() {
     };
 }
 
-$('#new-ingredient form button').on('click', function (event) {
-    event.preventDefault();
+function postJson(url, data, doneCallback) {
     $.ajax({
-        url: '/api/ingredients',
+        url: url,
+        data: JSON.stringify(data),
         method: 'POST',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(getNewIngredientFromForm()),
         headers: {
             'RequestVerificationToken': verificationToken()
         }
-    }).done(function (result) {
+    }).done(doneCallback);
+}
+
+
+
+$('#new-ingredient form button').on('click', function (event) {
+    event.preventDefault();
+    postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
         $.ajax({
             url: window.location.pathname + '?handler=IngredientToRecipe',
             method: 'GET',
