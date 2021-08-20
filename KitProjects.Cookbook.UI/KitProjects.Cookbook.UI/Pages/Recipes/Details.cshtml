@@ -22,7 +22,7 @@
                     @foreach (var ingredient in Model.Recipe.IngredientDetails)
                     {
                         <li>
-                            @(ingredient.Ingredient.Name): @(ingredient.Amount) @(ingredient.Measure)
+                            @(ingredient.Ingredient.Name): @(ingredient.Amount.ToCustomString())  @(ingredient.Measure)
                             @if (ingredient.Optional)
                             {
                                 <i>(по желанию)</i>
