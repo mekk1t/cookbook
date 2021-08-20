@@ -132,9 +132,7 @@ function appendStepToRecipe() {
         $currentStepIngredientsSelect2.select2({
             data: select2Results,
             placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
-        }).on('select2:select', function (event) {
-
-        });
+        }).on('select2:select', stepIngredientsSelect2Handler);
     });
 }
 
