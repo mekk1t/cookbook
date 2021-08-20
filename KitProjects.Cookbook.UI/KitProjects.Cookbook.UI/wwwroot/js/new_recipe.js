@@ -108,10 +108,10 @@ function initializeIngredientsSelect2() {
 
 $('#tags-select-list').select2({ tags: true });
 
-
-
 $('#add-step-to-recipe').on('click', appendStepToRecipe);
+
 hideSecondaryBlocks();
+
 $('#navigation-button').on('click', navigationDisplay);
 
 function appendStepToRecipe() {
