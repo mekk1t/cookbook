@@ -106,9 +106,7 @@ function initializeIngredientsSelect2() {
     });
 }
 
-$('#tags-select-list').select2({
-    tags: true
-});
+$('#tags-select-list').select2({ tags: true });
 
 $('#add-step-to-recipe').on('click', function () {
     $.ajax({
