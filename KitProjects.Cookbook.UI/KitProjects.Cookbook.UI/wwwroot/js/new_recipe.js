@@ -5,6 +5,23 @@ var recipeIngredientsOrder = 0;
 var currentBlock = 1;
 const stepIngredientsCounter = new StepIngredientsCounter();
 
+$('#new-ingredient form button').on('click', function (event) {
+    event.preventDefault();
+    postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
+        $.ajax({
+            url: window.location.pathname + '?handler=IngredientToRecipe',
+            method: 'GET',
+            data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
+        }).done(function (partial) {
+            appendIngredientDetails(partial);
+            addIngredientToRecipeSelect2(result);
+            closeNewIngredientForm();
+        });
+    });
+});
+
+initializeIngredientsSelect2();
+
 function getNewIngredientFromForm() {
     return {
         name: $('#new-ingredient-name').val(),
@@ -33,20 +50,10 @@ function closeNewIngredientForm() {
     $('#new-ingredient form :input').val('');
 }
 
-$('#new-ingredient form button').on('click', function (event) {
-    event.preventDefault();
-    postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
-        $.ajax({
-            url: window.location.pathname + '?handler=IngredientToRecipe',
-            method: 'GET',
-            data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
-        }).done(function (partial) {
-            appendIngredientDetails(partial);
-            addIngredientToRecipeSelect2(result);
-            closeNewIngredientForm();
-        });
-    });
-});
+function appendIngredientDetails(html) {
+    $('div.ingredients-list').append(html);
+    recipeIngredientsOrder += 1;
+}
 
 function initializeIngredientsSelect2() {
     $.ajax({
@@ -99,18 +106,9 @@ function initializeIngredientsSelect2() {
     });
 }
 
-initializeIngredientsSelect2();
-
-function appendIngredientDetails(html) {
-    $('div.ingredients-list').append(html);
-    recipeIngredientsOrder += 1;
-}
-
 $('#tags-select-list').select2({
     tags: true
 });
-$('#categories-select-list').select2();
-$('#cooking-types-select-list').select2();
 
 $('#add-step-to-recipe').on('click', function () {
     $.ajax({
