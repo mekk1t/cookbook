@@ -21,9 +21,14 @@
             <div class="w3-row">
                 <small>@recipe.Synopsis</small>
             </div>
-            <div class="w3-row">
-                <div class="x-center recipes-list-tags w3-border">@(thereAreTags ? string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList()) : "Тегов нет")</div>
-            </div>
+            @if (thereAreTags)
+            {
+                <div class="w3-row">
+                    <div class="x-center recipes-list-tags">
+                        @string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList())
+                    </div>
+                </div>
+            }
             <div class="w3-row">
                 <img class="x-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
             </div>
