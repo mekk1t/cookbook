@@ -2,8 +2,6 @@
 
 var recipeStepsOrder = 0;
 var recipeIngredientsOrder = 0;
-var stepsIngredientsCount = new Object();
-var stepIngredientsOrder = 0;
 var currentBlock = 1;
 const stepCounter = new StepIngredientsCounter();
 
@@ -127,7 +125,11 @@ $('#add-step-to-recipe').on('click', function () {
             } else {
                 $.ajax({
                     url: window.location.pathname + '?handler=IngredientToStep',
-                    data: { stepOrder: stepNumber, ingredientOrder: stepsIngredientsCount[stepNumber], ingredientId: $(this).val() },
+                    data: {
+                        stepOrder: stepNumber,
+                        ingredientOrder: stepCounter.getStepIngredientsCount(stepNumber),
+                        ingredientId: $(this).val()
+                    },
                     dataType: 'html',
                     method: 'GET'
                 }).done(function (result) { appendIngredientDetailsToStep(result, stepNumber); });
