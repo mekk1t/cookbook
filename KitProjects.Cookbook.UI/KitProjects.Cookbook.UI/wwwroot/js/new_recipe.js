@@ -83,7 +83,7 @@ function initializeIngredientsSelect2() {
             });
 
             $('#ingredients-select-list').on('select2:select', function (event) {
-                $this = $(this);
+                let $this = $(this);
                 let triggerChange = function () {
                     $this.val(null).trigger('change');
                 };
@@ -156,7 +156,7 @@ function getRecipeIngredientsSelect2Results() {
 function stepIngredientsSelect2Handler(event) {
     let $this = $(this);
     let triggerChange = function () {
-        $(this).val(null).trigger('change');
+        $this.val(null).trigger('change');
     }
     let ingredient = event.params.data;
     let stepNumber = $this.data('step-id');
