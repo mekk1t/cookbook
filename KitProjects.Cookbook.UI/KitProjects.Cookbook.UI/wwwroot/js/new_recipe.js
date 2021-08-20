@@ -5,16 +5,20 @@ var recipeIngredientsOrder = 0;
 var currentBlock = 1;
 const stepIngredientsCounter = new StepIngredientsCounter();
 
+function getNewIngredientFromForm() {
+    return {
+        name: $('#new-ingredient-name').val(),
+        type: Number.parseInt($('#new-ingredient-type').val())
+    };
+}
+
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
     $.ajax({
         url: '/api/ingredients',
         method: 'POST',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({
-            name: $('#new-ingredient-name').val(),
-            type: Number.parseInt($('#new-ingredient-type').val())
-        }),
+        data: JSON.stringify(getNewIngredientFromForm()),
         headers: {
             'RequestVerificationToken': verificationToken()
         }
