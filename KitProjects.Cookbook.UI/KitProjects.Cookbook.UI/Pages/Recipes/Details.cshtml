@@ -23,20 +23,14 @@
                     <img style="width:100%;" src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
                 }
             </div>
-            <div class="recipe-details-ingredients w3-border">
+            <div class="recipe-details-ingredients">
                 <h3 class="w3-center">Ингредиенты</h3>
-                <ul>
-                    @foreach (var ingredient in Model.Recipe.IngredientDetails)
-                    {
-                        <li>
-                            @(ingredient.Ingredient.Name): @(ingredient.Amount.ToCustomString())  @(ingredient.Measure)
-                            @if (ingredient.Optional)
-                            {
-                                <i>(по желанию)</i>
-                            }
-                        </li>
-                    }
-                </ul>
+                @foreach (var ingredient in Model.Recipe.IngredientDetails)
+                {
+                    <div class="w3-row">
+                        @{ RenderIngredientInfo(ingredient); }
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -68,13 +62,30 @@
 </div>
 
 @{
+    void RenderIngredientInfo(KitProjects.Cookbook.Domain.Models.IngredientDetails ingredient)
+    {
+        string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
+        @(info)
+        @if (ingredient.Optional)
+        {
+            <i>(по желанию)</i>
+        }
+    }
+}
+
+@{
     void StepComponent(KitProjects.Cookbook.Domain.Models.Step step)
     {
         @if (string.IsNullOrEmpty(step.ImageBase64))
         {
             <h3>Шаг @step.Order</h3>
+            @foreach (var ingredient in step.IngredientDetails)
+            {
+                <div class="w3-row">
+                    @{ RenderIngredientInfo(ingredient); }
+                </div>
+            }
             <p>@step.Description</p>
-            <small>Куда-то еще ингредиенты впендюрить</small>
         }
         else
         {
@@ -84,12 +95,15 @@
                 </div>
                 <div class="w3-half">
                     <h3>Шаг @step.Order</h3>
+                    @foreach (var ingredient in step.IngredientDetails)
+                    {
+                        <div class="w3-row">
+                            @{ RenderIngredientInfo(ingredient); }
+                        </div>
+                    }
                     <p>@step.Description</p>
-                    <small>Куда-то еще ингредиенты впендюрить</small>
                 </div>
             </div>
         }
-        <div class="w3-container">
-        </div>
     }
 }
