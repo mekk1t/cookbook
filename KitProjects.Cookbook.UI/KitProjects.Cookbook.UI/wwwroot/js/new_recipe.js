@@ -108,7 +108,7 @@ function initializeIngredientsSelect2() {
 
 $('#tags-select-list').select2({ tags: true });
 
-$('#add-step-to-recipe').on('click', function () {
+function appendStepToRecipe() {
     $.ajax({
         url: window.location.pathname + '?handler=StepToRecipe',
         data: { order: recipeStepsOrder },
@@ -153,8 +153,9 @@ $('#add-step-to-recipe').on('click', function () {
             $currentStepIngredientsSelect2.val(null).trigger('change');
         });
     });
-});
+}
 
+$('#add-step-to-recipe').on('click', appendStepToRecipe);
 hideSecondaryBlocks();
 $('#navigation-button').on('click', navigationDisplay);
 
