@@ -140,8 +140,9 @@ $('#add-step-to-recipe').on('click', function () {
 });
 
 hideSecondaryBlocks();
+$('#navigation-button').on('click', navigationDisplay);
 
-$('#navigation-button').on('click', function () {
+function navigationDisplay() {
     switch (currentBlock) {
         case 1: {
             $('#recipe-block').hide();
@@ -161,7 +162,7 @@ $('#navigation-button').on('click', function () {
         }
     }
     currentBlock += 1;
-});
+}
 
 function hideSecondaryBlocks() {
     $('#ingredients-block').hide();
