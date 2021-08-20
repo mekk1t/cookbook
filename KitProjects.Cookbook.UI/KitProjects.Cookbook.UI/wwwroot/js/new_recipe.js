@@ -133,26 +133,34 @@ function appendStepToRecipe() {
             data: select2Results,
             placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
         }).on('select2:select', function (event) {
-            let ingredient = event.params.data;
-            let stepNumber = $currentStepIngredientsSelect2.data('step-id');
-            if ($(`#step-${stepNumber}-ingredients #ingredient-id-${ingredient.id}`).length === 1) {
-                $currentStepIngredientsSelect2.val(null).trigger('change');
-                return;
-            } else {
-                $.ajax({
-                    url: window.location.pathname + '?handler=IngredientToStep',
-                    data: {
-                        stepOrder: stepNumber,
-                        ingredientOrder: stepIngredientsCounter.getStepIngredientsCount(stepNumber),
-                        ingredientId: $(this).val()
-                    },
-                    dataType: 'html',
-                    method: 'GET'
-                }).done(function (result) { appendIngredientDetailsToStep(result, stepNumber); });
-            }
-            $currentStepIngredientsSelect2.val(null).trigger('change');
+
         });
     });
+}
+
+function stepIngredientsSelect2Handler(event) {
+    let $this = $(this);
+    let triggerChange = function () {
+        $(this).val(null).trigger('change');
+    }
+    let ingredient = event.params.data;
+    let stepNumber = $this.data('step-id');
+    if ($(`#step-${stepNumber}-ingredients #ingredient-id-${ingredient.id}`).length === 1) {
+        triggerChange();
+        return;
+    } else {
+        $.ajax({
+            url: window.location.pathname + '?handler=IngredientToStep',
+            data: {
+                stepOrder: stepNumber,
+                ingredientOrder: stepIngredientsCounter.getStepIngredientsCount(stepNumber),
+                ingredientId: $(this).val()
+            },
+            dataType: 'html',
+            method: 'GET'
+        }).done(function (result) { appendIngredientDetailsToStep(result, stepNumber); });
+    }
+    triggerChange();
 }
 
 $('#add-step-to-recipe').on('click', appendStepToRecipe);
