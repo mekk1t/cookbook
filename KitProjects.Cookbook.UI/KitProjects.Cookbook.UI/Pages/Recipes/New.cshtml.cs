@@ -31,10 +31,13 @@ namespace KitProjects.Cookbook.UI.Pages.Recipes
             {
                 foreach (var step in Recipe.Steps)
                 {
-                    var stepIngredientDetails = step.IngredientDetails.FirstOrDefault(details => details.Ingredient.Id == ingredientDetails.Ingredient.Id);
-                    if (stepIngredientDetails != null)
+                    if (step.IngredientDetails != null)
                     {
-                        stepIngredientDetails.Ingredient = ingredientDetails.Ingredient;
+                        var stepIngredientDetails = step.IngredientDetails.FirstOrDefault(details => details.Ingredient.Id == ingredientDetails.Ingredient.Id);
+                        if (stepIngredientDetails != null)
+                        {
+                            stepIngredientDetails.Ingredient = ingredientDetails.Ingredient;
+                        }
                     }
                 }
             }
