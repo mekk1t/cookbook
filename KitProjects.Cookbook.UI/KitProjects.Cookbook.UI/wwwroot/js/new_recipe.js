@@ -5,6 +5,7 @@ var recipeIngredientsOrder = 0;
 var stepsIngredientsCount = new Object();
 var stepIngredientsOrder = 0;
 var currentBlock = 1;
+const stepCounter = new StepIngredientsCounter();
 
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
@@ -162,15 +163,23 @@ $('#navigation-button').on('click', function () {
     currentBlock += 1;
 });
 
-function appendIngredientDetailsToStep(html, stepOrder) {
-    $(`#step-${stepOrder}-ingredients`).append(html);
-    if (!stepsIngredientsCount[stepOrder]) {
-        stepsIngredientsCount[stepOrder] = 1;
-    } else {
-        stepsIngredientsCount[stepOrder] += 1;
-    }
+function StepIngredientsCounter() {
+    this.ingredientsCount = {};
+    this.getStepIngredientsCount = function (stepNumber) {
+        return this.ingredientsCount[stepNumber];
+    };
+    this.addIngredientToStep = function (stepNumber) {
+        if (!this.ingredientsCount[stepNumber]) {
+            this.ingredientsCount[stepNumber] = 1;
+        } else {
+            this.ingredientsCount[stepNumber] += 1;
+        }
+    };
 }
 
-function verificationToken() {
-    return $('input[name="__RequestVerificationToken"]').val();
+function appendIngredientDetailsToStep(html, stepOrder) {
+    $(`#step-${stepOrder}-ingredients`).append(html);
+    stepCounter.addIngredientToStep(stepOrder);
 }
+
+function verificationToken() { return $('input[name="__RequestVerificationToken"]').val(); }
