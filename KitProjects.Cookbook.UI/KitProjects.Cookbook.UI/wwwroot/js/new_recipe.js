@@ -122,15 +122,18 @@ function appendStepToRecipe() {
         method: 'GET'
     }).done(function (result) {
         $('div.steps-list').append(result);
-
-        let $currentStepIngredientsSelect2 = $(`#step-${recipeStepsOrder}-ingredients-select-list`);
-        $currentStepIngredientsSelect2.data('step-id', recipeStepsOrder);
-        recipeStepsOrder += 1;
-        $currentStepIngredientsSelect2.select2({
-            data: getRecipeIngredientsSelect2Results(),
-            placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
-        }).on('select2:select', stepIngredientsSelect2Handler);
+        initializeStepIngredientsSelect2();
     });
+}
+
+function initializeStepIngredientsSelect2() {
+    let $currentStepIngredientsSelect2 = $(`#step-${recipeStepsOrder}-ingredients-select-list`);
+    $currentStepIngredientsSelect2.data('step-id', recipeStepsOrder);
+    recipeStepsOrder += 1;
+    $currentStepIngredientsSelect2.select2({
+        data: getRecipeIngredientsSelect2Results(),
+        placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
+    }).on('select2:select', stepIngredientsSelect2Handler);
 }
 
 function getRecipeIngredientsSelect2Results() {
