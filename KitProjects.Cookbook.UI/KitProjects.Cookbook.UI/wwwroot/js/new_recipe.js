@@ -48,54 +48,58 @@ $('#new-ingredient form button').on('click', function (event) {
     });
 });
 
-$.ajax({
-    url: '/api/ingredients',
-    method: 'GET',
-    success: function (response) {
-        var ingredients = jQuery.map(response, function (element, index) {
-            return {
-                id: element.id,
-                text: element.name
-            }
-        });
-        $('#ingredients-select-list').select2({
-            data: ingredients,
-            tags: true,
-            placeholder: 'Выбрать ингредиент',
-            createTag: function (params) {
-                let term = $.trim(params.term);
-                if (term.length < 3) { return null; }
-
+function initializeIngredientsSelect2() {
+    $.ajax({
+        url: '/api/ingredients',
+        method: 'GET',
+        success: function (response) {
+            var ingredients = jQuery.map(response, function (element, index) {
                 return {
-                    id: term,
-                    text: term,
-                    newTag: true
-                };
-            }
-        });
-
-        $('#ingredients-select-list').on('select2:select', function (event) {
-            let ingredient = event.params.data;
-            if (ingredient.newTag === true) {
-                $('#new-ingredient').show();
-                $('#new-ingredient-name').val(ingredient.text);
-            } else {
-                if ($(`div.ingredients-list #ingredient-id-${ingredient.id}`).length === 1) {
-                    $('#ingredients-select-list').val(null).trigger('change');
-                    return;
-                } else {
-                    $.ajax({
-                        url: window.location.pathname + '?handler=IngredientToRecipe',
-                        data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
-                        dataType: 'html',
-                        method: 'GET'
-                    }).done(function (result) { appendIngredientDetails(result); });
+                    id: element.id,
+                    text: element.name
                 }
-            }
-            $('#ingredients-select-list').val(null).trigger('change');
-        });
-    }
-});
+            });
+            $('#ingredients-select-list').select2({
+                data: ingredients,
+                tags: true,
+                placeholder: 'Выбрать ингредиент',
+                createTag: function (params) {
+                    let term = $.trim(params.term);
+                    if (term.length < 3) { return null; }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            });
+
+            $('#ingredients-select-list').on('select2:select', function (event) {
+                let ingredient = event.params.data;
+                if (ingredient.newTag === true) {
+                    $('#new-ingredient').show();
+                    $('#new-ingredient-name').val(ingredient.text);
+                } else {
+                    if ($(`div.ingredients-list #ingredient-id-${ingredient.id}`).length === 1) {
+                        $('#ingredients-select-list').val(null).trigger('change');
+                        return;
+                    } else {
+                        $.ajax({
+                            url: window.location.pathname + '?handler=IngredientToRecipe',
+                            data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
+                            dataType: 'html',
+                            method: 'GET'
+                        }).done(function (result) { appendIngredientDetails(result); });
+                    }
+                }
+                $('#ingredients-select-list').val(null).trigger('change');
+            });
+        }
+    });
+}
+
+initializeIngredientsSelect2();
 
 function appendIngredientDetails(html) {
     $('div.ingredients-list').append(html);
