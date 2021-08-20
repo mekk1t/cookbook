@@ -139,9 +139,7 @@ $('#add-step-to-recipe').on('click', function () {
     });
 });
 
-$('#ingredients-block').hide();
-$('#steps-block').hide();
-$('#done-block').hide();
+hideSecondaryBlocks();
 
 $('#navigation-button').on('click', function () {
     switch (currentBlock) {
@@ -164,6 +162,12 @@ $('#navigation-button').on('click', function () {
     }
     currentBlock += 1;
 });
+
+function hideSecondaryBlocks() {
+    $('#ingredients-block').hide();
+    $('#steps-block').hide();
+    $('#done-block').hide();
+}
 
 function StepIngredientsCounter() {
     this.ingredientsCount = {};
