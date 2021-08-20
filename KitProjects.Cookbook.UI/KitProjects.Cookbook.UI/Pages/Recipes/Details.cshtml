@@ -21,8 +21,13 @@
                 <ul>
                     @foreach (var ingredient in Model.Recipe.IngredientDetails)
                     {
-                        string optionalText = ingredient.Optional ? "<i>(необязательно)</i>" : "";
-                        <li>@(ingredient.Ingredient.Name): @(ingredient.Amount) @(ingredient.Measure) @optionalText</li>
+                        <li>
+                            @(ingredient.Ingredient.Name): @(ingredient.Amount) @(ingredient.Measure)
+                            @if (ingredient.Optional)
+                            {
+                                <i>(по желанию)</i>
+                            }
+                        </li>
                     }
                 </ul>
             </div>
