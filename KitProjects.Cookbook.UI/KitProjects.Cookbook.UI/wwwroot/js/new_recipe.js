@@ -24,7 +24,14 @@ function postJson(url, data, doneCallback) {
     }).done(doneCallback);
 }
 
+function addIngredientToRecipeSelect2(ingredientId) {
+    $('#ingredients-select-list').append(new Option($('#new-ingredient-name').val(), ingredientId, false, false)).trigger('change');
+}
 
+function closeNewIngredientForm() {
+    $('#new-ingredient').hide();
+    $('#new-ingredient form :input').val('');
+}
 
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
@@ -35,9 +42,8 @@ $('#new-ingredient form button').on('click', function (event) {
             data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
         }).done(function (partial) {
             appendIngredientDetails(partial);
-            $('#ingredients-select-list').append(new Option($('#new-ingredient-name').val(), result, false, false)).trigger('change');
-            $('#new-ingredient').hide();
-            $('#new-ingredient form :input').val('');
+            addIngredientToRecipeSelect2(result);
+            closeNewIngredientForm();
         });
     });
 });
