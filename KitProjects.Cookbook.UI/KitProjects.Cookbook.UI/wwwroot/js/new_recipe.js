@@ -98,7 +98,7 @@ function initializeIngredientsSelect2() {
                     } else {
                         $.ajax({
                             url: window.location.pathname + '?handler=IngredientToRecipe',
-                            data: { order: recipeIngredientsOrder, ingredientId: $(this).val() },
+                            data: { order: recipeIngredientsOrder, ingredientId: $this.val() },
                             dataType: 'html',
                             method: 'GET'
                         }).done(function (result) { appendIngredientDetails(result); });
