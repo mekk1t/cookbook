@@ -5,30 +5,30 @@
         /// <summary>
         /// Граммы.
         /// </summary>
-        gm,
+        гр,
         /// <summary>
         /// Килограммы.
         /// </summary>
-        kg,
+        кг,
         /// <summary>
         /// Штуки.
         /// </summary>
-        pc,
+        шт,
         /// <summary>
         /// Миллилитры.
         /// </summary>
-        ml,
+        мл,
         /// <summary>
         /// Литры.
         /// </summary>
-        l,
+        л,
         /// <summary>
         /// Ложки (столовые).
         /// </summary>
-        sp,
+        стл,
         /// <summary>
         /// Ложки (чайные).
         /// </summary>
-        tsp
+        чл
     }
 }

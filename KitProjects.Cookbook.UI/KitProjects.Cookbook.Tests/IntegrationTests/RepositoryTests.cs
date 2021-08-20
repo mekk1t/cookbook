@@ -69,7 +69,7 @@ namespace KitProjects.Cookbook.Tests.IntegrationTests
                     {
                         Ingredient = ingredient,
                         Amount = 12,
-                        Measure = IngredientMeasure.gm,
+                        Measure = IngredientMeasure.гр,
                         Optional = false
                     }
                 }
@@ -95,7 +95,7 @@ namespace KitProjects.Cookbook.Tests.IntegrationTests
                     {
                         Ingredient = ingredient,
                         Amount = 12,
-                        Measure = IngredientMeasure.gm,
+                        Measure = IngredientMeasure.гр,
                         Optional = false
                     }
                 },
@@ -111,7 +111,7 @@ namespace KitProjects.Cookbook.Tests.IntegrationTests
                             {
                                 Ingredient = ingredient,
                                 Amount = 1,
-                                Measure = IngredientMeasure.gm,
+                                Measure = IngredientMeasure.гр,
                                 Optional = true
                             }
                         }
