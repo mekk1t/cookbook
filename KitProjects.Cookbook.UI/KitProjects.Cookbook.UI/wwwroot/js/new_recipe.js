@@ -83,13 +83,17 @@ function initializeIngredientsSelect2() {
             });
 
             $('#ingredients-select-list').on('select2:select', function (event) {
+                $this = $(this);
+                let triggerChange = function () {
+                    $this.val(null).trigger('change');
+                };
                 let ingredient = event.params.data;
                 if (ingredient.newTag === true) {
                     $('#new-ingredient').show();
                     $('#new-ingredient-name').val(ingredient.text);
                 } else {
                     if ($(`div.ingredients-list #ingredient-id-${ingredient.id}`).length === 1) {
-                        $('#ingredients-select-list').val(null).trigger('change');
+                        triggerChange();
                         return;
                     } else {
                         $.ajax({
@@ -100,7 +104,7 @@ function initializeIngredientsSelect2() {
                         }).done(function (result) { appendIngredientDetails(result); });
                     }
                 }
-                $('#ingredients-select-list').val(null).trigger('change');
+                triggerChange();
             });
         }
     });
