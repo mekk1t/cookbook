@@ -122,24 +122,28 @@ function appendStepToRecipe() {
         method: 'GET'
     }).done(function (result) {
         $('div.steps-list').append(result);
-        let ids = $('div.ingredients-list div.ingredient div.w3-rest input:nth-child(2)');
-        let names = $('div.ingredients-list div.ingredient div.w3-rest input:last-child');
-        let select2Results = [];
-        for (let i = 0; i < ids.length; i++) {
-            select2Results.push({
-                id: ids[i].value,
-                text: names[i].value
-            });
-        }
 
         let $currentStepIngredientsSelect2 = $(`#step-${recipeStepsOrder}-ingredients-select-list`);
         $currentStepIngredientsSelect2.data('step-id', recipeStepsOrder);
         recipeStepsOrder += 1;
         $currentStepIngredientsSelect2.select2({
-            data: select2Results,
+            data: getRecipeIngredientsSelect2Results(),
             placeholder: 'Выбрать ингредиент из ингредиентов рецепта'
         }).on('select2:select', stepIngredientsSelect2Handler);
     });
+}
+
+function getRecipeIngredientsSelect2Results() {
+    let ids = $('div.ingredients-list div.ingredient div.w3-rest input:nth-child(2)');
+    let names = $('div.ingredients-list div.ingredient div.w3-rest input:last-child');
+    let select2Results = [];
+    for (let i = 0; i < ids.length; i++) {
+        select2Results.push({
+            id: ids[i].value,
+            text: names[i].value
+        });
+    }
+    return select2Results;
 }
 
 function stepIngredientsSelect2Handler(event) {
