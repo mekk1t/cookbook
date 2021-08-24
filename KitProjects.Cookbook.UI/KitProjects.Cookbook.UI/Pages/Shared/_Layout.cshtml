@@ -3,36 +3,40 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kit.Kalimov.Cookbook</title>
+    <title>Refectory | Главная</title>
     <link rel="stylesheet" href="~/css/w3.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/lib/select2.min.css" />
 </head>
 <body>
-    <header>
-        <ul style="display: flex; flex-direction: row; list-style: none;">
-            <li>
-                <a asp-area="" asp-page="/recipes/new">Новый рецепт</a>
-                <a asp-area="" asp-page="/recipes/index">Рецепты</a>
-            </li>
-        </ul>
-    </header>
-    <div class="w3-container">
-        <main class="w3-container">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Книга рецептов Kit.Kalimov - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <ul class="nav-menu">
+                    <li>
+                        <a asp-area="" asp-page="/recipes/new">Новый рецепт</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-page="/recipes/index">Рецепты</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <div class="w3-container">
+            <main class="w3-container">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/select2/dist/select2.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @await RenderSectionAsync("Scripts", required: false)
+    
+        <footer class="footer">
+            &copy; 2021 - Книга рецептов Kit.Kalimov - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </footer>
+    
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/select2/dist/select2.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    
+        @await RenderSectionAsync("Scripts", required: false)
+    </div>    
 </body>
 </html>
