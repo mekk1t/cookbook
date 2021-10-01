@@ -9,6 +9,7 @@ namespace KitProjects.Cookbook.Database
     {
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Source> Sources { get; set; }
 
         public CookbookDbContext(DbContextOptions<CookbookDbContext> options) : base(options)
         {

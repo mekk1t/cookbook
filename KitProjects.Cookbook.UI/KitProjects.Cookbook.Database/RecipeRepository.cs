@@ -14,6 +14,7 @@ namespace KitProjects.Cookbook.Database
         public Recipe GetDetails(long id)
         {
             var recipe = _dbContext.Recipes
+                .Include(r => r.Source)
                 .Include(r => r.Steps)
                     .ThenInclude(step => step.IngredientDetails)
                         .ThenInclude(details => details.Ingredient)

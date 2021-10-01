@@ -14,5 +14,6 @@ namespace KitProjects.Cookbook.Domain.Models
         public List<IngredientDetails> IngredientDetails { get; set; }
         public List<Step> Steps { get; set; }
         public int CookingDuration { get; set; }
+        public Source Source { get; set; }
     }
 }

@@ -1,109 +1,93 @@
 ﻿@page "{id:long}"
 @model KitProjects.Cookbook.UI.Pages.Recipes.DetailsModel
-<h1>
-    @Model.Recipe.Title
-</h1>
-<div class="w3-container">
-    <div class="w3-rest w3-margin-top">
-        <i>
-            @(string.Join(' ', Model.Recipe.Tags ?? new List<string>(0)))
-        </i>
+@section Styles {
+    <link rel="stylesheet" href="~/css/details.css" />
+}
+<div class="recipe-info">
+    <div class="ingredients-block">
+        <h3 class="recipe-block-title">Ингредиенты</h3>
+        @{ RenderIngredients(Model.Recipe.IngredientDetails); }
+    </div>
+    <div class="recipe-thumbnail">
+        <h1 class="recipe-block-title recipe-title">@Model.Recipe.Title</h1>
+        <div class="recipe-thumbnail-image">
+            <img src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
+        </div>
+    </div>
+    <div class="recipe-stats-block">
+        <h4 class="recipe-block-title">Характеристики</h4>
+        <ul class="recipe-stats">
+            <li>Создан @Model.Recipe.CreatedAt.ToRussianDateTimeString()</li>
+            <li>Время готовки: @Model.Recipe.CookingDuration минут</li>
+        </ul>
+        <div class="recipe-tags">
+            <i>@(string.Join(' ', Model.Recipe.Tags ?? new List<string>(0)))</i>
+        </div>
     </div>
 </div>
-<div class="w3-container">
-    <div id="thumbnail-and-ingredients">
-        <div class="flex flex-around">
-            <div class="recipe-details-thumbnail w3-center">
-                @if (string.IsNullOrEmpty(Model.Recipe.ThumbnailBase64))
-                {
-                    <small>Здесь могла быть картинка</small>
-                }
-                else
-                {
-                    <img style="width:100%;" src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
-                }
-            </div>
-            <div class="recipe-details-ingredients">
-                <h3 class="w3-center">Ингредиенты</h3>
-                @foreach (var ingredient in Model.Recipe.IngredientDetails)
-                {
-                    <div class="w3-row">
-                        @{ RenderIngredientInfo(ingredient); }
-                    </div>
-                }
-            </div>
-        </div>
+<div class="recipe-source">
+    <p>Источник: <a href="@Model.Recipe.Source?.SiteUrl" target="_blank">@(Model.Recipe.Source?.Name)</a></p>
+</div>
+<div class="recipe-description">
+    <h4>Описание</h4>
+    <p>
+        @Model.Recipe.Description
+    </p>
+</div>
+<div class="steps-modes">
+    <div class="w3-hover-green">
+        Пошаговый режим
     </div>
-    <div id="steps-mode-buttons" class="w3-margin-top">
-        <button class="w3-button w3-border w3-hover-light-green w3-half">Пошаговый режим</button>
-        <button class="w3-button w3-border w3-hover-light-green w3-half">Все шаги сразу</button>
+    <div class="w3-green">
+        Все шаги сразу
     </div>
-    <div id="main-details" class="w3-container">
-        <div class="w3-row">
-            <div class="w3-half w3-center w3-margin-top">
-                Создан @Model.Recipe.CreatedAt.ToShortDateString()
-            </div>
-            <div class="w3-half w3-center w3-margin-top">
-                Время готовки: @Model.Recipe.CookingDuration минут
-            </div>
-        </div>
-        <div class="w3-row">
-            <div class="w3-rest">
-                <p>@Model.Recipe.Description</p>
-            </div>
-        </div>
-    </div>
-    <div id="steps-block">
-        @foreach (var step in Model.Recipe.Steps)
-        {
-            StepComponent(step);
-        }
-    </div>
+</div>
+<div class="recipe-steps">
+@foreach (var step in Model.Recipe.Steps)
+{
+    StepComponent(step);
+}
 </div>
 
 @{
-    void RenderIngredientInfo(KitProjects.Cookbook.Domain.Models.IngredientDetails ingredient)
+    void RenderIngredients(List<KitProjects.Cookbook.Domain.Models.IngredientDetails> ingredients)
     {
-        string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
-        @(info)
-        @if (ingredient.Optional)
+        <ul class="ingredients">
+        @foreach (var ingredient in ingredients)
         {
-            <i>(по желанию)</i>
+            string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
+            <li>
+                @(info)
+            @if (ingredient.Optional)
+            {
+                <i>(по желанию)</i>
+            }
+            </li>
         }
+        </ul>
     }
 }
 
 @{
     void StepComponent(KitProjects.Cookbook.Domain.Models.Step step)
     {
-        @if (string.IsNullOrEmpty(step.ImageBase64))
-        {
-            <h3>Шаг @step.Order</h3>
-            @foreach (var ingredient in step.IngredientDetails)
-            {
-                <div class="w3-row">
-                    @{ RenderIngredientInfo(ingredient); }
-                </div>
-            }
-            <p>@step.Description</p>
-        }
-        else
-        {
-            <div class="w3-row w3-margin">
-                <div class="w3-half w3-center">
-                    <img src="data:image/jpg;base64, @(step.ImageBase64)" height="200" alt="картинка шага" />
-                </div>
-                <div class="w3-half">
-                    <h3>Шаг @step.Order</h3>
-                    @foreach (var ingredient in step.IngredientDetails)
+        <div class="recipe-step">
+            <h3>@(step.Order)</h3>
+            <div class="recipe-step-info">
+                <div>
+                    @if (step.IngredientDetails?.Count > 0)
                     {
-                        <div class="w3-row">
-                            @{ RenderIngredientInfo(ingredient); }
+                        <div class="step-ingredients">
+                            <h5>Ингредиенты</h5>
+                            @{ RenderIngredients(step.IngredientDetails); }
                         </div>
                     }
-                    <p>@step.Description</p>
                 </div>
             </div>
-        }
+            <div class="step-description">
+                <img src="data:image/jpg;base64, @(step.ImageBase64)" alt="картинка шага" />
+                <p>@(step.Description)</p>
+            </div>
+        </div>
     }
 }

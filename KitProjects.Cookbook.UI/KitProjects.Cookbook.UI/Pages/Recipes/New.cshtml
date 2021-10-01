@@ -34,6 +34,17 @@
                 <input class="w3-input" type="number" asp-for="Recipe.CookingDuration" />
             </div>
         </div>
+        <div class="w3-row">
+            <h4>Источник</h4>
+            <div class="w3-half">
+                <label asp-for="Recipe.Source.Name">Название</label>
+                <input class="w3-input" type="text" asp-for="Recipe.Source.Name" />
+            </div>
+            <div class="w3-half">
+                <label asp-for="Recipe.Source.SiteUrl">Ссылка</label>
+                <input class="w3-input" type="text" asp-for="Recipe.Source.SiteUrl" />
+            </div>
+        </div>
     </div>
     <div id="ingredients-block">
         <div class="w3-container w3-margin-top ingredients-list">

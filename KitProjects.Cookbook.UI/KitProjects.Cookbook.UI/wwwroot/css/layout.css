@@ -1,0 +1,21 @@
+.nav-menu {
+    list-style-type: none;
+    display: flex;
+    padding: .5em;
+}
+
+.nav-menu > li {
+    margin-top: 0;
+}
+
+.nav-menu > li > a {
+    display: block;
+    padding: .5em 1em;
+    background-color: #e76f51;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-menu > li + li {
+    margin-left: 1.5em;
+}

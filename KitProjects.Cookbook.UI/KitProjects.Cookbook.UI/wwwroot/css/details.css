@@ -1,0 +1,147 @@
+﻿h1.recipe-title {
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #e9c46a;
+    border: 5px solid white;
+    color: black;
+}
+
+.recipe-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.recipe-info > div {
+    margin-top: 0;
+}
+
+.recipe-thumbnail-image img {
+    max-height: 25rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.recipe-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.block-border {
+    border-bottom: 1px solid white;
+}
+
+.steps-mode button {
+    margin-top: 0;
+}
+
+.ingredients-block {
+    background-color: #264653;
+    color: #fff;
+}
+
+.recipe-block-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: #2a9d8f;
+    text-transform: uppercase;
+    padding: .5em;
+    text-align: center;
+}
+
+.ingredients {
+    list-style: none;
+    padding: 1em;
+    margin-top: 0;
+}
+
+.ingredients li {
+    margin-top: 0;
+}
+
+.recipe-steps {
+    margin-top: 0;
+}
+
+.recipe-step {
+    background-color: #264653;
+    color: #fff;
+    display: flex;
+    margin-top: 0;
+}
+
+.recipe-step:not(:last-child) {
+    border-bottom: 5px solid white;
+}
+
+.step-description {
+    margin-top: 0;
+    width: 75%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.step-description p {
+    margin-top: 0;
+    padding: 1em;
+}
+
+.recipe-step img {
+    max-width: 50%;
+    max-height: 20rem;
+    padding: 1em;
+    object-fit: contain;
+}
+
+.recipe-step-info {
+    width: 25%;
+    margin-top: 0;
+}
+
+.recipe-step-info > div {
+    display: flex;
+}
+
+.recipe-step h3 {
+    text-align: left;
+    font-size: 4rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: .5em;
+}
+
+.step-ingredients {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    padding: 1em;
+}
+
+.step-ingredients h5 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.steps-modes {
+    display: flex;
+    justify-content: stretch;
+}
+
+.steps-modes div {
+    margin-top: 0;
+    width: 50%;
+    padding: .5em 1em;
+    text-align: center;
+    border: 3px solid white;
+    cursor: pointer;
+}
+
+.recipe-stats {
+    list-style: none;
+    padding-left: .5em;
+}
+
+.recipe-stats li {
+    margin-top: .5em;
+}

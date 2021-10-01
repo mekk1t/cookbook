@@ -1,37 +1,37 @@
 ﻿@page
 @model KitProjects.Cookbook.UI.Pages.Recipes.IndexModel
+@section Styles {
+    <link rel="stylesheet" href="~/css/recipes.css" />
+}
 
-<div class="w3-container">
-    <ul class="flex-ul flex-around">
-        @foreach (var recipe in Model.Recipes)
-        {
-            await RenderRecipeAsync(recipe);
-        }
-    </ul>
-</div>
+<ul class="recipes-list">
+    @foreach (var recipe in Model.Recipes)
+    {
+        await RenderRecipeAsync(recipe);
+    }
+</ul>
 
 @{
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
-        <div class="w3-container recipe-card w3-border w3-center">
-            <div class="w3-row">
-                <h2><a asp-page="/recipes/details" asp-route-id="@recipe.Id">@(recipe.Title ?? "Без названия")</a></h2>
-            </div>
-            <div class="w3-row">
+        <li>
+            <h4><a asp-page="/recipes/details" asp-route-id="@recipe.Id">@(recipe.Title ?? "Без названия")</a></h4>
+            <img src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+            <div class="recipe-body">
                 <small>@recipe.Synopsis</small>
+                @if (thereAreTags)
+                {
+                    <ul class="tags">
+                        @foreach (var tag in recipe.Tags)
+                        {
+                            <li>
+                                @($"#{tag}")
+                            </li>
+                        }
+                    </ul>
+                }
             </div>
-            @if (thereAreTags)
-            {
-                <div class="w3-row">
-                    <div class="x-center recipes-list-tags">
-                        @string.Join(' ', recipe.Tags.Select(tag => $"#{tag}").ToList())
-                    </div>
-                </div>
-            }
-            <div class="w3-row">
-                <img class="x-center recipe-list-thumbnail" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
-            </div>
-        </div>
+        </li>
     }
 }
