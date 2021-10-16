@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KitProjects.Cookbook.Database\KitProjects.Cookbook.Database.csproj" />
-    <ProjectReference Include="..\KitProjects.Cookbook.Domain\KitProjects.Cookbook.Domain.csproj" />
-    <ProjectReference Include="..\KitProjects.Cookbook.UI\KitProjects.Cookbook.UI.csproj" />
+    <ProjectReference Include="..\UI\UI.csproj" />
   </ItemGroup>
 
 </Project>
