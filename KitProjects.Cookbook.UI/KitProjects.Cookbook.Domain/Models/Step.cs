@@ -7,7 +7,7 @@ namespace KitProjects.Cookbook.Domain.Models
         public int Order { get; set; }
         public string Description { get; set; }
         public string ImageBase64 { get; set; }
-        public List<IngredientDetails> IngredientDetails { get; set; }
+        public List<IngredientDetails> IngredientDetails { get; set; } = new List<IngredientDetails>(0);
         public int? Duration { get; set; }
     }
 }

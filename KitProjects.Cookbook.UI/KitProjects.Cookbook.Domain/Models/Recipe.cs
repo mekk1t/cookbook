@@ -10,9 +10,9 @@ namespace KitProjects.Cookbook.Domain.Models
         public string Synopsis { get; set; }
         public string Description { get; set; }
         public string ThumbnailBase64 { get; set; }
-        public List<string> Tags { get; set; }
-        public List<IngredientDetails> IngredientDetails { get; set; }
-        public List<Step> Steps { get; set; }
+        public List<string> Tags { get; set; } = new List<string>(0);
+        public List<IngredientDetails> IngredientDetails { get; set; } = new List<IngredientDetails>(0);
+        public List<Step> Steps { get; set; } = new List<Step>(0);
         public int CookingDuration { get; set; }
         public Source Source { get; set; }
     }
