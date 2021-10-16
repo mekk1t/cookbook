@@ -9,20 +9,15 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav>
-                <ul class="nav-menu">
-                    <li>
-                        <a asp-area="" asp-page="/recipes/new">Новый рецепт</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-page="/recipes/index">Рецепты</a>
-                    </li>
-                </ul>
+    <div class="w3-container">
+        <header class="w3-container">
+            <nav class="w3-bar w3-pale-green">
+                <a href="/">Домой</a>
+                <a asp-area="" asp-page="/recipes/new">Новый рецепт</a>
+                <a asp-area="" asp-page="/recipes/index">Рецепты</a>
             </nav>
         </header>
-        <main>
+        <main class="w3-container">
             @RenderBody()
         </main>
 
