@@ -31,7 +31,7 @@ namespace KitProjects.Cookbook.UI
             });
             services.AddScoped<Repository<Ingredient>>();
             services.AddScoped<RecipeRepository>();
-            services.AddDbContext<CookbookDbContext>(builder => builder.UseSqlServer("Server=localhost;Database=cookbookrazorpages;Trusted_Connection=True;"));
+            services.AddDbContext<CookbookDbContext>(builder => builder.UseSqlServer("Server=localhost;Database=cookbookrazorpages;User Id=developer;Password=123456;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
