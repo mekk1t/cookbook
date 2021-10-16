@@ -4,34 +4,32 @@
     <link rel="stylesheet" href="~/css/recipes.css" />
 }
 
-<ul>
-    @foreach (var recipe in Model.Recipes)
-    {
-        await RenderRecipeAsync(recipe);
-    }
-</ul>
+@foreach (var recipe in Model.Recipes)
+{
+    await RenderRecipeAsync(recipe);
+}
 
 @{
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
-        <li>
-            <h4><a asp-page="/recipes/details" asp-route-id="@recipe.Id">@(recipe.Title ?? "Без названия")</a></h4>
-            <img src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
-            <div class="recipe-body">
-                <small>@recipe.Synopsis</small>
-                @if (thereAreTags)
-                {
-                    <ul>
-                        @foreach (var tag in recipe.Tags)
-                        {
-                            <li>
-                                @($"#{tag}")
-                            </li>
-                        }
-                    </ul>
-                }
+        <div class="w3-card w3-margin-top">
+            <div class="w3-container w3-center">
+                <h3>
+                    <a asp-page="/recipes/details" asp-route-id="@recipe.Id">@(recipe.Title ?? "Без названия")</a>
+                </h3>
+                <img style="max-height: 20em;" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+                <p>@recipe.Synopsis</p>
             </div>
-        </li>
+            @if (thereAreTags)
+            {
+                <div class="w3-container w3-blue w3-padding">
+                    @foreach (var tag in recipe.Tags)
+                    {
+                        @($"#{tag} ")
+                    }
+                </div>
+            }
+        </div>
     }
 }
