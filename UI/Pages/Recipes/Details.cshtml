@@ -38,6 +38,10 @@
 }
 </div>
 
+<div class="w3-row w3-margin-bottom">
+    <button class="w3-button w3-red" type="button" onclick="deleteRecipe('@(Model.Recipe.Id)')">Удалить</button>
+</div>
+
 @{
     void RenderIngredients(List<KP.Cookbook.Domain.Models.IngredientDetails> ingredients)
     {
@@ -77,4 +81,8 @@
             </div>
         </div>
     }
+}
+
+@section Scripts {
+    <script src="~/js/details.js"></script>
 }
