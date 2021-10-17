@@ -47,7 +47,9 @@
             {
                 foreach (var ingredient in ingredients)
                 {
-                    string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
+                    string info = ingredient.Measure == Domain.Models.IngredientMeasure.ничего
+                        ? $"{ingredient.Ingredient.Name}"
+                        : $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
                     <li>
                         @(info)
                     @if (ingredient.Optional)
