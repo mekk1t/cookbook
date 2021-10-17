@@ -2,8 +2,21 @@
 @{
     Layout = null;
     string name = $"{Model.Prefix}[{Model.Order}]";
-    var measures = Html.GetEnumSelectList<IngredientMeasure>()
+    var measuresEnum = (IngredientMeasure[])Enum.GetValues(typeof(IngredientMeasure));
+    var measures = measuresEnum
+        .Select(m => new SelectListItem
+        {
+            Value = m.ToString("d"),
+            Text = m.ToString()
+        })
         .Except(new[] { new SelectListItem { Value = IngredientMeasure.ничего.ToString("d") } }, new SelectListItemComparer());
+    measures = measures.Append(new SelectListItem
+    {
+        Disabled = false,
+        Selected = true,
+        Text = string.Empty,
+        Value = IngredientMeasure.ничего.ToString("d")
+    });
 }
 
 @model KP.Cookbook.UI.Models.IngredientFormModel
@@ -19,7 +32,8 @@
     <div class="w3-row w3-margin-top">
         <div class="w3-third">
             <label>Мера объема</label>
-            <select class="w3-select" name="@(name).Measure" asp-items="measures"></select>
+            <select class="w3-select" name="@(name).Measure" asp-items="measures">
+            </select>
         </div>
         <div class="w3-third">
             <label>Количество</label>
