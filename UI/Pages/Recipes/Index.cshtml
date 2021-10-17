@@ -3,23 +3,35 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/recipes.css" />
 }
+@{
+    var recipesByThree = Model.Recipes
+        .Select((recipe, i) => new { Index = i, Recipe = recipe })
+        .GroupBy(item => item.Index / 3)
+        .Select(item => item.Select(i => i.Recipe).ToList())
+        .ToList();
+}
 
-@foreach (var recipe in Model.Recipes)
+@foreach (var recipes in recipesByThree)
 {
-    await RenderRecipeAsync(recipe);
+    <div class="w3-row">
+        @foreach (var recipe in recipes)
+        {
+            await RenderRecipeAsync(recipe);
+        }
+    </div>
 }
 
 @{
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
-        <div class="w3-card w3-margin-top">
+        <div class="w3-third w3-card w3-margin-top">
             <a style="text-decoration: none;" asp-page="/recipes/details" asp-route-id="@recipe.Id">
                 <div class="w3-container w3-center">
                     <h3>
                         @(recipe.Title ?? "Без названия")
                     </h3>
-                    <img style="max-height: 20em;" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
+                    <img style="max-height: 20em; max-width: 80%;" src="data:image/jpg;base64, @recipe.ThumbnailBase64" alt="Обложка" />
                     <p>@recipe.Synopsis</p>
                 </div>
                 @if (thereAreTags)
