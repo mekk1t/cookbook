@@ -2,6 +2,8 @@
 @{
     Layout = null;
     string name = $"{Model.Prefix}[{Model.Order}]";
+    var measures = Html.GetEnumSelectList<IngredientMeasure>()
+        .Except(new[] { new SelectListItem { Value = IngredientMeasure.ничего.ToString("d") } }, new SelectListItemComparer());
 }
 
 @model KP.Cookbook.UI.Models.IngredientFormModel
@@ -17,7 +19,7 @@
     <div class="w3-row w3-margin-top">
         <div class="w3-third">
             <label>Мера объема</label>
-            <select class="w3-select" name="@(name).Measure" asp-items="Html.GetEnumSelectList<IngredientMeasure>()"></select>
+            <select class="w3-select" name="@(name).Measure" asp-items="measures"></select>
         </div>
         <div class="w3-third">
             <label>Количество</label>
