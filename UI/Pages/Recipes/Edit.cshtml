@@ -1,0 +1,83 @@
+﻿@page
+@model EditModel
+<h3>Новый рецепт</h3>
+<form id="new-recipe-form" class="w3-container" method="post" enctype="multipart/form-data">
+    <div id="recipe-block">
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-rest">
+                <input placeholder="Краткое описание. Одно-два предложения" asp-for="Recipe.Synopsis" class="w3-input w3-border" type="text" />
+                <input type="hidden" asp-for="Recipe.Id" />
+            </div>
+        </div>
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-half">
+                <input style="height: 3em;" placeholder="Название рецепта" class="w3-input w3-border" type="text" asp-for="Recipe.Title"/>
+            </div>
+            <div class="w3-half">
+                <input style="height: 3em;" asp-for="NewThumbnail" placeholder="Файл обложки" class="w3-input w3-border" type="file" id="recipe-thumbnail"/>
+            </div>
+        </div>
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-rest">
+                <textarea placeholder="Подробное описание рецепта" class="w3-input w3-border" style="min-height: 200px;" asp-for="Recipe.Description"></textarea>
+            </div>
+        </div>
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-rest">
+                <label asp-for="Recipe.Tags">Теги</label>
+                <select id="tags-select-list" class="w3-select" multiple asp-for="Recipe.Tags">
+                </select>
+            </div>
+        </div>
+        <div class="w3-row w3-margin-bottom">
+            <div class="w3-rest">
+                <label asp-for="Recipe.CookingDuration">Время готовки в минутах</label>
+                <input class="w3-input" type="number" asp-for="Recipe.CookingDuration" />
+            </div>
+        </div>
+        <div class="w3-row">
+            <h4>Источник</h4>
+            <div class="w3-half">
+                <label asp-for="Recipe.Source.Name">Название</label>
+                <input class="w3-input" type="text" asp-for="Recipe.Source.Name" />
+            </div>
+            <div class="w3-half">
+                <label asp-for="Recipe.Source.SiteUrl">Ссылка</label>
+                <input class="w3-input" type="text" asp-for="Recipe.Source.SiteUrl" />
+            </div>
+        </div>
+    </div>
+    <div id="ingredients-block">
+        <div class="w3-container w3-margin-top ingredients-list">
+            <h4>Ингредиенты</h4>
+            <div class="w3-row">
+                <div class="w3-rest">
+                    <select id="ingredients-select-list" class="w3-select">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="steps-block">
+        <div class="w3-container w3-margin-top">
+            <div class="steps-list">
+
+            </div>
+            <button type="button" id="add-step-to-recipe">Добавить шаг</button>
+        </div>
+    </div>
+    <div id="done-block">
+        <div class="w3-container">
+            <button class="w3-button w3-ripple w3-margin-top w3-margin-bottom w3-green" type="submit">Создать!</button>
+        </div>
+    </div>
+    <div class="w3-container">
+        <button id="navigation-button" class="w3-button w3-ripple w3-margin-top w3-margin-bottom w3-blue" type="button">Дальше</button>
+    </div>
+</form>
+@{ await Html.RenderPartialAsync("_NewIngredient"); }
+
+@section Scripts{
+    <script src="~/js/new_recipe.js"></script>
+}
