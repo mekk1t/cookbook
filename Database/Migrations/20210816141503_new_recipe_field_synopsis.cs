@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace KitProjects.Cookbook.Database.Migrations
+namespace KP.Cookbook.Database.Migrations
 {
     public partial class new_recipe_field_synopsis : Migration
     {

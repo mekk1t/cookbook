@@ -1,5 +1,5 @@
 ﻿@page
-@model KitProjects.Cookbook.UI.Pages.Recipes.IndexModel
+@model KP.Cookbook.UI.Pages.Recipes.IndexModel
 @section Styles {
     <link rel="stylesheet" href="~/css/recipes.css" />
 }
@@ -22,7 +22,7 @@
 }
 
 @{
-    async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
+    async Task RenderRecipeAsync(KP.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
         <a style="text-decoration: none;" asp-page="/recipes/details" asp-route-id="@recipe.Id">

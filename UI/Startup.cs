@@ -1,5 +1,5 @@
-using KitProjects.Cookbook.Database;
-using KitProjects.Cookbook.Domain.Models;
+using KP.Cookbook.Database;
+using KP.Cookbook.Domain.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace KitProjects.Cookbook.UI
+namespace KP.Cookbook.UI
 {
     public class Startup
     {

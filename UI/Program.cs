@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KitProjects.Cookbook.UI
+namespace KP.Cookbook.UI
 {
     public class Program
     {

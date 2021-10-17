@@ -1,5 +1,5 @@
 ﻿@page "{id:long}"
-@model KitProjects.Cookbook.UI.Pages.Recipes.DetailsModel
+@model KP.Cookbook.UI.Pages.Recipes.DetailsModel
 @section Styles {
     <link rel="stylesheet" href="~/css/details.css" />
 }
@@ -39,7 +39,7 @@
 </div>
 
 @{
-    void RenderIngredients(List<KitProjects.Cookbook.Domain.Models.IngredientDetails> ingredients)
+    void RenderIngredients(List<KP.Cookbook.Domain.Models.IngredientDetails> ingredients)
     {
         <ul class="w3-ul">
             @if (ingredients?.Count == 0) { <li></li>}
@@ -62,7 +62,7 @@
 }
 
 @{
-    void StepComponent(KitProjects.Cookbook.Domain.Models.Step step)
+    void StepComponent(KP.Cookbook.Domain.Models.Step step)
     {
         <div class="w3-row w3-border-bottom w3-margin-bottom">
             <h3 class="w3-quarter w3-center w3-jumbo">@(step.Order)</h3>

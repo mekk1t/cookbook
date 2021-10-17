@@ -1,9 +1,9 @@
-﻿using KitProjects.Cookbook.Domain.Models;
+﻿using KP.Cookbook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KitProjects.Cookbook.Database
+namespace KP.Cookbook.Database
 {
     public class Repository<T> where T : Entity
     {

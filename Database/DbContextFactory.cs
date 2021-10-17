@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace KitProjects.Cookbook.Database
+namespace KP.Cookbook.Database
 {
     public class DbContextFactory : IDesignTimeDbContextFactory<CookbookDbContext>
     {

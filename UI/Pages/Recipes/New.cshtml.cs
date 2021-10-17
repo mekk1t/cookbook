@@ -1,6 +1,6 @@
-﻿using KitProjects.Cookbook.Database;
-using KitProjects.Cookbook.Domain.Models;
-using KitProjects.Cookbook.UI.Models;
+﻿using KP.Cookbook.Database;
+using KP.Cookbook.Domain.Models;
+using KP.Cookbook.UI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace KitProjects.Cookbook.UI.Pages.Recipes
+namespace KP.Cookbook.UI.Pages.Recipes
 {
     public class NewModel : PageModel
     {

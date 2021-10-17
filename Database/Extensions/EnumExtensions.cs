@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KitProjects.Cookbook.Database.Extensions
+namespace KP.Cookbook.Database.Extensions
 {
     public static class EnumExtensions
     {

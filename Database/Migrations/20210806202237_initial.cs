@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace KitProjects.Cookbook.Database.Migrations
+namespace KP.Cookbook.Database.Migrations
 {
     public partial class initial : Migration
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace KitProjects.Cookbook.Domain.Models
+namespace KP.Cookbook.Domain.Models
 {
     public class Recipe : Entity
     {

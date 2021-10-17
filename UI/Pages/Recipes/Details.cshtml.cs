@@ -1,8 +1,8 @@
-using KitProjects.Cookbook.Database;
-using KitProjects.Cookbook.Domain.Models;
+using KP.Cookbook.Database;
+using KP.Cookbook.Domain.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace KitProjects.Cookbook.UI.Pages.Recipes
+namespace KP.Cookbook.UI.Pages.Recipes
 {
     public class DetailsModel : PageModel
     {

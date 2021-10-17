@@ -1,6 +1,6 @@
-﻿using KitProjects.Cookbook.Domain.Models;
+﻿using KP.Cookbook.Domain.Models;
 
-namespace KitProjects.Cookbook.UI.Models
+namespace KP.Cookbook.UI.Models
 {
     public class IngredientFormModel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace KitProjects.Cookbook.UI
+namespace KP.Cookbook.UI
 {
     public class DecimalFormatProvider : IFormatProvider, ICustomFormatter
     {

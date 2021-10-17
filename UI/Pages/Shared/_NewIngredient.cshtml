@@ -1,5 +1,11 @@
-﻿@using KitProjects.Cookbook.Domain.Models
-@{ Layout = null; }
+﻿@using KP.Cookbook.Domain.Models
+@using UI.Utilities
+@{
+    Layout = null;
+    var ingredientTypes = Html
+        .GetEnumSelectList<IngredientType>()
+        .Except(new[] { new SelectListItem { Value = 0.ToString() } }, new UI.Utilities.SelectListItemComparer());
+}
 
 <div id="new-ingredient" class="w3-modal">
   <div class="w3-modal-content">
@@ -11,7 +17,7 @@
         <label for="ingredient-name">Название</label>
         <input class="w3-margin-bottom w3-input" type="text" id="new-ingredient-name" required />
         <label>Тип</label>
-        <select class="w3-margin-bottom w3-select" id="new-ingredient-type" required asp-items="Html.GetEnumSelectList<IngredientType>()">
+        <select class="w3-margin-bottom w3-select" id="new-ingredient-type" required asp-items="ingredientTypes">
             <option value="" disabled selected>Выбрать</option>
         </select>
         <button class="w3-button w3-light-green w3-ripple w3-margin-bottom" type="button">Создать</button>

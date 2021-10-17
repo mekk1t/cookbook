@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
-using KitProjects.Cookbook.Database;
-using KitProjects.Cookbook.Domain.Models;
+using KP.Cookbook.Database;
+using KP.Cookbook.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace KitProjects.Cookbook.Tests.IntegrationTests
+namespace KP.Cookbook.Tests.IntegrationTests
 {
     public class RepositoryTests : IDisposable
     {

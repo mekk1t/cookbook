@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace KitProjects.Cookbook.UI
+namespace KP.Cookbook.UI
 {
     public static class Extensions
     {

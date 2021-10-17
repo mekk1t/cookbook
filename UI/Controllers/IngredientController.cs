@@ -1,8 +1,8 @@
-﻿using KitProjects.Cookbook.Database;
-using KitProjects.Cookbook.Domain.Models;
+﻿using KP.Cookbook.Database;
+using KP.Cookbook.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KitProjects.Cookbook.UI.Controllers
+namespace KP.Cookbook.UI.Controllers
 {
     [Produces("application/json")]
     [Consumes("application/json")]

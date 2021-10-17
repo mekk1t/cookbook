@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace KitProjects.Cookbook.UI.Models
+namespace KP.Cookbook.UI.Models
 {
     public class StepFormModel
     {

@@ -1,4 +1,4 @@
-﻿namespace KitProjects.Cookbook.Domain.Models
+﻿namespace KP.Cookbook.Domain.Models
 {
     public class Source : Entity
     {
