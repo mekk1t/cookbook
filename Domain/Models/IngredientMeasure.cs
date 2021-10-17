@@ -3,6 +3,10 @@
     public enum IngredientMeasure
     {
         /// <summary>
+        /// Ничего - когда меру не подобрать.
+        /// </summary>
+        ничего,
+        /// <summary>
         /// Граммы.
         /// </summary>
         гр,
