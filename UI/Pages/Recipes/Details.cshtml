@@ -3,46 +3,35 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/details.css" />
 }
-<div class="recipe-info">
-    <div class="ingredients-block">
-        <h3 class="recipe-block-title">Ингредиенты</h3>
+<div class="w3-row">
+    <div class="w3-container w3-quarter">
+        <h3 class="w3-center">Ингредиенты</h3>
         @{ RenderIngredients(Model.Recipe.IngredientDetails); }
     </div>
-    <div class="recipe-thumbnail">
-        <h1 class="recipe-block-title recipe-title">@Model.Recipe.Title</h1>
-        <div class="recipe-thumbnail-image">
-            <img src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
-        </div>
+    <div class="w3-half w3-center">
+        <h1>@Model.Recipe.Title</h1>
+        <img style="max-width: 80%; max-height: 30em;" src="data:image/jpg;base64, @Model.Recipe.ThumbnailBase64" alt="Картинка рецепта" />
     </div>
-    <div class="recipe-stats-block">
-        <h4 class="recipe-block-title">Характеристики</h4>
-        <ul class="recipe-stats">
+    <div class="w3-quarter">
+        <h3 class="w3-center">Характеристики</h3>
+        <ul class="w3-ul">
             <li>Создан @Model.Recipe.CreatedAt.ToRussianDateTimeString()</li>
             <li>Время готовки: @Model.Recipe.CookingDuration минут</li>
         </ul>
-        <div class="recipe-tags">
-            <i>@(string.Join(' ', Model.Recipe.Tags ?? new List<string>(0)))</i>
-        </div>
     </div>
 </div>
-<div class="recipe-source">
-    <p>Источник: <a href="@Model.Recipe.Source?.SiteUrl" target="_blank">@(Model.Recipe.Source?.Name)</a></p>
-</div>
-<div class="recipe-description">
-    <h4>Описание</h4>
+@if (Model.Recipe.Source != null)
+{
+    <div class="w3-row">
+        <p>Источник: <a href="@Model.Recipe.Source?.SiteUrl" target="_blank">@(Model.Recipe.Source?.Name)</a></p>
+    </div>
+}
+<div class="w3-row">
     <p>
         @Model.Recipe.Description
     </p>
 </div>
-<div class="steps-modes">
-    <div class="w3-hover-green">
-        Пошаговый режим
-    </div>
-    <div class="w3-green">
-        Все шаги сразу
-    </div>
-</div>
-<div class="recipe-steps">
+<div class="w3-row">
 @foreach (var step in Model.Recipe.Steps)
 {
     StepComponent(step);
@@ -52,18 +41,22 @@
 @{
     void RenderIngredients(List<KitProjects.Cookbook.Domain.Models.IngredientDetails> ingredients)
     {
-        <ul class="ingredients">
-        @foreach (var ingredient in ingredients)
-        {
-            string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
-            <li>
-                @(info)
-            @if (ingredient.Optional)
+        <ul class="w3-ul">
+            @if (ingredients?.Count == 0) { <li></li>}
+            else
             {
-                <i>(по желанию)</i>
+                foreach (var ingredient in ingredients)
+                {
+                    string info = $"{ingredient.Ingredient.Name}: {ingredient.Amount.ToCustomString()} {ingredient.Measure}";
+                    <li>
+                        @(info)
+                    @if (ingredient.Optional)
+                    {
+                        <i>(по желанию)</i>
+                    }
+                    </li>
+                }
             }
-            </li>
-        }
         </ul>
     }
 }
@@ -71,21 +64,13 @@
 @{
     void StepComponent(KitProjects.Cookbook.Domain.Models.Step step)
     {
-        <div class="recipe-step">
-            <h3>@(step.Order)</h3>
-            <div class="recipe-step-info">
-                <div>
-                    @if (step.IngredientDetails?.Count > 0)
-                    {
-                        <div class="step-ingredients">
-                            <h5>Ингредиенты</h5>
-                            @{ RenderIngredients(step.IngredientDetails); }
-                        </div>
-                    }
-                </div>
+        <div class="w3-row w3-border-bottom w3-margin-bottom">
+            <h3 class="w3-quarter w3-center w3-jumbo">@(step.Order)</h3>
+            <div class="w3-quarter" style="margin-left: -2em;">
+                @{ RenderIngredients(step.IngredientDetails); }
             </div>
-            <div class="step-description">
-                <img src="data:image/jpg;base64, @(step.ImageBase64)" alt="картинка шага" />
+            <div style="margin-left: 2em;" class="w3-half w3-margin-bottom">
+                <img class="w3-right" style="max-width: 80%; max-height: 20em;" src="data:image/jpg;base64, @(step.ImageBase64)" alt="картинка шага" />
                 <p>@(step.Description)</p>
             </div>
         </div>
