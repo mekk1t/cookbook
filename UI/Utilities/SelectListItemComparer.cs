@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace UI.Utilities
+namespace KP.Cookbook.UI.Utilities
 {
     public class SelectListItemComparer : IEqualityComparer<SelectListItem>
     {
