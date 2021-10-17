@@ -10,8 +10,11 @@ namespace KitProjects.Cookbook.UI
             string numericString = arg.ToString();
 
             var splits = numericString.Split('.');
-            if (splits[1].All(_char => _char == '0'))
-                return splits[0];
+            if (splits.Length > 1)
+            {
+                if (splits[1].All(_char => _char == '0'))
+                    return splits[0];
+            }
 
             return numericString;
         }
