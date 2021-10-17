@@ -25,8 +25,8 @@
     async Task RenderRecipeAsync(KitProjects.Cookbook.Domain.Models.Recipe recipe)
     {
         bool thereAreTags = recipe.Tags?.Count > 0;
-        <div style="height: 30.5em;" class="w3-third w3-card w3-margin-top">
-            <a style="text-decoration: none;" asp-page="/recipes/details" asp-route-id="@recipe.Id">
+        <a style="text-decoration: none;" asp-page="/recipes/details" asp-route-id="@recipe.Id">
+            <div style="height: 30.5em;" class="w3-third w3-card w3-margin-top">
                 <div class="w3-container w3-center">
                     <h3>
                         @(recipe.Title ?? "Без названия")
@@ -46,7 +46,7 @@
 
                     </div>
                 }
-            </a>
-        </div>
+            </div>
+        </a>
     }
 }
