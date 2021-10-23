@@ -7,7 +7,7 @@ class IngredientsSelect2 {
     }
 
     async initializeAsync(select2Handler) {
-        var ingredientsJson = await GetAsync('api/ingredients');
+        var ingredientsJson = await GetJsonAsync('api/ingredients');
         var ingredients = ingredientsJson.map(function (i) {
             return {
                 id: i.id,
@@ -60,15 +60,19 @@ class StepIngredientsSelect2 {
     }
 }
 class NewIngredientForm {
-    constructor(name) {
+    constructor() {
         this.$name = $('#new-ingredient-name');
         this.$type = $('#new-ingredient-type');
         this.$container = $('#new-ingredient');
     }
 
-    async createIngredientAsync() {
-        var id = Number.parseInt(await PostAsync('/api/ingredients', this.ingredient));
-
+    async createIngredientAsync(ingredient) {
+        var id = Number.parseInt(await PostAsync('/api/ingredients', ingredient));
+        var recipeIngredientResponse = await GetHtmlAsync('?handler=IngredientToRecipe', {
+            order: newRecipeForm.ingredientsCount,
+            ingredientId: id
+        });
+        newRecipeForm.appendIngredient(recipeIngredientResponse.text)
     }
 
     get ingredient() {
@@ -81,19 +85,23 @@ class NewIngredientForm {
         this.$name.val(value);
     }
 
+    show() {
+        this.$container.show();
+    }
     close() {
         this.$container.hide();
         this.$container.find(':input').val('');
     }
-
-    setHandlerOnForm(formId) {
-        $('#new-ingredient form button').on('click', function (event) {
+    _setHandler() {
+        let form = this;
+        this.$container.find('form button').on('click', async function (event) {
             event.preventDefault();
+            await form.createIngredientAsync(form.ingredient);
             postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
                 $.ajax({
-                    url: window.location.pathname + '?handler=IngredientToRecipe',
+                    url: window.location.pathname + '',
                     method: 'GET',
-                    data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
+                    data:
                 }).done(function (partial) {
                     appendIngredientDetails(partial);
                     addIngredientToRecipeSelect2(result);
@@ -131,8 +139,8 @@ class NewRecipeForm {
      */
     constructor($ingredientsSelect2) {
         this.$ingredientsSelect2 = $ingredientsSelect2;
-        this.ingredientsCount = 0;
-        this.stepsCount = 0;
+        this._ingredientsCount = 0;
+        this._stepsCount = 0;
         currentBlock = 1;
         $('#ingredients-block').hide();
         $('#steps-block').hide();
@@ -163,22 +171,29 @@ class NewRecipeForm {
 
     appendIngredient(html) {
         $('div.ingredients-list').append(html);
-        this.ingredientsCount += 1;
+        this._ingredientsCount += 1;
+    }
+
+    get stepsCount() {
+        return this._stepsCount;
+    }
+
+    get ingredientsCount() {
+        return this._ingredientsCount;
     }
 
     async newStepAsync() {
         var response = await fetch(`${window.location.pathname}?handler=StepToRecipe`);
         var html = await response.text();
         $('div.steps-list').append(html);
-        this.stepsCount += 1;
+        this._stepsCount += 1;
         StepIngredientsSelect2.initialize(
-            this.stepsCount,
+            this._stepsCount,
             this.$ingredientsSelect2.getRecipeIngredients(),
             stepIngredientsSelect2Handler);
     }
 }
 
-function
 
 function ingredientsSelect2Handler(event) {
     let $this = $(this);
@@ -186,9 +201,9 @@ function ingredientsSelect2Handler(event) {
         $this.val(null).trigger('change');
     };
     let ingredient = event.params.data;
-    if (ingredient.newTag === true) {
-        $('#new-ingredient-name').val(ingredient.text);
-        $('#new-ingredient').show();
+    if (ingredient.newTag) {
+        newIngredientForm.name = ingredient.text;
+        newIngredientForm.show();
     } else {
         if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
             triggerChange();
@@ -196,10 +211,12 @@ function ingredientsSelect2Handler(event) {
         } else {
             $.ajax({
                 url: window.location.pathname + '?handler=IngredientToRecipe',
-                data: { order: recipeIngredientsOrder, ingredientId: $this.val() },
+                data: { order: newRecipeForm.ingredientsCount, ingredientId: $this.val() },
                 dataType: 'html',
                 method: 'GET'
-            }).done(function (result) { appendIngredientDetails(result); });
+            }).done(function (result) {
+                newRecipeForm.appendIngredient(result);
+            });
         }
     }
     triggerChange();
@@ -235,20 +252,14 @@ function appendIngredientDetailsToStep(html, stepOrder) {
 
 const stepIngredientsCounter = new StepIngredientsCounter();
 const VERIFICATION_TOKEN = $('input[name="__RequestVerificationToken"]').val();
-
-async function Main() {
-    let ingredientsSelect2 = new IngredientsSelect2();
-    await ingredientsSelect2.initializeAsync(ingredientsSelect2Handler);
-    CustomSelect2.initializeTags(true);
-    var newRecipeForm = new NewRecipeForm(ingredientsSelect2);
-}
-
-Main();
-
-
+const newIngredientForm = new NewIngredientForm();
+let ingredientsSelect2 = new IngredientsSelect2();
+ingredientsSelect2.initializeAsync(ingredientsSelect2Handler);
+CustomSelect2.initializeTags(true);
+let newRecipeForm = new NewRecipeForm(ingredientsSelect2);
 
 async function PostAsync(url, data) {
-    let response = await fetch(url, {
+    let response = await fetch(`${window.location.origin}${url}`, {
         method: 'POST',
         headers: {
             'RequestVerificationToken': VERIFICATION_TOKEN,
@@ -258,8 +269,12 @@ async function PostAsync(url, data) {
     });
     return await response.json();
 }
-async function GetAsync(url) {
-    let response = await fetch(`${window.location.origin}/${url}`, {
+async function GetJsonAsync(url, data) {
+    let targetUrl = `${window.location.origin}${url}`;
+    if (data) {
+        targetUrl = targetUrl + new URLSearchParams(data);
+    }
+    let response = await fetch(targetUrl, {
         method: 'GET',
         headers: {
             'RequestVerificationToken': VERIFICATION_TOKEN
@@ -268,3 +283,16 @@ async function GetAsync(url) {
     return await response.json();
 }
 
+async function GetHtmlAsync(url, data) {
+    let targetUrl = `${window.location.origin}${url}`;
+    if (data) {
+        targetUrl = targetUrl + new URLSearchParams(data);
+    }
+    let response = await fetch(targetUrl, {
+        method: 'GET',
+        headers: {
+            'RequestVerificationToken': VERIFICATION_TOKEN
+        }
+    });
+    return await response.text();
+}
