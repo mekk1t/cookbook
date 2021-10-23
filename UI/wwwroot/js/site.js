@@ -1,4 +1,21 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿class AjaxRecipe {
+    constructor() {
 
-// Write your JavaScript code.
+    }
+
+    /**
+     * Удаляет рецепт по ID.
+     * @param {string} recipeId
+     * @param {boolean} redirectToList
+     */
+    deleteRecipeById(recipeId, redirectToList) {
+        $.ajax({
+            url: `${window.location.origin}/api/recipes/${recipeId}`,
+            method: 'DELETE'
+        }).done(function (result) {
+            if (redirectToList) {
+                window.location.replace(window.location.origin + "/recipes");
+            }
+        });
+    }
+}
