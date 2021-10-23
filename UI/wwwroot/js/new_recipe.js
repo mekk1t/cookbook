@@ -64,11 +64,12 @@ class NewIngredientForm {
         this.$name = $('#new-ingredient-name');
         this.$type = $('#new-ingredient-type');
         this.$container = $('#new-ingredient');
+        this._setHandler();
     }
 
     async createIngredientAsync(ingredient) {
         var id = Number.parseInt(await PostAsync('/api/ingredients', ingredient));
-        var recipeIngredientResponse = await GetHtmlAsync('?handler=IngredientToRecipe', {
+        var recipeIngredientResponse = await GetHtmlAsync('IngredientToRecipe', {
             order: newRecipeForm.ingredientsCount,
             ingredientId: id
         });
@@ -161,7 +162,7 @@ class NewRecipeForm {
     }
 
     appendIngredient(html) {
-        $('div.ingredients-list').append(html);
+        document.querySelector('div.ingredients-list').innerHTML += html;
         this._ingredientsCount += 1;
     }
 
@@ -260,7 +261,7 @@ async function PostAsync(url, data) {
     return await response.json();
 }
 async function GetJsonAsync(url, data) {
-    let targetUrl = `${window.location.origin}${url}`;
+    let targetUrl = `${window.location.origin}/${url}`;
     if (data) {
         targetUrl = targetUrl + new URLSearchParams(data);
     }
@@ -273,12 +274,15 @@ async function GetJsonAsync(url, data) {
     return await response.json();
 }
 
-async function GetHtmlAsync(url, data) {
-    let targetUrl = `${window.location.origin}${url}`;
-    if (data) {
-        targetUrl = targetUrl + new URLSearchParams(data);
-    }
-    let response = await fetch(targetUrl, {
+/**
+ *
+ * @param {string} handlerName
+ * @param {object} data
+ */
+async function GetHtmlAsync(handlerName, data) {
+    data.handler = handlerName;
+    let params = $.param(data);
+    let response = await fetch(`${window.location.href}?${params}`, {
         method: 'GET',
         headers: {
             'RequestVerificationToken': VERIFICATION_TOKEN
