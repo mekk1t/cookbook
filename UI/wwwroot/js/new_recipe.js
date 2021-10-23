@@ -1,10 +1,12 @@
 ﻿'use strict';
 
 var recipeStepsOrder = 0;
-var recipeIngredientsOrder = 0;
 var currentBlock = 1;
 const stepIngredientsCounter = new StepIngredientsCounter();
+const VERIFICATION_TOKEN = $('input[name="__RequestVerificationToken"]').val();
 
+// Добавление ингредиента в рецепт
+var recipeIngredientsOrder = 0;
 $('#new-ingredient form button').on('click', function (event) {
     event.preventDefault();
     postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
@@ -19,15 +21,24 @@ $('#new-ingredient form button').on('click', function (event) {
         });
     });
 });
-
-initializeIngredientsSelect2();
-
 function getNewIngredientFromForm() {
     return {
         name: $('#new-ingredient-name').val(),
         type: Number.parseInt($('#new-ingredient-type').val())
     };
 }
+function appendIngredientDetails(html) {
+    $('div.ingredients-list').append(html);
+    recipeIngredientsOrder += 1;
+}
+function addIngredientToRecipeSelect2(ingredientId) {
+    $('#ingredients-select-list').append(new Option($('#new-ingredient-name').val(), ingredientId, false, false)).trigger('change');
+}
+function closeNewIngredientForm() {
+    $('#new-ingredient').hide();
+    $('#new-ingredient form :input').val('');
+}
+
 
 function postJson(url, data, doneCallback) {
     $.ajax({
@@ -36,23 +47,9 @@ function postJson(url, data, doneCallback) {
         method: 'POST',
         contentType: 'application/json; charset=utf-8',
         headers: {
-            'RequestVerificationToken': verificationToken()
+            'RequestVerificationToken': VERIFICATION_TOKEN
         }
     }).done(doneCallback);
-}
-
-function addIngredientToRecipeSelect2(ingredientId) {
-    $('#ingredients-select-list').append(new Option($('#new-ingredient-name').val(), ingredientId, false, false)).trigger('change');
-}
-
-function closeNewIngredientForm() {
-    $('#new-ingredient').hide();
-    $('#new-ingredient form :input').val('');
-}
-
-function appendIngredientDetails(html) {
-    $('div.ingredients-list').append(html);
-    recipeIngredientsOrder += 1;
 }
 
 function initializeIngredientsSelect2() {
@@ -92,7 +89,7 @@ function initializeIngredientsSelect2() {
                     $('#new-ingredient').show();
                     $('#new-ingredient-name').val(ingredient.text);
                 } else {
-                    if ($(`div.ingredients-list #ingredient-id-${ingredient.id}`).length === 1) {
+                    if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
                         triggerChange();
                         return;
                     } else {
@@ -110,6 +107,7 @@ function initializeIngredientsSelect2() {
     });
 }
 
+initializeIngredientsSelect2();
 $('#tags-select-list').select2({ tags: true });
 
 $('#add-step-to-recipe').on('click', appendStepToRecipe);
@@ -168,7 +166,7 @@ function stepIngredientsSelect2Handler(event) {
             url: window.location.pathname + '?handler=IngredientToStep',
             data: {
                 stepOrder: stepNumber,
-                ingredientOrder: stepIngredientsCounter.getStepIngredientsCount(stepNumber),
+                ingredientOrder: stepIngredientsCounter.getCount(stepNumber),
                 ingredientId: $(this).val()
             },
             dataType: 'html',
@@ -206,23 +204,25 @@ function hideSecondaryBlocks() {
     $('#done-block').hide();
 }
 
-function StepIngredientsCounter() {
-    this.ingredientsCount = {};
-    this.getStepIngredientsCount = function (stepNumber) {
-        return this.ingredientsCount[stepNumber];
-    };
-    this.addIngredientToStep = function (stepNumber) {
-        if (!this.ingredientsCount[stepNumber]) {
-            this.ingredientsCount[stepNumber] = 1;
+class StepIngredientsCounter {
+    constructor() {
+        this.count = {};
+    }
+
+    getCount(stepNumber) {
+        return this.count[stepNumber];
+    }
+
+    addIngredientToStep(stepNumber) {
+        if (!this.count[stepNumber]) {
+            this.count[stepNumber] = 1;
         } else {
-            this.ingredientsCount[stepNumber] += 1;
+            this.count[stepNumber] += 1;
         }
-    };
+    }
 }
 
 function appendIngredientDetailsToStep(html, stepOrder) {
     $(`#step-${stepOrder}-ingredients`).append(html);
     stepIngredientsCounter.addIngredientToStep(stepOrder);
 }
-
-function verificationToken() { return $('input[name="__RequestVerificationToken"]').val(); }
