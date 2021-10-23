@@ -1,26 +1,12 @@
 ﻿'use strict';
 
+var recipeIngredientsOrder = 0;
 var recipeStepsOrder = 0;
 var currentBlock = 1;
 const stepIngredientsCounter = new StepIngredientsCounter();
 const VERIFICATION_TOKEN = $('input[name="__RequestVerificationToken"]').val();
 
 // Добавление ингредиента в рецепт
-var recipeIngredientsOrder = 0;
-$('#new-ingredient form button').on('click', function (event) {
-    event.preventDefault();
-    postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
-        $.ajax({
-            url: window.location.pathname + '?handler=IngredientToRecipe',
-            method: 'GET',
-            data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
-        }).done(function (partial) {
-            appendIngredientDetails(partial);
-            addIngredientToRecipeSelect2(result);
-            closeNewIngredientForm();
-        });
-    });
-});
 function getNewIngredientFromForm() {
     return {
         name: $('#new-ingredient-name').val(),
@@ -39,82 +25,43 @@ function closeNewIngredientForm() {
     $('#new-ingredient form :input').val('');
 }
 
+async function Main() {
+    let ingredientsSelect2 = new IngredientsSelect2();
+    await ingredientsSelect2.initializeAsync();
 
-function postJson(url, data, doneCallback) {
-    $.ajax({
-        url: url,
-        data: JSON.stringify(data),
-        method: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-            'RequestVerificationToken': VERIFICATION_TOKEN
-        }
-    }).done(doneCallback);
-}
-
-function initializeIngredientsSelect2() {
-    $.ajax({
-        url: '/api/ingredients',
-        method: 'GET',
-        success: function (response) {
-            var ingredients = jQuery.map(response, function (element, index) {
-                return {
-                    id: element.id,
-                    text: element.name
-                }
-            });
-            $('#ingredients-select-list').select2({
-                data: ingredients,
-                tags: true,
-                placeholder: 'Выбрать ингредиент',
-                createTag: function (params) {
-                    let term = $.trim(params.term);
-                    if (term.length < 3) { return null; }
-
-                    return {
-                        id: term,
-                        text: term,
-                        newTag: true
-                    };
-                }
-            });
-
-            $('#ingredients-select-list').on('select2:select', function (event) {
-                let $this = $(this);
-                let triggerChange = function () {
-                    $this.val(null).trigger('change');
-                };
-                let ingredient = event.params.data;
-                if (ingredient.newTag === true) {
-                    $('#new-ingredient').show();
-                    $('#new-ingredient-name').val(ingredient.text);
-                } else {
-                    if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
-                        triggerChange();
-                        return;
-                    } else {
-                        $.ajax({
-                            url: window.location.pathname + '?handler=IngredientToRecipe',
-                            data: { order: recipeIngredientsOrder, ingredientId: $this.val() },
-                            dataType: 'html',
-                            method: 'GET'
-                        }).done(function (result) { appendIngredientDetails(result); });
-                    }
-                }
+    // Как-то бы отрефакторить
+    ingredientsSelect2.$select2.on('select2:select', function (event) {
+        let $this = $(this);
+        let triggerChange = function () {
+            $this.val(null).trigger('change');
+        };
+        let ingredient = event.params.data;
+        if (ingredient.newTag === true) {
+            $('#new-ingredient-name').val(ingredient.text);
+            $('#new-ingredient').show();
+        } else {
+            if ($(`#ingredient-id-${ingredient.id}`).length === 1) {
                 triggerChange();
-            });
+                return;
+            } else {
+                $.ajax({
+                    url: window.location.pathname + '?handler=IngredientToRecipe',
+                    data: { order: recipeIngredientsOrder, ingredientId: $this.val() },
+                    dataType: 'html',
+                    method: 'GET'
+                }).done(function (result) { appendIngredientDetails(result); });
+            }
         }
+        triggerChange();
     });
+    // Вынести в Select2-инициализатор
+    $('#tags-select-list').select2({ tags: true });
+    $('#add-step-to-recipe').on('click', appendStepToRecipe);
+    hideSecondaryBlocks();
+    $('#navigation-button').on('click', navigationDisplay);
 }
 
-initializeIngredientsSelect2();
-$('#tags-select-list').select2({ tags: true });
-
-$('#add-step-to-recipe').on('click', appendStepToRecipe);
-
-hideSecondaryBlocks();
-
-$('#navigation-button').on('click', navigationDisplay);
+Main();
 
 function appendStepToRecipe() {
     $.ajax({
@@ -213,7 +160,7 @@ class StepIngredientsCounter {
         return this.count[stepNumber];
     }
 
-    addIngredientToStep(stepNumber) {
+    increment(stepNumber) {
         if (!this.count[stepNumber]) {
             this.count[stepNumber] = 1;
         } else {
@@ -224,5 +171,88 @@ class StepIngredientsCounter {
 
 function appendIngredientDetailsToStep(html, stepOrder) {
     $(`#step-${stepOrder}-ingredients`).append(html);
-    stepIngredientsCounter.addIngredientToStep(stepOrder);
+    stepIngredientsCounter.increment(stepOrder);
+}
+
+async function PostAsync(url, data) {
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'RequestVerificationToken': VERIFICATION_TOKEN,
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json();
+}
+async function GetAsync(url) {
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'RequestVerificationToken': VERIFICATION_TOKEN
+        }
+    });
+    return await response.json();
+}
+
+class IngredientsSelect2 {
+    constructor() {
+        this.$select2 = $('#ingredients-select-list');
+    }
+
+    async initializeAsync() {
+        var ingredientsJson = await GetAsync('api/ingredients');
+        var ingredients = ingredientsJson.map(function (i) {
+            return {
+                id = i.id,
+                text: i.name
+            };
+        });
+        this.$select2.select2({
+            data: ingredients,
+            tags: true,
+            placeholder: 'Выбрать ингредиент',
+            createTag: function (params) {
+                let term = params.term.trim();
+                if (term.length < 3) { return null; }
+
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true
+                };
+            }
+        });
+    }
+}
+
+class NewIngredientForm {
+
+    async createIngredientAsync() {
+        var id = Number.parseInt(await PostAsync('/api/ingredients', getNewIngredientFromForm()));
+
+    }
+
+    add
+
+    addIngredientToRecipe() {
+
+    }
+
+    setHandlerOnForm(formId) {
+        $('#new-ingredient form button').on('click', function (event) {
+            event.preventDefault();
+            postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
+                $.ajax({
+                    url: window.location.pathname + '?handler=IngredientToRecipe',
+                    method: 'GET',
+                    data: { order: recipeIngredientsOrder, ingredientId: Number.parseInt(result) }
+                }).done(function (partial) {
+                    appendIngredientDetails(partial);
+                    addIngredientToRecipeSelect2(result);
+                    closeNewIngredientForm();
+                });
+            });
+        });
+    }
 }
