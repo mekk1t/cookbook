@@ -73,6 +73,7 @@ class NewIngredientForm {
             ingredientId: id
         });
         newRecipeForm.appendIngredient(recipeIngredientResponse.text)
+        ingredientsSelect2.addIngredient(id);
     }
 
     get ingredient() {
@@ -97,17 +98,7 @@ class NewIngredientForm {
         this.$container.find('form button').on('click', async function (event) {
             event.preventDefault();
             await form.createIngredientAsync(form.ingredient);
-            postJson('/api/ingredients', getNewIngredientFromForm(), function (result) {
-                $.ajax({
-                    url: window.location.pathname + '',
-                    method: 'GET',
-                    data:
-                }).done(function (partial) {
-                    appendIngredientDetails(partial);
-                    addIngredientToRecipeSelect2(result);
-                    closeNewIngredientForm();
-                });
-            });
+            form.close();
         });
     }
 }
@@ -193,7 +184,6 @@ class NewRecipeForm {
             stepIngredientsSelect2Handler);
     }
 }
-
 
 function ingredientsSelect2Handler(event) {
     let $this = $(this);
