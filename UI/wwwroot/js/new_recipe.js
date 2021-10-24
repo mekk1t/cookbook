@@ -73,7 +73,7 @@ class NewIngredientForm {
             order: newRecipeForm.ingredientsCount,
             ingredientId: id
         });
-        newRecipeForm.appendIngredient(recipeIngredientResponse.text)
+        newRecipeForm.appendIngredient(recipeIngredientResponse)
         ingredientsSelect2.addIngredient(id);
     }
 
@@ -138,6 +138,7 @@ class NewRecipeForm {
         $('#steps-block').hide();
         $('#done-block').hide();
         $('#navigation-button').on('click', this.nextBlock);
+        this._setNewStepHandler();
     }
     nextBlock() {
         switch (currentBlock) {
@@ -158,11 +159,11 @@ class NewRecipeForm {
                 break;
             }
         }
-        this.currentBlock += 1;
+        currentBlock += 1;
     }
 
     appendIngredient(html) {
-        document.querySelector('div.ingredients-list').innerHTML += html;
+        $('div.ingredients-list').append(html);
         this._ingredientsCount += 1;
     }
 
@@ -174,15 +175,18 @@ class NewRecipeForm {
         return this._ingredientsCount;
     }
 
-    async newStepAsync() {
-        var response = await fetch(`${window.location.pathname}?handler=StepToRecipe`);
-        var html = await response.text();
-        $('div.steps-list').append(html);
-        this._stepsCount += 1;
-        StepIngredientsSelect2.initialize(
-            this._stepsCount,
-            this.$ingredientsSelect2.getRecipeIngredients(),
-            stepIngredientsSelect2Handler);
+    _setNewStepHandler() {
+        let form = this;
+        $('#add-step-to-recipe').on('click', async function (event) {
+            var response = await fetch(`${window.location.pathname}?handler=StepToRecipe`);
+            var html = await response.text();
+            $('div.steps-list').append(html);
+            form._stepsCount += 1;
+            StepIngredientsSelect2.initialize(
+                form._stepsCount,
+                form.$ingredientsSelect2.getRecipeIngredients(),
+                stepIngredientsSelect2Handler);
+        });
     }
 }
 
