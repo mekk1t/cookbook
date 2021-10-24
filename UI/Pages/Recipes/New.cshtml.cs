@@ -62,18 +62,20 @@ namespace KP.Cookbook.UI.Pages.Recipes
             _repository.Save(Recipe);
         }
 
-        public PartialViewResult OnGetIngredientToRecipe([FromQuery] int order, [FromQuery] long ingredientId)
-        {
-            return Partial("_IngredientForm", new IngredientFormModel
+        public PartialViewResult OnGetIngredientToRecipe(
+            [FromQuery] int order,
+            [FromQuery] long ingredientId) =>
+            Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = "Recipe.IngredientDetails",
                 Order = order,
                 Ingredient = _ingredientRepository.GetOrDefault(ingredientId)
             });
-        }
 
-
-        public PartialViewResult OnGetIngredientToStep([FromQuery] int stepOrder, [FromQuery] int ingredientOrder, [FromQuery] long ingredientId) =>
+        public PartialViewResult OnGetIngredientToStep(
+            [FromQuery] int stepOrder,
+            [FromQuery] int ingredientOrder,
+            [FromQuery] long ingredientId) =>
             Partial("_IngredientForm", new IngredientFormModel
             {
                 Prefix = $"Recipe.Steps[{stepOrder}].IngredientDetails",

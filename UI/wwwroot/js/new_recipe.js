@@ -244,10 +244,13 @@ function appendIngredientDetailsToStep(html, stepOrder) {
 const stepIngredientsCounter = new StepIngredientsCounter();
 const VERIFICATION_TOKEN = $('input[name="__RequestVerificationToken"]').val();
 const newIngredientForm = new NewIngredientForm();
-let ingredientsSelect2 = new IngredientsSelect2();
-ingredientsSelect2.initializeAsync(ingredientsSelect2Handler);
+
 CustomSelect2.initializeTags(true);
-let newRecipeForm = new NewRecipeForm(ingredientsSelect2);
+
+const ingredientsSelect2 = new IngredientsSelect2();
+ingredientsSelect2.initializeAsync(ingredientsSelect2Handler);
+
+const newRecipeForm = new NewRecipeForm(ingredientsSelect2);
 
 async function PostAsync(url, data) {
     let response = await fetch(`${window.location.origin}${url}`, {
