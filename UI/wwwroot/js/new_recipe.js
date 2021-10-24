@@ -288,7 +288,7 @@ async function GetJsonAsync(url, data) {
 async function GetHtmlAsync(handlerName, data) {
     data.handler = handlerName;
     let params = $.param(data);
-    let response = await fetch(`${window.location.href}?${params}`, {
+    let response = await fetch(`${window.location.pathname}?${params}`, {
         method: 'GET',
         headers: {
             'RequestVerificationToken': VERIFICATION_TOKEN
