@@ -178,14 +178,14 @@ class NewRecipeForm {
     _setNewStepHandler() {
         let form = this;
         $('#add-step-to-recipe').on('click', async function (event) {
-            var response = await fetch(`${window.location.pathname}?handler=StepToRecipe`);
+            var response = await fetch(`${window.location.pathname}?handler=StepToRecipe&order=${form._stepsCount}`);
             var html = await response.text();
             $('div.steps-list').append(html);
-            form._stepsCount += 1;
             StepIngredientsSelect2.initialize(
                 form._stepsCount,
                 form.$ingredientsSelect2.getRecipeIngredients(),
                 stepIngredientsSelect2Handler);
+            form._stepsCount += 1;
         });
     }
 }
