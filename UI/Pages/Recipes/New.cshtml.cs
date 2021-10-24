@@ -60,6 +60,7 @@ namespace KP.Cookbook.UI.Pages.Recipes
             }
 
             _repository.Save(Recipe);
+            Response.Redirect($"details/{Recipe.Id}");
         }
 
         public PartialViewResult OnGetIngredientToRecipe(
