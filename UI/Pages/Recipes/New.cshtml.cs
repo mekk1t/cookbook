@@ -83,6 +83,7 @@ namespace KP.Cookbook.UI.Pages.Recipes
                 Ingredient = _ingredientRepository.GetOrDefault(ingredientId)
             });
 
-        public PartialViewResult OnGetStepToRecipe([FromQuery] int order) => Partial("_RecipeStep", order);
+        public PartialViewResult OnGetStepToRecipe([FromQuery] int order) =>
+            Partial("_RecipeStep", order);
     }
 }
