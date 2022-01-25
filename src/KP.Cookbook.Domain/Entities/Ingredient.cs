@@ -26,19 +26,13 @@
         /// <param name="type">Тип ингредиента.</param>
         /// <param name="description">Описание ингредиента.</param>
         /// <exception cref="InvariantException">Пустое название | недопустимое значение перечисления <see cref="IngredientType"/>.</exception>
-        public Ingredient(string name, IngredientType type, string? description)
-        {
-            Name = name ?? throw new InvariantException("Название ингредиента не может быть пустым.");
+        public Ingredient(string name, IngredientType type, string? description) =>
+            InitializeFields(name, type, description);
 
-            if (Enum.IsDefined(type))
-                Type = type;
-            else
-                throw new InvariantException("Недопустимый тип ингредиента.");
+        public Ingredient(long id, string name, IngredientType type, string? description) : base(id) =>
+            InitializeFields(name, type, description);
 
-            Description = description;
-        }
-
-        public Ingredient(long id, string name, IngredientType type, string? description) : base(id)
+        private void InitializeFields(string name, IngredientType type, string? description)
         {
             Name = name ?? throw new InvariantException("Название ингредиента не может быть пустым.");
 
