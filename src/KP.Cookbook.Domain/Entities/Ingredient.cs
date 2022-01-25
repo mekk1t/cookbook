@@ -37,6 +37,18 @@
 
             Description = description;
         }
+
+        public Ingredient(long id, string name, IngredientType type, string? description) : base(id)
+        {
+            Name = name ?? throw new InvariantException("Название ингредиента не может быть пустым.");
+
+            if (Enum.IsDefined(type))
+                Type = type;
+            else
+                throw new InvariantException("Недопустимый тип ингредиента.");
+
+            Description = description;
+        }
     }
 
     public enum IngredientType
