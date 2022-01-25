@@ -17,22 +17,25 @@
         /// <summary>
         /// Описание ингредиента, если есть.
         /// </summary>
-        public string? Description { get; set; }
+        public string? Description { get; private set; }
 
         /// <summary>
         /// Создает объект ингредиента.
         /// </summary>
         /// <param name="name">Название ингредиента.</param>
         /// <param name="type">Тип ингредиента.</param>
-        /// <exception cref="ArgumentNullException">Пустое название.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Недопустимое значение перечисления <see cref="IngredientType"/>.</exception>
-        public Ingredient(string name, IngredientType type)
+        /// <param name="description">Описание ингредиента.</param>
+        /// <exception cref="InvariantException">Пустое название | недопустимое значение перечисления <see cref="IngredientType"/>.</exception>
+        public Ingredient(string name, IngredientType type, string? description)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name), "Название ингредиента не может быть пустым.");
+            Name = name ?? throw new InvariantException("Название ингредиента не может быть пустым.");
+
             if (Enum.IsDefined(type))
                 Type = type;
             else
-                throw new ArgumentOutOfRangeException(nameof(type), "Недопустимый тип ингредиента.");
+                throw new InvariantException("Недопустимый тип ингредиента.");
+
+            Description = description;
         }
     }
 
