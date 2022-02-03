@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.Cookbook.Domain", "src\K
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{60119B8A-7DBC-4993-A29E-39134FD8D1DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP.Cookbook.Database", "src\KP.Cookbook.Database\KP.Cookbook.Database.csproj", "{A07E269E-0F49-457D-9A91-5DD1BD521848}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.Cookbook.Database", "src\KP.Cookbook.Database\KP.Cookbook.Database.csproj", "{A07E269E-0F49-457D-9A91-5DD1BD521848}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP.Cookbook.Migrations", "src\KP.Cookbook.Migrations\KP.Cookbook.Migrations.csproj", "{FC1353E2-CFD5-4A8A-8A99-B907622CE3E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.Cookbook.Database.Migrations", "src\KP.Cookbook.Migrations\KP.Cookbook.Database.Migrations.csproj", "{FC1353E2-CFD5-4A8A-8A99-B907622CE3E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

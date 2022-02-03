@@ -18,7 +18,7 @@ namespace KP.Cookbook.Domain.Entities
         public int DurationMinutes { get; private set; }
         public string? Description { get; private set; }
         public string? Image { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
 
         public Recipe(
             string title,

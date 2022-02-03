@@ -19,6 +19,7 @@ namespace KP.Cookbook.Migrations
             var migrator = new SimpleMigrator(typeof(Program).Assembly, databaseProvider);
 
             migrator.Load();
+            migrator.MigrateToLatest();
 
             var consoleRunner = new ConsoleRunner(migrator);
 
