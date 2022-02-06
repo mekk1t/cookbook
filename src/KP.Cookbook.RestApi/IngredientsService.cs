@@ -58,5 +58,19 @@ namespace KP.Cookbook.RestApi
                 _unitOfWork.Rollback();
             }
         }
+
+        private void UnitOfWorkWrap(Action action)
+        {
+            try
+            {
+                action();
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
     }
 }
