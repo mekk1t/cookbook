@@ -11,6 +11,7 @@ namespace KP.Cookbook.Uow
         public UnitOfWork(Func<DbConnection> connectionFactory)
         {
             _connection = connectionFactory();
+            _connection.Open();
             _transaction = _connection.BeginTransaction();
         }
 

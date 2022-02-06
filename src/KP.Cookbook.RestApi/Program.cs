@@ -19,8 +19,9 @@ services.AddScoped<Func<DbConnection>>(serviceProvider =>
     () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
 
 services.AddScoped<IngredientsRepository>();
-services.AddScoped<UnitOfWork>();
+services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UnitOfWork>());
 services.AddScoped<IngredientsService>();
+services.AddScoped<UnitOfWork>();
 
 var app = builder.Build();
 
