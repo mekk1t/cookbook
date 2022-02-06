@@ -15,49 +15,18 @@ namespace KP.Cookbook.RestApi
             _unitOfWork = unitOfWork;
         }
 
-        public Ingredient Create(Ingredient ingredient)
+        public Ingredient? Create(Ingredient ingredient)
         {
-            try
-            {
-                var result = _repository.Create(ingredient);
-                _unitOfWork.Commit();
-                return result;
-            }
-            catch
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
+            Ingredient? result = null;
+            UnitOfWorkWrap(() => result = _repository.Create(ingredient));
+            return result;
         }
 
         public List<Ingredient> Get() => _repository.Get();
 
-        public void Update(Ingredient ingredient)
-        {
-            try
-            {
-                _repository.Update(ingredient);
-                _unitOfWork.Commit();
-            }
-            catch
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
-        }
+        public void Update(Ingredient ingredient) => UnitOfWorkWrap(() => _repository.Update(ingredient));
 
-        public void Delete(long id)
-        {
-            try
-            {
-                _repository.Delete(id);
-                _unitOfWork.Commit();
-            }
-            catch
-            {
-                _unitOfWork.Rollback();
-            }
-        }
+        public void Delete(long id) => UnitOfWorkWrap(() => _repository.Delete(id));
 
         private void UnitOfWorkWrap(Action action)
         {
