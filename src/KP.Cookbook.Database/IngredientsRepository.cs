@@ -1,31 +1,42 @@
 ﻿using Dapper;
 using KP.Cookbook.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KP.Cookbook.Database
 {
     public class IngredientsRepository
     {
-        private readonly IDbConnection _dbConnection;
-        private readonly IDbTransaction _dbTransaction;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public IngredientsRepository(IDbConnection dbConnection, IDbTransaction dbTransaction)
+        public IngredientsRepository(IUnitOfWork unitOfWork)
         {
-            _dbConnection = dbConnection;
-            _dbTransaction = dbTransaction;
+            _unitOfWork = unitOfWork;
         }
 
-        public Task Create(Ingredient ingredient)
+        public Ingredient Create(Ingredient ingredient)
         {
-            var sql = "";
-            var parameters = new { };
+            var sql = @"
+                INSERT INTO ingredients
+                (
+                    name,
+                    type,
+                    description
+                )
+                VALUES
+                (
+                    @Name,
+                    @Type,
+                    @Description
+                )
+                RETURNING
+                    id,
+                    name,
+                    type,
+                    description;
+            ";
 
-            return _dbConnection.ExecuteAsync(new CommandDefinition(sql, parameters, _dbTransaction));
+            var parameters = new { ingredient.Name, ingredient.Type, ingredient.Description };
+
+            return _unitOfWork.Execute((c, t) => c.QueryFirst<Ingredient>(new CommandDefinition(sql, parameters, t)));
         }
     }
 }
