@@ -18,10 +18,14 @@ services.AddSwaggerGen();
 services.AddScoped<Func<DbConnection>>(serviceProvider =>
     () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
 
-services.AddScoped<IngredientsRepository>();
-services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UnitOfWork>());
-services.AddScoped<IngredientsService>();
 services.AddScoped<UnitOfWork>();
+services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UnitOfWork>());
+
+services.AddScoped<IngredientsRepository>();
+services.AddScoped<IngredientsService>();
+
+services.AddScoped<SourcesRepository>();
+services.AddScoped<SourcesService>();
 
 var app = builder.Build();
 
