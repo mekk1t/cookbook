@@ -27,6 +27,8 @@ services.AddScoped<IngredientsService>();
 services.AddScoped<SourcesRepository>();
 services.AddScoped<SourcesService>();
 
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
