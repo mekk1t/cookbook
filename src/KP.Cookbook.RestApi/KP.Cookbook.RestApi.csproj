@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KP.Cookbook.UnitOfWork\KP.Cookbook.UnitOfWork.csproj" />
+    <ProjectReference Include="..\KP.Cookbook.UnitOfWork\KP.Cookbook.Uow.csproj" />
   </ItemGroup>
 
 </Project>

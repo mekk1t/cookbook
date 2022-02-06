@@ -6,5 +6,6 @@ namespace KP.Cookbook.RestApi.Controllers
     [Route("[controller]")]
     public class IngredientsController : ControllerBase
     {
+
     }
 }
