@@ -22,9 +22,9 @@ namespace KP.Cookbook.RestApi.Controllers.Ingredients
         public Ingredient CreateIngredient([FromBody] CreateIngredientRequest request) =>
             _service.Create(new Ingredient(request.Name, request.Type, request.Description));
 
-        [HttpPatch]
-        public void UpdateIngredient([FromBody] CreateIngredientRequest request) =>
-            _service.Update(new Ingredient(request.Name, request.Type, request.Description));
+        [HttpPatch("{id}")]
+        public void UpdateIngredient([FromBody] CreateIngredientRequest request, [FromRoute] long id) =>
+            _service.Update(new Ingredient(id, request.Name, request.Type, request.Description));
 
         [HttpDelete("{id}")]
         public void DeleteIngredientById([FromRoute] long id) => _service.Delete(id);

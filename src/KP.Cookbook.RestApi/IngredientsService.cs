@@ -32,7 +32,31 @@ namespace KP.Cookbook.RestApi
 
         public List<Ingredient> Get() => _repository.Get();
 
-        public void Update(Ingredient ingredient) => _repository.Update(ingredient);
-        public void Delete(long id) => _repository.Delete(id);
+        public void Update(Ingredient ingredient)
+        {
+            try
+            {
+                _repository.Update(ingredient);
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+
+        public void Delete(long id)
+        {
+            try
+            {
+                _repository.Delete(id);
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+            }
+        }
     }
 }
