@@ -48,5 +48,35 @@ namespace KP.Cookbook.Database
 
             return _unitOfWork.Execute((c, t) => c.Query<Ingredient>(sql, transaction: t).ToList());
         }
+
+        public void Delete(long ingredientId)
+        {
+            var sql = @"
+                DELETE FROM ingredients
+                WHERE id = @Id;
+            ";
+
+            _unitOfWork.Execute((c, t) => c.Execute(sql, new { Id = ingredientId }, t));
+        }
+
+        public void Update(Ingredient ingredient)
+        {
+            var sql = @"
+                UPDATE 
+                    ingredients
+                SET
+                    name = @Name,
+                    type = @Type,
+                    description = @Description
+                WHERE
+                    id = @Id
+                RETURNING 
+                    id, name, type, description;
+            ";
+
+            var parameters = new { ingredient.Id, ingredient.Name, ingredient.Type, ingredient.Description };
+
+            _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }
