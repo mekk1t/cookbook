@@ -1,10 +1,5 @@
 ﻿using KP.Cookbook.Database;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KP.Cookbook.UnitOfWork
 {
@@ -18,6 +13,26 @@ namespace KP.Cookbook.UnitOfWork
             _connection = connectionFactory();
             _transaction = _connection.BeginTransaction();
         }
+
+        public void Commit()
+        {
+            try
+            {
+                _transaction.Commit();
+            }
+            catch
+            {
+                _transaction.Rollback();
+                throw;
+            }
+            finally
+            {
+                _transaction.Dispose();
+                _transaction = _connection.BeginTransaction();
+            }
+        }
+
+        public void Rollback() => _transaction.Rollback();
 
         public void Dispose()
         {
