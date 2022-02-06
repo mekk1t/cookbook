@@ -19,6 +19,10 @@
         /// </summary>
         public string? Description { get; private set; }
 
+        private Ingredient()
+        {
+        }
+
         /// <summary>
         /// Создает объект ингредиента.
         /// </summary>
