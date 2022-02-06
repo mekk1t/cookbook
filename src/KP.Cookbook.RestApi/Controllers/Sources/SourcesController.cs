@@ -1,4 +1,5 @@
 ﻿using KP.Cookbook.Domain.Entities;
+using KP.Cookbook.RestApi.Controllers.Sources.Requests;
 using KP.Cookbook.RestApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +20,24 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
         public List<Source> GetSources() => _service.Get();
 
         [HttpPost]
-        public Source CreateIngredient([FromBody] CreateIngredientRequest request) =>
-            _service.Create(new Source(request.Name, request.Type, request.Description));
+        public Source CreateIngredient([FromBody] UpsertSourceRequest request) =>
+            _service.Create(new Source(request.Name)
+            {
+                Description = request.Description,
+                Image = request.Image,
+                IsApproved = request.IsApproved,
+                Link = request.Link
+            });
 
         [HttpPatch("{id}")]
-        public void UpdateIngredient([FromBody] CreateIngredientRequest request, [FromRoute] long id) =>
-            _service.Update(new Source(id, request.Name, request.Type, request.Description));
+        public void UpdateIngredient([FromBody] UpsertSourceRequest request, [FromRoute] long id) =>
+            _service.Update(new Source(id, request.Name)
+            {
+                Description = request.Description,
+                Image = request.Image,
+                IsApproved = request.IsApproved,
+                Link = request.Link
+            });
 
         [HttpDelete("{id}")]
         public void DeleteIngredientById([FromRoute] long id) => _service.Delete(id);
