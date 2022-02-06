@@ -38,5 +38,15 @@ namespace KP.Cookbook.Database
 
             return _unitOfWork.Execute((c, t) => c.QueryFirst<Ingredient>(new CommandDefinition(sql, parameters, t)));
         }
+
+        public List<Ingredient> Get()
+        {
+            var sql = @"
+                SELECT id, name, type, description
+                FROM ingredients;
+            ";
+
+            return _unitOfWork.Execute((c, t) => c.Query<Ingredient>(sql, transaction: t).ToList());
+        }
     }
 }
