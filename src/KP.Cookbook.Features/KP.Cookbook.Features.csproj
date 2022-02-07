@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KP.Cookbook.Database\KP.Cookbook.Database.csproj" />
+  </ItemGroup>
+
 </Project>
