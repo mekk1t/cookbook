@@ -2,7 +2,7 @@
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Uow;
 
-namespace KP.Cookbook.RestApi.Services
+namespace KP.Cookbook.Services
 {
     public class IngredientsService
     {

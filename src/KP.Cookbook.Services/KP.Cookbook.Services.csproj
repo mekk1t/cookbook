@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KP.Cookbook.UnitOfWork\KP.Cookbook.Uow.csproj" />
+  </ItemGroup>
+
 </Project>

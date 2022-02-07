@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KP.Cookbook.RestApi.Services
+namespace KP.Cookbook.Services
 {
     public class UsersService
     {

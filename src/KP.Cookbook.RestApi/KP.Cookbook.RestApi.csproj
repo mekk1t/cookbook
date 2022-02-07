@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KP.Cookbook.UnitOfWork\KP.Cookbook.Uow.csproj" />
+    <ProjectReference Include="..\KP.Cookbook.Services\KP.Cookbook.Services.csproj" />
   </ItemGroup>
 
 </Project>
