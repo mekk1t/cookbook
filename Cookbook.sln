@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP.Cookbook.Services", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP.Cookbook.Features", "src\KP.Cookbook.Features\KP.Cookbook.Features.csproj", "{3D974D77-CEA5-4C6D-A923-0F5602E6E71B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP.Cookbook.Cqrs", "src\KP.Cookbook.Cqrs\KP.Cookbook.Cqrs.csproj", "{6517EC56-104C-4224-8A67-26C14C3A438A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{3D974D77-CEA5-4C6D-A923-0F5602E6E71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D974D77-CEA5-4C6D-A923-0F5602E6E71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D974D77-CEA5-4C6D-A923-0F5602E6E71B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6517EC56-104C-4224-8A67-26C14C3A438A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6517EC56-104C-4224-8A67-26C14C3A438A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6517EC56-104C-4224-8A67-26C14C3A438A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6517EC56-104C-4224-8A67-26C14C3A438A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{7FA46BCB-1409-499C-BA40-CC8FCE8A0129} = {60119B8A-7DBC-4993-A29E-39134FD8D1DD}
 		{82DFA0B0-D38F-4169-9426-4460E1C7AE4A} = {60119B8A-7DBC-4993-A29E-39134FD8D1DD}
 		{3D974D77-CEA5-4C6D-A923-0F5602E6E71B} = {60119B8A-7DBC-4993-A29E-39134FD8D1DD}
+		{6517EC56-104C-4224-8A67-26C14C3A438A} = {60119B8A-7DBC-4993-A29E-39134FD8D1DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12930792-10C6-4089-8B24-7E41BBFBFE5E}
