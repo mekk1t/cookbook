@@ -2,6 +2,6 @@
 {
     public class GetSourcesQuery
     {
-
+        public static GetSourcesQuery Empty => new();
     }
 }
