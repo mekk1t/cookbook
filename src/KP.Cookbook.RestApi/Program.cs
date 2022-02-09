@@ -27,13 +27,13 @@ services.AddSwaggerGen();
 
 services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
-var assemblies = new[] { typeof(UpdateSourceCommandHandler).Assembly };
+var featuresAssembly = typeof(UpdateSourceCommandHandler).Assembly;
 
 container.Register<IUnitOfWork, UnitOfWork>();
 container.Register<Func<DbConnection>>(() => () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
-container.Register(typeof(ICommandHandler<>), assemblies);
-container.Register(typeof(ICommandHandler<,>), assemblies);
-container.Register(typeof(IQueryHandler<,>), assemblies);
+container.Register(typeof(ICommandHandler<>), featuresAssembly);
+container.Register(typeof(ICommandHandler<,>), featuresAssembly);
+container.Register(typeof(IQueryHandler<,>), featuresAssembly);
 container.RegisterDecorator(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
 container.RegisterDecorator(typeof(ICommandHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
 container.Register<UnitOfWork>();
