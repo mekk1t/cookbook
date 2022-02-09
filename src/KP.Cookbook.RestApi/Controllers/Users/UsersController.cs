@@ -1,5 +1,4 @@
 ﻿using KP.Cookbook.Cqrs;
-using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.Users.CreateUser;
 using KP.Cookbook.Features.Users.GetUsers;
 using KP.Cookbook.RestApi.Controllers.Users.Requests;
@@ -30,6 +29,8 @@ namespace KP.Cookbook.RestApi.Controllers.Users
 
         [HttpPost]
         public DomainUser Register([FromBody] RegisterUserRequest request) =>
-            _createUser.Execute(new CreateUserCommand(DomainUser.Register(request.Email, request.Password.Sha256Hash())));
+            _createUser.Execute(
+                new CreateUserCommand(
+                    DomainUser.Register(request.Email, request.Password.Sha256Hash(), request.Nickname ?? string.Empty)));
     }
 }

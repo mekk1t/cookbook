@@ -5,17 +5,13 @@
         public string? Nickname { get; set; }
         public string? Avatar { get; set; }
 
-        public UserType UserType { get; }
-        public DateTime JoinedAt { get; }
-        public string Login { get; }
-        public string PasswordHash { get; }
+        public UserType UserType { get; private set; }
+        public DateTime JoinedAt { get; private set; }
+        public string Login { get; private set; }
+        public string PasswordHash { get; private set; }
 
-        public User(UserType userType)
+        private User()
         {
-            UserType = userType;
-            JoinedAt = DateTime.UtcNow;
-            Login = string.Empty;
-            PasswordHash = string.Empty;
         }
 
         private User(string login, string passwordHash)
@@ -23,16 +19,21 @@
             Login = login;
             PasswordHash = passwordHash;
             JoinedAt = DateTime.UtcNow;
+            UserType = UserType.User;
         }
 
-        public static User Register(string login, string passwordHash)
+        public static User Register(string login, string passwordHash, string nickname = "", string avatar = "")
         {
             if (string.IsNullOrEmpty(login))
                 throw new InvariantException("Не указан логин");
             if (string.IsNullOrEmpty(passwordHash))
                 throw new InvariantException("Не указан пароль");
 
-            return new User(login, passwordHash);
+            return new User(login, passwordHash)
+            {
+                Nickname = nickname,
+                Avatar = avatar
+            };
         }
     }
 
