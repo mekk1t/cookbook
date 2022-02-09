@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using KP.Cookbook.Features.Sources.CreateSource;
 using KP.Cookbook.Features.Sources.UpdateSource;
 using KP.Cookbook.Features.Sources.GetSources;
+using System.Linq;
 
 var container = new Container();
 container.Options.DefaultLifestyle = Lifestyle.Scoped;
@@ -26,11 +27,13 @@ services.AddSwaggerGen();
 
 services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
+var assemblies = new[] { typeof(UpdateSourceCommandHandler).Assembly };
+
 container.Register<IUnitOfWork, UnitOfWork>();
 container.Register<Func<DbConnection>>(() => () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
-container.Register(typeof(ICommandHandler<>), typeof(UpdateSourceCommandHandler).Assembly);
-container.Register(typeof(ICommandHandler<,>), typeof(CreateSourceCommandHandler).Assembly);
-container.Register(typeof(IQueryHandler<,>), typeof(GetSourcesQuery).Assembly);
+container.Register(typeof(ICommandHandler<>), assemblies);
+container.Register(typeof(ICommandHandler<,>), assemblies);
+container.Register(typeof(IQueryHandler<,>), assemblies);
 container.RegisterDecorator(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
 container.RegisterDecorator(typeof(ICommandHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
 container.Register<UnitOfWork>();
