@@ -8,7 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="6.0.3" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore" Version="5.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KP.Cookbook.Features\KP.Cookbook.Features.csproj" />
   </ItemGroup>
 
 </Project>

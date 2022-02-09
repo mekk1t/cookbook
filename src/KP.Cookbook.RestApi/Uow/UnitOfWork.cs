@@ -1,7 +1,7 @@
 ﻿using KP.Cookbook.Database;
 using System.Data.Common;
 
-namespace KP.Cookbook.Uow
+namespace KP.Cookbook.RestApi.Uow
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
