@@ -9,10 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using KP.Cookbook.Features.Sources.CreateSource;
 using KP.Cookbook.Features.Sources.UpdateSource;
-using KP.Cookbook.Features.Sources.GetSources;
-using System.Linq;
 
 var container = new Container();
 container.Options.DefaultLifestyle = Lifestyle.Scoped;
