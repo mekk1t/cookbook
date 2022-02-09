@@ -2,7 +2,7 @@
 using KP.Cookbook.Database;
 using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.GetIngredients
+namespace KP.Cookbook.Features.Ingredients.GetIngredients
 {
     public class GetIngredientsQueryHandler : IQueryHandler<GetIngredientsQuery, List<Ingredient>>
     {

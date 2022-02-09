@@ -1,7 +1,7 @@
 ﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Database;
 
-namespace KP.Cookbook.Features.DeleteIngredient
+namespace KP.Cookbook.Features.Ingredients.DeleteIngredient
 {
     public class DeleteIngredientCommandHandler : ICommandHandler<DeleteIngredientCommand>
     {

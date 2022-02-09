@@ -2,7 +2,7 @@
 using KP.Cookbook.Database;
 using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.CreateIngredient
+namespace KP.Cookbook.Features.Ingredients.CreateIngredient
 {
     public class CreateIngredientCommandHandler : ICommandHandler<CreateIngredientCommand, Ingredient>
     {

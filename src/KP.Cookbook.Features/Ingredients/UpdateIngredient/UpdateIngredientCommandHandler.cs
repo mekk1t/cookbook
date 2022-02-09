@@ -1,7 +1,7 @@
 ﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Database;
 
-namespace KP.Cookbook.Features.UpdateIngredient
+namespace KP.Cookbook.Features.Ingredients.UpdateIngredient
 {
     public class UpdateIngredientCommandHandler : ICommandHandler<UpdateIngredientCommand>
     {

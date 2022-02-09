@@ -1,6 +1,6 @@
 ﻿using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.UpdateIngredient
+namespace KP.Cookbook.Features.Ingredients.UpdateIngredient
 {
     public class UpdateIngredientCommand
     {

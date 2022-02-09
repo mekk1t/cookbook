@@ -1,4 +1,4 @@
-﻿namespace KP.Cookbook.Features.DeleteIngredient
+﻿namespace KP.Cookbook.Features.Ingredients.DeleteIngredient
 {
     public class DeleteIngredientCommand
     {
