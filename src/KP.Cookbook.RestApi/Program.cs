@@ -1,35 +1,41 @@
 using KP.Cookbook.Database;
 using KP.Cookbook.RestApi.Uow;
-using KP.Cookbook.Services;
 using Npgsql;
+using SimpleInjector;
 using System.Data.Common;
+using KP.Cookbook.Cqrs;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+
+var container = new Container();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-var services = builder.Services;
+IServiceCollection services = builder.Services;
 
 services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
-services.AddScoped<Func<DbConnection>>(serviceProvider =>
-    () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
+services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
-services.AddScoped<UnitOfWork>();
-services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UnitOfWork>());
+var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
-services.AddScoped<IngredientsRepository>();
-services.AddScoped<IngredientsService>();
-
-services.AddScoped<SourcesRepository>();
-services.AddScoped<SourcesService>();
+container.Register<IUnitOfWork, UnitOfWork>();
+container.Register(typeof(Func<DbConnection>), () => new NpgsqlConnection(builder.Configuration.GetConnectionString("Postgresql")));
+container.Register(typeof(ICommandHandler<>), assemblies);
+container.Register(typeof(ICommandHandler<,>), assemblies);
+container.RegisterDecorator(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
+container.RegisterDecorator(typeof(ICommandHandler<,>), typeof(UnitOfWorkCommandHandlerDecorator<,>));
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 var app = builder.Build();
+
+app.Services.UseSimpleInjector(container);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,5 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+container.Verify();
 
 app.Run();
