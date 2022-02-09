@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KP.Cookbook.Cqrs\KP.Cookbook.Cqrs.csproj" />
     <ProjectReference Include="..\KP.Cookbook.Database\KP.Cookbook.Database.csproj" />
   </ItemGroup>
 
