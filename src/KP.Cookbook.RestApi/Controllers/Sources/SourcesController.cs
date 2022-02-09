@@ -54,7 +54,7 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
                     }));
 
         [HttpPatch("{id}")]
-        public void UpdateIngredient([FromBody] UpsertSourceRequest request, [FromRoute] long id) =>
+        public void UpdateSource([FromBody] UpsertSourceRequest request, [FromRoute] long id) =>
             _updateSource.Execute(
                 new UpdateSourceCommand(
                     new Source(id, request.Name)
@@ -66,6 +66,6 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
                     }));
 
         [HttpDelete("{id}")]
-        public void DeleteIngredientById([FromRoute] long id) => _deleteSource.Execute(new DeleteSourceCommand(id));
+        public void DeleteSourceById([FromRoute] long id) => _deleteSource.Execute(new DeleteSourceCommand(id));
     }
 }
