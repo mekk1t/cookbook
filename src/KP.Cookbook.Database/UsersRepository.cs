@@ -72,6 +72,18 @@ namespace KP.Cookbook.Database
             return _unitOfWork.Execute((c, t) => c.QueryFirst<User>(sql, parameters, t));
         }
 
+        public User? GetByLoginOrDefault(string login)
+        {
+            var sql = @"
+                SELECT id, nickname, avatar, type, joined_at, login, password_hash FROM users
+                WHERE login = @Login;
+            ";
+
+            var parameters = new { Login = login };
+
+            return _unitOfWork.Execute((c, t) => c.QueryFirstOrDefault<User?>(sql, parameters, t));
+        }
+
         public List<User> GetAll()
         {
             var sql = "SELECT id, nickname, avatar, type, joined_at, login, password_hash FROM users;";
