@@ -10,6 +10,8 @@ using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using KP.Cookbook.Features.Sources.UpdateSource;
+using KP.Cookbook.Features.Abstractions;
+using KP.Cookbook.RestApi;
 
 var container = new Container();
 container.Options.DefaultLifestyle = Lifestyle.Scoped;
@@ -21,6 +23,7 @@ IServiceCollection services = builder.Services;
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
+services.AddHttpContextAccessor();
 
 services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
@@ -36,6 +39,8 @@ container.RegisterDecorator(typeof(ICommandHandler<,>), typeof(UnitOfWorkCommand
 container.Register<UnitOfWork>();
 container.Register<SourcesRepository>();
 container.Register<IngredientsRepository>();
+container.Register<UsersRepository>();
+container.Register<IAccessValidator, AccessValidator>();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
