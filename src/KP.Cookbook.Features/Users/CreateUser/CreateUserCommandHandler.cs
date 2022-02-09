@@ -3,7 +3,7 @@ using KP.Cookbook.Database;
 using KP.Cookbook.Domain;
 using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.Users
+namespace KP.Cookbook.Features.Users.CreateUser
 {
     public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, User>
     {

@@ -1,6 +1,6 @@
 ﻿using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.Users
+namespace KP.Cookbook.Features.Users.CreateUser
 {
     public class CreateUserCommand
     {
