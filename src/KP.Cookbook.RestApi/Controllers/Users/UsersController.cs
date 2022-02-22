@@ -25,13 +25,23 @@ namespace KP.Cookbook.RestApi.Controllers.Users
             _getUsers = getUsers;
         }
 
+        /// <summary>
+        /// Список пользователей в системе.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public List<DomainUser> GetUsers() => _getUsers.Execute(new GetUsersQuery());
+        public IActionResult GetUsers() =>
+            ExecuteCollectionRequest(() => _getUsers.Execute(new GetUsersQuery()));
 
+        /// <summary>
+        /// Регистрация нового пользователя.
+        /// </summary>
+        /// <param name="request">Запрос на регистрацию.</param>
+        /// <returns></returns>
         [HttpPost]
-        public DomainUser Register([FromBody] RegisterUserRequest request) =>
-            _createUser.Execute(
+        public IActionResult Register([FromBody] RegisterUserRequest request) =>
+            ExecuteObjectRequest(() => _createUser.Execute(
                 new CreateUserCommand(
-                    DomainUser.Register(request.Email, request.Password.Sha256Hash(), request.Nickname ?? string.Empty)));
+                    DomainUser.Register(request.Email, request.Password.Sha256Hash(), request.Nickname ?? string.Empty))));
     }
 }

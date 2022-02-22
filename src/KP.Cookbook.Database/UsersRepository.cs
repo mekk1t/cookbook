@@ -35,7 +35,7 @@ namespace KP.Cookbook.Database
                     nickname, avatar, type, joined_at, login, password_hash, id;
             ";
 
-            var parameters = new { user.Nickname, user.Avatar, Type = user.UserType, user.JoinedAt, user.Login, user.PasswordHash };
+            var parameters = new { user.Nickname, user.Avatar, Type = user.Type, user.JoinedAt, user.Login, user.PasswordHash };
 
             return _unitOfWork.Execute((c, t) => c.QueryFirst<User>(sql, parameters, t));
         }
@@ -55,7 +55,7 @@ namespace KP.Cookbook.Database
                     id = @Id;
             ";
 
-            var parameters = new { user.Nickname, user.Avatar, Type = user.UserType, user.JoinedAt, user.Login, user.PasswordHash, user.Id };
+            var parameters = new { user.Nickname, user.Avatar, Type = user.Type, user.JoinedAt, user.Login, user.PasswordHash, user.Id };
 
             _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
         }
