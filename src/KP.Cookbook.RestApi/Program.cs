@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using KP.Cookbook.Features.Sources.UpdateSource;
 using KP.Cookbook.Features.Abstractions;
 using KP.Cookbook.RestApi;
+using KitProjects.Api.AspNetCore.Extensions;
 
 var container = new Container();
 container.Options.DefaultLifestyle = Lifestyle.Scoped;
@@ -20,10 +21,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 IServiceCollection services = builder.Services;
 
-services.AddControllers();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
 services.AddHttpContextAccessor();
+services.AddSwaggerV1("Cookbook", "KP.Cookbook.RestApi");
+services.AddApiCore(true);
 
 services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
@@ -48,12 +49,7 @@ var app = builder.Build();
 
 app.Services.UseSimpleInjector(container);
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwaggerDocumentation("KP: Cookbook");
 
 app.UseHttpsRedirection();
 

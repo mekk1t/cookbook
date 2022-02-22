@@ -3,9 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="KitProjects.Api.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="KitProjects.PrimitiveTypes.Extensions" Version="1.0.0" />
     <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />

@@ -1,3 +1,4 @@
+using KitProjects.Api.AspNetCore;
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.Ingredients.CreateIngredient;
@@ -6,13 +7,14 @@ using KP.Cookbook.Features.Ingredients.GetIngredients;
 using KP.Cookbook.Features.Ingredients.UpdateIngredient;
 using KP.Cookbook.RestApi.Controllers.Ingredients.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.Ingredients
 {
     [ApiController]
     [Route("[controller]")]
-    public class IngredientsController : ControllerBase
+    public class IngredientsController : ApiJsonController
     {
         private readonly ICommandHandler<CreateIngredientCommand, Ingredient> _createIngredient;
         private readonly ICommandHandler<DeleteIngredientCommand> _deleteIngredient;
@@ -23,7 +25,8 @@ namespace KP.Cookbook.RestApi.Controllers.Ingredients
             ICommandHandler<CreateIngredientCommand, Ingredient> createIngredient,
             ICommandHandler<DeleteIngredientCommand> deleteIngredient,
             ICommandHandler<UpdateIngredientCommand> updateIngredient,
-            IQueryHandler<GetIngredientsQuery, List<Ingredient>> getIngredients)
+            IQueryHandler<GetIngredientsQuery, List<Ingredient>> getIngredients,
+            ILogger<IngredientsController> logger) : base(logger)
         {
             _createIngredient = createIngredient;
             _deleteIngredient = deleteIngredient;

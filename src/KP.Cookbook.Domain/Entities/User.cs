@@ -2,8 +2,8 @@
 {
     public class User : Entity
     {
-        public string? Nickname { get; set; }
-        public string? Avatar { get; set; }
+        public string Nickname { get; private set; }
+        public string Avatar { get; private set; }
 
         public UserType UserType { get; private set; }
         public DateTime JoinedAt { get; private set; }
