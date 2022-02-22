@@ -18,4 +18,12 @@
     <ProjectReference Include="..\KP.Cookbook.Features\KP.Cookbook.Features.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyXmlDocs" BeforeTargets="Build">
+    <ItemGroup>
+      <XmlDocs Include="%(Reference.RelativeDir)KitProjects.Api.AspNetCore.xml" />
+    </ItemGroup>
+    <Message Text="Copying XML docs to $(OutputPath)" Importance="High" />
+    <Copy SourceFiles="@(XmlDocs)" DestinationFolder="$(OutputPath)" Condition="Exists(%(FullPath))" />
+  </Target>
+
 </Project>
