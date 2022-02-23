@@ -7,13 +7,14 @@ using KP.Cookbook.Features.Sources.GetSources;
 using KP.Cookbook.Features.Sources.UpdateSource;
 using KP.Cookbook.RestApi.Controllers.Sources.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.Sources
 {
     [ApiController]
     [Route("[controller]")]
-    public class SourcesController : ControllerBase
+    public class SourcesController : CookbookApiJsonController
     {
         private readonly ICommandHandler<CreateSourceCommand, Source> _createSource;
         private readonly ICommandHandler<DeleteSourceCommand> _deleteSource;
@@ -26,7 +27,8 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
             ICommandHandler<DeleteSourceCommand> deleteSource,
             ICommandHandler<UpdateSourceCommand> updateSource,
             IQueryHandler<GetSourceDetailsQuery, Source> getSourceDetails,
-            IQueryHandler<GetSourcesQuery, List<Source>> getSources)
+            IQueryHandler<GetSourcesQuery, List<Source>> getSources,
+            ILogger<SourcesController> logger) : base(logger)
         {
             _createSource = createSource;
             _deleteSource = deleteSource;
@@ -36,14 +38,15 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
         }
 
         [HttpGet]
-        public List<Source> GetSources() => _getSources.Execute(GetSourcesQuery.Empty);
+        public IActionResult GetSources() => ExecuteCollectionRequest(() => _getSources.Execute(GetSourcesQuery.Empty));
 
         [HttpGet("{id}")]
-        public Source GetSourceDetails([FromRoute] long id) => _getSourceDetails.Execute(new GetSourceDetailsQuery(id));
+        public IActionResult GetSourceDetails([FromRoute] long id) =>
+            ExecuteObjectRequest(() => _getSourceDetails.Execute(new GetSourceDetailsQuery(id)));
 
         [HttpPost]
-        public Source CreateSource([FromBody] UpsertSourceRequest request) =>
-            _createSource.Execute(
+        public IActionResult CreateSource([FromBody] UpsertSourceRequest request) =>
+            ExecuteObjectRequest(() => _createSource.Execute(
                 new CreateSourceCommand(
                     new Source(request.Name)
                     {
@@ -51,11 +54,11 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
                         Image = request.Image,
                         IsApproved = request.IsApproved,
                         Link = request.Link
-                    }));
+                    })));
 
         [HttpPatch("{id}")]
-        public void UpdateSource([FromBody] UpsertSourceRequest request, [FromRoute] long id) =>
-            _updateSource.Execute(
+        public IActionResult UpdateSource([FromBody] UpsertSourceRequest request, [FromRoute] long id) =>
+            ExecuteAction(() => _updateSource.Execute(
                 new UpdateSourceCommand(
                     new Source(id, request.Name)
                     {
@@ -63,9 +66,9 @@ namespace KP.Cookbook.RestApi.Controllers.Sources
                         Image = request.Image,
                         IsApproved = request.IsApproved,
                         Link = request.Link
-                    }));
+                    })));
 
         [HttpDelete("{id}")]
-        public void DeleteSourceById([FromRoute] long id) => _deleteSource.Execute(new DeleteSourceCommand(id));
+        public IActionResult DeleteSourceById([FromRoute] long id) => ExecuteAction(() => _deleteSource.Execute(new DeleteSourceCommand(id)));
     }
 }

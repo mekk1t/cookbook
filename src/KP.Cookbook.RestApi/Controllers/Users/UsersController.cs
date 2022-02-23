@@ -1,5 +1,4 @@
-﻿using KitProjects.Api.AspNetCore;
-using KP.Cookbook.Cqrs;
+﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Features.Users.CreateUser;
 using KP.Cookbook.Features.Users.GetUsers;
 using KP.Cookbook.RestApi.Controllers.Users.Requests;
@@ -11,7 +10,7 @@ using DomainUser = KP.Cookbook.Domain.Entities.User;
 
 namespace KP.Cookbook.RestApi.Controllers.Users
 {
-    public class UsersController : ApiJsonController
+    public class UsersController : CookbookApiJsonController
     {
         private readonly ICommandHandler<CreateUserCommand, DomainUser> _createUser;
         private readonly IQueryHandler<GetUsersQuery, List<DomainUser>> _getUsers;
@@ -30,10 +29,9 @@ namespace KP.Cookbook.RestApi.Controllers.Users
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetUsers() =>
-            ExecuteCollectionRequest(() => _getUsers.Execute(new GetUsersQuery()));
+        public IActionResult GetUsers() => ExecuteCollectionRequest(() => _getUsers.Execute(new GetUsersQuery()));
 
-        /// <summary>
+        /// <summary>K8
         /// Регистрация нового пользователя.
         /// </summary>
         /// <param name="request">Запрос на регистрацию.</param>

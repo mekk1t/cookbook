@@ -1,4 +1,3 @@
-using KitProjects.Api.AspNetCore;
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.Ingredients.CreateIngredient;
@@ -14,7 +13,7 @@ namespace KP.Cookbook.RestApi.Controllers.Ingredients
 {
     [ApiController]
     [Route("[controller]")]
-    public class IngredientsController : ApiJsonController
+    public class IngredientsController : CookbookApiJsonController
     {
         private readonly ICommandHandler<CreateIngredientCommand, Ingredient> _createIngredient;
         private readonly ICommandHandler<DeleteIngredientCommand> _deleteIngredient;
@@ -34,18 +33,39 @@ namespace KP.Cookbook.RestApi.Controllers.Ingredients
             _getIngredients = getIngredients;
         }
 
+        /// <summary>
+        /// Список ингредиентов.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public List<Ingredient> GetIngredients() => _getIngredients.Execute(new GetIngredientsQuery());
+        public IActionResult GetIngredients() => ExecuteCollectionRequest(() => _getIngredients.Execute(new GetIngredientsQuery()));
 
+        /// <summary>
+        /// Создание нового ингредиента.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
-        public Ingredient CreateIngredient([FromBody] CreateIngredientRequest request) =>
-            _createIngredient.Execute(new CreateIngredientCommand(new Ingredient(request.Name, request.Type, request.Description)));
+        public IActionResult CreateIngredient([FromBody] CreateIngredientRequest request) =>
+            ExecuteObjectRequest(() => _createIngredient.Execute(new CreateIngredientCommand(new Ingredient(request.Name, request.Type, request.Description))));
 
+        /// <summary>
+        /// Редактирование ингредиента.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
-        public void UpdateIngredient([FromBody] CreateIngredientRequest request, [FromRoute] long id) =>
-            _updateIngredient.Execute(new UpdateIngredientCommand(new Ingredient(id, request.Name, request.Type, request.Description)));
+        public IActionResult UpdateIngredient([FromBody] CreateIngredientRequest request, [FromRoute] long id) =>
+            ExecuteAction(() => _updateIngredient.Execute(new UpdateIngredientCommand(new Ingredient(id, request.Name, request.Type, request.Description))));
 
+        /// <summary>
+        /// Удаление ингредиента.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void DeleteIngredientById([FromRoute] long id) => _deleteIngredient.Execute(new DeleteIngredientCommand(id));
+        public IActionResult DeleteIngredientById([FromRoute] long id) =>
+            ExecuteAction(() => _deleteIngredient.Execute(new DeleteIngredientCommand(id)));
     }
 }

@@ -16,9 +16,5 @@ namespace KP.Cookbook.RestApi.Controllers.Auth
         {
 
         }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult Authorize() { }
     }
 }

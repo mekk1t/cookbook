@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KitProjects.Api.AspNetCore" Version="2.0.1" />
     <PackageReference Include="KitProjects.PrimitiveTypes.Extensions" Version="1.0.0" />
+    <PackageReference Include="KP.Api.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.3.0" />
@@ -21,7 +21,7 @@
 
   <Target Name="CopyXmlDocs" BeforeTargets="Build">
     <ItemGroup>
-      <XmlDocs Include="%(Reference.RelativeDir)KitProjects.Api.AspNetCore.xml" />
+      <XmlDocs Include="%(Reference.RelativeDir)KP.Api.AspNetCore.xml" />
     </ItemGroup>
     <Message Text="Copying XML docs to $(OutputPath)" Importance="High" />
     <Copy SourceFiles="@(XmlDocs)" DestinationFolder="$(OutputPath)" Condition="Exists(%(FullPath))" />
