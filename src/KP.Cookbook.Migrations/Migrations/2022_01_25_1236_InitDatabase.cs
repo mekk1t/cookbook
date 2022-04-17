@@ -22,7 +22,7 @@ namespace KP.Cookbook.Migrations.Migrations
 					nickname 		text		NULL,
 					avatar			text 		NULL,
 					type			smallint 	NOT NULL,
-					joined_at		timestamp	NOT NULL,
+					joined_at		timestamptz	NOT NULL,
 					login			text		NOT NULL,
 					password_hash 	text		NOT NULL
 				);
@@ -40,7 +40,7 @@ namespace KP.Cookbook.Migrations.Migrations
 				CREATE TABLE cooking_steps
 				(
 					id 			bigint 		GENERATED ALWAYS AS IDENTITY 	PRIMARY KEY,
-					_order		smallint	NOT NULL,
+					""order""	smallint	NOT NULL,
 					description	text		NULL,
 					image		text		NULL
 				);
@@ -52,7 +52,7 @@ namespace KP.Cookbook.Migrations.Migrations
 	                amount				numeric(6, 2) 	NOT NULL,
 	                amount_type			smallint		NOT NULL,
 	                is_optional			boolean			NOT NULL,
-	
+
 	                CONSTRAINT cooking_steps_and_ingredients_pk PRIMARY KEY (cooking_step_id, ingredient_id)
                 );
 
@@ -64,13 +64,13 @@ namespace KP.Cookbook.Migrations.Migrations
 					cooking_type	smallint 	NOT NULL,
 					kitchen_type	smallint	NOT NULL,
 					holiday_type	smallint	NOT NULL,
-					created_at		timestamp	NOT NULL,	
-					user_id			bigint		REFERENCES users(id) ON DELETE CASCADE			NOT NULL,	
+					created_at		timestamptz	NOT NULL,
+					user_id			bigint		REFERENCES users(id) ON DELETE CASCADE			NOT NULL,
 					source_id		bigint		REFERENCES sources(id) ON DELETE SET NULL		NULL,
 					duration_min	smallint	NULL,
 					description		text		NULL,
 					image			text		NULL,
-					updated_at		timestamp	NULL
+					updated_at		timestamptz	NULL
 				);
 
 				CREATE INDEX recipes_title_index ON recipes USING btree (title);
