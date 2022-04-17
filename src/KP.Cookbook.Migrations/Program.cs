@@ -1,13 +1,12 @@
 ﻿using Npgsql;
 using SimpleMigrations;
-using SimpleMigrations.Console;
 using SimpleMigrations.DatabaseProvider;
 
 namespace KP.Cookbook.Migrations
 {
     class Program
     {
-        static int Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length == 0)
                 throw new ArgumentException("Не указаны аргументы командной строки");
@@ -20,10 +19,6 @@ namespace KP.Cookbook.Migrations
 
             migrator.Load();
             migrator.MigrateToLatest();
-
-            var consoleRunner = new ConsoleRunner(migrator);
-
-            return consoleRunner.Run(args);
         }
     }
 }
