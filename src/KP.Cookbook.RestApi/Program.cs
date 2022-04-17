@@ -9,12 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using System;
 using Microsoft.Extensions.Configuration;
 using KP.Cookbook.Features.Sources.UpdateSource;
-using KP.Cookbook.Features.Abstractions;
-using KP.Cookbook.RestApi;
 using KP.Api.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var container = new Container();
 container.Options.DefaultLifestyle = Lifestyle.Scoped;
@@ -28,20 +23,6 @@ services.AddEndpointsApiExplorer();
 services.AddHttpContextAccessor();
 services.AddSwaggerV1("Cookbook", "KP.Cookbook.RestApi");
 services.AddApiCore(true);
-services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = config["Jwt:Issuer"],
-            ValidAudience = config["Jwt:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
-        };
-    });
 
 services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation());
 
@@ -58,7 +39,6 @@ container.Register<UnitOfWork>();
 container.Register<SourcesRepository>();
 container.Register<IngredientsRepository>();
 container.Register<UsersRepository>();
-container.Register<IAccessValidator, AccessValidator>();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 
