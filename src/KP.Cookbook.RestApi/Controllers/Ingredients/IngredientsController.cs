@@ -11,8 +11,6 @@ using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.Ingredients
 {
-    [ApiController]
-    [Route("[controller]")]
     public class IngredientsController : CookbookApiJsonController
     {
         private readonly ICommandHandler<CreateIngredientCommand, Ingredient> _createIngredient;

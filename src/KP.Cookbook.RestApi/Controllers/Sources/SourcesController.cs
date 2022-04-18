@@ -12,8 +12,6 @@ using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.Sources
 {
-    [ApiController]
-    [Route("[controller]")]
     public class SourcesController : CookbookApiJsonController
     {
         private readonly ICommandHandler<CreateSourceCommand, Source> _createSource;
