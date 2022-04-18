@@ -14,8 +14,8 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
         }
 
         public Recipe Execute(CreateRecipeCommand command) =>
-            _repository.Create(
-                new Recipe(
+            _repository.Save(
+                Recipe.Create(
                     command.Title,
                     User.Create(command.UserLogin, command.UserNickname),
                     command.RecipeType,

@@ -45,13 +45,13 @@ namespace KP.Cookbook.Database
         }
 
         /// <summary>
-        /// Создает рецепт в базе данных.
+        /// Сохраняет рецепт в базе данных.
         /// </summary>
         /// <remarks>
         /// Не создает связанные шаги, пользователя, источник и ингредиенты. Пока.
         /// </remarks>
         /// <param name="recipe"></param>
-        public Recipe Create(Recipe recipe)
+        public Recipe Save(Recipe recipe)
         {
             string sql = @"
                 INSERT INTO recipes
