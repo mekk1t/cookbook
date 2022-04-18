@@ -1,6 +1,6 @@
 ﻿using KP.Cookbook.Domain.Entities;
 
-namespace KP.Cookbook.Features.Recipes
+namespace KP.Cookbook.Features.Recipes.CreateRecipe
 {
     public class CreateRecipeCommand
     {
