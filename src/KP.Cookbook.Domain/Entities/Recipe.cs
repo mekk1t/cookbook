@@ -4,15 +4,15 @@ namespace KP.Cookbook.Domain.Entities
 {
     public class Recipe : Entity
     {
-        public string Title { get; }
-        public RecipeType RecipeType { get; }
-        public CookingType CookingType { get; }
-        public KitchenType KitchenType { get; }
-        public HolidayType HolidayType { get; }
-        public DateTime CreatedAt { get; }
+        public string Title { get; private set; }
+        public RecipeType RecipeType { get; private set; }
+        public CookingType CookingType { get; private set; }
+        public KitchenType KitchenType { get; private set; }
+        public HolidayType HolidayType { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
         public User Author { get; }
-        public List<CookingStep> CookingSteps { get; private set; } = new List<CookingStep>();
+        public List<CookingStep> CookingSteps { get; } = new List<CookingStep>();
         public List<IngredientDetailed> Ingredients { get; } = new List<IngredientDetailed>();
 
         public Source? Source { get; private set; }
@@ -22,7 +22,11 @@ namespace KP.Cookbook.Domain.Entities
         public string? Image { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
 
-        public Recipe(
+        private Recipe()
+        {
+        }
+
+        private Recipe(
             string title,
             User author,
             RecipeType recipeType = RecipeType.Common,
@@ -36,6 +40,7 @@ namespace KP.Cookbook.Domain.Entities
             CookingType = cookingType;
             KitchenType = kitchenType;
             HolidayType = holidayType;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public void NormalizeSteps()
@@ -70,6 +75,14 @@ namespace KP.Cookbook.Domain.Entities
 
             UpdatedAt = DateTime.UtcNow;
         }
+
+        public static Recipe Create(
+            string title,
+            User author,
+            RecipeType recipeType = RecipeType.Common,
+            CookingType cookingType = CookingType.None,
+            KitchenType kitchenType = KitchenType.None,
+            HolidayType holidayType = HolidayType.None) => new(title, author, recipeType, cookingType, kitchenType, holidayType);
     }
 
     public enum RecipeType
