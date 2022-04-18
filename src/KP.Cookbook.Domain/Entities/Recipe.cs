@@ -10,11 +10,13 @@ namespace KP.Cookbook.Domain.Entities
         public KitchenType KitchenType { get; }
         public HolidayType HolidayType { get; }
         public DateTime CreatedAt { get; }
+
         public User Author { get; }
         public List<CookingStep> CookingSteps { get; private set; } = new List<CookingStep>();
         public List<IngredientDetailed> Ingredients { get; } = new List<IngredientDetailed>();
 
         public Source? Source { get; private set; }
+
         public int DurationMinutes { get; private set; }
         public string? Description { get; private set; }
         public string? Image { get; private set; }
