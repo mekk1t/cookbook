@@ -12,20 +12,24 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
         public CreateRecipeCommandHandler(RecipesRepository repository, UsersRepository usersRepository)
         {
             _repository = repository;
-            _usersRepository = _usersRepository;
+            _usersRepository = usersRepository;
         }
 
         public Recipe Execute(CreateRecipeCommand command)
         {
             var user = _usersRepository.GetByLoginOrDefault(command.UserLogin);
+            if (user == null)
+                throw new Exception($"Пользователь с логином {command.UserLogin} не найден.");
+
+            var recipe = Recipe.Create(
+                command.Title,
+                user,
+                command.RecipeType,
+                command.CookingType,
+                command.KitchenType,
+                command.HolidayType);
+
+            return _repository.Save(recipe);
         }
-            _repository.Save(
-                Recipe.Create(
-                    command.Title,
-                    User.Create(command.UserLogin, command.UserNickname),
-                    command.RecipeType,
-                    command.CookingType,
-                    command.KitchenType,
-                    command.HolidayType));
     }
 }

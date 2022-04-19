@@ -9,17 +9,15 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
         public CookingType CookingType { get; }
         public KitchenType KitchenType { get; }
         public HolidayType HolidayType { get; }
-        public string UserLogin { get; private set; }
-        public string UserNickname { get; private set; }
+        public string UserLogin { get; }
 
-        private CreateRecipeCommand(
+        public CreateRecipeCommand(
             string title,
             RecipeType recipeType,
             CookingType cookingType,
             KitchenType kitchenType,
             HolidayType holidayType,
-            string userLogin = "",
-            string userNickname = "")
+            string userLogin)
         {
             Title = title;
             RecipeType = recipeType;
@@ -27,23 +25,6 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
             KitchenType = kitchenType;
             HolidayType = holidayType;
             UserLogin = userLogin;
-            UserNickname = userNickname;
         }
-
-        public static CreateRecipeCommand CreateWithUserLogin(
-            string title,
-            RecipeType recipeType,
-            CookingType cookingType,
-            KitchenType kitchenType,
-            HolidayType holidayType,
-            string userLogin) => new(title, recipeType, cookingType, kitchenType, holidayType, userLogin);
-
-        public static CreateRecipeCommand CreateWithUserNickname(
-            string title,
-            RecipeType recipeType,
-            CookingType cookingType,
-            KitchenType kitchenType,
-            HolidayType holidayType,
-            string userNickname) => new(title, recipeType, cookingType, kitchenType, holidayType, userNickname: userNickname);
     }
 }

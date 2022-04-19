@@ -28,8 +28,8 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes.Requests
         /// </summary>
         public HolidayType Holiday { get; set; }
         /// <summary>
-        /// Автор рецепта.
+        /// Логин пользователя-автора рецепта.
         /// </summary>
-        public RecipeAuthor? Author { get; set; }
+        public string? UserLogin { get; set; }
     }
 }

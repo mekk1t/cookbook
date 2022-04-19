@@ -38,7 +38,7 @@ container.RegisterDecorator(typeof(ICommandHandler<,>), typeof(UnitOfWorkCommand
 container.Register<UnitOfWork>();
 container.Register<SourcesRepository>();
 container.Register<IngredientsRepository>();
-//container.Register<UsersRepository>();
+container.Register<UsersRepository>();
 container.Register<RecipesRepository>();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;

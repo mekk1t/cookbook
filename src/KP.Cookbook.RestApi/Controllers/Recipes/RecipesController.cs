@@ -46,15 +46,13 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
         [HttpPost]
         public IActionResult CreateRecipe([FromBody] CreateRecipeRequest request) => ExecuteObjectRequest(() =>
         {
-            CreateRecipeCommand? command = null;
-
             if (string.IsNullOrEmpty(request.Title))
                 throw new ArgumentException("Не указано название рецепта", nameof(request.Title));
 
-            if (request.Author?.Nickname != null)
-                command = CreateRecipeCommand.CreateWithUserNickname(request.Title, request.Type, request.CookingType, request.Kitchen, request.Holiday, request.Author.Nickname);
-            else
-                command = CreateRecipeCommand.CreateWithUserLogin(request.Title, request.Type, request.CookingType, request.Kitchen, request.Holiday, request.Author.Login);
+            if (string.IsNullOrEmpty(request.UserLogin))
+                throw new Exception("Не указан логин пользователя");
+
+            var command = new CreateRecipeCommand(request.Title, request.Type, request.CookingType, request.Kitchen, request.Holiday, request.UserLogin);
 
             return _createRecipeCommandHandler.Execute(command);
         });
