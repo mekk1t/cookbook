@@ -75,7 +75,7 @@ namespace KP.Cookbook.Database
                     @KitchenType,
                     @HolidayType,
                     @CreatedAt,
-                    @DurationMin,
+                    @DurationMinutes,
                     @Description,
                     @Image,
                     @UpdatedAt
