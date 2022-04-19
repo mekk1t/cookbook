@@ -59,10 +59,26 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
             return _createRecipeCommandHandler.Execute(command);
         });
 
+        /// <summary>
+        /// Редактирование рецепта.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
+        /// <param name="request">Запрос на редактирование.</param>
         [HttpPatch("{recipeId}")]
         public IActionResult EditRecipe([FromRoute] long recipeId, [FromBody] EditRecipeRequest request) =>
-            ExecuteAction(() => _updateRecipeCommandHandler.Execute(new UpdateRecipeCommand(recipeId, new Source()));
+            ExecuteAction(() =>
+                _updateRecipeCommandHandler.Execute(
+                    new UpdateRecipeCommand(
+                        recipeId,
+                        request.SourceId,
+                        request.DurationMinutes ?? 0,
+                        request.Description,
+                        request.ImageBase64)));
 
+        /// <summary>
+        /// Удаление рецепта.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
         [HttpDelete("{recipeId}")]
         public IActionResult DeleteRecipe([FromRoute] long recipeId) =>
             ExecuteAction(() => _deleteRecipeCommandHandler.Execute(new DeleteRecipeCommand(recipeId)));

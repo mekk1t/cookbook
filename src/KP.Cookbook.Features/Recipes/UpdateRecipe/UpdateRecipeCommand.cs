@@ -1,24 +1,22 @@
-﻿using KP.Cookbook.Domain.Entities;
-
-namespace KP.Cookbook.Features.Recipes.UpdateRecipe
+﻿namespace KP.Cookbook.Features.Recipes.UpdateRecipe
 {
     public class UpdateRecipeCommand
     {
         public long RecipeId { get; }
-        public Source? Source { get; }
+        public long? SourceId { get; }
         public int DurationMinutes { get; }
         public string? Description { get; }
         public string? ImageBase64 { get; }
 
         public UpdateRecipeCommand(
             long recipeId,
-            Source? source = default,
+            long? sourceId = null,
             int durationMinutes = 0,
             string? description = null,
             string? imageBase64 = null)
         {
             RecipeId = recipeId;
-            Source = source;
+            SourceId = sourceId;
             DurationMinutes = durationMinutes;
             Description = description;
             ImageBase64 = imageBase64;
