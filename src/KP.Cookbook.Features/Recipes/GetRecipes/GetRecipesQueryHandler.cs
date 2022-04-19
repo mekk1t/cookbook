@@ -1,10 +1,10 @@
 ﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Database;
-using KP.Cookbook.Domain.Entities;
+using KP.Cookbook.Database.Models;
 
 namespace KP.Cookbook.Features.Recipes.GetRecipes
 {
-    public class GetRecipesQueryHandler : IQueryHandler<GetRecipesQuery, List<Recipe>>
+    public class GetRecipesQueryHandler : IQueryHandler<GetRecipesQuery, List<DbRecipe>>
     {
         private readonly RecipesRepository _repository;
 
@@ -13,6 +13,6 @@ namespace KP.Cookbook.Features.Recipes.GetRecipes
             _repository = repository;
         }
 
-        public List<Recipe> Execute(GetRecipesQuery query) => _repository.GetRecipes();
+        public List<DbRecipe> Execute(GetRecipesQuery query) => _repository.GetRecipes();
     }
 }

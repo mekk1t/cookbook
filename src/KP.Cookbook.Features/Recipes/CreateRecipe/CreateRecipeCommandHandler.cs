@@ -1,10 +1,11 @@
 ﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Database;
+using KP.Cookbook.Database.Models;
 using KP.Cookbook.Domain.Entities;
 
 namespace KP.Cookbook.Features.Recipes.CreateRecipe
 {
-    public class CreateRecipeCommandHandler : ICommandHandler<CreateRecipeCommand, Recipe>
+    public class CreateRecipeCommandHandler : ICommandHandler<CreateRecipeCommand, DbRecipe>
     {
         private readonly RecipesRepository _repository;
         private readonly UsersRepository _usersRepository;
@@ -15,7 +16,7 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
             _usersRepository = usersRepository;
         }
 
-        public Recipe Execute(CreateRecipeCommand command)
+        public DbRecipe Execute(CreateRecipeCommand command)
         {
             var user = _usersRepository.GetByLoginOrDefault(command.UserLogin);
             if (user == null)
