@@ -65,7 +65,8 @@ namespace KP.Cookbook.Database
                     duration_minutes,
                     description,
                     image,
-                    updated_at
+                    updated_at,
+                    user_id
                 )
                 VALUES
                 (
@@ -78,7 +79,8 @@ namespace KP.Cookbook.Database
                     @DurationMinutes,
                     @Description,
                     @Image,
-                    @UpdatedAt
+                    @UpdatedAt,
+                    @UserId
                 )
                 RETURNING
                     id,
@@ -105,7 +107,8 @@ namespace KP.Cookbook.Database
                 DurationMinutes = recipe.DurationMinutes,
                 Description = recipe.Description,
                 Image = recipe.Image,
-                UpdatedAt = recipe.UpdatedAt
+                UpdatedAt = recipe.UpdatedAt,
+                UserId = recipe.Author.Id
             };
 
             return _unitOfWork.Execute((c, t) => c.QueryFirst<Recipe>(sql, parameters, transaction: t));
