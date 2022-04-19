@@ -7,13 +7,18 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
     public class CreateRecipeCommandHandler : ICommandHandler<CreateRecipeCommand, Recipe>
     {
         private readonly RecipesRepository _repository;
+        private readonly UsersRepository _usersRepository;
 
-        public CreateRecipeCommandHandler(RecipesRepository repository)
+        public CreateRecipeCommandHandler(RecipesRepository repository, UsersRepository usersRepository)
         {
             _repository = repository;
+            _usersRepository = _usersRepository;
         }
 
-        public Recipe Execute(CreateRecipeCommand command) =>
+        public Recipe Execute(CreateRecipeCommand command)
+        {
+            var user = _usersRepository.GetByLoginOrDefault(command.UserLogin);
+        }
             _repository.Save(
                 Recipe.Create(
                     command.Title,

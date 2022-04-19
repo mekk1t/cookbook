@@ -27,6 +27,8 @@ namespace KP.Cookbook.Migrations.Migrations
                     password_hash 	text		NOT NULL
                 );
 
+                CREATE INDEX users_login_index ON users USING btree (login);
+
                 CREATE TABLE sources
                 (
                     id 				bigint 		GENERATED ALWAYS AS IDENTITY 	PRIMARY KEY,

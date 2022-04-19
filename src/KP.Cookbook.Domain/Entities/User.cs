@@ -14,22 +14,6 @@
         {
         }
 
-        public static User Create(string login, string nickname = "", string avatar = "", UserType userType = UserType.Guest)
-        {
-            if (string.IsNullOrEmpty(login) && string.IsNullOrEmpty(nickname))
-                throw new InvariantException("Не удается идентифицировать пользователя");
-
-            return new User
-            {
-                Login = login,
-                Nickname = nickname,
-                Avatar = avatar,
-                Type = userType,
-                JoinedAt = DateTime.MinValue,
-                PasswordHash = string.Empty
-            };
-        }
-
         public static User Register(string login, string passwordHash, string nickname = "", string avatar = "")
         {
             if (string.IsNullOrEmpty(login))

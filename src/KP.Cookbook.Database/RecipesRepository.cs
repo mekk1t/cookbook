@@ -41,7 +41,7 @@ namespace KP.Cookbook.Database
             string sql = "DELETE FROM recipes WHERE id = @Id";
             var parameters = new { Id = recipeId };
 
-            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, transaction: t));
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, transaction: t));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace KP.Cookbook.Database
                 UpdatedAt = recipe.UpdatedAt
             };
 
-            return _unitOfWork.Execute((c, t) => c.QueryFirst<Recipe>(sql, transaction: t));
+            return _unitOfWork.Execute((c, t) => c.QueryFirst<Recipe>(sql, parameters, transaction: t));
         }
 
         public void Update(Recipe recipe)
@@ -145,7 +145,7 @@ namespace KP.Cookbook.Database
                 UpdatedAt = recipe.UpdatedAt
             };
 
-            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, transaction: t));
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, transaction: t));
         }
     }
 }
