@@ -12,11 +12,8 @@ namespace KP.Cookbook.Domain.Entities
         public DateTime CreatedAt { get; private set; }
 
         public User Author { get; }
-        public List<CookingStep> CookingSteps { get; } = new List<CookingStep>();
-        public List<IngredientDetailed> Ingredients { get; } = new List<IngredientDetailed>();
 
         public Source? Source { get; private set; }
-
         public int DurationMinutes { get; private set; }
         public string? Description { get; private set; }
         public string? Image { get; private set; }
@@ -41,25 +38,6 @@ namespace KP.Cookbook.Domain.Entities
             KitchenType = kitchenType;
             HolidayType = holidayType;
             CreatedAt = DateTime.UtcNow;
-        }
-
-        public void NormalizeSteps()
-        {
-            var temp = new List<CookingStep>(CookingSteps.Count);
-
-            for (int i = 0; i < CookingSteps.Count; i++)
-            {
-                var step = CookingSteps[i];
-                temp[i] = new CookingStep(step.Id, i + 1)
-                {
-                    Description = step.Description,
-                    Image = step.Image
-                };
-            }
-
-            CookingSteps.Clear();
-            CookingSteps.AddRange(temp);
-            temp.Clear();
         }
 
         public void Edit(Source? source = null, int durationMinutes = 0, string? description = null, string? image = null)
