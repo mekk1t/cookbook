@@ -1,6 +1,4 @@
-﻿using KP.Cookbook.Domain.ValueObjects;
-
-namespace KP.Cookbook.Domain.Entities
+﻿namespace KP.Cookbook.Domain.Entities
 {
     public class Recipe : Entity
     {
