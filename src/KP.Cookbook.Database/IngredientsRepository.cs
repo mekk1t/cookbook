@@ -145,5 +145,21 @@ namespace KP.Cookbook.Database
                 _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
             }
         }
+
+        public void RemoveIngredientFromRecipe(long recipeId, long ingredientId)
+        {
+            string sql = @"
+                DELETE FROM recipes_and_ingredients
+                WHERE recipe_id = @RecipeId AND ingredient_id = @IngredientId;
+            ";
+
+            var parameters = new
+            {
+                RecipeId = recipeId,
+                IngredientId = ingredientId
+            };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }
