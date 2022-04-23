@@ -1,9 +1,9 @@
 ﻿using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Domain.ValueObjects;
 
-namespace KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe
+namespace KP.Cookbook.Features.RecipeIngredients.Dtos
 {
-    public class NewRecipeIngredientDto
+    public class RecipeIngredientDto
     {
         public long Id { get; set; }
         public decimal Amount { get; set; }

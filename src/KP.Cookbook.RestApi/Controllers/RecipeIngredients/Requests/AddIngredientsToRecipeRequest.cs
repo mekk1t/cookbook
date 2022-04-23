@@ -1,4 +1,4 @@
-﻿using KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe;
+﻿using KP.Cookbook.Features.RecipeIngredients.Dtos;
 using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.RecipeIngredients.Requests
@@ -11,6 +11,6 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeIngredients.Requests
         /// <summary>
         /// Список новых ингредиентов.
         /// </summary>
-        public List<NewRecipeIngredientDto> Ingredients { get; set; } = new List<NewRecipeIngredientDto>(0);
+        public List<RecipeIngredientDto> Ingredients { get; set; } = new List<RecipeIngredientDto>(0);
     }
 }
