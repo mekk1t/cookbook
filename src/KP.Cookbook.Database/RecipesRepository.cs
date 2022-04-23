@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using KP.Cookbook.Database.Models;
 using KP.Cookbook.Domain.Entities;
 
 namespace KP.Cookbook.Database
@@ -13,7 +12,7 @@ namespace KP.Cookbook.Database
             _unitOfWork = unitOfWork;
         }
 
-        public List<DbRecipe> GetRecipes()
+        public List<Recipe> GetRecipes()
         {
             string sql = @"
                 SELECT
@@ -27,17 +26,15 @@ namespace KP.Cookbook.Database
                     duration_minutes,
                     description,
                     image,
-                    updated_at,
-                    user_id,
-                    source_id
+                    updated_at
                 FROM
                     recipes;
             ";
 
-            return _unitOfWork.Execute((c, t) => c.Query<DbRecipe>(sql, transaction: t).ToList());
+            return _unitOfWork.Execute((c, t) => c.Query<Recipe>(sql, transaction: t).ToList());
         }
 
-        public DbRecipe GetRecipe(long recipeId) => throw new NotImplementedException("Будет реализовано после поддержки пользователей.");
+        public Recipe GetRecipe(long recipeId) => throw new NotImplementedException("Будет реализовано после поддержки пользователей.");
 
         public void DeleteById(long recipeId)
         {
@@ -54,7 +51,7 @@ namespace KP.Cookbook.Database
         /// Не создает связанные шаги, пользователя, источник и ингредиенты. Пока.
         /// </remarks>
         /// <param name="recipe"></param>
-        public DbRecipe Save(Recipe recipe)
+        public Recipe Save(Recipe recipe)
         {
             string sql = @"
                 INSERT INTO recipes
@@ -69,8 +66,7 @@ namespace KP.Cookbook.Database
                     description,
                     image,
                     updated_at,
-                    user_id,
-                    source_id
+                    user_id
                 )
                 VALUES
                 (
@@ -84,8 +80,7 @@ namespace KP.Cookbook.Database
                     @Description,
                     @Image,
                     @UpdatedAt,
-                    @UserId,
-                    @SourceId
+                    @UserId
                 )
                 RETURNING
                     id,
@@ -98,9 +93,7 @@ namespace KP.Cookbook.Database
                     duration_minutes,
                     description,
                     image,
-                    updated_at,
-                    user_id,
-                    source_id;
+                    updated_at;
             ";
 
             var parameters = new
@@ -115,11 +108,10 @@ namespace KP.Cookbook.Database
                 Description = recipe.Description,
                 Image = recipe.Image,
                 UpdatedAt = recipe.UpdatedAt,
-                UserId = recipe.Author.Id,
-                SourceId = recipe.Source?.Id
+                UserId = recipe.Author.Id
             };
 
-            return _unitOfWork.Execute((c, t) => c.QueryFirst<DbRecipe>(sql, parameters, transaction: t));
+            return _unitOfWork.Execute((c, t) => c.QueryFirst<Recipe>(sql, parameters, transaction: t));
         }
 
         public void Update(Recipe recipe)
