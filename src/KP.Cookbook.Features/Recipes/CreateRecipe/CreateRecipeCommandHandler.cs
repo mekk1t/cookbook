@@ -29,7 +29,9 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
                 command.KitchenType,
                 command.HolidayType);
 
-            return _repository.Save(recipe);
+            var id = _repository.Save(recipe);
+
+            return _repository.GetRecipe(id);
         }
     }
 }

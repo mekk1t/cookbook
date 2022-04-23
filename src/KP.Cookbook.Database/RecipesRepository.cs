@@ -34,7 +34,10 @@ namespace KP.Cookbook.Database
             return _unitOfWork.Execute((c, t) => c.Query<Recipe>(sql, transaction: t).ToList());
         }
 
-        public Recipe GetRecipe(long recipeId) => throw new NotImplementedException("Будет реализовано после поддержки пользователей.");
+        public Recipe GetRecipe(long recipeId)
+        {
+            return default;
+        }
 
         public void DeleteById(long recipeId)
         {
@@ -51,7 +54,10 @@ namespace KP.Cookbook.Database
         /// Не создает связанные шаги, пользователя, источник и ингредиенты. Пока.
         /// </remarks>
         /// <param name="recipe"></param>
-        public Recipe Save(Recipe recipe)
+        /// <returns>
+        /// ID созданного рецепта.
+        /// </returns>
+        public long Save(Recipe recipe)
         {
             string sql = @"
                 INSERT INTO recipes
@@ -83,17 +89,7 @@ namespace KP.Cookbook.Database
                     @UserId
                 )
                 RETURNING
-                    id,
-                    title,
-                    recipe_type,
-                    cooking_type,
-                    kitchen_type,
-                    holiday_type,
-                    created_at,
-                    duration_minutes,
-                    description,
-                    image,
-                    updated_at;
+                    id;
             ";
 
             var parameters = new
@@ -111,7 +107,7 @@ namespace KP.Cookbook.Database
                 UserId = recipe.Author.Id
             };
 
-            return _unitOfWork.Execute((c, t) => c.QueryFirst<Recipe>(sql, parameters, transaction: t));
+            return _unitOfWork.Execute((c, t) => c.QueryFirst<long>(sql, parameters, transaction: t));
         }
 
         public void Update(Recipe recipe)
