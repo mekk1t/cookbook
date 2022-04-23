@@ -84,9 +84,18 @@ namespace KP.Cookbook.Database
         public List<IngredientDetailed> GetRecipeIngredients(long recipeId)
         {
             string sql = @"
-                SELECT rai.amount, rai.amount_type, rai.is_optional, i.id, i.name, i.type, i.description
-                FROM recipes_and_ingredients rai INNER JOIN ingredients i ON rai.ingredient_id = i.id
-                WHERE recipe_id = @RecipeId;
+                SELECT
+                    rai.amount,
+                    rai.amount_type,
+                    rai.is_optional,
+                    i.id AS ingredient_id,
+                    i.name,
+                    i.type,
+                    i.description
+                FROM
+                    recipes_and_ingredients rai INNER JOIN ingredients i ON rai.ingredient_id = i.id
+                WHERE
+                    recipe_id = @RecipeId;
             ";
 
             var parameters = new { RecipeId = recipeId };
@@ -99,6 +108,42 @@ namespace KP.Cookbook.Database
                     IsOptional = db.IsOptional
                 })
                 .ToList();
+        }
+
+        public void AddIngredientsToRecipe(long recipeId, IEnumerable<DbIngredientDetailed> ingredients)
+        {
+            string sql = @"
+                INSERT INTO recipes_and_ingredients
+                (
+                    recipe_id,
+                    ingredient_id,
+                    amount,
+                    amount_type,
+                    is_optional
+                )
+                VALUES
+                (
+                    @RecipeId,
+                    @IngredientId,
+                    @Amount,
+                    @AmountType,
+                    @IsOptional
+                );
+            ";
+
+            foreach (var ingredient in ingredients)
+            {
+                var parameters = new
+                {
+                    RecipeId = recipeId,
+                    IngredientId = ingredient.IngredientId,
+                    Amount = ingredient.Amount,
+                    AmountType = ingredient.AmountType,
+                    IsOptional = ingredient.IsOptional
+                };
+
+                _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+            }
         }
     }
 }

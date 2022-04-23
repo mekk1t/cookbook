@@ -21,7 +21,7 @@ namespace KP.Cookbook.Features.Recipes.GetRecipeDetails
         {
             var recipe = _repository.GetRecipe(query.RecipeId);
             var steps = new CookingStepsCollection(Enumerable.Empty<CookingStep>());
-            var ingredients = new List<IngredientDetailed>(0); // заменить на _ingredientsRepository.GetRecipeIngredients после реализации их работы с рецептом
+            var ingredients = _ingredientsRepository.GetRecipeIngredients(query.RecipeId);
 
             return new RecipeDetailsDto(new RecipeDto(recipe), recipe.Author, recipe.Source, steps, ingredients);
         }
