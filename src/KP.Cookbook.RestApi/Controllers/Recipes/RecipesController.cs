@@ -19,7 +19,7 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
         private readonly ICommandHandler<CreateRecipeCommand, Recipe> _createRecipeCommandHandler;
         private readonly ICommandHandler<DeleteRecipeCommand> _deleteRecipeCommandHandler;
         private readonly ICommandHandler<UpdateRecipeCommand> _updateRecipeCommandHandler;
-        private readonly IQueryHandler<GetRecipesQuery, List<Recipe>> _getRecipesQueryHandler;
+        private readonly IQueryHandler<GetRecipesQuery, List<RecipeDto>> _getRecipesQueryHandler;
         private readonly IQueryHandler<GetRecipeDetailsQuery, Recipe> _getRecipeDetailsQueryHandler;
 
         public RecipesController(
@@ -27,7 +27,7 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
             ICommandHandler<CreateRecipeCommand, Recipe> createRecipeCommandHandler,
             ICommandHandler<DeleteRecipeCommand> deleteRecipeCommandHandler,
             ICommandHandler<UpdateRecipeCommand> updateRecipeCommandHandler,
-            IQueryHandler<GetRecipesQuery, List<Recipe>> getRecipesQueryHandler,
+            IQueryHandler<GetRecipesQuery, List<RecipeDto>> getRecipesQueryHandler,
             IQueryHandler<GetRecipeDetailsQuery, Recipe> getRecipeDetailsQueryHandler) : base(logger)
         {
             _createRecipeCommandHandler = createRecipeCommandHandler;
