@@ -20,7 +20,7 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
         private readonly ICommandHandler<DeleteRecipeCommand> _deleteRecipeCommandHandler;
         private readonly ICommandHandler<UpdateRecipeCommand> _updateRecipeCommandHandler;
         private readonly IQueryHandler<GetRecipesQuery, List<RecipeDto>> _getRecipesQueryHandler;
-        private readonly IQueryHandler<GetRecipeDetailsQuery, Recipe> _getRecipeDetailsQueryHandler;
+        private readonly IQueryHandler<GetRecipeDetailsQuery, RecipeDetailsDto> _getRecipeDetailsQueryHandler;
 
         public RecipesController(
             ILogger<ApiJsonController> logger,
@@ -28,7 +28,7 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
             ICommandHandler<DeleteRecipeCommand> deleteRecipeCommandHandler,
             ICommandHandler<UpdateRecipeCommand> updateRecipeCommandHandler,
             IQueryHandler<GetRecipesQuery, List<RecipeDto>> getRecipesQueryHandler,
-            IQueryHandler<GetRecipeDetailsQuery, Recipe> getRecipeDetailsQueryHandler) : base(logger)
+            IQueryHandler<GetRecipeDetailsQuery, RecipeDetailsDto> getRecipeDetailsQueryHandler) : base(logger)
         {
             _createRecipeCommandHandler = createRecipeCommandHandler;
             _deleteRecipeCommandHandler = deleteRecipeCommandHandler;

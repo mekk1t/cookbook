@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using KP.Cookbook.Database.Models;
 using KP.Cookbook.Domain.Entities;
+using KP.Cookbook.Domain.ValueObjects;
 
 namespace KP.Cookbook.Database
 {
@@ -77,6 +79,26 @@ namespace KP.Cookbook.Database
             var parameters = new { ingredient.Id, ingredient.Name, ingredient.Type, ingredient.Description };
 
             _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
+
+        public List<IngredientDetailed> GetRecipeIngredients(long recipeId)
+        {
+            string sql = @"
+                SELECT rai.amount, rai.amount_type, rai.is_optional, i.id, i.name, i.type, i.description
+                FROM recipes_and_ingredients rai INNER JOIN ingredients i ON rai.ingredient_id = i.id
+                WHERE recipe_id = @RecipeId;
+            ";
+
+            var parameters = new { RecipeId = recipeId };
+
+            var dbIngredients = _unitOfWork.Execute((c, t) => c.Query<DbIngredientDetailed>(sql, parameters, t));
+
+            return dbIngredients
+                .Select(db => new IngredientDetailed(new Ingredient(db.IngredientId, db.Name, db.Type, db.Description), db.Amount, db.AmountType)
+                {
+                    IsOptional = db.IsOptional
+                })
+                .ToList();
         }
     }
 }
