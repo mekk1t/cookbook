@@ -3,6 +3,7 @@ using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.Recipes.CreateRecipe;
 using KP.Cookbook.Features.Recipes.DeleteRecipe;
+using KP.Cookbook.Features.Recipes.GetRecipeDetails;
 using KP.Cookbook.Features.Recipes.GetRecipes;
 using KP.Cookbook.Features.Recipes.UpdateRecipe;
 using KP.Cookbook.RestApi.Controllers.Recipes.Requests;
@@ -19,18 +20,21 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
         private readonly ICommandHandler<DeleteRecipeCommand> _deleteRecipeCommandHandler;
         private readonly ICommandHandler<UpdateRecipeCommand> _updateRecipeCommandHandler;
         private readonly IQueryHandler<GetRecipesQuery, List<Recipe>> _getRecipesQueryHandler;
+        private readonly IQueryHandler<GetRecipeDetailsQuery, Recipe> _getRecipeDetailsQueryHandler;
 
         public RecipesController(
             ILogger<ApiJsonController> logger,
             ICommandHandler<CreateRecipeCommand, Recipe> createRecipeCommandHandler,
             ICommandHandler<DeleteRecipeCommand> deleteRecipeCommandHandler,
             ICommandHandler<UpdateRecipeCommand> updateRecipeCommandHandler,
-            IQueryHandler<GetRecipesQuery, List<Recipe>> getRecipesQueryHandler) : base(logger)
+            IQueryHandler<GetRecipesQuery, List<Recipe>> getRecipesQueryHandler,
+            IQueryHandler<GetRecipeDetailsQuery, Recipe> getRecipeDetailsQueryHandler) : base(logger)
         {
             _createRecipeCommandHandler = createRecipeCommandHandler;
             _deleteRecipeCommandHandler = deleteRecipeCommandHandler;
             _updateRecipeCommandHandler = updateRecipeCommandHandler;
             _getRecipesQueryHandler = getRecipesQueryHandler;
+            _getRecipeDetailsQueryHandler = getRecipeDetailsQueryHandler;
         }
 
         /// <summary>
@@ -80,5 +84,13 @@ namespace KP.Cookbook.RestApi.Controllers.Recipes
         [HttpDelete("{recipeId}")]
         public IActionResult DeleteRecipe([FromRoute] long recipeId) =>
             ExecuteAction(() => _deleteRecipeCommandHandler.Execute(new DeleteRecipeCommand(recipeId)));
+
+        /// <summary>
+        /// Подробная информация о рецепте.
+        /// </summary>
+        /// <param name="recipeId">ID рецепта.</param>
+        [HttpGet("{recipeId}")]
+        public IActionResult GetRecipeDetails([FromRoute] long recipeId) =>
+            ExecuteObjectRequest(() => _getRecipeDetailsQueryHandler.Execute(new GetRecipeDetailsQuery(recipeId)));
     }
 }

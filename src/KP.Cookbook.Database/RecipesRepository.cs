@@ -8,11 +8,13 @@ namespace KP.Cookbook.Database
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UsersRepository _usersRepository;
+        private readonly SourcesRepository _sourcesRepository;
 
-        public RecipesRepository(IUnitOfWork unitOfWork, UsersRepository usersRepository)
+        public RecipesRepository(IUnitOfWork unitOfWork, UsersRepository usersRepository, SourcesRepository sourcesRepository)
         {
             _unitOfWork = unitOfWork;
             _usersRepository = usersRepository;
+            _sourcesRepository = sourcesRepository;
         }
 
         public List<Recipe> GetRecipes()
@@ -52,7 +54,8 @@ namespace KP.Cookbook.Database
                     description,
                     image,
                     updated_at,
-                    user_id
+                    user_id,
+                    source_id
                 FROM
                     recipes
                 WHERE id = @Id;
@@ -63,6 +66,10 @@ namespace KP.Cookbook.Database
             var recipe = _unitOfWork.Execute((c, t) => c.QueryFirst<DbRecipe>(sql, parameters, transaction: t));
             var user = _usersRepository.GetById(recipe.UserId);
 
+            Source? source = null;
+            if (recipe.SourceId.HasValue)
+                source = _sourcesRepository.GetById(recipe.SourceId.Value);
+
             return Recipe.Recreate(
                 recipe.Id,
                 recipe.Title,
@@ -72,7 +79,7 @@ namespace KP.Cookbook.Database
                 recipe.KitchenType,
                 recipe.HolidayType,
                 recipe.CreatedAt,
-                null,
+                source,
                 recipe.DurationMinutes,
                 recipe.Description,
                 recipe.Image,
