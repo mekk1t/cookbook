@@ -1,6 +1,4 @@
-﻿using KP.Cookbook.Domain.ValueObjects;
-
-namespace KP.Cookbook.Domain.Entities
+﻿namespace KP.Cookbook.Domain.Entities
 {
     public class Recipe : Entity
     {
@@ -21,6 +19,33 @@ namespace KP.Cookbook.Domain.Entities
 
         private Recipe()
         {
+        }
+
+        private Recipe(
+            long id,
+            string title,
+            User author,
+            RecipeType recipeType,
+            CookingType cookingType,
+            KitchenType kitchenType,
+            HolidayType holidayType,
+            Source? source,
+            int durationMinutes,
+            string? description,
+            string? image,
+            DateTime? updatedAt) : base(id)
+        {
+            Title = title;
+            Author = author;
+            RecipeType = recipeType;
+            CookingType = cookingType;
+            KitchenType = kitchenType;
+            HolidayType = holidayType;
+            Source = source;
+            DurationMinutes = durationMinutes;
+            Description = description;
+            Image = image;
+            UpdatedAt = updatedAt;
         }
 
         private Recipe(
@@ -53,6 +78,23 @@ namespace KP.Cookbook.Domain.Entities
 
             UpdatedAt = DateTime.UtcNow;
         }
+
+        /// <summary>
+        /// Воссоздаёт объект рецепта на основе имеющихся данных.
+        /// </summary>
+        public static Recipe Recreate(
+            long id,
+            string title,
+            User author,
+            RecipeType recipeType,
+            CookingType cookingType,
+            KitchenType kitchenType,
+            HolidayType holidayType,
+            Source? source,
+            int durationMinutes,
+            string? description,
+            string? image,
+            DateTime? updatedAt) => new(id, title, author, recipeType, cookingType, kitchenType, holidayType, source, durationMinutes, description, image, updatedAt);
 
         public static Recipe Create(
             string title,

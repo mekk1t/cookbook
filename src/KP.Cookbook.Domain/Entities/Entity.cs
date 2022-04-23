@@ -11,7 +11,13 @@
         public long Id { get; private set; }
 
         protected Entity() { }
-        protected Entity(long id) => Id = id;
+        protected Entity(long id)
+        {
+            if (id == default)
+                throw new InvariantException("Нельзя создать сущность на основе ID по умолчанию");
+
+            Id = id;
+        }
 
         public override bool Equals(object? obj)
         {

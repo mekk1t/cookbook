@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using KP.Cookbook.Database.Models;
 using KP.Cookbook.Domain.Entities;
 
 namespace KP.Cookbook.Database
@@ -6,10 +7,12 @@ namespace KP.Cookbook.Database
     public class RecipesRepository
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UsersRepository _usersRepository;
 
-        public RecipesRepository(IUnitOfWork unitOfWork)
+        public RecipesRepository(IUnitOfWork unitOfWork, UsersRepository usersRepository)
         {
             _unitOfWork = unitOfWork;
+            _usersRepository = usersRepository;
         }
 
         public List<Recipe> GetRecipes()
@@ -36,7 +39,43 @@ namespace KP.Cookbook.Database
 
         public Recipe GetRecipe(long recipeId)
         {
-            return default;
+            string sql = @"
+                SELECT
+                    id,
+                    title,
+                    recipe_type,
+                    cooking_type,
+                    kitchen_type,
+                    holiday_type,
+                    created_at,
+                    duration_minutes,
+                    description,
+                    image,
+                    updated_at,
+                    user_id
+                FROM
+                    recipes
+                WHERE id = @Id;
+            ";
+
+            var parameters = new { Id = recipeId };
+
+            var recipe = _unitOfWork.Execute((c, t) => c.QueryFirst<DbRecipe>(sql, parameters, transaction: t));
+            var user = _usersRepository.GetById(recipe.UserId);
+
+            return Recipe.Recreate(
+                recipe.Id,
+                recipe.Title,
+                user,
+                recipe.RecipeType,
+                recipe.CookingType,
+                recipe.KitchenType,
+                recipe.HolidayType,
+                recipe.Source,
+                recipe.DurationMinutes,
+                recipe.Description,
+                recipe.Image,
+                recipe.UpdatedAt);
         }
 
         public void DeleteById(long recipeId)
