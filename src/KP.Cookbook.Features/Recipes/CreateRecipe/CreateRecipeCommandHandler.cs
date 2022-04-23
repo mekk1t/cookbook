@@ -4,7 +4,7 @@ using KP.Cookbook.Domain.Entities;
 
 namespace KP.Cookbook.Features.Recipes.CreateRecipe
 {
-    public class CreateRecipeCommandHandler : ICommandHandler<CreateRecipeCommand, Recipe>
+    public class CreateRecipeCommandHandler : ICommandHandler<CreateRecipeCommand, long>
     {
         private readonly RecipesRepository _repository;
         private readonly UsersRepository _usersRepository;
@@ -15,7 +15,7 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
             _usersRepository = usersRepository;
         }
 
-        public Recipe Execute(CreateRecipeCommand command)
+        public long Execute(CreateRecipeCommand command)
         {
             var user = _usersRepository.GetByLoginOrDefault(command.UserLogin);
             if (user == null)
@@ -29,9 +29,7 @@ namespace KP.Cookbook.Features.Recipes.CreateRecipe
                 command.KitchenType,
                 command.HolidayType);
 
-            var id = _repository.Save(recipe);
-
-            return _repository.GetRecipe(id);
+            return _repository.Save(recipe);
         }
     }
 }
