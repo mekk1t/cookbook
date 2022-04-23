@@ -1,4 +1,4 @@
-﻿using KP.Cookbook.Features.RecipeIngredients;
+﻿using KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe;
 using System.Collections.Generic;
 
 namespace KP.Cookbook.RestApi.Controllers.RecipeIngredients.Requests

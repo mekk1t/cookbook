@@ -2,7 +2,7 @@
 using KP.Cookbook.Database;
 using KP.Cookbook.Database.Models;
 
-namespace KP.Cookbook.Features.RecipeIngredients
+namespace KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe
 {
     public class AddIngredientsToRecipeCommandHandler : ICommandHandler<AddIngredientsToRecipeCommand>
     {

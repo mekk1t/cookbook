@@ -1,7 +1,7 @@
 ﻿using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Domain.ValueObjects;
 
-namespace KP.Cookbook.Features.RecipeIngredients
+namespace KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe
 {
     public class NewRecipeIngredientDto
     {

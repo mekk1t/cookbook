@@ -1,6 +1,6 @@
 ﻿using KP.Api.AspNetCore;
 using KP.Cookbook.Cqrs;
-using KP.Cookbook.Features.RecipeIngredients;
+using KP.Cookbook.Features.RecipeIngredients.AddIngredientsToRecipe;
 using KP.Cookbook.RestApi.Controllers.RecipeIngredients.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
