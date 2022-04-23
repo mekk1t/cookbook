@@ -29,6 +29,7 @@
             CookingType cookingType,
             KitchenType kitchenType,
             HolidayType holidayType,
+            DateTime createdAt,
             Source? source,
             int durationMinutes,
             string? description,
@@ -41,6 +42,7 @@
             CookingType = cookingType;
             KitchenType = kitchenType;
             HolidayType = holidayType;
+            CreatedAt = createdAt;
             Source = source;
             DurationMinutes = durationMinutes;
             Description = description;
@@ -90,11 +92,12 @@
             CookingType cookingType,
             KitchenType kitchenType,
             HolidayType holidayType,
+            DateTime createdAt,
             Source? source,
             int durationMinutes,
             string? description,
             string? image,
-            DateTime? updatedAt) => new(id, title, author, recipeType, cookingType, kitchenType, holidayType, source, durationMinutes, description, image, updatedAt);
+            DateTime? updatedAt) => new(id, title, author, recipeType, cookingType, kitchenType, holidayType, createdAt, source, durationMinutes, description, image, updatedAt);
 
         public static Recipe Create(
             string title,

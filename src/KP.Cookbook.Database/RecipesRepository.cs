@@ -71,7 +71,8 @@ namespace KP.Cookbook.Database
                 recipe.CookingType,
                 recipe.KitchenType,
                 recipe.HolidayType,
-                recipe.Source,
+                recipe.CreatedAt,
+                null,
                 recipe.DurationMinutes,
                 recipe.Description,
                 recipe.Image,
@@ -163,7 +164,8 @@ namespace KP.Cookbook.Database
                     duration_minutes = @DurationMinutes,
                     description = @Description,
                     image = @Image,
-                    updated_at = @UpdatedAt
+                    updated_at = @UpdatedAt,
+                    source_id = @SourceId
                 WHERE
                     id = @Id;
             ";
@@ -180,7 +182,8 @@ namespace KP.Cookbook.Database
                 DurationMinutes = recipe.DurationMinutes,
                 Description = recipe.Description,
                 Image = recipe.Image,
-                UpdatedAt = recipe.UpdatedAt
+                UpdatedAt = recipe.UpdatedAt,
+                SourceId = recipe.Source?.Id
             };
 
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, transaction: t));

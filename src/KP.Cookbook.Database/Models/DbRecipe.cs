@@ -12,7 +12,7 @@ namespace KP.Cookbook.Database.Models
         public HolidayType HolidayType { get; set; }
         public DateTime CreatedAt { get; set; }
         public long UserId { get; set; }
-        public Source? Source { get; set; }
+        public long? SourceId { get; set; }
         public int DurationMinutes { get; set; }
         public string? Description { get; set; }
         public string? Image { get; set; }
