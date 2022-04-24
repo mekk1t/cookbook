@@ -121,5 +121,41 @@ namespace KP.Cookbook.Database
 
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
         }
+
+        public void AddIngredientsToStep(long stepId, IEnumerable<DbIngredientDetailed> ingredients)
+        {
+            string sql = @"
+                INSERT INTO cooking_steps_and_ingredients
+                (
+                    cooking_step_id,
+                    ingredient_id,
+                    amount,
+                    amount_type,
+                    is_optional
+                )
+                VALUES
+                (
+                    @StepId,
+                    @IngredientId,
+                    @Amount,
+                    @AmountType,
+                    @IsOptional
+                );
+            ";
+
+            foreach (var ingredient in ingredients)
+            {
+                var parameters = new
+                {
+                    StepId = stepId,
+                    IngredientId = ingredient.IngredientId,
+                    Amount = ingredient.Amount,
+                    AmountType = ingredient.AmountType,
+                    IsOptional = ingredient.IsOptional
+                };
+
+                _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+            }
+        }
     }
 }
