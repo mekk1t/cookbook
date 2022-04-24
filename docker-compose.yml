@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  kp.cookbook.restapi:
+    image: ${DOCKER_REGISTRY-}kpcookbookrestapi
+    build:
+      context: .
+      dockerfile: src/KP.Cookbook.RestApi/Dockerfile

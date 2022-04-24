@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.Cookbook.Features", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KP.Cookbook.Cqrs", "src\KP.Cookbook.Cqrs\KP.Cookbook.Cqrs.csproj", "{6517EC56-104C-4224-8A67-26C14C3A438A}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1A5071AE-5BBB-4EAD-8A6C-BD9B04A78737}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{6517EC56-104C-4224-8A67-26C14C3A438A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6517EC56-104C-4224-8A67-26C14C3A438A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6517EC56-104C-4224-8A67-26C14C3A438A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5071AE-5BBB-4EAD-8A6C-BD9B04A78737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5071AE-5BBB-4EAD-8A6C-BD9B04A78737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5071AE-5BBB-4EAD-8A6C-BD9B04A78737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5071AE-5BBB-4EAD-8A6C-BD9B04A78737}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
