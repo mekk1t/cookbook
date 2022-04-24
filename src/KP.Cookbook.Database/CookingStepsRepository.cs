@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using KP.Cookbook.Database.Models;
 using KP.Cookbook.Domain.Entities;
+using KP.Cookbook.Domain.ValueObjects;
 
 namespace KP.Cookbook.Database
 {
@@ -91,6 +93,25 @@ namespace KP.Cookbook.Database
             string sql = "DELETE FROM cooking_steps WHERE id = @StepId";
             var parameters = new { StepId = stepId };
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
+
+        public List<IngredientDetailed> GetStepIngredients(long stepId)
+        {
+            string sql = @"
+                SELECT i.id AS ingredient_id, i.name, i.type, i.description, csai.amount, csai.amount_type, csai.is_optional
+                FROM ingredients i INNER JOIN cooking_steps_and_ingredients csai ON i.id = csai.ingredient_id
+                WHERE csai.cooking_step_id = @StepId;
+            ";
+
+            var parameters = new { StepId = stepId };
+            var result = _unitOfWork.Execute((c, t) => c.Query<DbIngredientDetailed>(sql, parameters, t));
+
+            return result
+                .Select(r => new IngredientDetailed(new Ingredient(r.IngredientId, r.Name, r.Type, r.Description), r.Amount, r.AmountType)
+                {
+                    IsOptional = r.IsOptional
+                })
+                .ToList();
         }
     }
 }
