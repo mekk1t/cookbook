@@ -32,4 +32,12 @@
     <Copy SourceFiles="@(XmlDocs)" DestinationFolder="$(OutputPath)" Condition="Exists(%(FullPath))" />
   </Target>
 
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <ItemGroup>
+      <DocFile Include="$(OutputPath)KP.Api.AspNetCore.xml" />
+    </ItemGroup>
+    <Message Text="Copying XML docs to $(PublishDir)" Importance="High" />
+    <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
+  </Target>
+
 </Project>

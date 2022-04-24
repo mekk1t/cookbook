@@ -17,16 +17,10 @@ COPY . .
 WORKDIR "/src/src/KP.Cookbook.RestApi"
 RUN dotnet build "KP.Cookbook.RestApi.csproj" -c Release -o /app/build
 
-WORKDIR /app
-COPY /app/build/KP.Api.AspNetCore.xml .
-
-WORKDIR "/src/src/KP.Cookbook.RestApi"
-
 FROM build AS publish
 RUN dotnet publish "KP.Cookbook.RestApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=build /app/build/ .
 ENTRYPOINT ["dotnet", "KP.Cookbook.RestApi.dll"]

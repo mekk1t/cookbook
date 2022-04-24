@@ -13,6 +13,7 @@
 **/*.jfm
 **/azds.yaml
 **/bin
+!**/bin/**/KP.Api.AspNetCore.xml
 **/charts
 **/docker-compose*
 **/Dockerfile*
