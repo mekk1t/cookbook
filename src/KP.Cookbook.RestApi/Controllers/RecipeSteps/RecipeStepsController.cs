@@ -2,6 +2,7 @@
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe;
+using KP.Cookbook.Features.RecipeSteps.DeleteRecipeStep;
 using KP.Cookbook.Features.RecipeSteps.EditRecipeStep;
 using KP.Cookbook.Features.RecipeSteps.GetRecipeSteps;
 using KP.Cookbook.RestApi.Controllers.RecipeSteps.Requests;
@@ -20,16 +21,19 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
         private readonly ICommandHandler<AddStepsToRecipeCommand> _addStepsToRecipeCommandHandler;
         private readonly IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> _getRecipeStepsQueryCommandHandler;
         private readonly ICommandHandler<EditRecipeStepCommand> _editRecipeStepCommandHandler;
+        private readonly ICommandHandler<DeleteRecipeStepCommand> _deleteRecipeStepCommandHandler;
 
         public RecipeStepsController(
             ICommandHandler<AddStepsToRecipeCommand> addStepsToRecipeCommandHandler,
             IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> getRecipeStepsQueryCommandHandler,
             ICommandHandler<EditRecipeStepCommand> editRecipeStepCommandHandler,
+            ICommandHandler<DeleteRecipeStepCommand> deleteRecipeStepCommandHandler,
             ILogger<ApiJsonController> logger) : base(logger)
         {
             _addStepsToRecipeCommandHandler = addStepsToRecipeCommandHandler;
             _getRecipeStepsQueryCommandHandler = getRecipeStepsQueryCommandHandler;
             _editRecipeStepCommandHandler = editRecipeStepCommandHandler;
+            _deleteRecipeStepCommandHandler = deleteRecipeStepCommandHandler;
         }
 
         /// <summary>
@@ -44,8 +48,10 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
         /// Удаление шага из рецепта.
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
-        [HttpDelete]
-        public IActionResult DeleteRecipeStep([FromRoute] long recipeId) => null;
+        /// <param name="stepId">ID шага.</param>
+        [HttpDelete("{stepId}")]
+        public IActionResult DeleteRecipeStep([FromRoute] long recipeId, [FromRoute] long stepId) => ExecuteAction(() =>
+            _deleteRecipeStepCommandHandler.Execute(new DeleteRecipeStepCommand(recipeId, stepId)));
 
         /// <summary>
         /// Добавление шагов в рецепт.

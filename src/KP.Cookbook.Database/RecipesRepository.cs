@@ -233,5 +233,21 @@ namespace KP.Cookbook.Database
 
             return new CookingStepsCollection(steps);
         }
+
+        public void RemoveStepFromRecipe(long recipeId, long stepId)
+        {
+            string sql = @"
+                DELETE FROM recipes_and_cooking_steps
+                WHERE recipe_id = @RecipeId AND cooking_step_id = @StepId;
+            ";
+
+            var parameters = new
+            {
+                RecipeId = recipeId,
+                StepId = stepId
+            };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }

@@ -15,10 +15,11 @@
         public void NormalizeOrder()
         {
             var temp = new List<CookingStep>(_steps.Count);
+            var orderedSteps = _steps.OrderBy(s => s.Order).ToArray();
 
-            for (int i = 0; i < _steps.Count; i++)
+            for (int i = 0; i < orderedSteps.Length; i++)
             {
-                var step = _steps[i];
+                var step = orderedSteps[i];
                 temp[i] = new CookingStep(step.Id, i + 1)
                 {
                     Description = step.Description,

@@ -68,6 +68,7 @@ namespace KP.Cookbook.Database
             string sql = @"
                 UPDATE cooking_steps
                 SET
+                    order = @Order,
                     description = @Description,
                     image = @Image
                 WHERE
@@ -78,9 +79,17 @@ namespace KP.Cookbook.Database
             {
                 Description = step.Description,
                 Image = step.Image,
-                StepId = step.Id
+                StepId = step.Id,
+                Order = step.Order
             };
 
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
+
+        public void Delete(long stepId)
+        {
+            string sql = "DELETE FROM cooking_steps WHERE id = @StepId";
+            var parameters = new { StepId = stepId };
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
         }
     }
