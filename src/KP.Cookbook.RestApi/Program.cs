@@ -40,6 +40,7 @@ container.Register<SourcesRepository>();
 container.Register<IngredientsRepository>();
 container.Register<UsersRepository>();
 container.Register<RecipesRepository>();
+container.Register<CookingStepsRepository>();
 
 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 

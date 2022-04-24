@@ -9,12 +9,18 @@ namespace KP.Cookbook.Database
         private readonly IUnitOfWork _unitOfWork;
         private readonly UsersRepository _usersRepository;
         private readonly SourcesRepository _sourcesRepository;
+        private readonly CookingStepsRepository _cookingStepsRepository;
 
-        public RecipesRepository(IUnitOfWork unitOfWork, UsersRepository usersRepository, SourcesRepository sourcesRepository)
+        public RecipesRepository(
+            IUnitOfWork unitOfWork,
+            UsersRepository usersRepository,
+            SourcesRepository sourcesRepository,
+            CookingStepsRepository cookingStepsRepository)
         {
             _unitOfWork = unitOfWork;
             _usersRepository = usersRepository;
             _sourcesRepository = sourcesRepository;
+            _cookingStepsRepository = cookingStepsRepository;
         }
 
         public List<Recipe> GetRecipes()
@@ -198,12 +204,14 @@ namespace KP.Cookbook.Database
 
         public void AddStepsToRecipe(long recipeId, CookingStepsCollection stepsCollection)
         {
+            var stepsAddedToDatabase = _cookingStepsRepository.CreateSteps(stepsCollection.Steps);
+
             string sql = @"
                 INSERT INTO recipes_and_cooking_steps (recipe_id, cooking_step_id)
                 VALUES (@RecipeId, @StepId);
             ";
 
-            foreach (var step in stepsCollection.Steps)
+            foreach (var step in stepsAddedToDatabase.Steps)
             {
                 var parameters = new { RecipeId = recipeId, StepId = step.Id };
 

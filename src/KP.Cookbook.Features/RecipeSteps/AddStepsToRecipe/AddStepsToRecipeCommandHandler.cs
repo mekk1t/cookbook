@@ -15,7 +15,9 @@ namespace KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe
         public void Execute(AddStepsToRecipeCommand command)
         {
             var currentStepsCollection = _recipesRepository.GetRecipeSteps(command.RecipeId);
-            int maxOrder = currentStepsCollection.Steps.Select(s => s.Order).Max();
+            int maxOrder = currentStepsCollection.IsEmpty
+                ? 0
+                : currentStepsCollection.Steps.Select(s => s.Order).Max();
             bool allNewStepsAreAfterLatestStep = command.CookingStepsCollection.Steps.All(step => step.Order > maxOrder);
 
             if (currentStepsCollection.IsEmpty || command.CookingStepsCollection.IsEmpty || allNewStepsAreAfterLatestStep)

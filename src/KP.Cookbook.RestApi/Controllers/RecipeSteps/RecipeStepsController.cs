@@ -2,6 +2,7 @@
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe;
+using KP.Cookbook.Features.RecipeSteps.GetRecipeSteps;
 using KP.Cookbook.RestApi.Controllers.RecipeSteps.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,12 +17,15 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
     public class RecipeStepsController : CookbookApiJsonController
     {
         private readonly ICommandHandler<AddStepsToRecipeCommand> _addStepsToRecipeCommandHandler;
+        private readonly IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> _getRecipeStepsQueryCommandHandler;
 
         public RecipeStepsController(
             ICommandHandler<AddStepsToRecipeCommand> addStepsToRecipeCommandHandler,
+            IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> getRecipeStepsQueryCommandHandler,
             ILogger<ApiJsonController> logger) : base(logger)
         {
             _addStepsToRecipeCommandHandler = addStepsToRecipeCommandHandler;
+            _getRecipeStepsQueryCommandHandler = getRecipeStepsQueryCommandHandler;
         }
 
         /// <summary>
@@ -29,7 +33,8 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
         /// </summary>
         /// <param name="recipeId">ID рецепта.</param>
         [HttpGet]
-        public IActionResult GetRecipeSteps([FromRoute] long recipeId) => null;
+        public IActionResult GetRecipeSteps([FromRoute] long recipeId) =>
+            ExecuteObjectRequest(() => _getRecipeStepsQueryCommandHandler.Execute(new GetRecipeStepsQuery(recipeId)));
 
         /// <summary>
         /// Удаление шага из рецепта.
