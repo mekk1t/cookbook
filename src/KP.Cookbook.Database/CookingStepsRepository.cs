@@ -113,5 +113,13 @@ namespace KP.Cookbook.Database
                 })
                 .ToList();
         }
+
+        public void RemoveIngredientFromStep(long stepId, long ingredientId)
+        {
+            string sql = "DELETE FROM cooking_steps_and_ingredients WHERE cooking_step_id = @StepId AND ingredient_id = @IngredientId;";
+            var parameters = new { Stepid = stepId, IngredientId = ingredientId };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }

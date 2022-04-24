@@ -2,13 +2,10 @@
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.ValueObjects;
 using KP.Cookbook.Features.StepIngredients.GetStepIngredients;
+using KP.Cookbook.Features.StepIngredients.RemoveIngredientFromStep;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KP.Cookbook.RestApi.Controllers.StepIngredients
 {
@@ -16,12 +13,15 @@ namespace KP.Cookbook.RestApi.Controllers.StepIngredients
     public class StepIngredientsController : CookbookApiJsonController
     {
         private readonly IQueryHandler<GetStepIngredientsQuery, List<IngredientDetailed>> _getStepIngredientsQueryHandler;
+        private readonly ICommandHandler<RemoveIngredientFromStepCommand> _removeIngredientFromStepCommandHandler;
 
         public StepIngredientsController(
+            ICommandHandler<RemoveIngredientFromStepCommand> removeIngredientFromStepCommandHandler,
             IQueryHandler<GetStepIngredientsQuery, List<IngredientDetailed>> getStepIngredientsQueryHandler,
             ILogger<ApiJsonController> logger) : base(logger)
         {
             _getStepIngredientsQueryHandler = getStepIngredientsQueryHandler;
+            _removeIngredientFromStepCommandHandler = removeIngredientFromStepCommandHandler;
         }
 
         /// <summary>
@@ -32,6 +32,18 @@ namespace KP.Cookbook.RestApi.Controllers.StepIngredients
         public IActionResult GetStepIngredients([FromRoute] long stepId) => ExecuteCollectionRequest(() =>
         {
             return _getStepIngredientsQueryHandler.Execute(new GetStepIngredientsQuery(stepId));
+        });
+
+        /// <summary>
+        /// Удаление ингредиента из шага.
+        /// </summary>
+        /// <param name="stepId">ID шага.</param>
+        /// <param name="ingredientId">ID ингредиента.</param>
+        /// <returns></returns>
+        [HttpDelete("{ingredientId}")]
+        public IActionResult RemoveIngredientFromStep([FromRoute] long stepId, [FromRoute] long ingredientId) => ExecuteAction(() =>
+        {
+            _removeIngredientFromStepCommandHandler.Execute(new RemoveIngredientFromStepCommand(stepId, ingredientId));
         });
     }
 }
