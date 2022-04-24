@@ -2,7 +2,11 @@ version: '3.4'
 
 services:
   kp.cookbook.restapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
     image: ${DOCKER_REGISTRY-}kpcookbookrestapi
+    ports:
+      - 9000:80
     build:
       context: .
       dockerfile: src/KP.Cookbook.RestApi/Dockerfile
