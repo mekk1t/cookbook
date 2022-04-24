@@ -46,10 +46,10 @@ namespace KP.Cookbook.Database
             var sql = @"
                 SELECT id, name, type, description
                 FROM ingredients
-                WHERE id IN @Ids;
+                WHERE id = ANY(@Ids);
             ";
 
-            var parameters = new { Ids = ids };
+            var parameters = new { Ids = ids.ToList() };
 
             return _unitOfWork.Execute((c, t) => c.Query<Ingredient>(sql, parameters, t).ToList());
         }

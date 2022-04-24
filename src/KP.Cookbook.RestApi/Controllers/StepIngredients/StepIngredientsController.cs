@@ -1,7 +1,9 @@
 ﻿using KP.Api.AspNetCore;
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.ValueObjects;
+using KP.Cookbook.Features.RecipeIngredients.Dtos;
 using KP.Cookbook.Features.StepIngredients.AddIngredientsToStep;
+using KP.Cookbook.Features.StepIngredients.EditStepIngredient;
 using KP.Cookbook.Features.StepIngredients.GetStepIngredients;
 using KP.Cookbook.Features.StepIngredients.RemoveIngredientFromStep;
 using KP.Cookbook.RestApi.Controllers.StepIngredients.Requests;
@@ -17,8 +19,10 @@ namespace KP.Cookbook.RestApi.Controllers.StepIngredients
         private readonly IQueryHandler<GetStepIngredientsQuery, List<IngredientDetailed>> _getStepIngredientsQueryHandler;
         private readonly ICommandHandler<RemoveIngredientFromStepCommand> _removeIngredientFromStepCommandHandler;
         private readonly ICommandHandler<AddIngredientsToStepCommand> _addIngredientsToStepCommandHandler;
+        private readonly ICommandHandler<EditStepIngredientCommand> _editStepIngredientCommandCommandHandler;
 
         public StepIngredientsController(
+            ICommandHandler<EditStepIngredientCommand> editStepIngredientCommandCommandHandler,
             ICommandHandler<AddIngredientsToStepCommand> addIngredientsToStepCommandHandler,
             ICommandHandler<RemoveIngredientFromStepCommand> removeIngredientFromStepCommandHandler,
             IQueryHandler<GetStepIngredientsQuery, List<IngredientDetailed>> getStepIngredientsQueryHandler,
@@ -27,6 +31,7 @@ namespace KP.Cookbook.RestApi.Controllers.StepIngredients
             _getStepIngredientsQueryHandler = getStepIngredientsQueryHandler;
             _removeIngredientFromStepCommandHandler = removeIngredientFromStepCommandHandler;
             _addIngredientsToStepCommandHandler = addIngredientsToStepCommandHandler;
+            _editStepIngredientCommandCommandHandler = editStepIngredientCommandCommandHandler;
         }
 
         /// <summary>
@@ -59,5 +64,21 @@ namespace KP.Cookbook.RestApi.Controllers.StepIngredients
         [HttpPost]
         public IActionResult AddIngredientsToStep([FromRoute] long stepId, [FromBody] AddIngredientsToStepRequest request) =>
             ExecuteAction(() => _addIngredientsToStepCommandHandler.Execute(new AddIngredientsToStepCommand(request.RecipeId, stepId, request.Ingredients)));
+
+        /// <summary>
+        /// Редактирование данных ингредиента в шаге.
+        /// </summary>
+        /// <param name="stepId">ID шага.</param>
+        /// <param name="request">Запрос на редактирование.</param>
+        /// <returns></returns>
+        [HttpPatch]
+        public IActionResult EditStepIngredient([FromRoute] long stepId, [FromBody] EditStepIngredientRequest request) =>
+            ExecuteAction(() => _editStepIngredientCommandCommandHandler.Execute(new EditStepIngredientCommand(stepId, new RecipeIngredientDto
+            {
+                Id = request.IngredientId,
+                Amount = request.Amount,
+                AmountType = request.AmountType,
+                IsOptional = request.IsOptional
+            })));
     }
 }

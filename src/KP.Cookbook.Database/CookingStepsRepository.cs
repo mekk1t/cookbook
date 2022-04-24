@@ -157,5 +157,29 @@ namespace KP.Cookbook.Database
                 _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
             }
         }
+
+        public void UpdateStepIngredient(long stepId, DbIngredientDetailed ingredient)
+        {
+            string sql = @"
+                UPDATE cooking_steps_and_ingredients
+                SET
+                    amount = @Amount,
+                    amount_type = @AmountType,
+                    is_optional = @IsOptional
+                WHERE
+                    cooking_step_id = @StepId AND ingredient_id = @IngredientId;
+            ";
+
+            var parameters = new
+            {
+                Amount = ingredient.Amount,
+                AmountType = ingredient.AmountType,
+                IsOptional = ingredient.IsOptional,
+                IngredientId = ingredient.IngredientId,
+                StepId = stepId
+            };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }
