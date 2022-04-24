@@ -1,5 +1,4 @@
-﻿using KP.Cookbook.Domain.Entities;
-using KP.Cookbook.Domain.ValueObjects;
+﻿using KP.Cookbook.Domain.ValueObjects;
 
 namespace KP.Cookbook.Features.RecipeIngredients.Dtos
 {

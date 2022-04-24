@@ -161,5 +161,29 @@ namespace KP.Cookbook.Database
 
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
         }
+
+        public void UpdateRecipeIngredient(long recipeId, DbIngredientDetailed ingredient)
+        {
+            string sql = @"
+                UPDATE recipe_and_ingredients
+                SET
+                    amount = @Amount,
+                    amount_type = @AmountType,
+                    is_optional = @IsOptional
+                WHERE
+                    recipe_id = @RecipeId AND ingredient_id = @IngredientId;
+            ";
+
+            var parameters = new
+            {
+                Amount = ingredient.Amount,
+                AmountType = ingredient.AmountType,
+                IsOptional = ingredient.IsOptional,
+                RecipeId = recipeId,
+                IngredientId = ingredient.IngredientId
+            };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }
