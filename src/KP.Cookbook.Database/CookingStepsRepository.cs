@@ -49,5 +49,39 @@ namespace KP.Cookbook.Database
 
             return new CookingStepsCollection(resultSteps);
         }
+
+        public CookingStep GetById(long stepId)
+        {
+            string sql = @"
+                SELECT id, ""order"", description, image
+                FROM cooking_steps
+                WHERE id = @StepId;
+            ";
+
+            var parameters = new { StepId = stepId };
+
+            return _unitOfWork.Execute((c, t) => c.QueryFirst<CookingStep>(sql, parameters, t));
+        }
+
+        public void Update(CookingStep step)
+        {
+            string sql = @"
+                UPDATE cooking_steps
+                SET
+                    description = @Description,
+                    image = @Image
+                WHERE
+                    id = @StepId;
+            ";
+
+            var parameters = new
+            {
+                Description = step.Description,
+                Image = step.Image,
+                StepId = step.Id
+            };
+
+            _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+        }
     }
 }

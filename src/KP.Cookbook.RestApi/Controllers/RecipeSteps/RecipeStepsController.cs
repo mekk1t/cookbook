@@ -2,6 +2,7 @@
 using KP.Cookbook.Cqrs;
 using KP.Cookbook.Domain.Entities;
 using KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe;
+using KP.Cookbook.Features.RecipeSteps.EditRecipeStep;
 using KP.Cookbook.Features.RecipeSteps.GetRecipeSteps;
 using KP.Cookbook.RestApi.Controllers.RecipeSteps.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,17 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
     {
         private readonly ICommandHandler<AddStepsToRecipeCommand> _addStepsToRecipeCommandHandler;
         private readonly IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> _getRecipeStepsQueryCommandHandler;
+        private readonly ICommandHandler<EditRecipeStepCommand> _editRecipeStepCommandHandler;
 
         public RecipeStepsController(
             ICommandHandler<AddStepsToRecipeCommand> addStepsToRecipeCommandHandler,
             IQueryHandler<GetRecipeStepsQuery, CookingStepsCollection> getRecipeStepsQueryCommandHandler,
+            ICommandHandler<EditRecipeStepCommand> editRecipeStepCommandHandler,
             ILogger<ApiJsonController> logger) : base(logger)
         {
             _addStepsToRecipeCommandHandler = addStepsToRecipeCommandHandler;
             _getRecipeStepsQueryCommandHandler = getRecipeStepsQueryCommandHandler;
+            _editRecipeStepCommandHandler = editRecipeStepCommandHandler;
         }
 
         /// <summary>
@@ -64,8 +68,10 @@ namespace KP.Cookbook.RestApi.Controllers.RecipeSteps
         /// <summary>
         /// Редактирование данных шага по приготовлению рецепта.
         /// </summary>
-        /// <param name="recipeId">ID рецепта.</param>
-        [HttpPatch]
-        public IActionResult EditRecipeStep([FromRoute] long recipeId) => null;
+        [HttpPatch("api/recipes/steps")]
+        public IActionResult EditRecipeStep([FromBody] EditRecipeStepRequest request) => ExecuteAction(() =>
+        {
+            _editRecipeStepCommandHandler.Execute(new EditRecipeStepCommand(request.StepId, request.Description, request.ImageBase64));
+        });
     }
 }
