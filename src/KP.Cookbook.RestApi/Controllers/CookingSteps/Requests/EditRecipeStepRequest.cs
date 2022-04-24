@@ -1,4 +1,4 @@
-﻿namespace KP.Cookbook.RestApi.Controllers.RecipeSteps.Requests
+﻿namespace KP.Cookbook.RestApi.Controllers.CookingSteps.Requests
 {
     public class EditRecipeStepRequest
     {

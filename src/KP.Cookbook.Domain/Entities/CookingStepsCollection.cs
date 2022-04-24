@@ -14,7 +14,7 @@
 
         public void NormalizeOrder()
         {
-            var temp = new List<CookingStep>(_steps.Count);
+            var temp = new CookingStep[_steps.Count];
             var orderedSteps = _steps.OrderBy(s => s.Order).ToArray();
 
             for (int i = 0; i < orderedSteps.Length; i++)
@@ -29,7 +29,7 @@
 
             _steps.Clear();
             _steps.AddRange(temp);
-            temp.Clear();
+            Array.Clear(temp);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace KP.Cookbook.Database
             string sql = @"
                 UPDATE cooking_steps
                 SET
-                    order = @Order,
+                    ""order"" = @Order,
                     description = @Description,
                     image = @Image
                 WHERE
