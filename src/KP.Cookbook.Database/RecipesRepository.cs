@@ -195,5 +195,20 @@ namespace KP.Cookbook.Database
 
             _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, transaction: t));
         }
+
+        public void AddStepsToRecipe(long recipeId, CookingStepsCollection stepsCollection)
+        {
+            string sql = @"
+                INSERT INTO recipes_and_cooking_steps (recipe_id, cooking_step_id)
+                VALUES (@RecipeId, @StepId);
+            ";
+
+            foreach (var step in stepsCollection.Steps)
+            {
+                var parameters = new { RecipeId = recipeId, StepId = step.Id };
+
+                _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
+            }
+        }
     }
 }

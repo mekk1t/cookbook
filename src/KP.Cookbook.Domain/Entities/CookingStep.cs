@@ -7,7 +7,6 @@ namespace KP.Cookbook.Domain.Entities
         public int Order { get; }
         public string? Description { get; set; }
         public string? Image { get; set; }
-        public List<IngredientDetailed> Ingredients { get; } = new List<IngredientDetailed>();
 
         public CookingStep(long id, int order) : base(id)
         {
