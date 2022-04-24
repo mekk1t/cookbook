@@ -165,7 +165,7 @@ namespace KP.Cookbook.Database
         public void UpdateRecipeIngredient(long recipeId, DbIngredientDetailed ingredient)
         {
             string sql = @"
-                UPDATE recipe_and_ingredients
+                UPDATE recipes_and_ingredients
                 SET
                     amount = @Amount,
                     amount_type = @AmountType,
