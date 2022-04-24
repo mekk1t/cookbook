@@ -1,10 +1,5 @@
 ﻿using KP.Cookbook.Cqrs;
 using KP.Cookbook.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe
 {
@@ -19,13 +14,22 @@ namespace KP.Cookbook.Features.RecipeSteps.AddStepsToRecipe
 
         public void Execute(AddStepsToRecipeCommand command)
         {
-            // Если шагов нет, то достаточно этого шага
-            _recipesRepository.AddStepsToRecipe(command.RecipeId, command.CookingStepsCollection);
+            var currentStepsCollection = _recipesRepository.GetRecipeSteps(command.RecipeId);
+            int maxOrder = currentStepsCollection.Steps.Select(s => s.Order).Max();
+            bool allNewStepsAreAfterLatestStep = command.CookingStepsCollection.Steps.All(step => step.Order > maxOrder);
 
-            // Если шаги уже есть, то возможные конфликты:
-            // 1. Уже есть шаг с таким порядковым номером. НУЖНА ВАЛИДАЦИЯ
-            // 2. Новый шаг(и) добавляются в конец (конфликта, на самом деле, нет. Достаточно также просто добавить в БД)
-            // 3. Новый шаг(и) добавляются между разными шагами либо до какого-то шага. НУЖНА НОРМАЛИЗАЦИЯ
+            if (currentStepsCollection.IsEmpty || command.CookingStepsCollection.IsEmpty || allNewStepsAreAfterLatestStep)
+            {
+                _recipesRepository.AddStepsToRecipe(command.RecipeId, command.CookingStepsCollection);
+                return;
+            }
+
+            var stepsOrders = command.CookingStepsCollection.Steps.Select(s => s.Order);
+            foreach (var step in currentStepsCollection.Steps)
+            {
+                if (stepsOrders.Contains(step.Order))
+                    throw new Exception($"Шаг с номером {step.Order} уже есть в рецепте.");
+            }
         }
     }
 }

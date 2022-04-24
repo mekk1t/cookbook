@@ -210,5 +210,20 @@ namespace KP.Cookbook.Database
                 _ = _unitOfWork.Execute((c, t) => c.Execute(sql, parameters, t));
             }
         }
+
+        public CookingStepsCollection GetRecipeSteps(long recipeId)
+        {
+            string sql = @"
+                SELECT s.id, s.""order"", s.description, s.image
+                FROM cooking_steps s INNER JOIN recipes_and_cooking_steps ras ON s.id = ras.cooking_step_id
+                WHERE ras.recipe_id = @RecipeId;
+            ";
+
+            var parameters = new { RecipeId = recipeId };
+
+            var steps = _unitOfWork.Execute((c, t) => c.Query<CookingStep>(sql, parameters, t));
+
+            return new CookingStepsCollection(steps);
+        }
     }
 }

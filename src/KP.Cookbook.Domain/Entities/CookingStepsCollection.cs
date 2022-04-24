@@ -2,9 +2,10 @@
 {
     public class CookingStepsCollection
     {
-        private List<CookingStep> _steps;
+        private readonly List<CookingStep> _steps;
 
         public IReadOnlyList<CookingStep> Steps => _steps;
+        public bool IsEmpty => _steps.Count == 0;
 
         public CookingStepsCollection(IEnumerable<CookingStep> steps)
         {

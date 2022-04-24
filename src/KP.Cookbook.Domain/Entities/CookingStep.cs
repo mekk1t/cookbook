@@ -1,12 +1,14 @@
-﻿using KP.Cookbook.Domain.ValueObjects;
-
-namespace KP.Cookbook.Domain.Entities
+﻿namespace KP.Cookbook.Domain.Entities
 {
     public class CookingStep : Entity
     {
-        public int Order { get; }
+        public int Order { get; private set; }
         public string? Description { get; set; }
         public string? Image { get; set; }
+
+        private CookingStep()
+        {
+        }
 
         public CookingStep(long id, int order) : base(id)
         {
